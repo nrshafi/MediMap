@@ -1,1 +1,1 @@
-# MediMap-
+# MediMap

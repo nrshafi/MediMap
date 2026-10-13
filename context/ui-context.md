@@ -1,59 +1,36 @@
-# UI Context
+# UI context
 
-## Theme
+## Current page
 
-[Describe the overall visual language — e.g. Dark only.
-No light mode. The design language is a dark technical
-workspace — near-black backgrounds, layered surfaces,
-and vivid accent colors for interactive elements.]
+The initial page is a static "Coming soon" hero for MediMap.
+Use a light clinical palette, dark teal text, and a simple location mark.
+Show the product name and a short description of its planned purpose.
+Do not add forms, buttons, navigation, or product functionality to this page.
 
-## Colors
+## Color tokens
 
-[Define your color tokens as CSS custom properties.
-All components must use these tokens — no hardcoded
-hex values.]
+Define colors as CSS custom properties. Use the tokens in component styles.
 
-| Role            | CSS Variable       | Value    |
-| --------------- | ------------------ | -------- |
-| Page background | `--bg-base`        | `#[hex]` |
-| Surface         | `--bg-surface`     | `#[hex]` |
-| Primary text    | `--text-primary`   | `#[hex]` |
-| Muted text      | `--text-muted`     | `#[hex]` |
-| Primary accent  | `--accent-primary` | `#[hex]` |
-| Border          | `--border-default` | `#[hex]` |
-| Error           | `--state-error`    | `#[hex]` |
-| Success         | `--state-success`  | `#[hex]` |
+| Role | CSS variable | Value |
+| --- | --- | --- |
+| Page background | `--bg-base` | `#f2f8f7` |
+| Surface | `--bg-surface` | `#ffffff` |
+| Primary text | `--text-primary` | `#143d3c` |
+| Muted text | `--text-muted` | `#506b69` |
+| Primary accent | `--accent-primary` | `#117c73` |
+| Border | `--border-default` | `#cddedb` |
 
-## Typography
+## Typography and layout
 
-| Role      | Font              | Variable      |
-| --------- | ----------------- | ------------- |
-| UI text   | [e.g. Geist Sans] | `--font-sans` |
-| Code/mono | [e.g. Geist Mono] | `--font-mono` |
+- Use the system sans-serif stack for body text and the product name.
+- Use Georgia for the hero heading.
+- Define `--font-sans` and `--font-display` in the stylesheet.
+- Center the hero in the available page height. Keep the header and footer visually quiet.
+- Use fluid heading sizes and responsive padding. Check the page at mobile widths.
+- Use an inline SVG for the decorative location mark. Hide decorative graphics from assistive technology.
+- Use plain CSS and semantic React components. No component or icon library is required for this page.
+- Keep the page static, without animation.
 
-## Border Radius
+## Future UI decisions
 
-| Context           | Class            |
-| ----------------- | ---------------- |
-| Inline / small UI | `rounded-[size]` |
-| Cards / panels    | `rounded-[size]` |
-| Modals / overlays | `rounded-[size]` |
-
-## Component Library
-
-[e.g. shadcn/ui on top of Tailwind. Components live
-in components/ui/. Use the CLI to add new components
-rather than writing from scratch.]
-
-## Layout Patterns
-
-- [Pattern — e.g. Editor: full-viewport split with
-  left sidebar, center canvas, right sidebar]
-- [Pattern — e.g. Sidebars: fixed width with border separator]
-- [Pattern — e.g. Modals: centered overlay with backdrop blur]
-- [Pattern — e.g. Navbar: top bar with bottom border]
-
-## Icons
-
-[e.g. Lucide React. Stroke-based icons only. Sizes:
-h-4 w-4 for inline, h-5 w-5 for buttons.]
+Define controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

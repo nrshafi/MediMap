@@ -16,7 +16,18 @@ This document records confirmed constraints. Unanswered architecture questions r
 | Authentication | Google sign-in | Only sign-in method for the first version. Authentication library and session implementation remain open. |
 | Mapping and routing | Pending provider research | Check Dhaka coverage, maps, geocoding, road distance, travel time, and free usage before selecting a provider. |
 
-Package versions are not selected. Verify current official documentation and installed versions before implementation.
+The initial package versions are recorded in `package.json` and `package-lock.json`.
+Verify current official documentation and installed versions before later implementation.
+
+## Initial application setup
+
+The first implementation is a static "Coming soon" page with React, strict TypeScript, TanStack Start, and Vite.
+Use npm for package management and Oxlint for code checks.
+Use `tsc` for strict TypeScript checking. A formatter remains unselected.
+Keep route entry points in `src/routes` and the landing-page component in `src/features/landing`.
+The initial setup uses React 19.3, TanStack Start 1.169.1, TanStack Router 1.170.44, TypeScript 6.0.3, and Vite 8.3.4.
+This unit does not configure hosting, storage, authentication, or other product functionality.
+Cloudflare Workers remains the intended deployment target for later implementation.
 
 ## System boundaries
 

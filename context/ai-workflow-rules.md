@@ -98,3 +98,5 @@ These are agreed targets, not completed milestones.
 
 Fill `context/ui-context.md` before UI implementation.
 Define the visual theme, colors, typography, components, layouts, icons, and interaction states in that phase.
+The initial static page uses the conventions now recorded in `ui-context.md`.
+Define interaction states before implementing functional controls.

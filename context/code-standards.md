@@ -63,7 +63,7 @@ Finalize directory names when the application scaffold is selected. The followin
 
 ## Styling and UI
 
-UI design standards remain pending until the next phase fills `ui-context.md`.
+The initial static page uses the design conventions in `ui-context.md`. Functional UI conventions remain pending.
 Do not treat example values in the UI template as selected fonts, colors, component libraries, or layout rules.
 Check changed screens on mobile before considering a feature complete.
 
@@ -89,7 +89,10 @@ Before completing a feature:
 5. Check changed screens manually on mobile.
 6. Record completed work and any unresolved checks in `progress-tracker.md`.
 
-Exact commands will be defined after selecting the package manager and application tools.
+The initial application uses `npm run typecheck`, `npm run lint`, and `npm run build`.
+Use Oxlint for linting. Preserve supported rules and exclusions when migrating the existing ESLint configuration.
+Run `npm run lint:fix` to apply safe fixes. Lint warnings must fail the command.
+TanStack Start generates `src/routeTree.gen.ts`. Exclude this generated file from linting and do not edit it manually.
 Do not claim a check passed unless it ran successfully.
 Documentation-only changes require document review. Application checks apply when application code exists or changes.
 
@@ -112,6 +115,6 @@ Checked on 8 October 2026:
 
 ## Pending decisions
 
-- Exact folder paths, package manager, linting tool, formatter, validation library, and test tools.
+- Additional feature paths, formatter, validation library, and test tools. The application uses npm and Oxlint.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

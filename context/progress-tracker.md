@@ -2,20 +2,32 @@
 
 Update this file after each meaningful implementation change. Include the current date and time in Asia/Dhaka.
 
-Last updated: 8 October 2026, 20:21 Asia/Dhaka.
+Last updated: 13 October 2026, 23:46 Asia/Dhaka.
 
 ## Current phase
 
-Context definition complete for the four requested documents. UI context is the next phase.
-No application implementation occurred in this session.
+The initial React and TypeScript application is complete.
+The application shows a static "Coming soon" page.
 
 ## Current goal
 
-Fill `context/ui-context.md` for the next phase.
-Define the theme, color tokens, typography, component conventions, layouts, icons, and interaction states before UI implementation.
+The ESLint replacement with Oxlint is complete.
+No application feature is currently in progress.
 
 ## Completed
 
+- Replaced ESLint, `@eslint/js`, and typescript-eslint with Oxlint 1.88.0.
+- Migrated 83 supported rules and preserved exclusions in `.oxlintrc.json`.
+- Added `npm run lint:fix`. The lint commands fail on warnings.
+- Passed Oxlint, TypeScript checking, and the production build after migration.
+- Verified Oxlint selects all five application and configuration source files and excludes generated files.
+- Created the React, strict TypeScript, TanStack Start, and Vite application with npm and a package lockfile.
+- Added the responsive "Coming soon" page and short README with local commands.
+- Recorded the static page design in `ui-context.md` and the setup in `architecture.md`.
+- Passed `npm run typecheck`, `npm run lint`, and `npm run build`.
+- Inspected desktop and 375 px mobile screenshots. Content remained readable without horizontal overflow.
+- Checked browser error logs. No errors were recorded.
+- Dependency installation reported no known vulnerabilities.
 - Read the PRD and six context files in the required order.
 - Apply the available workspace writing guidance.
 - Complete the 25-question interview across product, architecture, code standards, and AI workflow.
@@ -27,14 +39,12 @@ Define the theme, color tokens, typography, component conventions, layouts, icon
 ## In progress
 
 - No application feature is in progress.
-- `ui-context.md` retains its template for the next phase.
 
 ## Next up
 
-1. Define UI decisions and fill `ui-context.md`.
-2. Select and verify implementation tools, authentication integration, and the mapping provider.
+1. Define the next functional unit and its acceptance criteria when requested.
+2. Select authentication integration and the mapping provider before use.
 3. Resolve open behavior before implementing each affected feature.
-4. Define the first small feature unit and its acceptance criteria.
 
 ## Delivery targets
 
@@ -49,14 +59,14 @@ Define the theme, color tokens, typography, component conventions, layouts, icon
 
 - Exact inventory of 10 hospitals and their Dhaka branches, including unavailable source data.
 - Exact final delivery date in early December 2026.
-- UI theme, tokens, typography, components, layouts, icons, and interaction states.
+- Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
 - Authentication library, sessions, administrator assignment, and report-submission access.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
 - Effect of an incorrect-price report on verification status and statistics eligibility.
 - Default sorting, comparison limits, price history, and rating aggregation.
-- Package manager, validation, linting, formatting, testing tools, and package versions.
+- Validation, formatting, and test tools for functional features. Initial package versions are recorded in the package files.
 - Exact folder paths and migration review and production application rules.
 - Remaining optional P1 features.
 
@@ -84,6 +94,26 @@ Define the theme, color tokens, typography, component conventions, layouts, icon
 - Require type checking, linting, relevant tests, production build, and manual mobile checks for feature completion.
 
 ## Session notes
+
+- Selected Oxlint after checking the official Oxlint and Biome documentation. The requested change concerns linting; formatting remains open.
+- The migration skipped experimental `no-undef` and `no-useless-assignment`, plus unsupported `no-dupe-args` and `no-octal`.
+- The project source is TypeScript. Keep strict `tsc` checks for undeclared names and compiler diagnostics. The migration does not preserve every ESLint rule.
+- Removed the ESLint configuration and dependencies. Updated the lockfile, README, architecture, and code standards.
+- No UI code changed during the lint migration. No additional browser or behavior tests were required.
+- Removed the decorative "+" mark beside the header product name at the user's request.
+- Type checking, linting, and the production build passed after the removal. Checked the updated header at desktop and mobile widths.
+- Created the static application on 13 October 2026. No product functionality, hosting configuration, commit, push, or deployment was added.
+- Verified dependency APIs through official React, TanStack, Vite, TypeScript, ESLint, typescript-eslint, and npm documentation.
+- Context7 tools were unavailable. Used the official documentation fallback.
+- No automated behavior tests were added for this static page. Type checking, linting, build, and visual checks passed.
+- The default npm entry point is broken on this machine. Checks used `C:/Program Files/nodejs/npm.cmd` and a project-local npm cache.
+- Ego browser could not connect. Used the Codex in-app browser for visual checks and left the development preview open.
+- Preserved the existing presentation files and earlier progress notes.
+- Created a seven-slide project presentation at `artifacts/presentation/output/MediMap.pptx` on 13 October 2026.
+- Covered the project description, solution approach, selected stack, technology choices, delivery status, and existing commit evidence.
+- Identified selected technologies and delivery milestones as planned work. The two existing commits contain project setup and documentation.
+- Reviewed all slides visually. Package, layout, font, import, and XML schema checks passed for the final presentation.
+- Added speaker notes with project sources and links to both commits. No application implementation, commit, push, or deployment occurred.
 
 - All 25 interview questions are answered. The remaining questions belong to UI planning or affected implementation units.
 - Record proposals as proposals until selected. Do not invent answers to open questions.

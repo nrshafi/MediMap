@@ -1,5 +1,7 @@
 node_modules/
 .npm-cache/
+.bun-cache/
+.bun-tmp/
 dist/
 .tanstack/
 .output/

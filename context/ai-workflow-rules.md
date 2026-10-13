@@ -46,6 +46,9 @@ New explicit user decisions take priority. Update conflicting requirements befor
 ## Dependencies and documentation
 
 - Prefer existing packages.
+- Prefer Bun native utilities for local scripts and compatible unit tests before adding third-party utility packages.
+- Use stable releases only. Do not install a prerelease to obtain a native utility.
+- Use APIs supported by the browser and Workers runtime in application code.
 - Add a dependency when the feature needs it, after checking documentation, compatibility, and maintenance.
 - Explain the dependency choice in the delivery summary.
 - Verify third-party APIs, libraries, frameworks, SDKs, and CLI tools before use.
@@ -80,7 +83,8 @@ Apply the workspace unslop and ASD-STE100 skills to the relevant prose.
 7. Update the relevant context files and progress tracker.
 8. Report failed or unavailable checks without claiming success.
 
-Select exact commands after the package manager and application tools are chosen.
+Use `bun install --frozen-lockfile`, `bun run typecheck`, `bun run lint`, and `bun run build`.
+Use `bun test` when compatible unit tests exist. Integration and browser test tools remain open.
 For documentation-only changes, review the documents and links. Application checks apply when application code exists or changes.
 
 ## Delivery schedule

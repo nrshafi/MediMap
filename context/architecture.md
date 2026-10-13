@@ -16,16 +16,23 @@ This document records confirmed constraints. Unanswered architecture questions r
 | Authentication | Google sign-in | Only sign-in method for the first version. Authentication library and session implementation remain open. |
 | Mapping and routing | Pending provider research | Check Dhaka coverage, maps, geocoding, road distance, travel time, and free usage before selecting a provider. |
 
-The initial package versions are recorded in `package.json` and `package-lock.json`.
+The package versions are recorded in `package.json` and `bun.lock`.
 Verify current official documentation and installed versions before later implementation.
 
 ## Initial application setup
 
 The first implementation is a static "Coming soon" page with React, strict TypeScript, TanStack Start, and Vite.
-Use npm for package management and Oxlint for code checks.
-Use `tsc` for strict TypeScript checking. A formatter remains unselected.
+Use stable Bun 1.4.3 for package management, local scripts, and strict TypeScript checking.
+Use `bun check` for type checking and Oxlint for linting. Stable Bun 1.4.3 does not provide native linting.
+Keep the existing lint rules and exclusions in `.oxlintrc.json`.
+Run Vite through Bun. A formatter remains unselected.
+Prefer Bun native utilities for local scripts and compatible unit tests.
+Use stable releases only. Do not adopt a prerelease to obtain a native utility.
+Keep Bun-specific APIs out of browser and Cloudflare Workers application code.
+Use supported web APIs and Workers bindings in the deployed application.
 Keep route entry points in `src/routes` and the landing-page component in `src/features/landing`.
-The initial setup uses React 19.3, TanStack Start 1.169.1, TanStack Router 1.170.44, TypeScript 6.0.3, and Vite 8.3.4.
+The initial setup uses React 19.3, TanStack Start 1.169.1, TanStack Router 1.170.44, and Vite 8.3.4.
+Match the editor's TypeScript package to `process.versions.typescript` in the selected Bun version.
 This unit does not configure hosting, storage, authentication, or other product functionality.
 Cloudflare Workers remains the intended deployment target for later implementation.
 
@@ -72,6 +79,9 @@ Cloudflare free-tier suitability must be checked against the expected workload.
 Map, geocoding, and routing services require separate capability and billing checks.
 
 ## Documentation checked
+
+Verified the Bun migration on 14 October 2026 against [Bun 1.4.3 release notes](https://bun.com/blog/release-notes/bun-v1.4.3) and installed CLI help.
+Use release-specific documentation and installed commands to distinguish stable capabilities from unreleased documentation.
 
 Checked on 8 October 2026. These sources establish available integration options, not final selections.
 

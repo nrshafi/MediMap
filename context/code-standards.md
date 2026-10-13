@@ -89,9 +89,16 @@ Before completing a feature:
 5. Check changed screens manually on mobile.
 6. Record completed work and any unresolved checks in `progress-tracker.md`.
 
-The initial application uses `npm run typecheck`, `npm run lint`, and `npm run build`.
-Use Oxlint for linting. Preserve supported rules and exclusions when migrating the existing ESLint configuration.
-Run `npm run lint:fix` to apply safe fixes. Lint warnings must fail the command.
+Use `bun run typecheck`, `bun run lint`, and `bun run build`.
+Use Bun's native `bun check` for strict TypeScript checking and Oxlint for linting.
+Use stable releases only. Keep a necessary third-party tool when stable Bun does not provide its function.
+Preserve the rules, TypeScript overrides, and exclusions in `.oxlintrc.json`.
+Run `bun run lint:fix` to apply safe fixes. Lint warnings must fail the command.
+Use `bun install --frozen-lockfile` for reproducible installs.
+Prefer Bun native utilities for local scripts and compatible unit tests.
+Use `bun test` for unit tests that can run outside the Workers runtime.
+Select Workers integration and browser test tools after compatibility checks.
+Keep Bun-specific APIs out of browser and Workers application code.
 TanStack Start generates `src/routeTree.gen.ts`. Exclude this generated file from linting and do not edit it manually.
 Do not claim a check passed unless it ran successfully.
 Documentation-only changes require document review. Application checks apply when application code exists or changes.
@@ -115,6 +122,6 @@ Checked on 8 October 2026:
 
 ## Pending decisions
 
-- Additional feature paths, formatter, validation library, and test tools. The application uses npm and Oxlint.
+- Additional feature paths, formatter, validation library, and integration and browser test tools. The application uses Bun.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

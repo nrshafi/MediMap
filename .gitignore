@@ -4,6 +4,7 @@ node_modules/
 .bun-tmp/
 dist/
 .tanstack/
+tan/
 .output/
 .env
 .env.*

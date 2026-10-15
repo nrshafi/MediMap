@@ -4,18 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-14 01:05:33 +06:00`.
+Last updated: `2026-10-15 17:40:00 +06:00`.
 
 ## Current phase
 
-The initial application is complete and shows a static "Coming soon" page. No functional feature is currently in progress.
-
-- React, strict TypeScript, TanStack Start, and Vite provide the application setup.
-- Route entry points are in `src/routes`. The landing-page component is in `src/features/landing`.
-- Stable Bun 1.4.3 runs dependency installation, Vite, package scripts, and native type checking. Oxlint 1.88.0 provides linting.
-- TypeScript 7.0.2 remains installed for editor support and matches Bun's native checker.
-- The latest recorded application checks passed on 14 October 2026: frozen installation, type checking, linting, production build, and development startup.
-- Hosting, storage, authentication, and diagnostic-service functionality are not configured. Cloudflare Workers and D1 remain the selected deployment and storage targets.
+Diagnostic search and alias resolution engine implemented in `src/features/search/`.
+Static landing page and client routing remain operational.
 
 ## Architecture invariants
 
@@ -37,6 +31,17 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Diagnostic alias resolution engine (2026-10-15 17:40:00 +06:00)
+
+- Implemented pure TypeScript diagnostic search domain types in `src/features/search/types.ts`: `CanonicalService`, `ServiceAlias`, `MatchType`, `QueryMatch`, `ResolutionResult`, and `TypoSuggestion`.
+- Implemented Unicode NFKC normalization, zero-width character stripping (\u200D, \u200C, \u200B, \uFEFF), whitespace collapsing, and English/Bengali script tokenization in `src/features/search/normalizer.ts`.
+- Implemented Damerau-Levenshtein distance algorithm with adjacent transposition and short acronym safety guard (<= 3 chars) in `src/features/search/typoMatcher.ts`. Calibrated typo thresholds: 4-6 chars allow max distance 1 with similarity >= 0.8; >= 7 chars allow max distance 2 with similarity >= 0.75.
+- Created canonical diagnostic service catalog in `src/features/search/diagnosticCatalog.ts` with 19 common pathology, imaging, ultrasonography, and cardiology tests, with rich English and Bengali aliases.
+- Implemented strict 5-tier search resolution engine in `src/features/search/resolutionEngine.ts`: (1) exact canonical name, (2) exact alias, (3) prefix match, (4) keyword token containment, (5) typo suggestions.
+- Enforced ambiguity detection: queries matching multiple distinct clinical services flag `status: 'ambiguous'`, `requiresExplicitSelection: true`, and `primaryMatch: undefined`. Ambiguous queries never resolve automatically to a single service.
+- Added comprehensive automated unit test suite with 54 test cases across two test files in `src/features/search/__tests__/`. Passed `bun test` with 54/54 passing tests.
+- Verified compliance: `oxlint` passed with 0 errors and 0 warnings, TypeScript compiler check passed, and `bun run build` completed without errors.
 
 ### Stable Bun migration (2026-10-14 00:50 +06:00)
 

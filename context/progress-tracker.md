@@ -4,11 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 17:40:00 +06:00`.
+Last updated: `2026-10-15 18:15:00 +06:00`.
 
 ## Current phase
 
-Diagnostic search and alias resolution engine implemented in `src/features/search/`.
+Straight-line radius filtering engine implemented in `src/features/map/`.
+Diagnostic search and alias resolution engine operational in `src/features/search/`.
 Static landing page and client routing remain operational.
 
 ## Architecture invariants
@@ -31,6 +32,17 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Straight-line radius filtering engine (2026-10-15 18:15:00 +06:00)
+
+- Defined immutable spatial domain types in `src/features/map/types.ts`: `Coordinates`, `GeoBoundingBox`, `RadiusPresetKm` (1 km, 3 km, 5 km), `RadiusFilterInput`, `LocatableBranch`, `BranchDistanceResult<T>`, and `RadiusFilterOptions`.
+- Defined geographic bounding boxes in `src/features/map/coordinates.ts` for core Dhaka (`lat: 23.6800–23.9000, lon: 90.3200–90.4500`) and Greater Dhaka metropolitan area (`lat: 23.5500–24.0200, lon: 90.1800–90.5800`).
+- Implemented strict coordinate validation `isValidCoordinate` and structured `validateCoordinate`, enforcing finite numbers within WGS 84 coordinate limits (`[-90, 90]` latitude, `[-180, 180]` longitude).
+- Implemented Haversine spherical distance calculation in `src/features/map/haversine.ts` using Earth mean radius `6371.0 km` (IUGG standard), fast-path for identical coordinates, numerical stability clamping for floating-point values, and safe decimal rounding helper `roundDistanceKm`.
+- Implemented radius filtering engine in `src/features/map/radiusFilter.ts`: input parser `parseRadiusFilterInput` supporting standard presets (1 km, 3 km, 5 km) and custom inputs (0.1 km to 100.0 km), bounding box pre-filtering, branch distance calculation, ascending order sorting (nearest first), and optional result slicing.
+- Assembled verified WGS 84 benchmark coordinates in `src/features/map/landmarks.ts` for 14 Dhaka hospitals and urban transit hubs.
+- Added comprehensive unit test suites in `src/features/map/__tests__/`: 20 radius filtering tests and 16 spatial benchmark tests verifying landmark distances, metric space axioms (identity, symmetry across 196 pairs, non-negativity, triangle inequality across 2,744 triplets), antipodal calculations, and floating-point clamping.
+- Passed all repository verification checks: `bun test` (90/90 passed), `bun run lint` (0 warnings, 0 errors across 21 files), `bun x tsc --noEmit` (0 type errors), and `bun run build` (client and SSR production builds passed).
 
 ### Diagnostic alias resolution engine (2026-10-15 17:40:00 +06:00)
 

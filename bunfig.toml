@@ -1,2 +1,5 @@
 [run]
 shell = "bun"
+
+[test]
+preload = ["./src/features/search/ui/__tests__/setupDom.ts"]

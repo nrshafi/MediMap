@@ -4,10 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 18:55:00 +06:00`.
+Last updated: `2026-10-15 19:48:00 +06:00`.
 
 ## Current phase
 
+Comprehensive interaction and accessibility test suite implemented and verified in `src/features/search/ui/__tests__/`.
+Diagnostic search discovery UI components implemented and verified in `src/features/search/ui/`.
 Fault-tolerant road distance and travel time mapping integration verified in `src/integrations/mapping/`.
 Straight-line radius filtering engine implemented in `src/features/map/`.
 Diagnostic search and alias resolution engine operational in `src/features/search/`.
@@ -33,6 +35,36 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Search discovery UI comprehensive test suite (2026-10-15 19:48:00 +06:00)
+
+- Configured Happy DOM test environment preload in `src/features/search/ui/__tests__/setupDom.ts` and registered it in `bunfig.toml` via `[test] preload` for zero-configuration browser DOM execution in Bun.
+- Implemented comprehensive interaction test suite in `src/features/search/ui/__tests__/searchUiInteractions.test.tsx` with 23 test cases covering:
+  1. SearchInput and User Input Handling: debounce timing using Bun fake timers, immediate synchronous typing without lag, clear button click/reset/focus restoration, live region announcements (`aria-live="polite"`, `role="status"`), loading spinner with `aria-busy`.
+  2. WAI-ARIA 1.2 Combobox and Listbox Keyboard Navigation: `ArrowDown` opens combobox and highlights first item (`aria-activedescendant`), `ArrowDown` cycles options with wrap-around, `ArrowUp` navigates upwards and wraps from top to bottom, `Enter` dispatches selection with canonical service ID, `Escape` closes listbox, clears active descendant, and preserves input value.
+  3. AutoSuggestDropdown Rendering and Badges: canonical name, category, English and Bengali alias badges (`EN`, `BN`), typo suggestions ("Did you mean: ...", `Typo correction` badge), empty unmatched search state.
+  4. Ambiguity Resolution Flow: `AmbiguityPrompt` renders when query is clinically ambiguous (`status === 'ambiguous'`), renders touch-accessible candidate cards, explicit canonical resolution on click and Enter, cancel/dismiss button restores input focus.
+  5. RadiusSelector and Straight-Line Metrics: segmented `role="radiogroup"`, explicit "Straight-line radius" wording complying with architecture invariant, preset selection (1 km, 3 km, 5 km, Custom), custom numeric input validation (0.5 km to 50 km bounds, empty/invalid rejection).
+  6. Mobile Layout and Touch Target Standards: verified minimum 44px touch targets on clear button, radius pills, custom input, dropdown options (48px), ambiguity cards (48px), and cancel buttons (44px); verified mobile responsive 2-column grid CSS rules for 375px screens.
+- Enhanced `DiagnosticSearchBox.tsx` `handleKeyDown` to open listbox and highlight index 0 upon `ArrowDown` from closed combobox.
+- Verification results:
+  - `bun test`: 170 passed, 0 failed across 8 test files in 807ms.
+  - `bun run typecheck` (`bun check` / `tsc --noEmit`): 0 type errors.
+  - `bun run lint` (`oxlint . --deny-warnings`): 0 warnings, 0 errors across 38 files.
+
+
+### Diagnostic search discovery UI (2026-10-15 19:25:00 +06:00)
+
+- Defined UI domain types in `src/features/search/ui/types.ts`: `SearchSelection`, `SearchSelectionType`, `SuggestionItem`, `SuggestionItemKind`, `AmbiguityItem`, `RadiusPreset`, and component props interfaces.
+- Implemented debounced accessible search input in `src/features/search/ui/SearchInput.tsx` conforming to WAI-ARIA 1.2 Combobox pattern (`role="combobox"`, `aria-expanded`, `aria-haspopup="listbox"`, `aria-controls`, `aria-autocomplete="list"`, `aria-activedescendant`), zero-latency controlled typing, live region announcements (`aria-live="polite"`), and clear button with >= 44px touch target.
+- Implemented accessible suggestions listbox in `src/features/search/ui/AutoSuggestDropdown.tsx` (`role="listbox"`, `role="option"`, `aria-selected`), displaying canonical service names, categories, language-tagged alias badges (English and Bengali), typo suggestions ("Did you mean: ..."), and empty search states.
+- Implemented explicit clinical disambiguation prompt in `src/features/search/ui/AmbiguityPrompt.tsx`, enforcing explicit selection between clinically distinct services (e.g., CT Scan Brain vs CT Scan Chest) with touch-accessible cards.
+- Implemented straight-line radius selector in `src/features/search/ui/RadiusSelector.tsx` with segmented presets (1 km, 3 km, 5 km, Custom), explicit "Straight-line radius" labelling complying with metric separation invariants, and validated custom numeric range (0.5 km to 50 km).
+- Implemented composite search card in `src/features/search/ui/DiagnosticSearchBox.tsx`, unifying input, auto-suggestions, ambiguity resolution, and radius selection.
+- Styled components in `src/features/search/ui/searchUi.css` using theme color tokens (`--bg-base: #f2f8f7`, `--bg-surface: #ffffff`, `--text-primary: #143d3c`, `--text-muted: #506b69`, `--accent-primary: #117c73`, `--border-default: #cddedb`), high-contrast focus rings, and mobile responsive design down to 375px.
+- Exported all UI components and types through `src/features/search/ui/index.ts` and `src/features/search/index.ts`.
+- Added unit test suite in `src/features/search/ui/__tests__/searchUiComponents.test.tsx` verifying WAI-ARIA 1.2 combobox attributes, clear button behavior, dropdown rendering, ambiguity prompt output, and radius presets.
+- Passed all repository checks: `bun test` (147/147 passed across 7 test files), `bun run lint` (0 warnings, 0 errors across 36 files), `bun check` (0 type errors), and `bun run build` (client and SSR builds completed).
 
 ### Fault-tolerant road distance and travel time integration (2026-10-15 18:55:00 +06:00)
 

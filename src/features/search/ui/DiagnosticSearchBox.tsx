@@ -53,6 +53,15 @@ export function DiagnosticSearchBox({
   const [activeIndex, setActiveIndex] = useState(-1);
   const [announcement, setAnnouncement] = useState('');
 
+  // Synchronize internal state if initialQuery or initialRadiusKm props change
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    setRadiusKm(initialRadiusKm);
+  }, [initialRadiusKm]);
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleDocumentClick = (event: MouseEvent) => {
@@ -233,10 +242,16 @@ export function DiagnosticSearchBox({
 
   const handleRadiusChange = (newRadiusKm: number) => {
     setRadiusKm(newRadiusKm);
-    if (selectedService && onSelectService) {
+    const serviceToUse =
+      selectedService ??
+      (query.trim() !== ''
+        ? resolveDiagnosticQuery(query.trim(), catalog).primaryMatch?.canonicalService ?? null
+        : null);
+
+    if (serviceToUse && onSelectService) {
       onSelectService({
-        canonicalService: selectedService,
-        query: selectedService.name,
+        canonicalService: serviceToUse,
+        query: serviceToUse.name,
         selectionType: 'direct',
         radiusKm: newRadiusKm,
       });

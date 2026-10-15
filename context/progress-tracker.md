@@ -4,10 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 20:38:00 +06:00`.
+Last updated: `2026-10-15 21:18:00 +06:00`.
 
 ## Current phase
 
+Dedicated end-to-end user flow integration test suite verified in `src/features/search/ui/__tests__/discoveryFullFlow.test.tsx`.
+Discovery route (`/discovery`), end-to-end page flow (`DiscoveryView`), and domain mock branch listings verified and operational.
 Synchronized map and list discovery interaction and accessibility test suite implemented and verified in `src/features/map/ui/__tests__/`.
 Synchronized map and list view implemented and verified in `src/features/map/ui/`.
 Comprehensive interaction and accessibility test suite implemented and verified in `src/features/search/ui/__tests__/`.
@@ -37,6 +39,52 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Discovery end-to-end user flow integration test suite (2026-10-15 21:18:00 +06:00)
+
+- Implemented dedicated end-to-end user journey test suite in `src/features/search/ui/__tests__/discoveryFullFlow.test.tsx` containing 19 integration tests across 8 key verification suites:
+  1. TanStack Router Search Parameter Validation & Synchronization: Verified `Route.options.validateSearch` parsing for `q`/`query`, latitude, longitude, radius (defaults to 3 km on negative or invalid numbers), and trimmed `selectedBranchId`.
+  2. Complete Search Flow: Verified diagnostic query typing and debounced auto-suggestions (e.g., "Lipid Profile"), selection dispatch, URL parameter synchronization, and instant branch price updates in BDT (Square: BDT 2,600, Popular: BDT 1,400, BSMMU: BDT 500, DMCH: BDT 400). Verified Bengali query resolution ("বুকের এক্স-রে") to "X-Ray Chest P/A View" with verified hospital pricing.
+  3. Clinical Ambiguity Resolution Flow: Verified ambiguous queries ("CT") trigger explicit `AmbiguityPrompt` panel with candidate cards ("CT Scan Chest", "CT Scan Brain") without premature or automated single-service resolution. Verified clicking candidate resolves to "CT Scan Chest" and updates BDT branch prices (Square: BDT 11,000, DMCH: BDT 2,200). Verified cancel button dismisses ambiguity panel and preserves input focus.
+  4. Spatial Radius Filtering Flow & Invariant 8 Parity: Verified radial distance narrowing (3 km to 1 km) and expansion (1 km to 5 km). Verified custom numeric radius (7 km). Verified zero-match empty state at 0.2 km and recovery via "Expand radius to 5 km" action button.
+  5. Location Preset Switching Flow: Verified transit hub switching from Shahbagh to Gulshan-2, updating reference coordinates and distances, re-ranking United Hospital (< 1.5 km) as closest branch while filtering out South Dhaka hospitals. Verified Dhanmondi preset prioritizes Popular and Ibn Sina Dhanmondi branches.
+  6. Bidirectional Map-List Interaction Flow: Verified clicking SVG map pin selects branch card in list, updates selection state, announces branch details via live region (`role="status"`, `aria-live="polite"`), and emits `onSearchChange` with `selectedBranchId`. Verified clicking list card select button synchronizes SVG map pin. Verified `Enter` key activation on focused map pin.
+  7. Architecture Invariant 7 (Routing Fault-Tolerance & Metric Separation): Verified branch base price in BDT, verified badge, and straight-line distance remain displayed when road routing is unavailable or simulated network failure occurs (`Road estimate unavailable`).
+  8. Architecture Invariant 8 (Strict Map-List Parity): Verified SVG map pin count (`g[data-testid^="map-pin-"]`) strictly equals branch card count (`.medimap-branch-card`) across every discovery stage and interaction step.
+- Enhanced `src/features/search/ui/DiagnosticSearchBox.tsx`:
+  - Added effect hooks to synchronize internal `query` and `radiusKm` state when parent `initialQuery` and `initialRadiusKm` props change.
+  - Added fallback canonical service query resolution to `handleRadiusChange` when changing search radius before selecting an explicit dropdown item.
+- Verification results:
+  - `bun test`: 257 passed, 0 failed across 14 test files in 1.74s.
+  - `bun check` (`tsc --noEmit`): 0 type errors.
+  - `bun run lint` (`oxlint . --deny-warnings`): 0 warnings, 0 errors across 54 files in 15ms.
+  - `bun run build`: Client (420 kB total) and SSR (234 kB total) production bundles built cleanly.
+
+### Discovery route integration and end-to-end page flow (2026-10-15 21:05:00 +06:00)
+
+- Implemented Dhaka healthcare branch listings and query filtering engine in `src/features/search/discoveryData.ts`:
+  - 10 verified tertiary public and private hospital branches across Dhaka: Square Hospital (Panthapath), Evercare Hospital (Bashundhara R/A), United Hospital (Gulshan-2), Popular Diagnostic Centre (Dhanmondi), Ibn Sina Diagnostic Centre (Dhanmondi), Ibn Sina Diagnostic Centre (Badda), Dhaka Medical College Hospital (Bakshibazar / Shahbagh), BSMMU (Shahbagh), Labaid Diagnostic Centre (Dhanmondi), and BIRDEM General Hospital (Shahbagh).
+  - Explicit canonical diagnostic test pricing in BDT (Complete Blood Count, Lipid Profile, Chest CT, Brain CT, USG Whole Abdomen, Serum Creatinine, HbA1c, Chest X-Ray, Brain MRI, ECG, Dengue NS1), verification status (`verified`), verification dates, and tariff sources.
+  - Six canonical Dhaka location presets (Shahbagh, Dhanmondi, Farmgate, Gulshan-2, Mirpur-10, Uttara) referencing verified coordinates in `DHAKA_LANDMARKS`.
+  - `filterBranchesByQueryAndLocation` spatial filter: resolves canonical service query text via `resolveDiagnosticQuery`, calculates straight-line radius via `filterBranchesByRadius`, and enriches matching branches into `DiscoveryBranchItem` records preserving BDT prices, verification metadata, straight-line distance, and distinct urban road routing estimates.
+- Implemented composite discovery UI in `src/features/search/ui/DiscoveryView.tsx` and `discoveryView.css`:
+  - Coordinated `DiagnosticSearchBox` and `SynchronizedDiscoveryView` in a unified page flow.
+  - Interactive location preset switching across Dhaka urban centers with active visual states.
+  - Active filters context bar summarizing selected test, straight-line radius, reference center, and verified branch count.
+  - Accessible clinical empty state for zero-match criteria with quick radius expansion and location reset actions.
+  - Enforced theme tokens (`--bg-base`, `--bg-surface`, `--text-primary`, `--text-muted`, `--accent-primary`, `--border-default`) and minimum 44px touch targets.
+- Created `/discovery` route in `src/routes/discovery.tsx`:
+  - Defined `Route = createFileRoute('/discovery')({ ... })` with `validateSearch` parsing `q`/`query`, `lat`, `lng`, `radius` (default 3), and `selectedBranchId`.
+  - Synchronized search query parameters using TanStack Router `navigate({ search: ..., replace: true, resetScroll: false })`.
+  - Registered `/discovery` route cleanly in `src/routeTree.gen.ts`.
+- Implemented automated test suites:
+  - `src/features/search/__tests__/discoveryData.test.ts`: 6 tests verifying branch data completeness, positive BDT prices, canonical location presets, query resolution, spatial filtering from North and South Dhaka, and straight-line sorting.
+  - `src/features/search/ui/__tests__/discoveryView.test.tsx`: 6 tests verifying page rendering, landmark preset switching, branch card selection synchronization, empty state actions, architecture invariants (BDT prices, verified badges, explicit straight-line separation), and touch targets.
+- Verification results:
+  - `bun test`: 238 passed, 0 failed across 13 test files in 1.28s.
+  - `bun check` (`tsc --noEmit`): 0 type errors.
+  - `bun run lint` (`oxlint . --deny-warnings`): 0 warnings, 0 errors across 53 files in 15ms.
+  - `bun run build`: Client (420 kB total) and SSR (234 kB total) production bundles built cleanly.
 
 ### Synchronized map and list interaction test suite (2026-10-15 20:38:00 +06:00)
 

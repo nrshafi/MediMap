@@ -32,6 +32,7 @@ export {
   AmbiguityPrompt,
   AutoSuggestDropdown,
   DiagnosticSearchBox,
+  DiscoveryView,
   RadiusSelector,
   SearchInput,
 } from './ui';
@@ -41,6 +42,7 @@ export type {
   AmbiguityPromptProps,
   AutoSuggestDropdownProps,
   DiagnosticSearchBoxProps,
+  DiscoveryViewProps,
   RadiusPreset,
   RadiusSelectorProps,
   SearchInputProps,
@@ -49,4 +51,20 @@ export type {
   SuggestionItem,
   SuggestionItemKind,
 } from './ui';
+
+export {
+  DEFAULT_DISCOVERY_CENTER,
+  DEFAULT_DISCOVERY_SERVICE_ID,
+  DHAKA_LOCATION_PRESETS,
+  MOCK_BRANCH_LISTINGS,
+  filterBranchesByQueryAndLocation,
+} from './discoveryData';
+
+export type {
+  BranchServicePrice,
+  DiscoveryQueryFilterOptions,
+  DiscoveryQueryResult,
+  LocationPreset,
+  MockBranchListing,
+} from './discoveryData';
 

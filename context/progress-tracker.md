@@ -4,10 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 19:48:00 +06:00`.
+Last updated: `2026-10-15 20:38:00 +06:00`.
 
 ## Current phase
 
+Synchronized map and list discovery interaction and accessibility test suite implemented and verified in `src/features/map/ui/__tests__/`.
+Synchronized map and list view implemented and verified in `src/features/map/ui/`.
 Comprehensive interaction and accessibility test suite implemented and verified in `src/features/search/ui/__tests__/`.
 Diagnostic search discovery UI components implemented and verified in `src/features/search/ui/`.
 Fault-tolerant road distance and travel time mapping integration verified in `src/integrations/mapping/`.
@@ -35,6 +37,46 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Synchronized map and list interaction test suite (2026-10-15 20:38:00 +06:00)
+
+- Implemented comprehensive interaction test suite in `src/features/map/ui/__tests__/synchronizedDiscoveryInteractions.test.tsx` containing 26 rigorous tests across 6 required domains:
+  1. Bidirectional Selection Synchronization: Verified clicking a map pin highlights the pin (`map-pin--selected`, `is-selected`, `aria-pressed="true"`) and synchronizes list selection (`branch-card--selected`, `is-selected`, `aria-selected="true"`). Verified clicking a list card highlights the card and synchronizes map pin selection. Verified `onSelectBranch` provides the branch ID and the correct interaction source (`'map'` vs `'list'`). Verified controlled `selectedBranchId` prop updates.
+  2. Bidirectional Hover Synchronization: Verified `mouseenter` on a map pin activates hover state on the pin (`map-pin--hovered`) and highlights the corresponding card (`branch-card--hovered`). Verified `mouseenter` on a card activates hover state on the pin and renders the map tooltip. Verified `mouseleave` cleans up all hover states. Verified card focus and blur keyboard events trigger and clear hover synchronization.
+  3. Keyboard & Accessibility: Verified map pins provide `role="button"`, `tabIndex={0}`, `aria-pressed`, `aria-expanded`, and descriptive accessible labels. Verified `Enter` and `Space` keyboard activation on pins. Verified polite live region announcement (`aria-live="polite"`, `role="status"`, `aria-atomic="true"`) updates with clinical branch, price, and distance details. Verified zoom toolbar accessibility (`role="toolbar"`, `aria-label`) and zoom limits (disable Zoom Out at 1x, disable Zoom In at 3x) across click and keyboard events (`Enter`/`Space`).
+  4. Mobile Screen Switching & Floating Card: Verified mobile segmented tablist (`role="tablist"`) toggles between `activeView === 'list'` and `activeView === 'map'`, updating `data-active-view`, `aria-selected`, and mobile visibility classes (`is-visible`, `is-hidden-mobile`). Verified selecting a pin in mobile map view renders the floating bottom summary card (`data-testid="mobile-floating-summary"`). Verified dismiss button closes summary card. Verified clicking "View in list" switches active view to `'list'` and triggers `scrollIntoView` for that branch card.
+  5. Invariants Verification:
+     - Invariant 7: Verified when route status is `unavailable` or `route` is undefined, BDT base price and straight-line distance remain visible and preserved, while rendering explicit fallback text `Road estimate unavailable`.
+     - Invariant 8: Verified map-list parity invariant guarantees exact 1:1 parity between pins and cards across empty collections (N=0 renders 0 pins and empty state), single-item collections (N=1), and multi-item collections (N=8).
+  6. Responsive & Touch Target Guidelines: Verified SVG pins provide minimum 44px hit circles (`r="22"`, `pointerEvents="all"`). Verified stylesheet rules in `mapUi.css` enforce minimum 44px targets for segmented tab controls, zoom buttons (44x44px), card select buttons, and mobile floating summary buttons. Verified mobile responsive CSS rules for screen widths up to 768px.
+- Enhanced components and types to support interaction requirements:
+  - Added BEM modifier classes `map-pin--selected`, `map-pin--hovered` to `DhakaMap.tsx` and `branch-card--selected`, `branch-card--hovered` to `BranchResultCard.tsx` and `mapUi.css`.
+  - Added interaction source propagation (`'map'` | `'list'`) to `onSelectBranch` callback in `SynchronizedDiscoveryView.tsx` and `types.ts`.
+  - Added `data-active-view` attribute to `SynchronizedDiscoveryView.tsx`.
+  - Added explicit `onKeyDown` handlers (`Enter`, `Space`) to zoom and reset buttons in `DhakaMap.tsx`.
+  - Registered `Element`, `SVGElement`, and `SVGGElement` on `globalThis` in `setupDom.ts`.
+- Verification results:
+  - `bun test`: 222 passed, 0 failed across 11 test files in 2.53s.
+  - `bun check` (`tsc --noEmit`): 0 type errors.
+  - `bun lint` (`oxlint . --deny-warnings`): 0 warnings, 0 errors across 48 files.
+  - `bun run build`: Client and SSR production bundles built cleanly.
+
+### Synchronized map and list view (2026-10-15 20:28:00 +06:00)
+
+- Defined discovery UI domain types in `src/features/map/ui/types.ts`: `DiscoveryBranchItem`, `MobileViewMode`, `InteractionSource`, `DhakaMapProps`, `BranchResultCardProps`, `BranchListProps`, and `SynchronizedDiscoveryViewProps`.
+- Implemented Web Mercator projection and dynamic bounding box computation in `src/features/map/ui/projection.ts` with degenerate bounds expansion and aspect-ratio preservation.
+- Implemented accessible interactive Dhaka SVG map in `src/features/map/ui/DhakaMap.tsx` with Dhaka water bodies (Buriganga, Turag, Hatirjheel), district orientation labels, search center and radius guide indicators, interactive pins with 44px hit targets, zoom/reset controls, and active branch tooltips.
+- Implemented diagnostic branch card in `src/features/map/ui/BranchResultCard.tsx` with formatted BDT base prices, verification badges, explicit straight-line distance labelling, and fault-tolerant road travel estimates.
+- Implemented branch results list in `src/features/map/ui/BranchList.tsx` with branch count, empty state, and map-driven smooth scroll-into-view.
+- Implemented composite synchronized view in `src/features/map/ui/SynchronizedDiscoveryView.tsx` with desktop split layout, mobile segmented view toggle, mobile floating summary card, polite live region announcements (`aria-live="polite"`), and invariant enforcement guaranteeing identical filtered branch sets across map and list.
+- Styled components in `src/features/map/ui/mapUi.css` following UI color tokens (`--bg-base`, `--bg-surface`, `--text-primary`, `--text-muted`, `--accent-primary`, `--border-default`) and responsive mobile layout.
+- Re-exported UI components and types in `src/features/map/ui/index.ts` and `src/features/map/index.ts`.
+- Added automated unit test suites in `src/features/map/ui/__tests__/` (26 tests across `projection.test.ts` and `mapUiComponents.test.tsx`), bringing repo test coverage to 196 passing tests.
+- Verification results:
+  - `bun test`: 196 passed, 0 failed across 10 test files.
+  - `bun run typecheck` (`bun check` / `tsc --noEmit`): 0 type errors.
+  - `bun run lint` (`oxlint . --deny-warnings`): 0 warnings, 0 errors across 47 files.
+  - `bun run build`: Client and SSR builds completed cleanly.
 
 ### Search discovery UI comprehensive test suite (2026-10-15 19:48:00 +06:00)
 

@@ -4,10 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 18:15:00 +06:00`.
+Last updated: `2026-10-15 18:55:00 +06:00`.
 
 ## Current phase
 
+Fault-tolerant road distance and travel time mapping integration verified in `src/integrations/mapping/`.
 Straight-line radius filtering engine implemented in `src/features/map/`.
 Diagnostic search and alias resolution engine operational in `src/features/search/`.
 Static landing page and client routing remain operational.
@@ -32,6 +33,15 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Fault-tolerant road distance and travel time integration (2026-10-15 18:55:00 +06:00)
+
+- Defined domain contracts in `src/integrations/mapping/types.ts`: `RoutingAdapter`, `RouteResult` (`RouteAvailableResult` and `RouteUnavailableResult`), `RoutableBranch`, `EnrichedBranch<T>`, and `RouteUnavailableReason`.
+- Implemented OSRM public routing adapter in `src/integrations/mapping/osrmAdapter.ts` using OpenStreetMap automobile driving service with `{longitude},{latitude}` coordinate parameter ordering, converting meters to kilometers and seconds to minutes.
+- Implemented offline fallback routing adapter and exception-trapping wrapper in `src/integrations/mapping/fallback.ts` returning typed unavailable statuses (`timeout`, `rate_limit`, `network_error`, `upstream_error`, `invalid_coordinates`, `no_route`, `aborted`, `offline`).
+- Implemented concurrency-controlled branch routing and enrichment in `src/integrations/mapping/branchRouting.ts`, guaranteeing that branch records, base prices, verification metadata, and straight-line distances remain fully preserved when routing requests fail.
+- Implemented automated test suites in `src/integrations/mapping/__tests__/` (45 unit and integration tests across `osrmAdapter.test.ts` and `faultToleranceAndPricing.test.ts`), verifying failure modes, metric separation, landmark routes, edge cases, and price preservation invariants.
+- Passed repository quality checks: `bun test` (136/136 tests passed across 6 test files), `bun run lint` (0 warnings, 0 errors across 28 files), `bun check` (0 type errors), and `bun run build` (client and SSR builds completed).
 
 ### Straight-line radius filtering engine (2026-10-15 18:15:00 +06:00)
 

@@ -10,7 +10,7 @@ import { computeAutoBounds, createMapProjector, type MapProjector } from './proj
 import type { DhakaMapProps, DiscoveryBranchItem } from './types';
 
 /**
- * Verified Dhaka geographic water polylines for spatial orientation.
+ * Illustrative water polylines for the Dhaka location schematic.
  */
 const BURIGANGA_RIVER: Coordinates[] = [
   { latitude: 23.702, longitude: 90.350 },
@@ -69,6 +69,7 @@ function coordsToPath(projector: MapProjector, coords: Coordinates[]): string {
 
 export const DhakaMap: React.FC<DhakaMapProps> = ({
   branches,
+  radiusKm,
   selectedBranchId,
   hoveredBranchId,
   centerCoordinates,
@@ -117,14 +118,13 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
   }, [centerCoordinates, projector]);
 
   const radiusCirclePx = useMemo(() => {
-    if (!centerCoordinates) return 0;
-    // Approximate 3 km radius in pixels for reference guide
+    if (!centerCoordinates || radiusKm === undefined || !Number.isFinite(radiusKm) || radiusKm <= 0) return 0;
     const offsetPoint = projector.project({
-      latitude: centerCoordinates.latitude + 0.027,
+      latitude: centerCoordinates.latitude + (radiusKm / 6371) * (180 / Math.PI),
       longitude: centerCoordinates.longitude,
     });
     return Math.abs(offsetPoint.y - (centerPoint?.y ?? 0));
-  }, [centerCoordinates, projector, centerPoint]);
+  }, [centerCoordinates, radiusKm, projector, centerPoint]);
 
   // Find active branch for tooltip display
   const activeBranch = useMemo<DiscoveryBranchItem | null>(() => {
@@ -145,12 +145,13 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
       tabIndex={0}
       className={`medimap-dhaka-map-section ${className}`}
     >
+      <p>Location schematic. Geographic features are illustrative.</p>
       <div className="medimap-map-viewport-wrapper">
         <svg
           viewBox={viewBox}
           className="medimap-dhaka-svg"
-          role="img"
-          aria-label="Interactive Dhaka map showing diagnostic branch locations"
+          role="group"
+          aria-label="Dhaka location schematic showing diagnostic branch locations"
           preserveAspectRatio="xMidYMid meet"
         >
           {/* Map canvas background */}
@@ -280,7 +281,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   role="button"
                   tabIndex={0}
                   data-testid={`map-pin-${branch.id}`}
-                  aria-label={`${branch.providerName} - ${branch.branchName}. BDT ${branch.basePriceBdt}. ${branch.straightLineDistanceKm.toFixed(1)} km straight-line.`}
+                  aria-label={`${branch.providerName} - ${branch.branchName}. ${branch.basePriceBdt === null ? 'Price currently unavailable' : `BDT ${branch.basePriceBdt}`}. ${branch.straightLineDistanceKm.toFixed(1)} km straight-line.`}
                   aria-pressed={isSelected}
                   aria-expanded={isSelected}
                   onClick={() => onSelectBranch?.(branch.id)}
@@ -406,7 +407,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 fontSize="9"
                 fontWeight="700"
               >
-                BDT {activeBranch.basePriceBdt.toLocaleString('en-US')}
+                {activeBranch.basePriceBdt === null ? 'Price unavailable' : `BDT ${activeBranch.basePriceBdt.toLocaleString('en-US')}`}
               </text>
             </g>
           )}

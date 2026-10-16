@@ -7,6 +7,7 @@ import { DHAKA_LANDMARKS } from '../../../map/landmarks';
 import { BranchResultCard } from '../../../map/ui/BranchResultCard';
 import type { DiscoveryBranchItem } from '../../../map/ui/types';
 import { Route, type DiscoveryRouteSearchParams } from '../../../../routes/discovery';
+import { validateDiscoverySearch } from '../../discoverySearch';
 import { DiscoveryView, type DiscoveryViewProps } from '../DiscoveryView';
 import { win } from './setupDom';
 
@@ -136,6 +137,20 @@ function DiscoveryTestHarness({
 }
 
 describe('Discovery End-to-End User Flow Integration Test Suite', () => {
+  it('rejects malformed URL numbers, invalid coordinate pairs, and out-of-range radii', () => {
+    const validate = validateDiscoverySearch;
+    assert.ok(typeof validate === 'function');
+    for (const radius of ['3garbage', '', Infinity, NaN, 0.01, 101]) {
+      assert.equal(validate({ radius }).radius, 3);
+    }
+    for (const params of [{ lat: 91, lng: 90 }, { lat: 23, lng: 181 }, { lat: 23 }, { lat: '23junk', lng: 90 }]) {
+      const parsed = validate(params);
+      assert.equal(parsed.lat, undefined);
+      assert.equal(parsed.lng, undefined);
+    }
+    assert.equal(validate({ radius: '0.1' }).radius, 0.1);
+    assert.equal(validate({ radius: '100' }).radius, 100);
+  });
   beforeEach(() => {
     jest.useFakeTimers();
     win.document.body.innerHTML = '';
@@ -816,7 +831,7 @@ describe('Discovery End-to-End User Flow Integration Test Suite', () => {
         // Verification badge is always present
         const verifyBadge = card.querySelector('.medimap-verification-badge');
         assert.ok(verifyBadge);
-        assert.match(verifyBadge.textContent ?? '', /Verified:\s*\d{4}-\d{2}-\d{2}/);
+        assert.equal(verifyBadge.textContent, 'Sample price');
       }
     });
 

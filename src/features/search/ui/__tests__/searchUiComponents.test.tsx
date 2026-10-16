@@ -218,9 +218,9 @@ describe('Search Discovery UI Components', () => {
 
       assert.match(html, /Custom straight-line distance \(km\):/);
       assert.match(html, /value="12"/);
-      assert.match(html, /min="0.5"/);
-      assert.match(html, /max="50"/);
-      assert.match(html, /step="0.5"/);
+      assert.match(html, /min="0.1"/);
+      assert.match(html, /max="100"/);
+      assert.match(html, /step="any"/);
     });
   });
 

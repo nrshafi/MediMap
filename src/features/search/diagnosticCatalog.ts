@@ -22,7 +22,6 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
       { alias: 'Hemogram', language: 'en' },
       { alias: 'সিবিসি', language: 'bn', isAcronym: true },
       { alias: 'কমপ্লিট ব্লাড কাউন্ট', language: 'bn' },
-      { alias: 'রক্ত পরীক্ষা', language: 'bn' },
     ],
   },
   {
@@ -49,7 +48,6 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     aliases: [
       { alias: 'CT Chest', language: 'en' },
       { alias: 'CT Scan Chest', language: 'en' },
-      { alias: 'HRCT Chest', language: 'en' },
       { alias: 'Computed Tomography Chest', language: 'en' },
       { alias: 'Chest CT', language: 'en' },
       { alias: 'সিটি চেস্ট', language: 'bn' },
@@ -119,7 +117,6 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
       { alias: 'NS1 Antigen', language: 'en' },
       { alias: 'ডেঙ্গু এনএস১', language: 'bn' },
       { alias: 'ডেঙ্গু অ্যান্টিজেন', language: 'bn' },
-      { alias: 'ডেঙ্গু পরীক্ষা', language: 'bn' },
     ],
   },
   {
@@ -144,11 +141,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
       { alias: 'Serum Creatinine', language: 'en' },
       { alias: 'Creatinine', language: 'en' },
       { alias: 'S Creatinine', language: 'en' },
-      { alias: 'Kidney Function Test', language: 'en' },
-      { alias: 'KFT', language: 'en', isAcronym: true },
       { alias: 'ক্রিয়েটিনিন', language: 'bn' },
       { alias: 'সিরাম ক্রিয়েটিনিন', language: 'bn' },
-      { alias: 'কিডনি পরীক্ষা', language: 'bn' },
     ],
   },
   {
@@ -204,9 +198,7 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     aliases: [
       { alias: 'TSH', language: 'en', isAcronym: true },
       { alias: 'Thyroid Stimulating Hormone', language: 'en' },
-      { alias: 'Thyroid Profile', language: 'en' },
       { alias: 'টিএসএইচ', language: 'bn', isAcronym: true },
-      { alias: 'থাইরয়েড পরীক্ষা', language: 'bn' },
     ],
   },
   {
@@ -220,7 +212,6 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
       { alias: 'Electrocardiogram', language: 'en' },
       { alias: 'ইসিজি', language: 'bn', isAcronym: true },
       { alias: 'ইলেক্ট্রোকার্ডিওগ্রাম', language: 'bn' },
-      { alias: 'হার্ট পরীক্ষা', language: 'bn' },
     ],
   },
   {
@@ -233,7 +224,6 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
       { alias: 'Echocardiogram', language: 'en' },
       { alias: 'Echo', language: 'en' },
       { alias: '2D Echo', language: 'en' },
-      { alias: 'Color Doppler Echo', language: 'en' },
       { alias: 'ইকো', language: 'bn' },
       { alias: 'ইকোকার্ডিওগ্রাফি', language: 'bn' },
     ],
@@ -275,10 +265,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     aliases: [
       { alias: 'MRI Lumbar Spine', language: 'en' },
       { alias: 'MRI L/S Spine', language: 'en' },
-      { alias: 'MRI Spine', language: 'en' },
       { alias: 'Lumbar Spine MRI', language: 'en' },
       { alias: 'এমআরআই লাম্বার স্পাইন', language: 'bn' },
-      { alias: 'মেরুদণ্ডের এমআরআই', language: 'bn' },
     ],
   },
   {

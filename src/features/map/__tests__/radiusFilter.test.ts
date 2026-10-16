@@ -353,6 +353,10 @@ describe('Radius Input Parsing & Validation', () => {
   });
 
   it('rejects invalid structured objects and non-numeric inputs', () => {
+    for (const type of ['unsupported', undefined, null, 1]) {
+      assert.equal(parseRadiusFilterInput({ type, radiusKm: 3 }).valid, false);
+    }
+
     // Non-numeric types
     assert.equal(parseRadiusFilterInput(null).valid, false);
     assert.equal(parseRadiusFilterInput(undefined).valid, false);
@@ -404,6 +408,35 @@ describe('Radius Input Parsing & Validation', () => {
 });
 
 describe('Branch Radius Filtering Engine', () => {
+  it('rejects invalid centers, radii, and result limits', () => {
+    const center = DHAKA_LANDMARKS.shahbagh.coordinates;
+    for (const invalidCenter of [
+      { latitude: 91, longitude: 90 },
+      { latitude: Number.NaN, longitude: 90 },
+    ]) {
+      assert.throws(() => filterBranchesByRadius([], { center: invalidCenter, maxRadiusKm: 3 }), RangeError);
+    }
+    for (const maxRadiusKm of [0, -1, 0.05, 101, Infinity, Number.NaN]) {
+      assert.throws(() => filterBranchesByRadius([], { center, maxRadiusKm }), RangeError);
+    }
+    for (const limit of [-1, 0.5, Infinity, Number.NaN]) {
+      assert.throws(() => filterBranchesByRadius([], { center, maxRadiusKm: 3, limit }), RangeError);
+    }
+  });
+
+  it('skips invalid branch coordinates without affecting valid branches', () => {
+    const center = DHAKA_LANDMARKS.shahbagh.coordinates;
+    const validBranch = { id: 'valid', name: 'Valid', coordinates: center };
+    const candidates = [
+      { id: 'invalid-range', name: 'Invalid', coordinates: { latitude: 100, longitude: 90 } },
+      { id: 'invalid-finite', name: 'Invalid', coordinates: { latitude: Number.NaN, longitude: 90 } },
+      validBranch,
+    ];
+    const results = filterBranchesByRadius(candidates, { center, maxRadiusKm: 3 });
+    assert.deepEqual(results.map((result) => result.branch), [validBranch]);
+    assert.equal(results[0].distanceKm, 0);
+  });
+
   const branches: readonly LocatableBranch[] = [
     {
       id: 'b-square',
@@ -620,20 +653,12 @@ describe('Branch Radius Filtering Engine', () => {
     assert.equal(limit2[0]?.branch.id, 'b-bsmmu');
     assert.equal(limit2[1]?.branch.id, 'b-dmch');
 
-    // Limit = 0 or negative: Should return all matching branches
     const limit0 = filterBranchesByRadius(branches, {
       center: shahbagh,
       maxRadiusKm: 5,
       limit: 0,
     });
-    assert.equal(limit0.length, 4);
-
-    const limitNeg = filterBranchesByRadius(branches, {
-      center: shahbagh,
-      maxRadiusKm: 5,
-      limit: -5,
-    });
-    assert.equal(limitNeg.length, 4);
+    assert.equal(limit0.length, 0);
 
     // Limit larger than matching branches count
     const limitLarge = filterBranchesByRadius(branches, {
@@ -666,9 +691,17 @@ describe('Branch Radius Filtering Engine', () => {
   it('applies boundingBox pre-filter to drop distant points regardless of maxRadiusKm', () => {
     const farmgate = DHAKA_LANDMARKS.farmgate.coordinates;
 
-    const results = filterBranchesByRadius(branches, {
+    const outsideCoreBranch = {
+      id: 'outside-core', name: 'Outside core',
+      coordinates: { latitude: 24, longitude: 90.4 },
+    };
+    assert.equal(filterBranchesByRadius([outsideCoreBranch], {
+      center: farmgate, maxRadiusKm: 100,
+    }).length, 1);
+
+    const results = filterBranchesByRadius([...branches, outsideCoreBranch], {
       center: farmgate,
-      maxRadiusKm: 500, // Very large radius that would encompass Chittagong
+      maxRadiusKm: 100,
       boundingBox: DHAKA_BOUNDING_BOXES.core,
     });
 
@@ -682,5 +715,6 @@ describe('Branch Radius Filtering Engine', () => {
 
     // Chittagong is outside core Dhaka bounding box and must be dropped
     assert.ok(!branchIds.includes('b-chittagong'));
+    assert.ok(!branchIds.includes('outside-core'));
   });
 });

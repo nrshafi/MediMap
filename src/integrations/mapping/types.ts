@@ -13,6 +13,7 @@ export type RouteResultStatus = 'available' | 'unavailable';
  * Failure reasons when a road route calculation is unavailable.
  */
 export type RouteUnavailableReason =
+  | 'not_configured'
   | 'timeout'
   | 'network_error'
   | 'rate_limit'

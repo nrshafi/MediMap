@@ -10,6 +10,47 @@ import {
 } from '../discoveryData';
 
 describe('Discovery Data & Query Filter Engine', () => {
+  it('does not choose a service for ambiguous, unknown, blank, or typo queries', () => {
+    for (const queryText of ['CT', 'USG', 'not a diagnostic service', '', 'lipidd']) {
+      const result = filterBranchesByQueryAndLocation({ queryText });
+      assert.equal(result.canonicalService, null, queryText);
+      assert.deepEqual(result.branches, [], queryText);
+    }
+    assert.equal(filterBranchesByQueryAndLocation({ serviceId: 'missing' }).canonicalService, null);
+    assert.equal(filterBranchesByQueryAndLocation({ catalog: [] }).canonicalService, null);
+  });
+
+  it('preserves unknown prices, source evidence, and verification dates', () => {
+    const branch = MOCK_BRANCH_LISTINGS[0];
+    const result = filterBranchesByQueryAndLocation({
+      center: branch.coordinates,
+      branches: [{
+        ...branch,
+        isSample: false,
+        servicePrices: [{
+          serviceId: DEFAULT_DISCOVERY_SERVICE_ID,
+          basePriceBdt: null,
+          priceSource: 'Provider price list',
+          verificationStatus: 'unverified',
+          verifiedAt: null,
+        }],
+      }],
+    });
+    assert.equal(result.branches.length, 1);
+    assert.equal(result.branches[0].basePriceBdt, null);
+    assert.equal(result.branches[0].priceVerifiedAt, null);
+    assert.equal(result.branches[0].priceSource, 'Provider price list');
+    assert.equal(result.branches[0].isVerified, false);
+    assert.equal(result.branches[0].route?.status, 'unavailable');
+  });
+
+  it('uses the shared radius bounds for direct discovery requests', () => {
+    for (const radiusKm of [NaN, Infinity, -1, 0, 0.01, 101]) {
+      assert.equal(filterBranchesByQueryAndLocation({ radiusKm }).radiusKm, 3);
+    }
+    assert.equal(filterBranchesByQueryAndLocation({ radiusKm: 0.1 }).radiusKm, 0.1);
+    assert.equal(filterBranchesByQueryAndLocation({ radiusKm: 100 }).radiusKm, 100);
+  });
   describe('MOCK_BRANCH_LISTINGS domain data', () => {
     it('contains at least 8 major Dhaka healthcare hospital branches', () => {
       assert.ok(MOCK_BRANCH_LISTINGS.length >= 8);
@@ -41,10 +82,11 @@ describe('Discovery Data & Query Filter Engine', () => {
         assert.ok(branch.servicePrices.length >= 5);
         for (const price of branch.servicePrices) {
           assert.ok(price.serviceId.length > 0);
-          assert.ok(price.basePriceBdt > 0, `Base price must be positive for ${branch.id} ${price.serviceId}`);
-          assert.equal(price.verificationStatus, 'verified');
-          assert.match(price.verifiedAt, /^\d{4}-\d{2}-\d{2}$/);
-          assert.ok(price.priceSource.length > 0);
+          assert.ok(price.basePriceBdt !== null && price.basePriceBdt > 0);
+          assert.equal(branch.isSample, true);
+          assert.equal(price.verificationStatus, 'unverified');
+          assert.equal(price.verifiedAt, null);
+          assert.equal(price.priceSource, null);
         }
       }
     });
@@ -63,7 +105,7 @@ describe('Discovery Data & Query Filter Engine', () => {
     it('defaults to Complete Blood Count (CBC) and Shahbagh center with 3 km radius', () => {
       const result = filterBranchesByQueryAndLocation();
 
-      assert.equal(result.canonicalService.id, DEFAULT_DISCOVERY_SERVICE_ID);
+      assert.equal(result.canonicalService?.id, DEFAULT_DISCOVERY_SERVICE_ID);
       assert.equal(result.center.latitude, DEFAULT_DISCOVERY_CENTER.latitude);
       assert.equal(result.center.longitude, DEFAULT_DISCOVERY_CENTER.longitude);
       assert.equal(result.radiusKm, 3);
@@ -71,14 +113,15 @@ describe('Discovery Data & Query Filter Engine', () => {
 
       // Invariants verification on all returned branch items
       for (const branch of result.branches) {
-        assert.ok(branch.basePriceBdt > 0);
-        assert.equal(branch.isVerified, true);
-        assert.match(branch.priceVerifiedAt, /^\d{4}-\d{2}-\d{2}$/);
+        assert.ok(branch.basePriceBdt !== null && branch.basePriceBdt > 0);
+        assert.equal(branch.isVerified, false);
+        assert.equal(branch.priceVerifiedAt, null);
+        assert.equal(branch.priceSource, null);
         assert.ok(branch.straightLineDistanceKm <= 3.0);
         assert.ok(branch.route !== undefined);
-        assert.equal(branch.route?.status, 'available');
-        assert.ok(branch.roadDistanceKm !== undefined && branch.roadDistanceKm > 0);
-        assert.ok(branch.travelDurationMinutes !== undefined && branch.travelDurationMinutes > 0);
+        assert.equal(branch.route?.status, 'unavailable');
+        assert.equal(branch.roadDistanceKm, undefined);
+        assert.equal(branch.travelDurationMinutes, undefined);
       }
     });
 
@@ -87,19 +130,19 @@ describe('Discovery Data & Query Filter Engine', () => {
         queryText: 'Lipid Profile',
         radiusKm: 5,
       });
-      assert.equal(lipidResult.canonicalService.id, 'lipid-profile');
+      assert.equal(lipidResult.canonicalService?.id, 'lipid-profile');
 
       const xrayResult = filterBranchesByQueryAndLocation({
         queryText: 'Chest X-Ray',
         radiusKm: 5,
       });
-      assert.equal(xrayResult.canonicalService.id, 'xray-chest');
+      assert.equal(xrayResult.canonicalService?.id, 'xray-chest');
 
       const bnResult = filterBranchesByQueryAndLocation({
         queryText: 'সিবিসি',
         radiusKm: 5,
       });
-      assert.equal(bnResult.canonicalService.id, 'complete-blood-count');
+      assert.equal(bnResult.canonicalService?.id, 'complete-blood-count');
     });
 
     it('resolves directly by serviceId when provided', () => {
@@ -107,8 +150,8 @@ describe('Discovery Data & Query Filter Engine', () => {
         serviceId: 'mri-brain',
         radiusKm: 5,
       });
-      assert.equal(result.canonicalService.id, 'mri-brain');
-      assert.equal(result.canonicalService.name, 'MRI of Brain');
+      assert.equal(result.canonicalService?.id, 'mri-brain');
+      assert.equal(result.canonicalService?.name, 'MRI of Brain');
     });
 
     it('applies spatial straight-line radius filtering correctly from Gulshan-2', () => {
@@ -137,7 +180,7 @@ describe('Discovery Data & Query Filter Engine', () => {
       });
 
       assert.equal(emptyResult.branches.length, 0);
-      assert.equal(emptyResult.canonicalService.id, 'complete-blood-count');
+      assert.equal(emptyResult.canonicalService?.id, 'complete-blood-count');
     });
 
     it('sorts branches in ascending order of straight-line distance', () => {

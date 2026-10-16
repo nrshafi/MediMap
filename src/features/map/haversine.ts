@@ -2,6 +2,7 @@
  * Haversine formula calculation for straight-line spherical distance on Earth.
  */
 
+import { isValidCoordinate } from './coordinates';
 import type { Coordinates } from './types';
 
 /**
@@ -31,6 +32,10 @@ export function calculateHaversineDistanceKm(
   pointA: Coordinates,
   pointB: Coordinates,
 ): number {
+  if (!isValidCoordinate(pointA) || !isValidCoordinate(pointB)) {
+    throw new RangeError('Distance requires valid WGS 84 coordinates.');
+  }
+
   if (
     pointA.latitude === pointB.latitude &&
     pointA.longitude === pointB.longitude
@@ -69,7 +74,7 @@ export function roundDistanceKm(
   decimalPlaces = 2,
 ): number {
   if (!Number.isFinite(distanceKm)) {
-    return 0;
+    throw new RangeError('Distance must be finite.');
   }
   const factor = 10 ** decimalPlaces;
   const rounded = Math.round(distanceKm * factor) / factor;

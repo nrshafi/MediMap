@@ -269,6 +269,20 @@ describe('Numerical Stability, Clamping, and Extreme Coordinates', () => {
     assert.equal(roundDistanceKm(distEquator, 2), roundDistanceKm(oneDegreeKm, 2));
   });
 
+  it('rejects invalid coordinate pairs before testing equality', () => {
+    const valid = { latitude: 23.7, longitude: 90.4 };
+    for (const invalid of [
+      { latitude: 91, longitude: 90.4 },
+      { latitude: 23.7, longitude: -181 },
+      { latitude: Infinity, longitude: 90.4 },
+      { latitude: Number.NaN, longitude: 90.4 },
+    ]) {
+      assert.throws(() => calculateHaversineDistanceKm(invalid, invalid), RangeError);
+      assert.throws(() => calculateHaversineDistanceKm(valid, invalid), RangeError);
+      assert.throws(() => calculateHaversineDistanceKm(invalid, valid), RangeError);
+    }
+  });
+
   it('handles distance rounding edge cases and decimal precision with roundDistanceKm', () => {
     // Standard rounding
     assert.equal(roundDistanceKm(2.18945, 2), 2.19);
@@ -281,9 +295,8 @@ describe('Numerical Stability, Clamping, and Extreme Coordinates', () => {
     assert.equal(roundDistanceKm(0, 2), 0);
     assert.equal(roundDistanceKm(-0, 2), 0);
 
-    // Invalid non-finite values return 0
-    assert.equal(roundDistanceKm(Number.NaN, 2), 0);
-    assert.equal(roundDistanceKm(Number.POSITIVE_INFINITY, 2), 0);
-    assert.equal(roundDistanceKm(Number.NEGATIVE_INFINITY, 2), 0);
+    assert.throws(() => roundDistanceKm(Number.NaN, 2), RangeError);
+    assert.throws(() => roundDistanceKm(Number.POSITIVE_INFINITY, 2), RangeError);
+    assert.throws(() => roundDistanceKm(Number.NEGATIVE_INFINITY, 2), RangeError);
   });
 });

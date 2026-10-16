@@ -104,6 +104,74 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
   });
 
   describe('1. SearchInput and User Input Handling', () => {
+    it('keeps the suggestion dropdown closed for an ambiguous query on ArrowDown', () => {
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CT" debounceMs={50} />);
+      const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
+      act(() => jest.advanceTimersByTime(50));
+      assert.ok(container.querySelector('.medimap-ambiguity-panel'));
+      pressKey(input, 'ArrowDown');
+      assert.equal(input.getAttribute('aria-expanded'), 'false');
+      assert.equal(container.querySelector('[role="listbox"]'), null);
+    });
+
+    it('keeps dismissed suggestions closed after the debounce interval', () => {
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
+      act(() => jest.advanceTimersByTime(50));
+      assert.equal(input.getAttribute('aria-expanded'), 'true');
+      pressKey(input, 'Escape');
+      act(() => jest.advanceTimersByTime(500));
+      assert.equal(input.getAttribute('aria-expanded'), 'false');
+    });
+
+    it('clears old suggestions immediately while the next query is pending', () => {
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
+      act(() => jest.advanceTimersByTime(50));
+      assert.equal(input.getAttribute('aria-expanded'), 'true');
+      changeInputValue(input, 'MRI');
+      assert.equal(input.getAttribute('aria-expanded'), 'false');
+      assert.equal(container.querySelector('[role="option"]'), null);
+    });
+
+    it('keeps selected suggestions closed after the selected name changes the input', () => {
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
+      act(() => jest.advanceTimersByTime(50));
+      pressKey(input, 'Enter');
+      act(() => jest.advanceTimersByTime(500));
+      assert.equal(input.getAttribute('aria-expanded'), 'false');
+      assert.equal(input.value, 'Complete Blood Count');
+    });
+
+    it('clears selected service when the external query changes', () => {
+      const { container, root } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
+      act(() => jest.advanceTimersByTime(50));
+      pressKey(input, 'Enter');
+      assert.ok(container.querySelector('.medimap-selected-service-banner'));
+      act(() => root.render(<DiagnosticSearchBox initialQuery="Lipid Profile" debounceMs={50} />));
+      assert.equal(input.value, 'Lipid Profile');
+      assert.equal(container.querySelector('.medimap-selected-service-banner'), null);
+    });
+
+    it('requires explicit typo selection before a radius change selects a service', () => {
+      const selections: SearchSelection[] = [];
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="Lipid Profle" onSelectService={(selection) => selections.push(selection)} />);
+      const radius = container.querySelector('input[type="radio"][value="5"]') as HTMLInputElement;
+      clickElement(radius);
+      assert.equal(selections.length, 0);
+    });
+
+    it('synchronizes radius controls when an external action changes the radius', () => {
+      const { container, root } = renderComponent(<RadiusSelector value={0.2} onChange={() => {}} />);
+      act(() => root.render(<RadiusSelector value={5} onChange={() => {}} />));
+      assert.equal((container.querySelector('input[value="5"]') as HTMLInputElement).checked, true);
+      assert.equal(container.querySelector('.medimap-custom-radius-input'), null);
+      act(() => root.render(<RadiusSelector value={0.1} onChange={() => {}} />));
+      assert.equal((container.querySelector('.medimap-custom-radius-input') as HTMLInputElement).value, '0.1');
+    });
+
     it('verifies debounce timing behavior: keystrokes within debounce interval do not trigger premature resolution', () => {
       const debouncedQueries: string[] = [];
 
@@ -948,7 +1016,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(currentRadius, 3, 'onChange must be called with 3');
     });
 
-    it('selecting Custom reveals numeric input and validates distance bounds (0.5 km to 50 km)', () => {
+    it('selecting Custom reveals numeric input and validates distance bounds (0.1 km to 100 km)', () => {
       let emittedRadius = 3;
       function CustomRadiusWrapper() {
         const [rad, setRad] = useState(3);
@@ -976,9 +1044,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       );
       assert.ok(numInput, 'Custom numeric input must be rendered');
       assert.equal(numInput!.getAttribute('type'), 'number');
-      assert.equal(numInput!.getAttribute('min'), '0.5');
-      assert.equal(numInput!.getAttribute('max'), '50');
-      assert.equal(numInput!.getAttribute('step'), '0.5');
+      assert.equal(numInput!.getAttribute('min'), '0.1');
+      assert.equal(numInput!.getAttribute('max'), '100');
+      assert.equal(numInput!.getAttribute('step'), 'any');
 
       // Test valid custom distance: 15 km
       changeInputValue(numInput!, '15');
@@ -988,15 +1056,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
         null
       );
 
-      // Test below minimum bound: 0.2 km (< 0.5)
-      changeInputValue(numInput!, '0.2');
+      changeInputValue(numInput!, '0.05');
       const errorBelow = container.querySelector(
         '.medimap-radius-error-message'
       );
       assert.ok(errorBelow);
       assert.match(
         errorBelow!.textContent!,
-        /Distance must be between 0.5 km and 50 km/
+        /Distance must be between 0.1 km and 100 km/
       );
       assert.equal(numInput!.getAttribute('aria-invalid'), 'true');
       assert.equal(
@@ -1005,15 +1072,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
         'Invalid radius should not update emitted radius'
       );
 
-      // Test above maximum bound: 65 km (> 50)
-      changeInputValue(numInput!, '65');
+      changeInputValue(numInput!, '101');
       const errorAbove = container.querySelector(
         '.medimap-radius-error-message'
       );
       assert.ok(errorAbove);
       assert.match(
         errorAbove!.textContent!,
-        /Distance must be between 0.5 km and 50 km/
+        /Distance must be between 0.1 km and 100 km/
       );
 
       // Test empty string rejection

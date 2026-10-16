@@ -3,7 +3,7 @@
  * desktop split-view layout, and mobile segmented toggling.
  */
 
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { BranchList } from './BranchList';
 import { DhakaMap } from './DhakaMap';
 import type {
@@ -15,6 +15,7 @@ import type {
 
 export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps> = ({
   branches,
+  radiusKm,
   centerCoordinates = null,
   selectedBranchId: controlledSelectedId,
   onSelectBranch,
@@ -22,10 +23,19 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
   className = '',
 }) => {
   const liveRegionId = useId();
+  const viewId = useId();
+  const listTabId = `${viewId}-tab-list`;
+  const mapTabId = `${viewId}-tab-map`;
+  const listPanelId = `${viewId}-panel-list`;
+  const mapPanelId = `${viewId}-panel-map`;
 
   // Internal selection state for uncontrolled mode
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
+  const [dismissedBranchId, setDismissedBranchId] = useState<string | null>(null);
   const selectedBranchId = controlledSelectedId !== undefined ? controlledSelectedId : internalSelectedId;
+  useEffect(() => {
+    setDismissedBranchId(null);
+  }, [selectedBranchId]);
 
   // Hover and interaction source states
   const [hoveredBranchId, setHoveredBranchId] = useState<string | null>(null);
@@ -33,6 +43,26 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
 
   // Mobile segmented control view mode
   const [mobileViewMode, setMobileViewMode] = useState<MobileViewMode>(initialViewMode);
+  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    let nextMode: MobileViewMode;
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        nextMode = mobileViewMode === 'list' ? 'map' : 'list';
+        break;
+      case 'Home':
+        nextMode = 'list';
+        break;
+      case 'End':
+        nextMode = 'map';
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    setMobileViewMode(nextMode);
+    document.getElementById(nextMode === 'list' ? listTabId : mapTabId)?.focus();
+  };
 
   // Find currently selected branch
   const selectedBranch = useMemo<DiscoveryBranchItem | null>(() => {
@@ -43,12 +73,14 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
   // Live region announcement string
   const announcementText = useMemo(() => {
     if (!selectedBranch) return '';
-    return `Selected ${selectedBranch.providerName}, ${selectedBranch.branchName}. Base price BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}. ${selectedBranch.straightLineDistanceKm.toFixed(1)} km straight-line distance.`;
+    const price = selectedBranch.basePriceBdt === null ? 'Price currently unavailable' : `Base price BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`;
+    return `Selected ${selectedBranch.providerName}, ${selectedBranch.branchName}. ${price}. ${selectedBranch.straightLineDistanceKm.toFixed(1)} km straight-line distance.`;
   }, [selectedBranch]);
 
   // Handle branch selection from map
   const handleSelectFromMap = useCallback(
     (branchId: string) => {
+      setDismissedBranchId(null);
       setInteractionSource('map');
       if (controlledSelectedId === undefined) {
         setInternalSelectedId(branchId);
@@ -61,6 +93,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
   // Handle branch selection from list
   const handleSelectFromList = useCallback(
     (branchId: string) => {
+      setDismissedBranchId(null);
       setInteractionSource('list');
       if (controlledSelectedId === undefined) {
         setInternalSelectedId(branchId);
@@ -72,10 +105,11 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
 
   // Dismiss floating card on mobile
   const handleDismissFloatingCard = useCallback(() => {
+    setDismissedBranchId(selectedBranchId ?? null);
     if (controlledSelectedId === undefined) {
       setInternalSelectedId(null);
     }
-  }, [controlledSelectedId]);
+  }, [controlledSelectedId, selectedBranchId]);
 
   // Switch to list view and inspect card
   const handleViewInList = useCallback(() => {
@@ -121,9 +155,11 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
         <button
           type="button"
           role="tab"
-          id="tab-view-list"
+          id={listTabId}
           aria-selected={mobileViewMode === 'list'}
-          aria-controls="panel-view-list"
+          aria-controls={listPanelId}
+          tabIndex={mobileViewMode === 'list' ? 0 : -1}
+          onKeyDown={handleTabKeyDown}
           onClick={() => setMobileViewMode('list')}
           className={`medimap-mobile-tab-btn ${
             mobileViewMode === 'list' ? 'is-active' : ''
@@ -146,9 +182,11 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
         <button
           type="button"
           role="tab"
-          id="tab-view-map"
+          id={mapTabId}
           aria-selected={mobileViewMode === 'map'}
-          aria-controls="panel-view-map"
+          aria-controls={mapPanelId}
+          tabIndex={mobileViewMode === 'map' ? 0 : -1}
+          onKeyDown={handleTabKeyDown}
           onClick={() => setMobileViewMode('map')}
           className={`medimap-mobile-tab-btn ${
             mobileViewMode === 'map' ? 'is-active' : ''
@@ -174,9 +212,9 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
       <div className={`medimap-discovery-grid mobile-mode-${mobileViewMode}`}>
         {/* Branch List Panel */}
         <div
-          id="panel-view-list"
+          id={listPanelId}
           role="tabpanel"
-          aria-labelledby="tab-view-list"
+          aria-labelledby={listTabId}
           className={`medimap-discovery-list-col ${
             mobileViewMode === 'list' ? 'is-visible' : 'is-hidden-mobile'
           }`}
@@ -193,15 +231,16 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
 
         {/* Dhaka Map Panel */}
         <div
-          id="panel-view-map"
+          id={mapPanelId}
           role="tabpanel"
-          aria-labelledby="tab-view-map"
+          aria-labelledby={mapTabId}
           className={`medimap-discovery-map-col ${
             mobileViewMode === 'map' ? 'is-visible' : 'is-hidden-mobile'
           }`}
         >
           <div className="medimap-sticky-map-wrapper">
             <DhakaMap
+              radiusKm={radiusKm}
               branches={branches}
               selectedBranchId={selectedBranchId}
               hoveredBranchId={hoveredBranchId}
@@ -211,7 +250,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
             />
 
             {/* Floating Mobile Summary Card when a pin is selected in mobile map mode */}
-            {selectedBranch && (
+            {selectedBranch && selectedBranch.id !== dismissedBranchId && (
               <div
                 className="medimap-floating-summary-card"
                 role="dialog"
@@ -228,7 +267,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
                     </p>
                     <div className="medimap-floating-metrics">
                       <span className="medimap-floating-price">
-                        BDT {selectedBranch.basePriceBdt.toLocaleString('en-US')}
+                        {selectedBranch.basePriceBdt === null ? 'Price currently unavailable' : `BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`}
                       </span>
                       <span className="medimap-floating-dist">
                         {selectedBranch.straightLineDistanceKm.toFixed(1)} km straight-line

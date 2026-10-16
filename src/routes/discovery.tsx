@@ -1,61 +1,24 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { DiscoveryView } from '../features/search';
+import { validateDiscoverySearch, type DiscoveryRouteSearchParams } from '../features/search/discoverySearch';
+export type { DiscoveryRouteSearchParams } from '../features/search/discoverySearch';
 
-/**
- * Validated search query parameters for the discovery route.
- */
-export interface DiscoveryRouteSearchParams {
-  readonly q?: string;
-  readonly query?: string;
-  readonly lat?: number;
-  readonly lng?: number;
-  readonly radius?: number;
-  readonly selectedBranchId?: string;
-}
 
 /**
  * Route definition for /discovery with search query validation and parameter synchronization.
  */
 export const Route = createFileRoute('/discovery')({
-  validateSearch: (search: Record<string, unknown>): DiscoveryRouteSearchParams => {
-    const rawQ = typeof search.q === 'string' ? search.q : undefined;
-    const rawQuery = typeof search.query === 'string' ? search.query : undefined;
-    const q = rawQ ?? rawQuery;
-
-    const parseNumber = (val: unknown): number | undefined => {
-      if (typeof val === 'number' && Number.isFinite(val)) {
-        return val;
-      }
-      if (typeof val === 'string') {
-        const parsed = parseFloat(val);
-        if (Number.isFinite(parsed)) {
-          return parsed;
-        }
-      }
-      return undefined;
-    };
-
-    const lat = parseNumber(search.lat);
-    const lng = parseNumber(search.lng);
-    const parsedRadius = parseNumber(search.radius);
-    const radius = parsedRadius !== undefined && parsedRadius > 0 ? parsedRadius : 3;
-
-    const selectedBranchId =
-      typeof search.selectedBranchId === 'string' && search.selectedBranchId.trim() !== ''
-        ? search.selectedBranchId.trim()
-        : undefined;
-
-    return {
-      q,
-      query: q,
-      lat,
-      lng,
-      radius,
-      selectedBranchId,
-    };
-  },
+  head: () => ({
+    meta: [
+      { title: 'MediMap | Discovery preview' },
+      { name: 'description', content: 'Explore diagnostic service search in Dhaka using sample branch data and sample prices.' },
+      { name: 'robots', content: 'noindex' },
+    ],
+  }),
+  validateSearch: validateDiscoverySearch,
   component: DiscoveryRouteComponent,
 });
+
 
 function DiscoveryRouteComponent() {
   const search = Route.useSearch();

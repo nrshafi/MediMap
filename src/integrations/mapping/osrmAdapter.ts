@@ -109,7 +109,7 @@ function isOsrmSuccessPayload(payload: unknown): payload is OsrmSuccessPayload {
 }
 
 /**
- * OSRM routing adapter connecting to the free-tier OSRM public service.
+ * OSRM routing adapter for explicitly configured routing requests.
  * Handles timeouts, network failures, and coordinate validation with explicit fallbacks.
  */
 export class OsrmAdapter implements RoutingAdapter {
@@ -197,26 +197,35 @@ export class OsrmAdapter implements RoutingAdapter {
           );
         }
 
-        if (response.status === 400) {
+        if (response.status !== 400) {
           return createUnavailableRouteResult(
             origin,
             destination,
-            'invalid_coordinates',
-            'OSRM service rejected coordinates as invalid (HTTP 400).'
+            'upstream_error',
+            `OSRM routing request failed with HTTP ${response.status}.`
           );
         }
+      }
 
+      let rawData: unknown;
+      try {
+        rawData = await response.json();
+      } catch (error: unknown) {
+        if (controller.signal.aborted) {
+          throw error;
+        }
         return createUnavailableRouteResult(
           origin,
           destination,
           'upstream_error',
-          `OSRM routing request failed with HTTP ${response.status}.`
+          'OSRM service returned invalid JSON.'
         );
       }
 
-      const rawData: unknown = await response.json();
-
-      if (isPlainObject(rawData) && rawData.code === 'NoRoute') {
+      if (
+        isPlainObject(rawData) &&
+        (rawData.code === 'NoRoute' || rawData.code === 'NoSegment')
+      ) {
         return createUnavailableRouteResult(
           origin,
           destination,
@@ -225,7 +234,7 @@ export class OsrmAdapter implements RoutingAdapter {
         );
       }
 
-      if (!isOsrmSuccessPayload(rawData)) {
+      if (!response.ok || !isOsrmSuccessPayload(rawData)) {
         return createUnavailableRouteResult(
           origin,
           destination,

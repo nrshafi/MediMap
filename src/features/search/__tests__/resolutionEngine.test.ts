@@ -41,6 +41,18 @@ describe('normalizer', () => {
 });
 
 describe('typoMatcher', () => {
+  it('does not equate broad test categories or different variants with a specific test', () => {
+    for (const query of ['KFT', 'Thyroid Profile', 'HRCT Chest', 'রক্ত পরীক্ষা', 'হার্ট পরীক্ষা']) {
+      const result = resolveDiagnosticQuery(query);
+      assert.ok(result.status !== 'resolved' || result.primaryMatch?.matchType === 'typo_suggestion', query);
+    }
+  });
+
+  it('rejects oversized queries before fuzzy matching', () => {
+    const result = resolveDiagnosticQuery('blood '.repeat(1000));
+    assert.equal(result.status, 'not_found');
+    assert.deepEqual(result.matches, []);
+  });
   it('calculates Damerau-Levenshtein distance with adjacent transposition', () => {
     // Adjacent transposition of 'a' and 'b'
     assert.equal(damerauLevenshteinDistance('ab', 'ba'), 1);

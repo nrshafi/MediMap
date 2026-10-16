@@ -673,10 +673,10 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
       const rootSection = container.querySelector('.medimap-discovery-view')!;
       const tablist = container.querySelector('.medimap-mobile-toggle-bar')!;
-      const listTab = container.querySelector<HTMLButtonElement>('#tab-view-list')!;
-      const mapTab = container.querySelector<HTMLButtonElement>('#tab-view-map')!;
-      const listCol = container.querySelector('#panel-view-list')!;
-      const mapCol = container.querySelector('#panel-view-map')!;
+      const listTab = container.querySelector<HTMLButtonElement>('[role="tab"][id$="-tab-list"]')!;
+      const mapTab = container.querySelector<HTMLButtonElement>('[role="tab"][id$="-tab-map"]')!;
+      const listCol = container.querySelector('[role="tabpanel"][id$="-panel-list"]')!;
+      const mapCol = container.querySelector('[role="tabpanel"][id$="-panel-map"]')!;
 
       // Initial state is list
       assert.equal(rootSection.getAttribute('data-active-view'), 'list');
@@ -803,7 +803,7 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       const rootSection = container.querySelector('.medimap-discovery-view')!;
       assert.equal(rootSection.getAttribute('data-active-view'), 'list');
 
-      const listTab = container.querySelector<HTMLButtonElement>('#tab-view-list')!;
+      const listTab = container.querySelector<HTMLButtonElement>('[role="tab"][id$="-tab-list"]')!;
       assert.equal(listTab.getAttribute('aria-selected'), 'true');
 
       // Should have triggered scrollIntoView on target card

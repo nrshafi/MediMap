@@ -96,6 +96,10 @@ export function checkTypoMatch(query: string, target: string): TypoMatchResult {
     };
   }
 
+  if (Math.abs(query.length - target.length) > 2) {
+    return { isMatch: false, distance: Infinity, similarity: 0 };
+  }
+
   const distance = damerauLevenshteinDistance(query, target);
   const similarity = calculateSimilarity(query, target, distance);
   const referenceLength = Math.max(query.length, target.length);

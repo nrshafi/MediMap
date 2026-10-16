@@ -3,28 +3,13 @@
  */
 
 import type { Coordinates } from '../types';
-import type { RouteResult } from '../../../integrations/mapping/types';
+import type { DiscoveryBranchItem } from '../../search/discoveryTypes';
+export type { DiscoveryBranchItem } from '../../search/discoveryTypes';
 
 /**
  * Diagnostic branch item prepared for discovery view presentation.
  * Retains all price, verification, coordinate, and distance metrics.
  */
-export interface DiscoveryBranchItem {
-  readonly id: string;
-  readonly providerId?: string;
-  readonly providerName: string;
-  readonly branchName: string;
-  readonly address?: string;
-  readonly area: string;
-  readonly coordinates: Coordinates;
-  readonly basePriceBdt: number;
-  readonly priceVerifiedAt: string;
-  readonly isVerified: boolean;
-  readonly straightLineDistanceKm: number;
-  readonly route?: RouteResult;
-  readonly roadDistanceKm?: number;
-  readonly travelDurationMinutes?: number;
-}
 
 /**
  * Mobile view toggle mode between list and map presentations.
@@ -40,6 +25,7 @@ export type InteractionSource = 'map' | 'list' | null;
  * Props for the interactive Dhaka SVG map.
  */
 export interface DhakaMapProps {
+  readonly radiusKm?: number;
   readonly branches: readonly DiscoveryBranchItem[];
   readonly selectedBranchId?: string | null;
   readonly hoveredBranchId?: string | null;
@@ -77,6 +63,7 @@ export interface BranchListProps {
  * Props for the top-level synchronized discovery view.
  */
 export interface SynchronizedDiscoveryViewProps {
+  readonly radiusKm?: number;
   readonly branches: readonly DiscoveryBranchItem[];
   readonly centerCoordinates?: Coordinates | null;
   readonly selectedBranchId?: string | null;

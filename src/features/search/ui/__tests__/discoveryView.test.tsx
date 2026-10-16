@@ -38,6 +38,24 @@ function renderComponent(ui: React.ReactElement): RenderResult {
 }
 
 describe('DiscoveryView Integration & End-to-End Page Flow', () => {
+  it('discloses sample data without fabricated verification or routing metrics', () => {
+    const { container } = renderComponent(<DiscoveryView query="CBC" />);
+    assert.match(container.querySelector('[role="note"]')?.textContent ?? '', /sample data/);
+    for (const card of container.querySelectorAll('.medimap-branch-card')) {
+      assert.match(card.textContent ?? '', /Sample price/);
+      assert.match(card.textContent ?? '', /Road estimate unavailable/);
+      assert.doesNotMatch(card.textContent ?? '', /Verified:/);
+    }
+  });
+
+  it('withholds branch results for ambiguous, unknown, blank, and typo queries', () => {
+    for (const query of ['CT', 'USG', 'unknown service', '', 'lipidd']) {
+      const render = renderComponent(<DiscoveryView query={query} />);
+      assert.equal(render.container.querySelectorAll('.medimap-branch-card').length, 0, query);
+      assert.equal(render.container.querySelectorAll('[data-testid^="map-pin-"]').length, 0, query);
+      render.unmount();
+    }
+  });
   beforeEach(() => {
     win.document.body.innerHTML = '';
   });
@@ -202,7 +220,7 @@ describe('DiscoveryView Integration & End-to-End Page Flow', () => {
       assert.match(card.textContent ?? '', /BDT\s+[0-9,]+/);
 
       // 2. Verified status badge
-      assert.match(card.textContent ?? '', /Verified/);
+      assert.match(card.textContent ?? '', /Sample price/);
 
       // 3. Straight-line distance explicitly labeled
       assert.match(card.textContent ?? '', /km \(straight-line\)/);

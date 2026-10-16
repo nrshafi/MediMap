@@ -36,6 +36,16 @@ Match the editor's TypeScript package to `process.versions.typescript` in the se
 This unit does not configure hosting, storage, authentication, or other product functionality.
 Cloudflare Workers remains the intended deployment target for later implementation.
 
+## Discovery prototype
+
+The `/discovery` route is a demonstration with sample branch listings, not a published clinical dataset.
+Keep sample records in a separate fixture module. Never assign verified status, source evidence, or verification dates to these records.
+Show a sample-data notice and label sample prices. Preserve unknown prices and dates as null.
+Return no branch results for ambiguous, unmatched, or unconfirmed typo queries. Require explicit service selection.
+Use one radius range, 0.1 to 100 km, across URL validation, domain filtering, and controls.
+Show routing as unavailable until a selected provider supplies validated results. The OSRM adapter is an optional integration, not the default provider.
+The SVG map is a schematic preview. Provider selection, source-backed data, D1 access, and complete location selection remain unfinished.
+
 ## System boundaries
 
 Separate the user interface, search logic, application logic, database access, location integration, authentication, and administration.

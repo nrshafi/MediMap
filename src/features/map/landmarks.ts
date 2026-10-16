@@ -1,6 +1,5 @@
 /**
- * Verified Dhaka healthcare landmarks, tertiary hospitals, and major transit hubs.
- * Provides canonical reference coordinates for distance filtering, location presets, and testing.
+ * Reference coordinates for the Dhaka discovery demonstration and spatial tests.
  */
 
 import type { Coordinates } from './types';
@@ -15,7 +14,7 @@ export interface DhakaLandmark {
 }
 
 /**
- * Verified landmarks across Dhaka with exact WGS84 coordinates.
+ * Sample landmark coordinates. Provider-source verification remains incomplete.
  */
 export const DHAKA_LANDMARKS = {
   // Tertiary Hospitals & Diagnostic Hubs

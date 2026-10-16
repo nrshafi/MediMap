@@ -4,20 +4,15 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-15 21:18:00 +06:00`.
+Last updated: `2026-10-16 19:19:00 +06:00`.
 
 ## Current phase
 
-Dedicated end-to-end user flow integration test suite verified in `src/features/search/ui/__tests__/discoveryFullFlow.test.tsx`.
-Discovery route (`/discovery`), end-to-end page flow (`DiscoveryView`), and domain mock branch listings verified and operational.
-Synchronized map and list discovery interaction and accessibility test suite implemented and verified in `src/features/map/ui/__tests__/`.
-Synchronized map and list view implemented and verified in `src/features/map/ui/`.
-Comprehensive interaction and accessibility test suite implemented and verified in `src/features/search/ui/__tests__/`.
-Diagnostic search discovery UI components implemented and verified in `src/features/search/ui/`.
-Fault-tolerant road distance and travel time mapping integration verified in `src/integrations/mapping/`.
-Straight-line radius filtering engine implemented in `src/features/map/`.
-Diagnostic search and alias resolution engine operational in `src/features/search/`.
-Static landing page and client routing remain operational.
+Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with `88caff9`.
+The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
+Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
+Source-backed branch data, D1 integration, provider selection, and complete location input remain unfinished.
+The detailed findings and repair scope are in [red01s-review.md](red01s-review.md).
 
 ## Architecture invariants
 
@@ -39,6 +34,28 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Red01s review and repairs (2026-10-16 19:19:00 +06:00)
+
+- Separated sample branch fixtures from discovery filtering. Removed invented source labels, verified status, and verification dates.
+- Added sample-data disclosure. Removed fabricated road distance and duration values.
+- Stopped branch results for ambiguous, unmatched, and unconfirmed typo queries.
+- Applied the shared radius bounds to route validation and discovery. Rejected partial numeric URL values and invalid coordinate pairs.
+- Removed aliases that equated broad test categories or different variants with a specific service.
+- Isolated routing failures by destination. Validated concurrency, spatial inputs, and OSRM error payloads.
+- Fixed debounce rescheduling, stale search state, radius synchronization, map circle sizing, and controlled summary dismissal.
+- Added keyboard navigation and unique identifiers to mobile view tabs. Preserved unknown prices and verification dates in UI components.
+- Loaded the missing map stylesheet and positioned the mobile summary inside its map container. Labeled the map as a schematic.
+- Restored native Bun type checking by removing the shadowing `check` script.
+- Passed `bun test`, 283 tests across 14 files. Passed `bun run typecheck`, native Bun checking of 58 files, and `bun run lint`.
+- Moved discovery URL validation into its feature module. Route code retains framework configuration and navigation.
+- Passed `bun run build` for client and server output.
+- Checked the discovery page in a real browser at 375 by 812 pixels. Verified ambiguous CT selection, map selection, summary dismissal, and unknown-query behavior.
+- Ego could not connect, including outside the sandbox. Browser checks used the Codex in-app browser.
+- Saved the mobile verification screenshot at `.bun-tmp/discovery-mobile-review.png`. This ignored artifact is local evidence, not a tracked product asset.
+- DOM tests do not establish complete browser coverage, provider-data accuracy, or accessibility conformance.
+- The next feature unit is source-backed branch data after hospital inventory and mapping-provider decisions. Complete location input also remains open.
+- No commit, push, or deployment occurred.
 
 ### Discovery end-to-end user flow integration test suite (2026-10-15 21:18:00 +06:00)
 

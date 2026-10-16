@@ -119,6 +119,16 @@ describe('Map & Discovery UI Components Test Suite', () => {
   // 1. BranchResultCard Tests
   // =========================================================================
   describe('BranchResultCard', () => {
+    it('preserves unknown prices and dates and labels sample prices', () => {
+      const branch = { ...mockBranches[0], basePriceBdt: null, priceVerifiedAt: null, isVerified: false };
+      const { container, root } = renderComponent(<BranchResultCard branch={branch} />);
+      assert.ok(container.textContent?.includes('Price currently unavailable'));
+      assert.ok(container.textContent?.includes('Verification date unavailable'));
+      act(() => root.render(<BranchResultCard branch={{ ...branch, isSample: true }} />));
+      assert.ok(container.textContent?.includes('Sample price'));
+      assert.equal(container.textContent?.includes('Verification date unavailable'), false);
+    });
+
     it('renders provider name, branch name, area, and formatted BDT price', () => {
       const { container } = renderComponent(
         <BranchResultCard branch={mockBranches[0]} />
@@ -270,6 +280,17 @@ describe('Map & Discovery UI Components Test Suite', () => {
   // 3. DhakaMap Tests
   // =========================================================================
   describe('DhakaMap', () => {
+    it('draws the selected radius and exposes interactive pins inside a group', () => {
+      const center = { latitude: 23.7388, longitude: 90.3957 };
+      const { container, root } = renderComponent(<DhakaMap branches={mockBranches} centerCoordinates={center} radiusKm={1} />);
+      const radius1 = Number(container.querySelector('.medimap-search-center-group circle')?.getAttribute('r'));
+      act(() => root.render(<DhakaMap branches={mockBranches} centerCoordinates={center} radiusKm={5} />));
+      const radius5 = Number(container.querySelector('.medimap-search-center-group circle')?.getAttribute('r'));
+      assert.ok(radius5 > radius1 * 4.9 && radius5 < radius1 * 5.1);
+      assert.equal(container.querySelector('svg')?.getAttribute('role'), 'group');
+      assert.ok(container.textContent?.includes('Location schematic'));
+    });
+
     it('renders accessible section with region role and aria-label', () => {
       const { container } = renderComponent(
         <DhakaMap branches={mockBranches} />
@@ -418,6 +439,38 @@ describe('Map & Discovery UI Components Test Suite', () => {
   // 4. SynchronizedDiscoveryView Tests
   // =========================================================================
   describe('SynchronizedDiscoveryView', () => {
+    it('uses unique tab relationships and keyboard navigation with one tab stop', () => {
+      const { container } = renderComponent(<><SynchronizedDiscoveryView branches={mockBranches} /><SynchronizedDiscoveryView branches={[]} /></>);
+      const tabs = Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+      assert.equal(new Set(tabs.map((tab) => tab.id)).size, 4);
+      for (const tab of tabs) {
+        const panel = document.getElementById(tab.getAttribute('aria-controls') ?? '');
+        assert.equal(panel?.getAttribute('aria-labelledby'), tab.id);
+      }
+      const [listTab, mapTab] = tabs;
+      assert.equal(listTab.tabIndex, 0);
+      assert.equal(mapTab.tabIndex, -1);
+      for (const [source, key, target] of [
+        [listTab, 'ArrowRight', mapTab],
+        [mapTab, 'ArrowLeft', listTab],
+        [listTab, 'End', mapTab],
+        [mapTab, 'Home', listTab],
+      ] as const) {
+        act(() => source.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })));
+        assert.equal(document.activeElement, target);
+        assert.equal(target.tabIndex, 0);
+        assert.equal(target.getAttribute('aria-selected'), 'true');
+        assert.equal((target === listTab ? mapTab : listTab).tabIndex, -1);
+      }
+    });
+
+    it('dismisses the floating card when branch selection is controlled', () => {
+      const { container } = renderComponent(<SynchronizedDiscoveryView branches={mockBranches} selectedBranchId={mockBranches[0].id} initialViewMode="map" />);
+      assert.ok(container.querySelector('.medimap-floating-summary-card'));
+      act(() => (container.querySelector('.medimap-floating-close-btn') as HTMLButtonElement).click());
+      assert.equal(container.querySelector('.medimap-floating-summary-card'), null);
+    });
+
     it('renders both list and map columns with the exact same filtered branches', () => {
       const { container } = renderComponent(
         <SynchronizedDiscoveryView branches={mockBranches} />
@@ -469,8 +522,8 @@ describe('Map & Discovery UI Components Test Suite', () => {
         />
       );
 
-      const listTab = container.querySelector('#tab-view-list') as HTMLButtonElement;
-      const mapTab = container.querySelector('#tab-view-map') as HTMLButtonElement;
+      const listTab = container.querySelector('[role="tab"][id$="-tab-list"]') as HTMLButtonElement;
+      const mapTab = container.querySelector('[role="tab"][id$="-tab-map"]') as HTMLButtonElement;
 
       assert.equal(listTab.getAttribute('aria-selected'), 'true');
       assert.equal(mapTab.getAttribute('aria-selected'), 'false');
@@ -514,7 +567,7 @@ describe('Map & Discovery UI Components Test Suite', () => {
         viewInListBtn.click();
       });
 
-      const listTab = container.querySelector('#tab-view-list') as HTMLButtonElement;
+      const listTab = container.querySelector('[role="tab"][id$="-tab-list"]') as HTMLButtonElement;
       assert.equal(listTab.getAttribute('aria-selected'), 'true');
     });
   });

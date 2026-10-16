@@ -56,6 +56,10 @@ export function DiagnosticSearchBox({
   // Synchronize internal state if initialQuery or initialRadiusKm props change
   useEffect(() => {
     setQuery(initialQuery);
+    setSelectedService((current) => current?.name === initialQuery ? current : null);
+    setResolutionResult(null);
+    setIsDropdownOpen(false);
+    setActiveIndex(-1);
   }, [initialQuery]);
 
   useEffect(() => {
@@ -145,6 +149,9 @@ export function DiagnosticSearchBox({
 
   const handleQueryChange = (newQuery: string) => {
     setQuery(newQuery);
+    setResolutionResult(null);
+    setIsDropdownOpen(false);
+    setActiveIndex(-1);
     if (selectedService) {
       setSelectedService(null);
     }
@@ -159,7 +166,7 @@ export function DiagnosticSearchBox({
 
   const handleDebouncedResolve = (textToResolve: string) => {
     const trimmed = textToResolve.trim();
-    if (trimmed === '') {
+    if (trimmed === '' || selectedService?.name === trimmed) {
       return;
     }
 
@@ -242,10 +249,11 @@ export function DiagnosticSearchBox({
 
   const handleRadiusChange = (newRadiusKm: number) => {
     setRadiusKm(newRadiusKm);
+    const primaryMatch = resolveDiagnosticQuery(query.trim(), catalog).primaryMatch;
     const serviceToUse =
       selectedService ??
-      (query.trim() !== ''
-        ? resolveDiagnosticQuery(query.trim(), catalog).primaryMatch?.canonicalService ?? null
+      (query.trim() !== '' && primaryMatch?.matchType !== 'typo_suggestion'
+        ? primaryMatch?.canonicalService ?? null
         : null);
 
     if (serviceToUse && onSelectService) {
@@ -279,7 +287,7 @@ export function DiagnosticSearchBox({
             setIsDropdownOpen(true);
             setActiveIndex(-1);
           }
-        } else {
+        } else if (resolutionResult.status !== 'ambiguous') {
           setIsDropdownOpen(true);
           if (suggestionItems.length > 0) {
             setActiveIndex(0);
@@ -340,8 +348,7 @@ export function DiagnosticSearchBox({
           Search Diagnostic Services
         </h2>
         <p className="medimap-search-card-subtitle">
-          Find accredited diagnostic tests, compare verified branch prices, and
-          locate nearby centers.
+          Find diagnostic tests, compare branch prices, and locate nearby centers.
         </p>
       </div>
 

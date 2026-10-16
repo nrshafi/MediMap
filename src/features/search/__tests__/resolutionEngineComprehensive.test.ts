@@ -99,10 +99,8 @@ describe('Exact Alias Match', () => {
     assert.equal(cbcBengaliResult.primaryMatch.canonicalService.id, 'complete-blood-count');
 
     const bloodTestResult = resolveDiagnosticQuery('রক্ত পরীক্ষা');
-    assert.equal(bloodTestResult.status, 'resolved');
-    assert.ok(bloodTestResult.primaryMatch);
-    assert.equal(bloodTestResult.primaryMatch.matchType, 'exact_alias');
-    assert.equal(bloodTestResult.primaryMatch.canonicalService.id, 'complete-blood-count');
+    assert.equal(bloodTestResult.status, 'not_found');
+    assert.equal(bloodTestResult.primaryMatch, undefined);
 
     const lipidBengaliResult = resolveDiagnosticQuery('লিপিড প্রোফাইল');
     assert.equal(lipidBengaliResult.status, 'resolved');

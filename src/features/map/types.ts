@@ -32,7 +32,6 @@ export interface LocatableBranch {
   readonly id: string;
   readonly name: string;
   readonly coordinates: Coordinates;
-  readonly [key: string]: unknown;
 }
 
 export interface BranchDistanceResult<T extends LocatableBranch = LocatableBranch> {

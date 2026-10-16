@@ -13,6 +13,8 @@ interface ScoredCandidate {
   readonly score: number;
 }
 
+export const MAX_SEARCH_QUERY_LENGTH = 256;
+
 interface TypoCandidate {
   readonly service: CanonicalService;
   readonly matchedText: string;
@@ -101,7 +103,7 @@ export function resolveDiagnosticQuery(
 ): ResolutionResult {
   const normalizedQuery = normalizeText(query);
 
-  if (!normalizedQuery) {
+  if (!normalizedQuery || normalizedQuery.length > MAX_SEARCH_QUERY_LENGTH) {
     return {
       query,
       normalizedQuery: '',

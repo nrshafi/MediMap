@@ -393,3 +393,10 @@
     display: none;
   }
 }
+.medimap-sample-notice {
+  padding: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}

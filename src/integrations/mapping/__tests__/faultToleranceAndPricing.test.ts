@@ -289,7 +289,7 @@ describe('Invariant 1: Core Branch and Price Data Accessibility When Routing Fai
       assert.equal(branch.straightLineDistanceKm, 2.85);
       assert.equal(branch.route.status, 'unavailable');
       if (branch.route.status === 'unavailable') {
-        assert.equal(branch.route.reason, 'network_error');
+        assert.equal(branch.route.reason, 'upstream_error');
         assert.equal(branch.route.roadDistanceKm, undefined);
         assert.equal(branch.route.travelDurationMinutes, undefined);
       }
@@ -708,15 +708,12 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
     assert.equal(maxInFlight >= 2, true);
   });
 
-  it('handles edge concurrency parameters safely (0, negative, > length)', async () => {
+  it('rejects invalid concurrency and caps workers at the item count', async () => {
     const items = [1, 2, 3];
 
-    // Concurrency <= 0 clamps safely to 1
-    const resNegative = await mapConcurrent(items, -5, async (x) => x * 10);
-    assert.deepEqual(resNegative, [10, 20, 30]);
-
-    const resZero = await mapConcurrent(items, 0, async (x) => x * 10);
-    assert.deepEqual(resZero, [10, 20, 30]);
+    for (const concurrency of [-5, 0, Number.NaN, Infinity, 1.5]) {
+      await assert.rejects(mapConcurrent(items, concurrency, async (item) => item * 10), RangeError);
+    }
 
     // Concurrency > length handles without error
     const resLarge = await mapConcurrent(items, 100, async (x) => x * 10);

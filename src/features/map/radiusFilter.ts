@@ -2,7 +2,7 @@
  * Straight-line radius filtering logic for diagnostic center branches.
  */
 
-import { isWithinBoundingBox } from './coordinates';
+import { isValidCoordinate, isWithinBoundingBox } from './coordinates';
 import { calculateHaversineDistanceKm } from './haversine';
 import {
   RADIUS_PRESETS_KM,
@@ -74,6 +74,10 @@ export function parseRadiusFilterInput(
 
   if (typeof input === 'object' && input !== null) {
     const candidate = input as Record<string, unknown>;
+
+    if ('type' in candidate && candidate.type !== 'preset' && candidate.type !== 'custom') {
+      return { valid: false, error: 'Radius input type must be preset or custom.' };
+    }
 
     if (typeof candidate.radiusKm !== 'number') {
       return {
@@ -164,9 +168,29 @@ export function filterBranchesByRadius<T extends LocatableBranch>(
 ): readonly BranchDistanceResult<T>[] {
   const { center, maxRadiusKm, boundingBox, limit } = options;
 
+  if (!isValidCoordinate(center)) {
+    throw new RangeError('Center must contain valid WGS 84 coordinates.');
+  }
+
+  const radius = parseRadiusFilterInput(maxRadiusKm);
+  if (!radius.valid) {
+    throw new RangeError(radius.error);
+  }
+
+  if (limit !== undefined && (!Number.isInteger(limit) || limit < 0)) {
+    throw new RangeError('Limit must be a nonnegative finite integer.');
+  }
+
+  if (limit === 0) {
+    return [];
+  }
+
   const results: BranchDistanceResult<T>[] = [];
 
   for (const branch of branches) {
+    if (!isValidCoordinate(branch.coordinates)) {
+      continue;
+    }
     if (boundingBox && !isWithinBoundingBox(branch.coordinates, boundingBox)) {
       continue;
     }
@@ -185,7 +209,7 @@ export function filterBranchesByRadius<T extends LocatableBranch>(
 
   results.sort((a, b) => a.distanceKm - b.distanceKm);
 
-  if (typeof limit === 'number' && limit > 0) {
+  if (limit !== undefined) {
     return results.slice(0, limit);
   }
 

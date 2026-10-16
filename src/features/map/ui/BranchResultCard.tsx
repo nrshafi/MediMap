@@ -9,7 +9,8 @@ import type { BranchResultCardProps } from './types';
 /**
  * Formats a currency value in Bangladeshi Taka (BDT).
  */
-function formatBdt(amount: number): string {
+function formatBdt(amount: number | null): string {
+  if (amount === null) return 'Price currently unavailable';
   return `BDT ${amount.toLocaleString('en-US')}`;
 }
 
@@ -36,6 +37,7 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.target !== event.currentTarget) return;
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         onSelect?.(branch.id);
@@ -161,7 +163,7 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
             branch.isVerified ? 'is-verified' : 'is-unverified'
           }`}
         >
-          {branch.isVerified ? (
+          {branch.isSample ? <span>Sample price</span> : branch.isVerified ? (
             <>
               <svg
                 className="medimap-badge-icon"
@@ -171,12 +173,13 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
               >
                 <path d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" />
               </svg>
-              <span>Verified: {branch.priceVerifiedAt}</span>
+              <span>Verified: {branch.priceVerifiedAt ?? 'Verification date unavailable'}</span>
             </>
           ) : (
-            <span>Unverified: {branch.priceVerifiedAt}</span>
+            <span>Unverified: {branch.priceVerifiedAt ?? 'Verification date unavailable'}</span>
           )}
         </div>
+        {branch.priceSource && <span>Source: {branch.priceSource}</span>}
 
         <button
           type="button"

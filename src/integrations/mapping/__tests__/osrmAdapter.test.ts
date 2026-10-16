@@ -129,7 +129,7 @@ describe('OsrmAdapter', () => {
     }
   });
 
-  it('handles client coordinate error (HTTP 400)', async () => {
+  it('does not infer coordinate errors from an unstructured HTTP 400', async () => {
     const mockFetch: typeof fetch = async (): Promise<Response> => {
       return new Response('Bad Request', { status: 400 });
     };
@@ -139,7 +139,36 @@ describe('OsrmAdapter', () => {
 
     assert.equal(result.status, 'unavailable');
     if (result.status === 'unavailable') {
-      assert.equal(result.reason, 'invalid_coordinates');
+      assert.equal(result.reason, 'upstream_error');
+    }
+  });
+
+  it('classifies structured OSRM errors on HTTP 400', async () => {
+    for (const [code, reason] of [
+      ['NoRoute', 'no_route'],
+      ['NoSegment', 'no_route'],
+      ['InvalidOptions', 'upstream_error'],
+      ['InvalidQuery', 'upstream_error'],
+    ]) {
+      const adapter = new OsrmAdapter({
+        fetchFn: async () => new Response(JSON.stringify({ code }), { status: 400 }),
+      });
+      const result = await adapter.calculateRoute(dmchCoord, evercareCoord);
+      assert.equal(result.status, 'unavailable');
+      if (result.status === 'unavailable') {
+        assert.equal(result.reason, reason);
+      }
+    }
+  });
+
+  it('classifies invalid JSON in a successful response as upstream failure', async () => {
+    const adapter = new OsrmAdapter({
+      fetchFn: async () => new Response('invalid JSON'),
+    });
+    const result = await adapter.calculateRoute(dmchCoord, evercareCoord);
+    assert.equal(result.status, 'unavailable');
+    if (result.status === 'unavailable') {
+      assert.equal(result.reason, 'upstream_error');
     }
   });
 
@@ -288,6 +317,37 @@ describe('Fallback and Type Guards', () => {
 
 describe('Branch Routing Helpers', () => {
   const origin: Coordinates = DHAKA_LANDMARKS.dmch.coordinates;
+
+  it('keeps routing unavailable until an adapter is explicitly supplied', async () => {
+    const routes = await getBranchRoutes(origin, [origin]);
+    assert.equal(routes[0].status, 'unavailable');
+  });
+
+  it('isolates adapter rejection and preserves other branch results', async () => {
+    const branches = [
+      { id: 'failed', coordinates: origin, priceBdt: 400 },
+      { id: 'success', coordinates: DHAKA_LANDMARKS.evercare.coordinates, priceBdt: 900 },
+    ];
+    const enriched = await enrichBranchesWithRoutes(branches, origin, {
+      name: 'partial-failure',
+      calculateRoute: async (start, destination) => {
+        if (destination === origin) {
+          throw new Error('Adapter failed');
+        }
+        return {
+          status: 'available', origin: start, destination,
+          roadDistanceKm: 12, travelDurationMinutes: 30, source: 'test',
+        };
+      },
+    });
+    for (const [index, branch] of branches.entries()) {
+      assert.equal(enriched[index].id, branch.id);
+      assert.equal(enriched[index].priceBdt, branch.priceBdt);
+      assert.deepEqual(enriched[index].coordinates, branch.coordinates);
+    }
+    assert.equal(enriched[0].route.status, 'unavailable');
+    assert.equal(enriched[1].route.status, 'available');
+  });
 
   it('runs mapConcurrent respecting concurrency and maintaining order', async () => {
     const items = [10, 20, 30, 40, 50];

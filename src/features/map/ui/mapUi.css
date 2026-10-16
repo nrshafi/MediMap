@@ -482,6 +482,7 @@
 
 /* Floating Mobile Summary Card */
 .medimap-floating-summary-card {
+  display: none;
   position: absolute;
   bottom: 12px;
   left: 12px;
@@ -602,9 +603,13 @@
   }
 
   .medimap-sticky-map-wrapper {
-    position: static;
+    position: relative;
     height: 70vh;
     min-height: 420px;
     max-height: none;
+  }
+
+  .medimap-floating-summary-card {
+    display: block;
   }
 }

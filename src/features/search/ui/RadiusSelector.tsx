@@ -1,9 +1,10 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
+import { MIN_CUSTOM_RADIUS_KM, MAX_CUSTOM_RADIUS_KM } from '../../map/radiusFilter';
 import type { RadiusPreset, RadiusSelectorProps } from './types';
 
 const PRESETS: readonly (1 | 3 | 5)[] = [1, 3, 5];
-const MIN_RADIUS_KM = 0.5;
-const MAX_RADIUS_KM = 50;
+const MIN_RADIUS_KM = MIN_CUSTOM_RADIUS_KM;
+const MAX_RADIUS_KM = MAX_CUSTOM_RADIUS_KM;
 
 /**
  * Segmented straight-line radius selector with preset chips and custom range input.
@@ -35,6 +36,11 @@ export function RadiusSelector({
   );
 
   const [validationError, setValidationError] = useState<string | null>(null);
+  useEffect(() => {
+    setActivePreset(isPresetValue(value) ? value : 'custom');
+    if (!isPresetValue(value)) setCustomInputValue(String(value));
+    setValidationError(null);
+  }, [value]);
 
   const handlePresetSelect = (preset: RadiusPreset) => {
     if (disabled) {
@@ -150,7 +156,7 @@ export function RadiusSelector({
               type="number"
               min={MIN_RADIUS_KM}
               max={MAX_RADIUS_KM}
-              step={0.5}
+              step="any"
               value={customInputValue}
               onChange={handleCustomInputChange}
               disabled={disabled}
@@ -173,7 +179,7 @@ export function RadiusSelector({
             </p>
           ) : (
             <p className="medimap-radius-range-hint">
-              Accepts 0.5 km to 50 km in 0.5 km steps.
+              Accepts {MIN_RADIUS_KM} km to {MAX_RADIUS_KM} km.
             </p>
           )}
         </div>

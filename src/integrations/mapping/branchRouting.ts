@@ -3,7 +3,7 @@
  */
 
 import type { Coordinates } from '../../features/map/types';
-import { OsrmAdapter } from './osrmAdapter';
+import { executeWithFallback, FallbackRoutingAdapter } from './fallback';
 import type {
   BatchRouteOptions,
   EnrichedBranch,
@@ -13,9 +13,9 @@ import type {
 } from './types';
 
 /**
- * Default shared OsrmAdapter instance.
+ * Routing remains disabled until a provider is selected.
  */
-export const defaultRoutingAdapter: RoutingAdapter = new OsrmAdapter();
+export const defaultRoutingAdapter: RoutingAdapter = new FallbackRoutingAdapter();
 
 /**
  * Runs an asynchronous mapping function across items with a concurrency limit.
@@ -30,6 +30,10 @@ export async function mapConcurrent<T, R>(
   concurrency: number,
   mapper: (item: T, index: number) => Promise<R>
 ): Promise<R[]> {
+  if (!Number.isInteger(concurrency) || concurrency < 1) {
+    throw new RangeError('Concurrency must be a positive finite integer.');
+  }
+
   if (items.length === 0) {
     return [];
   }
@@ -44,7 +48,7 @@ export async function mapConcurrent<T, R>(
     }
   }
 
-  const workerCount = Math.min(Math.max(1, concurrency), items.length);
+  const workerCount = Math.min(concurrency, items.length);
   const workers: Promise<void>[] = [];
 
   for (let i = 0; i < workerCount; i++) {
@@ -71,10 +75,12 @@ export async function getBranchRoutes(
   adapter: RoutingAdapter = defaultRoutingAdapter,
   options?: BatchRouteOptions
 ): Promise<RouteResult[]> {
-  const concurrency = Math.max(1, options?.concurrency ?? 3);
+  const concurrency = options?.concurrency ?? 3;
 
   return mapConcurrent(destinations, concurrency, async (destination) => {
-    return adapter.calculateRoute(origin, destination, options);
+    return executeWithFallback(origin, destination, () =>
+      adapter.calculateRoute(origin, destination, options)
+    );
   });
 }
 

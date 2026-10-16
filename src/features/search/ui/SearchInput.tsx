@@ -37,23 +37,23 @@ export function SearchInput({
 
   const [isPending, startTransition] = useTransition();
   const [hasInteracted, setHasInteracted] = useState(false);
+  const debouncedChangeRef = useRef(onDebouncedChange);
+  useEffect(() => {
+    debouncedChangeRef.current = onDebouncedChange;
+  }, [onDebouncedChange]);
 
   // Debounce notification with cancellation and transition wrapping
   useEffect(() => {
-    if (!onDebouncedChange) {
-      return;
-    }
-
     const timer = setTimeout(() => {
       startTransition(() => {
-        onDebouncedChange(value);
+        debouncedChangeRef.current?.(value);
       });
     }, debounceMs);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [value, debounceMs, onDebouncedChange]);
+  }, [value, debounceMs]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!hasInteracted) {

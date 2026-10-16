@@ -5,6 +5,7 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { isValidCoordinate } from '../../map/coordinates';
+import { parseRadiusFilterInput } from '../../map/radiusFilter';
 import type { Coordinates } from '../../map/types';
 import { SynchronizedDiscoveryView } from '../../map/ui';
 import {
@@ -47,7 +48,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
   className = '',
 }) => {
   const activeQuery = query ?? q ?? 'Complete Blood Count';
-  const activeRadius = radius !== undefined && radius > 0 ? radius : 3;
+  const parsedRadius = parseRadiusFilterInput(radius ?? 3);
+  const activeRadius = parsedRadius.valid ? parsedRadius.radiusKm : 3;
 
   // Resolve center coordinates with fallback to Shahbagh
   const centerCoordinates: Coordinates = useMemo(() => {
@@ -163,13 +165,17 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
             <span className="medimap-discovery-brand-text">MediMap</span>
           </div>
           <span className="medimap-discovery-tagline">
-            Dhaka Diagnostic Service & Verified Price Discovery
+            Dhaka diagnostic service discovery preview
           </span>
         </div>
       </header>
 
       {/* Main content body */}
       <main className="medimap-discovery-main" role="main">
+        <p className="medimap-sample-notice" role="note">
+          Demonstration with sample data. Prices, availability, and branch details have not been verified.
+          Road estimates are unavailable until a routing provider is configured.
+        </p>
         {/* Diagnostic Search Box */}
         <section
           className="medimap-discovery-search-section"
@@ -236,7 +242,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         >
           <div className="medimap-active-filters-left">
             <span className="medimap-filter-chip medimap-filter-chip-service">
-              Test: <strong>{canonicalService.name}</strong>
+              Test: <strong>{canonicalService?.name ?? 'Select a diagnostic service'}</strong>
             </span>
             <span className="medimap-filter-chip medimap-filter-chip-radius">
               Straight-line radius: <strong>{activeRadius} km</strong>
@@ -247,13 +253,24 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
           </div>
           <div className="medimap-active-filters-count">
             {branches.length === 1
-              ? '1 verified branch found'
-              : `${branches.length} verified branches found`}
+              ? '1 sample branch found'
+              : `${branches.length} sample branches found`}
           </div>
         </section>
 
         {/* Empty state or Synchronized Discovery View */}
-        {branches.length === 0 ? (
+        {!canonicalService ? (
+          <section className="medimap-discovery-empty-state" role="status">
+            <h2>
+              {queryResult.resolution.requiresExplicitSelection
+                ? 'Select a diagnostic service to continue'
+                : queryResult.resolution.typoSuggestions?.length
+                  ? 'Select a suggested service to continue'
+                  : 'No matching diagnostic service'}
+            </h2>
+            <p>Use the search controls to select a service. No branch results are shown for this query.</p>
+          </section>
+        ) : branches.length === 0 ? (
           <section
             className="medimap-discovery-empty-state"
             aria-label="No branches found"
@@ -279,7 +296,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
               No diagnostic branches within {activeRadius} km straight-line radius
             </h3>
             <p className="medimap-empty-state-desc">
-              No accredited hospital branches offering <strong>{canonicalService.name}</strong> were
+              No sample branches offering <strong>{canonicalService.name}</strong> were
               found within {activeRadius} km straight-line distance of {locationDisplayLabel}.
               Try expanding your search radius or selecting a different location.
             </p>
@@ -321,7 +338,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
             <SynchronizedDiscoveryView
               branches={branches}
               centerCoordinates={centerCoordinates}
-              selectedBranchId={selectedBranchId}
+              selectedBranchId={selectedBranchId ?? null}
+              radiusKm={activeRadius}
               onSelectBranch={handleSelectBranch}
             />
           </section>
@@ -331,7 +349,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
       {/* Footer with architecture invariants reference */}
       <footer className="medimap-discovery-footer" role="contentinfo">
         <div className="medimap-discovery-footer-content">
-          <span>MediMap Dhaka Healthcare Discovery · Verified Clinical Pricing</span>
+          <span>MediMap discovery preview · Sample prices in BDT</span>
           <div className="medimap-footer-invariants">
             <span>Prices in BDT</span>
             <span className="medimap-footer-dot">·</span>

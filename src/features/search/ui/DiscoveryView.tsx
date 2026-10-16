@@ -125,8 +125,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
     [activeQuery, activeRadius, onSearchChange]
   );
 
-  // Handle expanding search radius
-  const handleExpandRadius = useCallback(
+  // Update the radius without selecting a service.
+  const handleRadiusChange = useCallback(
     (newRadius: number) => {
       onSearchChange?.({
         query: activeQuery,
@@ -185,6 +185,14 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
             initialQuery={activeQuery}
             initialRadiusKm={activeRadius}
             onSelectService={handleSelectService}
+            onQueryChange={(nextQuery) => onSearchChange?.({
+              query: nextQuery,
+              radius: activeRadius,
+              lat: centerCoordinates.latitude,
+              lng: centerCoordinates.longitude,
+              selectedBranchId: undefined,
+            })}
+            onRadiusChange={handleRadiusChange}
           />
         </section>
 
@@ -305,7 +313,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                 <button
                   type="button"
                   className="medimap-empty-action-btn"
-                  onClick={() => handleExpandRadius(5)}
+                  onClick={() => handleRadiusChange(5)}
                 >
                   Expand radius to 5 km
                 </button>
@@ -314,7 +322,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                 <button
                   type="button"
                   className="medimap-empty-action-btn medimap-empty-action-btn-secondary"
-                  onClick={() => handleExpandRadius(10)}
+                  onClick={() => handleRadiusChange(10)}
                 >
                   Expand radius to 10 km
                 </button>

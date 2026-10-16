@@ -1,6 +1,4 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import React, { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
@@ -958,81 +956,4 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
   // =========================================================================
   // 6. Responsive & Touch Target Guidelines
   // =========================================================================
-  describe('6. Responsive & Touch Target Guidelines', () => {
-    it('verifies minimum 44px hit circles (r=22) on all SVG map pins', () => {
-      const { container } = renderComponent(
-        <DhakaMap branches={sampleBranches} />
-      );
-
-      const pins = container.querySelectorAll('.medimap-pin-group');
-      pins.forEach((pin) => {
-        const hitCircle = pin.querySelector('circle[r="22"]');
-        assert.ok(
-          hitCircle,
-          'Pin must have transparent circle with radius 22px (44px diameter touch target)'
-        );
-        assert.equal(hitCircle.getAttribute('pointer-events'), 'all');
-        assert.equal(hitCircle.getAttribute('fill'), 'transparent');
-      });
-    });
-
-    it('verifies minimum 44px touch target rules in mapUi.css', () => {
-      const cssPath = join(__dirname, '..', 'mapUi.css');
-      const cssContent = readFileSync(cssPath, 'utf-8');
-
-      // Segmented tab controls min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-mobile-tab-btn\s*\{[^}]*min-height:\s*44px;/s,
-        'Mobile tab buttons must have min-height 44px'
-      );
-
-      // Zoom control buttons min 44x44px
-      assert.match(
-        cssContent,
-        /\.medimap-control-btn\s*\{[^}]*min-width:\s*44px;/s,
-        'Zoom buttons must have min-width 44px'
-      );
-      assert.match(
-        cssContent,
-        /\.medimap-control-btn\s*\{[^}]*min-height:\s*44px;/s,
-        'Zoom buttons must have min-height 44px'
-      );
-
-      // Card select buttons min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-card-select-btn\s*\{[^}]*min-height:\s*44px;/s,
-        'Card select buttons must have min-height 44px'
-      );
-
-      // Mobile floating card view button min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-floating-view-btn\s*\{[^}]*min-height:\s*44px;/s,
-        'Floating card view button must have min-height 44px'
-      );
-
-      // Mobile floating card close button min 44x44px
-      assert.match(
-        cssContent,
-        /\.medimap-floating-close-btn\s*\{[^}]*min-width:\s*44px;/s,
-        'Floating card close button must have min-width 44px'
-      );
-      assert.match(
-        cssContent,
-        /\.medimap-floating-close-btn\s*\{[^}]*min-height:\s*44px;/s,
-        'Floating card close button must have min-height 44px'
-      );
-    });
-
-    it('verifies responsive layout CSS rules for mobile (max-width: 768px)', () => {
-      const cssPath = join(__dirname, '..', 'mapUi.css');
-      const cssContent = readFileSync(cssPath, 'utf-8');
-
-      assert.match(cssContent, /@media\s*\(max-width:\s*768px\)/);
-      assert.match(cssContent, /\.is-hidden-mobile\s*\{[^}]*display:\s*none/s);
-      assert.match(cssContent, /\.is-visible\s*\{[^}]*display:\s*block/s);
-    });
-  });
 });

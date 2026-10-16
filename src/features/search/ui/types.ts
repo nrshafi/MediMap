@@ -126,6 +126,8 @@ export interface AmbiguityPromptProps {
  */
 export interface DiagnosticSearchBoxProps {
   readonly onSelectService?: (selection: SearchSelection) => void;
+  readonly onQueryChange?: (query: string) => void;
+  readonly onRadiusChange?: (radiusKm: number) => void;
   readonly initialQuery?: string;
   readonly initialRadiusKm?: number;
   readonly debounceMs?: number;

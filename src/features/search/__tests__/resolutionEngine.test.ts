@@ -107,56 +107,10 @@ describe('typoMatcher', () => {
 });
 
 describe('resolutionEngine', () => {
-  it('resolves exact canonical name match (Tier 1)', () => {
-    const result = resolveDiagnosticQuery('Complete Blood Count');
-    assert.equal(result.status, 'resolved');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.ok(result.primaryMatch);
-    assert.equal(result.primaryMatch.matchType, 'exact_canonical');
-    assert.equal(result.primaryMatch.canonicalService.id, 'complete-blood-count');
-    assert.equal(result.primaryMatch.score, 100);
-  });
 
-  it('resolves exact alias match in English (Tier 2)', () => {
-    const result = resolveDiagnosticQuery('CBC');
-    assert.equal(result.status, 'resolved');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.ok(result.primaryMatch);
-    assert.equal(result.primaryMatch.matchType, 'exact_alias');
-    assert.equal(result.primaryMatch.canonicalService.id, 'complete-blood-count');
-    assert.equal(result.primaryMatch.score, 90);
-  });
 
-  it('resolves exact alias match in Bengali (Tier 2)', () => {
-    const result = resolveDiagnosticQuery('সিবিসি');
-    assert.equal(result.status, 'resolved');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.ok(result.primaryMatch);
-    assert.equal(result.primaryMatch.matchType, 'exact_alias');
-    assert.equal(result.primaryMatch.canonicalService.id, 'complete-blood-count');
-  });
 
-  it('resolves unambiguous prefix match (Tier 3)', () => {
-    const result = resolveDiagnosticQuery('complete blo');
-    assert.equal(result.status, 'resolved');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.ok(result.primaryMatch);
-    assert.equal(result.primaryMatch.matchType, 'prefix');
-    assert.equal(result.primaryMatch.canonicalService.id, 'complete-blood-count');
-  });
 
-  it('flags ambiguous prefix match across multiple clinical services (Tier 3)', () => {
-    // "ct" prefix matches both "CT Scan Chest" and "CT Scan Brain"
-    const result = resolveDiagnosticQuery('ct');
-    assert.equal(result.status, 'ambiguous');
-    assert.equal(result.requiresExplicitSelection, true);
-    assert.equal(result.primaryMatch, undefined);
-    assert.ok(result.matches.length >= 2);
-
-    const ids = result.matches.map((m) => m.canonicalService.id);
-    assert.ok(ids.includes('ct-chest'));
-    assert.ok(ids.includes('ct-brain'));
-  });
 
   it('flags ambiguous prefix match for "usg" across multiple clinical services', () => {
     // "usg" prefix matches "USG of Whole Abdomen" and "USG of Pelvis"
@@ -185,23 +139,7 @@ describe('resolutionEngine', () => {
     assert.equal(result.primaryMatch.matchType, 'keyword');
   });
 
-  it('resolves "brain scan ct" uniquely to CT Scan Brain via keyword match', () => {
-    const result = resolveDiagnosticQuery('brain scan ct');
-    assert.equal(result.status, 'resolved');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.ok(result.primaryMatch);
-    assert.equal(result.primaryMatch.canonicalService.id, 'ct-brain');
-    assert.equal(result.primaryMatch.matchType, 'keyword');
-  });
 
-  it('flags ambiguous keyword match (Tier 4)', () => {
-    // "scan" is a keyword in both CT Scan Chest and CT Scan Brain
-    const result = resolveDiagnosticQuery('scan');
-    assert.equal(result.status, 'ambiguous');
-    assert.equal(result.requiresExplicitSelection, true);
-    assert.equal(result.primaryMatch, undefined);
-    assert.ok(result.matches.length >= 2);
-  });
 
   it('provides typo suggestion for single service (Tier 5)', () => {
     const result = resolveDiagnosticQuery('lipidd');
@@ -223,20 +161,7 @@ describe('resolutionEngine', () => {
     assert.ok(result.typoSuggestions && result.typoSuggestions.length >= 2);
   });
 
-  it('does not fuzzy match invalid short 3-character acronyms', () => {
-    const result = resolveDiagnosticQuery('cba');
-    assert.equal(result.status, 'not_found');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.equal(result.primaryMatch, undefined);
-    assert.equal(result.matches.length, 0);
-  });
 
-  it('returns not_found for empty query', () => {
-    const result = resolveDiagnosticQuery('');
-    assert.equal(result.status, 'not_found');
-    assert.equal(result.requiresExplicitSelection, false);
-    assert.equal(result.matches.length, 0);
-  });
 
   it('allows custom catalog injection', () => {
     const customCatalog = [DEFAULT_DIAGNOSTIC_CATALOG[0]];

@@ -78,6 +78,12 @@ Check changed screens on mobile before considering a feature complete.
 - Test failure states that can break core flows, including routing failure and missing values.
 - Select test tools after checking compatibility with the installed framework and Workers environment.
 
+Use Playwright Test with Chromium for discovery browser tests. Run the same flows at desktop and 375 px mobile widths.
+Keep browser tests in `tests/browser` with `.browser.ts` filenames, separate from Bun test discovery.
+Use Happy DOM for component behavior only. It does not verify rendered layout, touch-target sizes, or browser navigation.
+Do not copy application handlers into test harnesses. Test harnesses can supply state and observe callbacks.
+Do not use CSS-source checks or class-name presence as evidence of rendered dimensions.
+
 ## Completion checks
 
 Before completing a feature:
@@ -122,6 +128,6 @@ Checked on 8 October 2026:
 
 ## Pending decisions
 
-- Additional feature paths, formatter, validation library, and integration and browser test tools. The application uses Bun.
+- Additional feature paths, formatter, validation library, and Workers integration test tools. The application uses Bun and Playwright Test.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

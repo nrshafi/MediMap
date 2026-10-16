@@ -37,7 +37,7 @@ function renderComponent(ui: React.ReactElement): RenderResult {
   return result;
 }
 
-describe('DiscoveryView Integration & End-to-End Page Flow', () => {
+describe('DiscoveryView component behavior', () => {
   it('discloses sample data without fabricated verification or routing metrics', () => {
     const { container } = renderComponent(<DiscoveryView query="CBC" />);
     assert.match(container.querySelector('[role="note"]')?.textContent ?? '', /sample data/);
@@ -202,7 +202,7 @@ describe('DiscoveryView Integration & End-to-End Page Flow', () => {
     assert.equal((changedParams as { radius?: number }).radius, 5);
   });
 
-  it('enforces architecture invariants: BDT base prices, verification badges, and straight-line separation', () => {
+  it('labels sample prices in BDT and distinguishes straight-line distance', () => {
     const { container } = renderComponent(
       <DiscoveryView
         query="Lipid Profile"
@@ -219,7 +219,7 @@ describe('DiscoveryView Integration & End-to-End Page Flow', () => {
       // 1. Base price in BDT
       assert.match(card.textContent ?? '', /BDT\s+[0-9,]+/);
 
-      // 2. Verified status badge
+      // Sample-data disclosure
       assert.match(card.textContent ?? '', /Sample price/);
 
       // 3. Straight-line distance explicitly labeled
@@ -227,24 +227,4 @@ describe('DiscoveryView Integration & End-to-End Page Flow', () => {
     }
   });
 
-  it('all interactive controls meet the minimum 44px touch target guideline', () => {
-    const { container } = renderComponent(
-      <DiscoveryView
-        query="Complete Blood Count"
-        lat={DHAKA_LANDMARKS.shahbagh.coordinates.latitude}
-        lng={DHAKA_LANDMARKS.shahbagh.coordinates.longitude}
-        radius={3}
-      />
-    );
-
-    // Preset buttons
-    const presetButtons = container.querySelectorAll<HTMLButtonElement>('.medimap-preset-btn');
-    for (const btn of Array.from(presetButtons)) {
-      assert.ok(btn.classList.contains('medimap-preset-btn'));
-    }
-
-    // Radius pills
-    const radiusPills = container.querySelectorAll('.medimap-radius-pill');
-    assert.ok(radiusPills.length >= 4);
-  });
 });

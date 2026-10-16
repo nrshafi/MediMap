@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
+import { isValidCoordinate } from '../../map/coordinates';
+import { DEFAULT_DIAGNOSTIC_CATALOG } from '../diagnosticCatalog';
 import { DHAKA_LANDMARKS } from '../../map/landmarks';
 import {
   DEFAULT_DISCOVERY_CENTER,
@@ -51,54 +53,28 @@ describe('Discovery Data & Query Filter Engine', () => {
     assert.equal(filterBranchesByQueryAndLocation({ radiusKm: 0.1 }).radiusKm, 0.1);
     assert.equal(filterBranchesByQueryAndLocation({ radiusKm: 100 }).radiusKm, 100);
   });
-  describe('MOCK_BRANCH_LISTINGS domain data', () => {
-    it('contains at least 8 major Dhaka healthcare hospital branches', () => {
-      assert.ok(MOCK_BRANCH_LISTINGS.length >= 8);
-    });
-
-    it('includes verified hospital branches for Square, Evercare, United, Popular, Ibn Sina, DMCH, and BSMMU', () => {
-      const branchIds = MOCK_BRANCH_LISTINGS.map((b) => b.id);
-      assert.ok(branchIds.includes('square-panthapath'));
-      assert.ok(branchIds.includes('evercare-bashundhara'));
-      assert.ok(branchIds.includes('united-gulshan'));
-      assert.ok(branchIds.includes('popular-dhanmondi-branch'));
-      assert.ok(branchIds.includes('ibn-sina-dhanmondi-branch'));
-      assert.ok(branchIds.includes('ibn-sina-badda-branch'));
-      assert.ok(branchIds.includes('dmch-bakshibazar'));
-      assert.ok(branchIds.includes('bsmmu-shahbagh'));
-    });
-
-    it('verifies that every branch listing has coordinates, area, address, contact, and positive BDT prices', () => {
-      for (const branch of MOCK_BRANCH_LISTINGS) {
-        assert.ok(branch.id.length > 0);
-        assert.ok(branch.providerName.length > 0);
-        assert.ok(branch.branchName.length > 0);
-        assert.ok(branch.area.length > 0);
-        assert.ok(branch.address.length > 0);
-        assert.ok(branch.phone.length > 0);
-        assert.ok(branch.coordinates.latitude >= 23.68 && branch.coordinates.latitude <= 23.9);
-        assert.ok(branch.coordinates.longitude >= 90.32 && branch.coordinates.longitude <= 90.46);
-
-        assert.ok(branch.servicePrices.length >= 5);
-        for (const price of branch.servicePrices) {
-          assert.ok(price.serviceId.length > 0);
-          assert.ok(price.basePriceBdt !== null && price.basePriceBdt > 0);
-          assert.equal(branch.isSample, true);
-          assert.equal(price.verificationStatus, 'unverified');
-          assert.equal(price.verifiedAt, null);
-          assert.equal(price.priceSource, null);
-        }
+  it('keeps sample fixtures unverified and references valid, unique services and branch identifiers', () => {
+    const serviceIds = new Set(DEFAULT_DIAGNOSTIC_CATALOG.map((service) => service.id));
+    assert.ok(MOCK_BRANCH_LISTINGS.length > 0);
+    assert.equal(new Set(MOCK_BRANCH_LISTINGS.map((branch) => branch.id)).size, MOCK_BRANCH_LISTINGS.length);
+    for (const branch of MOCK_BRANCH_LISTINGS) {
+      assert.ok(isValidCoordinate(branch.coordinates));
+      assert.equal(branch.isSample, true);
+      assert.equal(new Set(branch.servicePrices.map((price) => price.serviceId)).size, branch.servicePrices.length);
+      for (const price of branch.servicePrices) {
+        assert.ok(serviceIds.has(price.serviceId), price.serviceId);
+        assert.ok(price.basePriceBdt === null || Number.isFinite(price.basePriceBdt) && price.basePriceBdt > 0);
+        assert.equal(price.verificationStatus, 'unverified');
+        assert.equal(price.verifiedAt, null);
+        assert.equal(price.priceSource, null);
       }
-    });
+    }
+  });
 
-    it('includes verified canonical location presets for Dhaka', () => {
-      assert.ok(DHAKA_LOCATION_PRESETS.length >= 5);
-      const presetIds = DHAKA_LOCATION_PRESETS.map((p) => p.id);
-      assert.ok(presetIds.includes('shahbagh'));
-      assert.ok(presetIds.includes('dhanmondi'));
-      assert.ok(presetIds.includes('farmgate'));
-      assert.ok(presetIds.includes('gulshan2'));
-    });
+  it('provides valid location presets with unique identifiers', () => {
+    assert.ok(DHAKA_LOCATION_PRESETS.length > 0);
+    assert.equal(new Set(DHAKA_LOCATION_PRESETS.map((preset) => preset.id)).size, DHAKA_LOCATION_PRESETS.length);
+    for (const preset of DHAKA_LOCATION_PRESETS) assert.ok(isValidCoordinate(preset.coordinates));
   });
 
   describe('filterBranchesByQueryAndLocation helper function', () => {

@@ -1,14 +1,10 @@
 import './setupDom';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import React, { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { DEFAULT_DIAGNOSTIC_CATALOG } from '../../diagnosticCatalog';
-import type { QueryMatch } from '../../types';
 import {
-  AmbiguityPrompt,
   AutoSuggestDropdown,
   DiagnosticSearchBox,
   RadiusSelector,
@@ -155,12 +151,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(container.querySelector('.medimap-selected-service-banner'), null);
     });
 
-    it('requires explicit typo selection before a radius change selects a service', () => {
+    it('emits radius changes without selecting a diagnostic service', () => {
       const selections: SearchSelection[] = [];
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="Lipid Profle" onSelectService={(selection) => selections.push(selection)} />);
+      const radii: number[] = [];
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="Lipid Profle" onSelectService={(selection) => selections.push(selection)} onRadiusChange={(radius) => radii.push(radius)} />);
       const radius = container.querySelector('input[type="radio"][value="5"]') as HTMLInputElement;
       clickElement(radius);
       assert.equal(selections.length, 0);
+      assert.deepEqual(radii, [5]);
     });
 
     it('synchronizes radius controls when an external action changes the radius', () => {
@@ -397,199 +395,22 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(firstOption!.getAttribute('aria-selected'), 'true');
     });
 
-    const cbcService = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'complete-blood-count'
-    )!;
-    const lipidService = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'lipid-profile'
-    )!;
-    const usgService = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'usg-whole-abdomen'
-    )!;
-
-    const mockSuggestions: SuggestionItem[] = [
-      {
-        id: 'opt-0',
-        kind: 'service_match',
-        canonicalService: cbcService,
-        label: cbcService.name,
-        category: cbcService.category,
-        matchType: 'exact_canonical',
-      },
-      {
-        id: 'opt-1',
-        kind: 'service_match',
-        canonicalService: lipidService,
-        label: lipidService.name,
-        category: lipidService.category,
-        matchType: 'exact_canonical',
-      },
-      {
-        id: 'opt-2',
-        kind: 'service_match',
-        canonicalService: usgService,
-        label: usgService.name,
-        category: usgService.category,
-        matchType: 'exact_canonical',
-      },
-    ];
-
-    function ComboboxTestHarness({
-      items = mockSuggestions,
-      onSelect,
-    }: {
-      items?: SuggestionItem[];
-      onSelect?: (item: SuggestionItem) => void;
-    }) {
-      const [activeIndex, setActiveIndex] = useState(-1);
-      const [isOpen, setIsOpen] = useState(false);
-      const [query, setQuery] = useState('Diagnostic');
-
-      const handleKeyDown = (
-        event: React.KeyboardEvent<HTMLInputElement>
-      ) => {
-        if (!isOpen || items.length === 0) {
-          if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            setIsOpen(true);
-            setActiveIndex(0);
-          }
-          return;
-        }
-
-        switch (event.key) {
-          case 'ArrowDown': {
-            event.preventDefault();
-            setActiveIndex((prev) => (prev + 1) % items.length);
-            break;
-          }
-          case 'ArrowUp': {
-            event.preventDefault();
-            setActiveIndex((prev) =>
-              prev <= 0 ? items.length - 1 : prev - 1
-            );
-            break;
-          }
-          case 'Enter': {
-            event.preventDefault();
-            if (activeIndex >= 0 && activeIndex < items.length) {
-              const selectedItem = items[activeIndex];
-              setQuery(selectedItem.label);
-              setIsOpen(false);
-              setActiveIndex(-1);
-              onSelect?.(selectedItem);
-            }
-            break;
-          }
-          case 'Escape': {
-            event.preventDefault();
-            setIsOpen(false);
-            setActiveIndex(-1);
-            break;
-          }
-        }
-      };
-
-      const activeOptionId =
-        isOpen && activeIndex >= 0 && activeIndex < items.length
-          ? `test-combobox-listbox-opt-${activeIndex}`
-          : undefined;
-
-      return (
-        <div>
-          <SearchInput
-            id="test-combobox-input"
-            value={query}
-            onChange={setQuery}
-            onKeyDown={handleKeyDown}
-            isExpanded={isOpen}
-            ariaControls="test-combobox-listbox"
-            ariaActiveDescendant={activeOptionId}
-          />
-          <AutoSuggestDropdown
-            id="test-combobox-listbox"
-            isOpen={isOpen}
-            items={items}
-            activeIndex={activeIndex}
-            onSelect={(item) => {
-              setQuery(item.label);
-              setIsOpen(false);
-              setActiveIndex(-1);
-              onSelect?.(item);
-            }}
-            query={query}
-          />
-        </div>
-      );
-    }
-
-    it('ArrowDown from open listbox cycles to next option and wraps around cleanly', () => {
-      const { container } = renderComponent(<ComboboxTestHarness />);
-      const input = container.querySelector<HTMLInputElement>('input')!;
-
-      // Open dropdown via ArrowDown -> highlights index 0
-      pressKey(input, 'ArrowDown');
-      assert.equal(input.getAttribute('aria-expanded'), 'true');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-0'
-      );
-
-      // Press ArrowDown -> moves to index 1
-      pressKey(input, 'ArrowDown');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-1'
-      );
-
-      // Press ArrowDown -> moves to index 2 (last item)
-      pressKey(input, 'ArrowDown');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-2'
-      );
-
-      // Next ArrowDown must cleanly wrap around to index 0
-      pressKey(input, 'ArrowDown');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-0',
-        'Must wrap around cleanly to the first option'
-      );
-    });
-
-    it('ArrowUp navigates upwards and wraps from top (0) to bottom (N-1)', () => {
-      const { container } = renderComponent(<ComboboxTestHarness />);
-      const input = container.querySelector<HTMLInputElement>('input')!;
-
-      // Open dropdown via ArrowDown -> highlights index 0
-      pressKey(input, 'ArrowDown');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-0'
-      );
-
-      // ArrowUp at index 0 wraps to index 2 (last option)
-      pressKey(input, 'ArrowUp');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-2',
-        'ArrowUp at index 0 must wrap to bottom option'
-      );
-
-      // ArrowUp again moves to index 1
-      pressKey(input, 'ArrowUp');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-1'
-      );
-
-      // ArrowUp again moves to index 0
-      pressKey(input, 'ArrowUp');
-      assert.equal(
-        input.getAttribute('aria-activedescendant'),
-        'test-combobox-listbox-opt-0'
-      );
+    it('cycles through actual typo suggestions in both keyboard directions', () => {
+      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="lipidd" debounceMs={50} />);
+      const input = container.querySelector<HTMLInputElement>('[role="combobox"]')!;
+      act(() => jest.advanceTimersByTime(50));
+      const options = Array.from(container.querySelectorAll<HTMLElement>('[role="option"]'));
+      assert.ok(options.length > 1, 'Use multiple suggestions to test navigation and wraparound');
+      for (const expected of [...options, options[0]]) {
+        pressKey(input, 'ArrowDown');
+        assert.equal(input.getAttribute('aria-activedescendant'), expected.id);
+        assert.equal(expected.getAttribute('aria-selected'), 'true');
+      }
+      for (const expected of [...options].reverse()) {
+        pressKey(input, 'ArrowUp');
+        assert.equal(input.getAttribute('aria-activedescendant'), expected.id);
+        assert.equal(expected.getAttribute('aria-selected'), 'true');
+      }
     });
 
     it('Enter with active option selected dispatches selection callback with correct canonical service ID', () => {
@@ -871,55 +692,6 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.match(banner!.textContent!, new RegExp(firstCardName!));
     });
 
-    it('pressing Enter on focused ambiguity card resolves to that canonical service', () => {
-      let resolvedMatch: QueryMatch | null = null;
-      const ctBrain = DEFAULT_DIAGNOSTIC_CATALOG.find(
-        (s) => s.id === 'ct-brain'
-      )!;
-      const ctChest = DEFAULT_DIAGNOSTIC_CATALOG.find(
-        (s) => s.id === 'ct-chest'
-      )!;
-
-      const matches: QueryMatch[] = [
-        {
-          canonicalService: ctBrain,
-          matchType: 'prefix',
-          matchedText: 'CT Scan',
-          score: 60,
-        },
-        {
-          canonicalService: ctChest,
-          matchType: 'prefix',
-          matchedText: 'CT Scan',
-          score: 60,
-        },
-      ];
-
-      const { container } = renderComponent(
-        <AmbiguityPrompt
-          query="CT Scan"
-          matches={matches}
-          onSelect={(m) => {
-            resolvedMatch = m;
-          }}
-        />
-      );
-
-      const cards = container.querySelectorAll<HTMLButtonElement>(
-        '.medimap-ambiguity-card'
-      );
-      assert.equal(cards.length, 2);
-
-      // Press Enter on second card (CT Chest)
-      pressKey(cards[1], 'Enter');
-      clickElement(cards[1]);
-      assert.ok(resolvedMatch);
-      assert.equal(
-        (resolvedMatch as QueryMatch).canonicalService.id,
-        'ct-chest'
-      );
-    });
-
     it('cancel button dismisses ambiguity prompt and restores input focus', () => {
       const { container } = renderComponent(
         <DiagnosticSearchBox initialQuery="" debounceMs={50} />
@@ -1107,76 +879,4 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
   });
 
-  describe('6. Mobile Layout and Touch Target Standards', () => {
-    it('verifies that all interactive targets meet the minimum 44px touch target standard', () => {
-      const cssPath = join(__dirname, '..', 'searchUi.css');
-      const cssContent = readFileSync(cssPath, 'utf-8');
-
-      // Verify clear button min-height 44px and min-width 44px
-      assert.match(
-        cssContent,
-        /\.medimap-search-clear-btn\s*\{[^}]*min-height:\s*44px;/s
-      );
-      assert.match(
-        cssContent,
-        /\.medimap-search-clear-btn\s*\{[^}]*min-width:\s*44px;/s
-      );
-
-      // Verify radius pill min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-radius-pill\s*\{[^}]*min-height:\s*44px;/s
-      );
-
-      // Verify custom radius input height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-custom-radius-input\s*\{[^}]*height:\s*44px;/s
-      );
-
-      // Verify dropdown option min-height at least 44px (configured to 48px for comfortable clinical readability)
-      assert.match(
-        cssContent,
-        /\.medimap-dropdown-option\s*\{[^}]*min-height:\s*48px;/s
-      );
-
-      // Verify ambiguity card min-height 48px
-      assert.match(
-        cssContent,
-        /\.medimap-ambiguity-card\s*\{[^}]*min-height:\s*48px;/s
-      );
-
-      // Verify ambiguity cancel button min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-ambiguity-cancel-btn\s*\{[^}]*min-height:\s*44px;/s
-      );
-
-      // Verify selected test change button min-height 44px
-      assert.match(
-        cssContent,
-        /\.medimap-selected-change-btn\s*\{[^}]*min-height:\s*44px;/s
-      );
-    });
-
-    it('verifies responsive layout CSS rules for mobile (max-width: 480px) and 375px screens', () => {
-      const cssPath = join(__dirname, '..', 'searchUi.css');
-      const cssContent = readFileSync(cssPath, 'utf-8');
-
-      // Verify media query presence
-      assert.match(cssContent, /@media\s*\(max-width:\s*480px\)/);
-
-      // Verify radius segmented grid adapts to 2-column on mobile
-      assert.match(
-        cssContent,
-        /grid-template-columns:\s*1fr\s+1fr;/
-      );
-
-      // Verify radius pill stretches full width inside mobile grid
-      assert.match(
-        cssContent,
-        /\.medimap-radius-pill\s*\{[^}]*width:\s*100%;/s
-      );
-    });
-  });
 });

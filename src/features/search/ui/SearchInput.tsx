@@ -2,7 +2,6 @@ import {
   useEffect,
   useId,
   useRef,
-  useState,
   useTransition,
 } from 'react';
 import type { SearchInputProps } from './types';
@@ -36,7 +35,6 @@ export function SearchInput({
   const activeInputRef = inputRef ?? internalInputRef;
 
   const [isPending, startTransition] = useTransition();
-  const [hasInteracted, setHasInteracted] = useState(false);
   const debouncedChangeRef = useRef(onDebouncedChange);
   useEffect(() => {
     debouncedChangeRef.current = onDebouncedChange;
@@ -56,9 +54,6 @@ export function SearchInput({
   }, [value, debounceMs]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!hasInteracted) {
-      setHasInteracted(true);
-    }
     onChange(event.target.value);
   };
 

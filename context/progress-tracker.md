@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-16 19:19:00 +06:00`.
+Last updated: `2026-10-16 19:54:49 +06:00`.
 
 ## Current phase
 
@@ -12,7 +12,8 @@ Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with 
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
 Source-backed branch data, D1 integration, provider selection, and complete location input remain unfinished.
-The detailed findings and repair scope are in [red01s-review.md](red01s-review.md).
+Discovery query and radius changes now synchronize with the active results and URL.
+The current test audit and verification are in [test-review.md](test-review.md).
 
 ## Architecture invariants
 
@@ -34,6 +35,22 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Discovery state synchronization and test review (2026-10-16 19:54:49 +06:00)
+
+- Query edits now notify the discovery page, which clears results for unresolved queries.
+- Radius changes use a separate callback and no longer select a diagnostic service.
+- The Change test action uses the same query-clear handler as the search input.
+- Added focused state-transition regressions. Nine fail against the pre-fix components and pass after the repairs.
+- Removed tests that copied handlers, checked CSS source instead of layout, duplicated behavior, or claimed unsupported geographic accuracy.
+- Replaced the simulated router-flow suite with component state tests, URL validation tests, and six actual browser scenarios.
+- Added Playwright Test 1.64.1 with desktop and 375 by 812 mobile Chromium projects. Documented installation and execution in the README.
+- Passed 241 tests across 15 files, including a randomized run with seed `16102026`.
+- Passed six browser scenarios, strict type checking, linting, the production build, and frozen-lockfile installation.
+- Inspected the mobile screenshot. No horizontal overflow appeared. Selected rendered controls met the tested size limits.
+- Browser scenario execution worked in the sandbox, but Windows server shutdown required an unrestricted test run. The final command exited successfully.
+- Source-backed data, D1 access, provider selection, and complete location input remain unfinished.
+- No commit, push, or deployment occurred.
 
 ### Red01s review and repairs (2026-10-16 19:19:00 +06:00)
 
@@ -276,7 +293,7 @@ These are confirmed constraints for later feature implementation. Full details a
 - Free-tier workload fit for the selected services.
 - Effect of incorrect-price reports on verification status and statistics eligibility.
 - Default sorting, comparison limits, price history, and rating aggregation.
-- Validation, formatting, and integration and browser test tools for functional features.
+- Validation, formatting, and Workers integration test tools. Discovery browser tests use Playwright Test with Chromium.
 - Exact folder paths, migration review rules, and production migration application rules.
 - Remaining optional P1 features.
 

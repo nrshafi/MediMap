@@ -27,6 +27,8 @@ import type {
  */
 export function DiagnosticSearchBox({
   onSelectService,
+  onQueryChange,
+  onRadiusChange,
   initialQuery = '',
   initialRadiusKm = 3,
   debounceMs = 250,
@@ -149,6 +151,7 @@ export function DiagnosticSearchBox({
 
   const handleQueryChange = (newQuery: string) => {
     setQuery(newQuery);
+    onQueryChange?.(newQuery);
     setResolutionResult(null);
     setIsDropdownOpen(false);
     setActiveIndex(-1);
@@ -249,21 +252,7 @@ export function DiagnosticSearchBox({
 
   const handleRadiusChange = (newRadiusKm: number) => {
     setRadiusKm(newRadiusKm);
-    const primaryMatch = resolveDiagnosticQuery(query.trim(), catalog).primaryMatch;
-    const serviceToUse =
-      selectedService ??
-      (query.trim() !== '' && primaryMatch?.matchType !== 'typo_suggestion'
-        ? primaryMatch?.canonicalService ?? null
-        : null);
-
-    if (serviceToUse && onSelectService) {
-      onSelectService({
-        canonicalService: serviceToUse,
-        query: serviceToUse.name,
-        selectionType: 'direct',
-        radiusKm: newRadiusKm,
-      });
-    }
+    onRadiusChange?.(newRadiusKm);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -409,8 +398,7 @@ export function DiagnosticSearchBox({
             type="button"
             className="medimap-selected-change-btn"
             onClick={() => {
-              setSelectedService(null);
-              setQuery('');
+              handleQueryChange('');
               inputRef.current?.focus();
             }}
           >

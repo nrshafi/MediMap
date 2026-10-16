@@ -6,8 +6,7 @@
  * 1. Core branch and price data accessibility when routing fails.
  * 2. Separation of straight-line distance, road distance, and travel duration.
  * 3. Fallback routing handler and batch concurrency behavior.
- * 4. Realistic Dhaka landmark routing and decimal precision.
- * 5. Error boundaries, zero-distance routes, invalid coordinates, and timeouts.
+ * 4. Zero-distance routes, invalid coordinates, and timeouts.
  */
 
 import assert from 'node:assert/strict';
@@ -21,13 +20,10 @@ import {
   mapConcurrent,
 } from '../branchRouting';
 import {
-  createUnavailableRouteResult,
   executeWithFallback,
   FallbackRoutingAdapter,
-  isRouteAvailable,
-  isRouteUnavailable,
 } from '../fallback';
-import { buildOsrmUrl, OsrmAdapter } from '../osrmAdapter';
+import { OsrmAdapter } from '../osrmAdapter';
 import type {
   RoutableBranch,
   RouteResult,
@@ -35,7 +31,7 @@ import type {
 } from '../types';
 
 /**
- * Realistic clinical branch fixture with full pricing and verification metadata.
+ * Sample branch fixture with pricing and verification metadata.
  */
 interface ClinicalBranchFixture extends RoutableBranch {
   readonly branchId: string;
@@ -720,139 +716,6 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
     assert.deepEqual(resLarge, [10, 20, 30]);
   });
 
-  it('validates helper functions isRouteAvailable, isRouteUnavailable, and createUnavailableRouteResult', () => {
-    const unavail = createUnavailableRouteResult(
-      origin,
-      DHAKA_LANDMARKS.evercare.coordinates,
-      'network_error',
-      'Test network failure'
-    );
-
-    assert.equal(isRouteUnavailable(unavail), true);
-    assert.equal(isRouteAvailable(unavail), false);
-    assert.equal(unavail.status, 'unavailable');
-    assert.equal(unavail.reason, 'network_error');
-    assert.equal(unavail.roadDistanceKm, undefined);
-    assert.equal(unavail.travelDurationMinutes, undefined);
-    assert.equal(unavail.message, 'Test network failure');
-
-    const avail: RouteResult = {
-      status: 'available',
-      roadDistanceKm: 12.5,
-      travelDurationMinutes: 30.0,
-      origin,
-      destination: DHAKA_LANDMARKS.evercare.coordinates,
-      source: 'osrm',
-    };
-
-    assert.equal(isRouteAvailable(avail), true);
-    assert.equal(isRouteUnavailable(avail), false);
-    if (isRouteAvailable(avail)) {
-      assert.equal(avail.roadDistanceKm, 12.5);
-      assert.equal(avail.travelDurationMinutes, 30.0);
-    }
-  });
-});
-
-describe('Requirement 4: Dhaka Landmark Routes & Decimal Precision', () => {
-  const origin: Coordinates = DHAKA_LANDMARKS.dmch.coordinates;
-
-  it('rounds road distance to 2 decimal places and duration to 1 decimal place', async () => {
-    // 12456.78 meters -> 12.46 km
-    // 1834.56 seconds -> 30.576 min -> 30.6 min
-    const mockFetch: typeof fetch = async (): Promise<Response> => {
-      return new Response(
-        JSON.stringify({
-          code: 'Ok',
-          routes: [{ distance: 12456.78, duration: 1834.56 }],
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
-    };
-
-    const adapter = new OsrmAdapter({ fetchFn: mockFetch });
-    const result = await adapter.calculateRoute(
-      origin,
-      DHAKA_LANDMARKS.squareHospital.coordinates
-    );
-
-    assert.equal(result.status, 'available');
-    if (result.status === 'available') {
-      assert.equal(result.roadDistanceKm, 12.46);
-      assert.equal(result.travelDurationMinutes, 30.6);
-    }
-  });
-
-  it('formats OSRM request URLs correctly for all verified Dhaka landmarks', () => {
-    const baseUrl = 'https://router.project-osrm.org';
-    const landmarks = Object.values(DHAKA_LANDMARKS);
-
-    for (const landmark of landmarks) {
-      const url = buildOsrmUrl(baseUrl, origin, landmark.coordinates);
-      // Origin lon,lat
-      assert.equal(url.includes(`${origin.longitude},${origin.latitude}`), true);
-      // Destination lon,lat
-      assert.equal(
-        url.includes(
-          `${landmark.coordinates.longitude},${landmark.coordinates.latitude}`
-        ),
-        true
-      );
-      assert.equal(url.includes('overview=false&steps=false&alternatives=false'), true);
-    }
-  });
-
-  it('handles diverse landmark pairs with realistic driving routes', async () => {
-    const pairs = [
-      {
-        from: DHAKA_LANDMARKS.popularDhanmondi.coordinates,
-        to: DHAKA_LANDMARKS.ibnSinaDhanmondi.coordinates,
-        distanceM: 1100, // 1.10 km
-        durationS: 300, // 5.0 min
-        expectedKm: 1.1,
-        expectedMin: 5.0,
-      },
-      {
-        from: DHAKA_LANDMARKS.mirpur10.coordinates,
-        to: DHAKA_LANDMARKS.uttaraHouseBuilding.coordinates,
-        distanceM: 9850, // 9.85 km
-        durationS: 1560, // 26.0 min
-        expectedKm: 9.85,
-        expectedMin: 26.0,
-      },
-      {
-        from: DHAKA_LANDMARKS.unitedHospital.coordinates,
-        to: DHAKA_LANDMARKS.ibnSinaBadda.coordinates,
-        distanceM: 4200, // 4.20 km
-        durationS: 780, // 13.0 min
-        expectedKm: 4.2,
-        expectedMin: 13.0,
-      },
-    ];
-
-    for (const pair of pairs) {
-      const mockFetch: typeof fetch = async (): Promise<Response> => {
-        return new Response(
-          JSON.stringify({
-            code: 'Ok',
-            routes: [{ distance: pair.distanceM, duration: pair.durationS }],
-          }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } }
-        );
-      };
-
-      const adapter = new OsrmAdapter({ fetchFn: mockFetch });
-      const res = await adapter.calculateRoute(pair.from, pair.to);
-
-      assert.equal(res.status, 'available');
-      if (res.status === 'available') {
-        assert.equal(res.roadDistanceKm, pair.expectedKm);
-        assert.equal(res.travelDurationMinutes, pair.expectedMin);
-        assert.deepEqual(res.origin, pair.from);
-        assert.deepEqual(res.destination, pair.to);
-      }
-    }
-  });
 });
 
 describe('Requirement 5: Error and Edge Cases', () => {

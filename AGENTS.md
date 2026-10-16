@@ -23,7 +23,11 @@ If implementation changes the architecture, scope, or
 standards documented in the context files, update the
 relevant file before continuing.
 
+## Context directory
 
+Do not create files or subdirectories in `context/` unless the user explicitly requests them.
+Use existing context files for the required updates described above.
+Store review reports, audit findings, and other task-specific documents outside `context/`.
 
 ## Documentation and API Verification
 

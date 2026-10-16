@@ -8,134 +8,15 @@ import {
   type Coordinates,
 } from '../index';
 
-describe('Haversine Distance Accuracy Benchmarks (Dhaka Landmarks)', () => {
-  it('benchmarks very close healthcare landmarks: Shahbagh to BSMMU', () => {
-    // BSMMU is directly adjacent to Shahbagh intersection
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.bsmmu.coordinates,
+describe('Haversine reference distances', () => {
+  it('matches the spherical law of cosines for an oblique route at 60 degrees latitude', () => {
+    const distance = calculateHaversineDistanceKm(
+      { latitude: 60, longitude: 0 },
+      { latitude: 60, longitude: 90 },
     );
-
-    // Centroid straight-line distance is ~0.056 km (56m)
-    // Within campus perimeter is ~0.13 km (130m)
-    assert.ok(dist >= 0.05, `Distance should be >= 0.05 km, got ${dist}`);
-    assert.ok(dist <= 0.15, `Distance should be <= 0.15 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 0.06);
-
-    // Exact benchmark point for BSMMU OPD / Cabin Block (23.7394, 90.3962)
-    const bsmmuOpdPoint: Coordinates = { latitude: 23.7394, longitude: 90.3962 };
-    const distToOpd = calculateHaversineDistanceKm(DHAKA_LANDMARKS.shahbagh.coordinates, bsmmuOpdPoint);
-    assert.ok(Math.abs(distToOpd - 0.13) < 0.02, `OPD distance should be ~0.13 km, got ${distToOpd}`);
-  });
-
-  it('benchmarks Farmgate to Square Hospital (~0.65 - 0.74 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.farmgate.coordinates,
-      DHAKA_LANDMARKS.squareHospital.coordinates,
-    );
-
-    // Centroid straight line is ~0.65 km (650m), travel distance ~0.74 km
-    assert.ok(dist >= 0.60 && dist <= 0.75, `Expected 0.60 - 0.75 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 0.65);
-
-    // Benchmark point for Panthapath / Square Emergency gate (23.7538, 90.3805)
-    const squareEmergencyGate: Coordinates = { latitude: 23.7538, longitude: 90.3805 };
-    const distToEmergency = calculateHaversineDistanceKm(DHAKA_LANDMARKS.farmgate.coordinates, squareEmergencyGate);
-    assert.ok(Math.abs(distToEmergency - 0.73) < 0.03, `Emergency gate should be ~0.74 km, got ${distToEmergency}`);
-  });
-
-  it('benchmarks Shahbagh to DMCH (~1.38 - 1.39 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.dmch.coordinates,
-    );
-
-    // Straight-line distance is ~1.39 km (1392m)
-    assert.ok(dist >= 1.35 && dist <= 1.45, `Expected 1.35 - 1.45 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 1.39);
-    assert.ok(Math.abs(dist - 1.38) <= 0.02, `Should match ~1.38 km reference within 0.02km, got ${dist}`);
-  });
-
-  it('benchmarks Shahbagh to Farmgate (~2.16 - 2.58 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.farmgate.coordinates,
-    );
-
-    // Centroid straight-line is ~2.16 km; travel corridor is ~2.58 km
-    assert.ok(dist >= 2.10 && dist <= 2.30, `Expected 2.10 - 2.30 km straight-line, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 2.16);
-
-    // Benchmark transit point north of Farmgate flyover (23.7595, 90.3850)
-    const farmgateNorthPt: Coordinates = { latitude: 23.7595, longitude: 90.3850 };
-    const distNorth = calculateHaversineDistanceKm(DHAKA_LANDMARKS.shahbagh.coordinates, farmgateNorthPt);
-    assert.ok(Math.abs(distNorth - 2.58) < 0.25, `Corridor benchmark should approximate ~2.58 km, got ${distNorth}`);
-  });
-
-  it('benchmarks Shahbagh to Gulshan-2 (~6.57 - 6.58 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.gulshan2.coordinates,
-    );
-
-    // Straight line distance is ~6.57 km
-    assert.ok(dist >= 6.50 && dist <= 6.65, `Expected 6.50 - 6.65 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 6.57);
-    assert.ok(Math.abs(dist - 6.58) <= 0.02, `Should match 6.58 km reference within 0.02 km, got ${dist}`);
-  });
-
-  it('benchmarks Shahbagh to Evercare Hospital Bashundhara (~8.71 - 8.78 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.evercare.coordinates,
-    );
-
-    // Straight line distance is ~8.78 km
-    assert.ok(dist >= 8.65 && dist <= 8.85, `Expected 8.65 - 8.85 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 8.78);
-    assert.ok(Math.abs(dist - 8.71) <= 0.1, `Should match 8.71 km reference within 0.1 km, got ${dist}`);
-  });
-
-  it('benchmarks Shahbagh to Uttara House Building (~14.41 - 15.19 km)', () => {
-    const dist = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-      DHAKA_LANDMARKS.uttaraHouseBuilding.coordinates,
-    );
-
-    // Centroid straight-line is ~14.41 km; road benchmark is ~15.19 km
-    assert.ok(dist >= 14.30 && dist <= 14.55, `Expected 14.30 - 14.55 km, got ${dist}`);
-    assert.equal(roundDistanceKm(dist, 2), 14.41);
-
-    // Uttara Sector 11/13 benchmark point (23.8745, 90.3950)
-    const uttaraSector13: Coordinates = { latitude: 23.8745, longitude: 90.3950 };
-    const distUttaraSec13 = calculateHaversineDistanceKm(DHAKA_LANDMARKS.shahbagh.coordinates, uttaraSector13);
-    assert.ok(Math.abs(distUttaraSec13 - 15.14) < 0.1, `Uttara north point should approximate ~15.19 km, got ${distUttaraSec13}`);
-  });
-
-  it('benchmarks secondary Dhaka healthcare pairs accurately', () => {
-    // Dhanmondi Popular to Square Hospital: ~1.14 km
-    const distPopularSquare = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.popularDhanmondi.coordinates,
-      DHAKA_LANDMARKS.squareHospital.coordinates,
-    );
-    assert.ok(distPopularSquare >= 1.10 && distPopularSquare <= 1.20);
-    assert.equal(roundDistanceKm(distPopularSquare, 2), 1.14);
-
-    // Ibn Sina Dhanmondi to United Hospital (Gulshan-2): ~7.84 km
-    const distIbnSinaUnited = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.ibnSinaDhanmondi.coordinates,
-      DHAKA_LANDMARKS.unitedHospital.coordinates,
-    );
-    assert.ok(distIbnSinaUnited >= 7.80 && distIbnSinaUnited <= 7.90);
-    assert.equal(roundDistanceKm(distIbnSinaUnited, 2), 7.86);
-
-    // Mirpur-10 Circle to Shahbagh: ~8.11 km
-    const distMirpurShahbagh = calculateHaversineDistanceKm(
-      DHAKA_LANDMARKS.mirpur10.coordinates,
-      DHAKA_LANDMARKS.shahbagh.coordinates,
-    );
-    assert.ok(distMirpurShahbagh >= 8.00 && distMirpurShahbagh <= 8.20);
-    assert.equal(roundDistanceKm(distMirpurShahbagh, 2), 8.11);
+    // The central angle has cosine 3/4 for these coordinates.
+    const expectedKm = 6371 * Math.acos(0.75);
+    assert.ok(Math.abs(distance - expectedKm) < 1e-8);
   });
 });
 
@@ -156,7 +37,6 @@ describe('Haversine Formula Mathematical Invariants & Metric Space Axioms', () =
   });
 
   it('satisfies symmetry axiom: distance(A, B) === distance(B, A) across all landmark pairs', () => {
-    let comparisonCount = 0;
     for (let i = 0; i < landmarks.length; i++) {
       for (let j = 0; j < landmarks.length; j++) {
         const a = landmarks[i]?.coordinates;
@@ -171,11 +51,8 @@ describe('Haversine Formula Mathematical Invariants & Metric Space Axioms', () =
           Math.abs(distAB - distBA) < 1e-12,
           `Symmetry violated between ${landmarks[i]?.id} and ${landmarks[j]?.id}: ${distAB} !== ${distBA}`,
         );
-        comparisonCount++;
       }
     }
-    // 14 landmarks * 14 landmarks = 196 comparisons
-    assert.equal(comparisonCount, 196);
   });
 
   it('satisfies non-negativity axiom: distance(A, B) >= 0 for all pairs', () => {
@@ -188,7 +65,6 @@ describe('Haversine Formula Mathematical Invariants & Metric Space Axioms', () =
   });
 
   it('satisfies triangle inequality axiom: distance(A, C) <= distance(A, B) + distance(B, C)', () => {
-    let tripletCount = 0;
     const tolerance = 1e-9; // Floating-point rounding tolerance
 
     for (const a of landmarks) {
@@ -202,12 +78,9 @@ describe('Haversine Formula Mathematical Invariants & Metric Space Axioms', () =
             dAC <= dAB + dBC + tolerance,
             `Triangle inequality violated: d(${a.id}, ${c.id}) = ${dAC} > d(${a.id}, ${b.id}) = ${dAB} + d(${b.id}, ${c.id}) = ${dBC}`,
           );
-          tripletCount++;
         }
       }
     }
-    // 14 * 14 * 14 = 2,744 triplets verified
-    assert.equal(tripletCount, 2744);
   });
 });
 

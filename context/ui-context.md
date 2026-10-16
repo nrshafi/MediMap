@@ -38,6 +38,8 @@ Identify sample data before the search controls and on each sample price card.
 Show explicit empty states for ambiguous queries, missing matches, and missing branch listings.
 Require selection before showing results for ambiguous queries or typo suggestions.
 Keep search suggestions closed after selection or dismissal until the query changes or the user reopens them.
+Clear previous branch results when an edited query is ambiguous, unmatched, blank, or an unconfirmed typo.
+Update the radius independently of service selection. Keep the edited query when the radius changes.
 Synchronize radius controls, result filtering, URL parameters, and the schematic map circle.
 Support keyboard selection and visible focus on search options, map pins, and branch controls.
 At mobile widths, show list and map view controls and allow dismissal of the selected branch summary.

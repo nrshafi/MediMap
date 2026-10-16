@@ -349,7 +349,7 @@ describe('Branch Routing Helpers', () => {
     assert.equal(enriched[1].route.status, 'available');
   });
 
-  it('runs mapConcurrent respecting concurrency and maintaining order', async () => {
+  it('preserves item order in mapConcurrent', async () => {
     const items = [10, 20, 30, 40, 50];
     const results = await mapConcurrent(items, 2, async (item) => {
       return item * 2;

@@ -28,7 +28,7 @@ export const defaultRoutingAdapter: RoutingAdapter = new FallbackRoutingAdapter(
 export async function mapConcurrent<T, R>(
   items: readonly T[],
   concurrency: number,
-  mapper: (item: T, index: number) => Promise<R>
+  mapper: (item: T, index: number) => Promise<R>,
 ): Promise<R[]> {
   if (!Number.isInteger(concurrency) || concurrency < 1) {
     throw new RangeError('Concurrency must be a positive finite integer.');
@@ -73,13 +73,13 @@ export async function getBranchRoutes(
   origin: Coordinates,
   destinations: readonly Coordinates[],
   adapter: RoutingAdapter = defaultRoutingAdapter,
-  options?: BatchRouteOptions
+  options?: BatchRouteOptions,
 ): Promise<RouteResult[]> {
   const concurrency = options?.concurrency ?? 3;
 
   return mapConcurrent(destinations, concurrency, async (destination) => {
     return executeWithFallback(origin, destination, () =>
-      adapter.calculateRoute(origin, destination, options)
+      adapter.calculateRoute(origin, destination, options),
     );
   });
 }
@@ -98,19 +98,14 @@ export async function enrichBranchesWithRoutes<T extends RoutableBranch>(
   branches: readonly T[],
   origin: Coordinates,
   adapter: RoutingAdapter = defaultRoutingAdapter,
-  options?: BatchRouteOptions
+  options?: BatchRouteOptions,
 ): Promise<Array<EnrichedBranch<T>>> {
   if (branches.length === 0) {
     return [];
   }
 
   const destinations = branches.map((branch) => branch.coordinates);
-  const routeResults = await getBranchRoutes(
-    origin,
-    destinations,
-    adapter,
-    options
-  );
+  const routeResults = await getBranchRoutes(origin, destinations, adapter, options);
 
   return branches.map((branch, index) => ({
     ...branch,

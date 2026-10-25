@@ -90,10 +90,11 @@ Before completing a feature:
 
 1. Run type checking.
 2. Run linting.
-3. Run relevant automated tests.
-4. Run the production build.
-5. Check changed screens manually on mobile.
-6. Record completed work and any unresolved checks in `progress-tracker.md`.
+3. Run `bun run format:check` to verify formatting.
+4. Run relevant automated tests.
+5. Run the production build.
+6. Check changed screens manually on mobile.
+7. Record completed work and any unresolved checks in `progress-tracker.md`.
 
 Use `bun run typecheck`, `bun run lint`, and `bun run build`.
 Use Bun's native `bun check` for strict TypeScript checking and Oxlint for linting.
@@ -101,6 +102,13 @@ Use stable releases only. Keep a necessary third-party tool when stable Bun does
 Preserve the rules, TypeScript overrides, and exclusions in `.oxlintrc.json`.
 Run `bun run lint:fix` to apply safe fixes. Lint warnings must fail the command.
 Use `bun install --frozen-lockfile` for reproducible installs.
+Use stable Bun 1.4.4 or later. The selected toolchain version is `bun@1.4.4` in `package.json`.
+Use `bun run format` for source, tests, root TypeScript and JSON files, `bunfig.toml`, `.oxlintrc.json`, and the README.
+Use two spaces, semicolons, single quotes, and a 100-character print width. Keep import sorting disabled.
+Exclude `src/routeTree.gen.ts` and agent configuration directories from formatting. Review context documents separately.
+Use `minimumReleaseAge = "3d"` for new dependency resolution. Add exact-version exceptions only after review.
+Use `bun run test:coverage` during test reviews. Keep coverage optional and do not set an unreviewed percentage threshold.
+Coverage reports do not replace failure-state tests or browser checks.
 Prefer Bun native utilities for local scripts and compatible unit tests.
 Use `bun test` for unit tests that can run outside the Workers runtime.
 Select Workers integration and browser test tools after compatibility checks.
@@ -128,6 +136,6 @@ Checked on 8 October 2026:
 
 ## Pending decisions
 
-- Additional feature paths, formatter, validation library, and Workers integration test tools. The application uses Bun and Playwright Test.
+- Additional feature paths, validation library, and Workers integration test tools. The application uses Bun formatting and Playwright Test.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

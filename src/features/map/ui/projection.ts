@@ -80,7 +80,7 @@ function fromMercatorY(mercatorY: number): number {
 export function computeAutoBounds(
   branches: readonly { readonly coordinates: Coordinates }[],
   center?: Coordinates | null,
-  paddingRatio = 0.15
+  paddingRatio = 0.15,
 ): GeoBoundingBox {
   const points: Coordinates[] = [];
 
@@ -149,7 +149,7 @@ export function computeAutoBounds(
  */
 export function createMapProjector(
   bounds: GeoBoundingBox = DHAKA_DEFAULT_BOUNDS,
-  viewport: MapViewport = { width: 800, height: 600, padding: 36 }
+  viewport: MapViewport = { width: 800, height: 600, padding: 36 },
 ): MapProjector {
   const width = Math.max(100, viewport.width);
   const height = Math.max(100, viewport.height);

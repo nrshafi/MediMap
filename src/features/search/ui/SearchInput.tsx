@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useId,
-  useRef,
-  useTransition,
-} from 'react';
+import { useEffect, useId, useRef, useTransition } from 'react';
 import type { SearchInputProps } from './types';
 
 /**
@@ -116,11 +111,7 @@ export function SearchInput({
         />
 
         {isLoading || isPending ? (
-          <span
-            className="medimap-search-spinner"
-            aria-hidden="true"
-            title="Resolving query"
-          >
+          <span className="medimap-search-spinner" aria-hidden="true" title="Resolving query">
             <svg
               className="medimap-animate-spin"
               width="18"

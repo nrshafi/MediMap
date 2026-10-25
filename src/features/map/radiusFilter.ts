@@ -38,9 +38,7 @@ function isRadiusPreset(value: number): value is RadiusPresetKm {
  * - An object matching `{ type: 'custom', radiusKm: number }`
  * - An object with `{ radiusKm: number }`
  */
-export function parseRadiusFilterInput(
-  input: unknown,
-): RadiusFilterInputResult {
+export function parseRadiusFilterInput(input: unknown): RadiusFilterInputResult {
   if (typeof input === 'number') {
     if (!Number.isFinite(input)) {
       return {

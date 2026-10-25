@@ -913,4 +913,3 @@ export const MOCK_BRANCH_LISTINGS: readonly MockBranchListing[] = [
     ],
   },
 ] as const;
-

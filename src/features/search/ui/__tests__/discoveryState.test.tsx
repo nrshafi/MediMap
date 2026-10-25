@@ -12,10 +12,17 @@ function renderDiscovery(initial: DiscoveryViewProps = {}) {
   let latest = initial;
   function Harness() {
     const [params, setParams] = useState<DiscoveryViewProps>({
-      query: 'Complete Blood Count', radius: 3, ...initial,
+      query: 'Complete Blood Count',
+      radius: 3,
+      ...initial,
     });
     latest = params;
-    return <DiscoveryView {...params} onSearchChange={(next) => setParams((previous) => ({ ...previous, ...next }))} />;
+    return (
+      <DiscoveryView
+        {...params}
+        onSearchChange={(next) => setParams((previous) => ({ ...previous, ...next }))}
+      />
+    );
   }
   const container = document.createElement('div');
   document.body.append(container);
@@ -62,7 +69,10 @@ describe('Discovery state transitions', () => {
       assert.equal(params().query, query);
       assert.equal(params().selectedBranchId, undefined);
       assertNoResults(container);
-      assert.doesNotMatch(container.querySelector('.medimap-active-filters-bar')?.textContent ?? '', /Complete Blood Count/);
+      assert.doesNotMatch(
+        container.querySelector('.medimap-active-filters-bar')?.textContent ?? '',
+        /Complete Blood Count/,
+      );
     });
   }
 
@@ -74,7 +84,10 @@ describe('Discovery state transitions', () => {
       assert.equal(params().query, query);
       assert.equal(params().radius, 5);
       assert.equal(container.querySelector<HTMLInputElement>('input[value="5"]')?.checked, true);
-      assert.match(container.querySelector('.medimap-active-filters-bar')?.textContent ?? '', /Straight-line radius:\s*5 km/);
+      assert.match(
+        container.querySelector('.medimap-active-filters-bar')?.textContent ?? '',
+        /Straight-line radius:\s*5 km/,
+      );
       assertNoResults(container);
     });
   }
@@ -85,8 +98,22 @@ describe('Discovery state transitions', () => {
     assert.equal(params().query, '');
     assertNoResults(container);
     const input = inputQuery(container, 'CBC');
-    act(() => input.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }) as unknown as KeyboardEvent));
-    act(() => input.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }) as unknown as KeyboardEvent));
+    act(() =>
+      input.dispatchEvent(
+        new win.KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+        }) as unknown as KeyboardEvent,
+      ),
+    );
+    act(() =>
+      input.dispatchEvent(
+        new win.KeyboardEvent('keydown', {
+          key: 'Enter',
+          bubbles: true,
+        }) as unknown as KeyboardEvent,
+      ),
+    );
     assert.ok(container.querySelector('.medimap-selected-service-banner'));
     assert.ok(container.querySelector('.medimap-branch-card'));
     click(container, '.medimap-selected-change-btn');
@@ -100,15 +127,27 @@ describe('Discovery state transitions', () => {
     click(container, 'input[value="5"]');
     const input = container.querySelector<HTMLInputElement>('[role="combobox"]');
     assert.ok(input);
-    act(() => input.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }) as unknown as KeyboardEvent));
-    const candidate = Array.from(container.querySelectorAll<HTMLButtonElement>('.medimap-ambiguity-card'))
-      .find((button) => button.textContent?.includes('CT Scan Chest'));
+    act(() =>
+      input.dispatchEvent(
+        new win.KeyboardEvent('keydown', {
+          key: 'ArrowDown',
+          bubbles: true,
+        }) as unknown as KeyboardEvent,
+      ),
+    );
+    const candidate = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('.medimap-ambiguity-card'),
+    ).find((button) => button.textContent?.includes('CT Scan Chest'));
     assert.ok(candidate);
     act(() => candidate.click());
     assert.equal(params().query, 'CT Scan Chest');
     assert.equal(params().radius, 5);
-    const cards = Array.from(container.querySelectorAll('.medimap-branch-card')).map((card) => card.id.replace('branch-card-', '')).sort();
-    const pins = Array.from(container.querySelectorAll('[data-testid^="map-pin-"]')).map((pin) => pin.getAttribute('data-testid')?.replace('map-pin-', '')).sort();
+    const cards = Array.from(container.querySelectorAll('.medimap-branch-card'))
+      .map((card) => card.id.replace('branch-card-', ''))
+      .sort();
+    const pins = Array.from(container.querySelectorAll('[data-testid^="map-pin-"]'))
+      .map((pin) => pin.getAttribute('data-testid')?.replace('map-pin-', ''))
+      .sort();
     assert.ok(cards.length > 0);
     assert.deepEqual(pins, cards);
   });

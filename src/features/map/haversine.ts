@@ -28,18 +28,12 @@ function toRadians(degrees: number): number {
  * @param pointB Target coordinates
  * @returns Distance in kilometers
  */
-export function calculateHaversineDistanceKm(
-  pointA: Coordinates,
-  pointB: Coordinates,
-): number {
+export function calculateHaversineDistanceKm(pointA: Coordinates, pointB: Coordinates): number {
   if (!isValidCoordinate(pointA) || !isValidCoordinate(pointB)) {
     throw new RangeError('Distance requires valid WGS 84 coordinates.');
   }
 
-  if (
-    pointA.latitude === pointB.latitude &&
-    pointA.longitude === pointB.longitude
-  ) {
+  if (pointA.latitude === pointB.latitude && pointA.longitude === pointB.longitude) {
     return 0;
   }
 
@@ -69,10 +63,7 @@ export function calculateHaversineDistanceKm(
  * Rounds distance in kilometers to a specified number of decimal places.
  * Default is 2 decimal places (precision of ~10 meters).
  */
-export function roundDistanceKm(
-  distanceKm: number,
-  decimalPlaces = 2,
-): number {
+export function roundDistanceKm(distanceKm: number, decimalPlaces = 2): number {
   if (!Number.isFinite(distanceKm)) {
     throw new RangeError('Distance must be finite.');
   }

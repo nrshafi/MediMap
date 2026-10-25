@@ -27,7 +27,7 @@ describe('Map Projection and Bounding Box Calculations', () => {
     const center = { latitude: 23.7388, longitude: 90.3957 }; // Shahbagh
     const branches = [
       { coordinates: { latitude: 23.8103, longitude: 90.4312 } }, // Evercare (northeast)
-      { coordinates: { latitude: 23.7100, longitude: 90.3600 } }, // Old Dhaka (southwest)
+      { coordinates: { latitude: 23.71, longitude: 90.36 } }, // Old Dhaka (southwest)
     ];
 
     const bounds = computeAutoBounds(branches, center, 0.1);
@@ -39,7 +39,9 @@ describe('Map Projection and Bounding Box Calculations', () => {
     // All branches must be within bounds
     for (const b of branches) {
       assert.ok(b.coordinates.latitude >= bounds.minLat && b.coordinates.latitude <= bounds.maxLat);
-      assert.ok(b.coordinates.longitude >= bounds.minLon && b.coordinates.longitude <= bounds.maxLon);
+      assert.ok(
+        b.coordinates.longitude >= bounds.minLon && b.coordinates.longitude <= bounds.maxLon,
+      );
     }
   });
 
@@ -58,13 +60,19 @@ describe('Map Projection and Bounding Box Calculations', () => {
 
     // Latitude higher => y smaller (higher on SVG canvas)
     const ptNorth = projector.project({ latitude: 23.85, longitude: 90.38 });
-    const ptSouth = projector.project({ latitude: 23.70, longitude: 90.38 });
-    assert.ok(ptNorth.y < ptSouth.y, 'Northern point must have lower SVG Y coordinate than southern point');
+    const ptSouth = projector.project({ latitude: 23.7, longitude: 90.38 });
+    assert.ok(
+      ptNorth.y < ptSouth.y,
+      'Northern point must have lower SVG Y coordinate than southern point',
+    );
 
     // Longitude higher => x larger (further right on SVG canvas)
     const ptEast = projector.project({ latitude: 23.75, longitude: 90.44 });
     const ptWest = projector.project({ latitude: 23.75, longitude: 90.34 });
-    assert.ok(ptEast.x > ptWest.x, 'Eastern point must have higher SVG X coordinate than western point');
+    assert.ok(
+      ptEast.x > ptWest.x,
+      'Eastern point must have higher SVG X coordinate than western point',
+    );
   });
 
   it('performs accurate unprojection roundtrip', () => {

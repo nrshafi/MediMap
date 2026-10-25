@@ -476,9 +476,7 @@ describe('Edge Cases and Boundary Conditions', () => {
         id: 'svc-keyword-score',
         name: 'Very Long Diagnostic Examination Service Blood Test',
         category: 'Hematology',
-        aliases: [
-          { alias: 'Blood Test', language: 'en' },
-        ],
+        aliases: [{ alias: 'Blood Test', language: 'en' }],
       },
     ];
 
@@ -495,4 +493,3 @@ describe('Edge Cases and Boundary Conditions', () => {
     assert.equal(keywordResult.primaryMatch?.matchedText, 'Blood Test');
   });
 });
-

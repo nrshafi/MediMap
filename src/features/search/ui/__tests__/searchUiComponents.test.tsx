@@ -24,7 +24,7 @@ describe('Search Discovery UI Components', () => {
           ariaControls="test-listbox"
           ariaActiveDescendant="test-listbox-opt-0"
           announcement="1 suggestion available"
-        />
+        />,
       );
 
       assert.match(html, /role="combobox"/);
@@ -38,30 +38,22 @@ describe('Search Discovery UI Components', () => {
     });
 
     it('renders clear button when value is present and hides when value is empty', () => {
-      const htmlWithVal = renderToString(
-        <SearchInput value="Lipid" onChange={() => {}} />
-      );
+      const htmlWithVal = renderToString(<SearchInput value="Lipid" onChange={() => {}} />);
       assert.match(htmlWithVal, /aria-label="Clear search input"/);
 
-      const htmlEmpty = renderToString(
-        <SearchInput value="" onChange={() => {}} />
-      );
+      const htmlEmpty = renderToString(<SearchInput value="" onChange={() => {}} />);
       assert.doesNotMatch(htmlEmpty, /aria-label="Clear search input"/);
     });
 
     it('renders search spinner when isLoading is true', () => {
-      const html = renderToString(
-        <SearchInput value="USG" isLoading={true} onChange={() => {}} />
-      );
+      const html = renderToString(<SearchInput value="USG" isLoading={true} onChange={() => {}} />);
       assert.match(html, /medimap-search-spinner/);
       assert.match(html, /aria-busy="true"/);
     });
   });
 
   describe('AutoSuggestDropdown', () => {
-    const cbcService = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'complete-blood-count'
-    )!;
+    const cbcService = DEFAULT_DIAGNOSTIC_CATALOG.find((s) => s.id === 'complete-blood-count')!;
 
     const testItems: SuggestionItem[] = [
       {
@@ -97,7 +89,7 @@ describe('Search Discovery UI Components', () => {
           activeIndex={-1}
           onSelect={() => {}}
           query="CBC"
-        />
+        />,
       );
       assert.equal(html, '');
     });
@@ -111,7 +103,7 @@ describe('Search Discovery UI Components', () => {
           activeIndex={0}
           onSelect={() => {}}
           query="CBC"
-        />
+        />,
       );
 
       assert.match(html, /role="listbox"/);
@@ -136,7 +128,7 @@ describe('Search Discovery UI Components', () => {
           activeIndex={-1}
           onSelect={() => {}}
           query="Unrecognized Test"
-        />
+        />,
       );
 
       assert.match(html, /No diagnostic tests found for/);
@@ -145,12 +137,8 @@ describe('Search Discovery UI Components', () => {
   });
 
   describe('AmbiguityPrompt', () => {
-    const ctBrain = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'ct-brain'
-    )!;
-    const ctChest = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'ct-chest'
-    )!;
+    const ctBrain = DEFAULT_DIAGNOSTIC_CATALOG.find((s) => s.id === 'ct-brain')!;
+    const ctChest = DEFAULT_DIAGNOSTIC_CATALOG.find((s) => s.id === 'ct-chest')!;
 
     const matches: QueryMatch[] = [
       {
@@ -168,13 +156,7 @@ describe('Search Discovery UI Components', () => {
     ];
 
     it('returns empty output when matches array is empty', () => {
-      const html = renderToString(
-        <AmbiguityPrompt
-          query="CT"
-          matches={[]}
-          onSelect={() => {}}
-        />
-      );
+      const html = renderToString(<AmbiguityPrompt query="CT" matches={[]} onSelect={() => {}} />);
       assert.equal(html, '');
     });
 
@@ -185,7 +167,7 @@ describe('Search Discovery UI Components', () => {
           matches={matches}
           onSelect={() => {}}
           onCancel={() => {}}
-        />
+        />,
       );
 
       assert.match(html, /Specific test selection required/);
@@ -199,9 +181,7 @@ describe('Search Discovery UI Components', () => {
 
   describe('RadiusSelector', () => {
     it('renders straight-line radius label in accordance with architecture invariant', () => {
-      const html = renderToString(
-        <RadiusSelector value={3} onChange={() => {}} />
-      );
+      const html = renderToString(<RadiusSelector value={3} onChange={() => {}} />);
 
       assert.match(html, /Straight-line radius/);
       assert.match(html, /Radial distance filter/);
@@ -212,9 +192,7 @@ describe('Search Discovery UI Components', () => {
     });
 
     it('renders custom input when value is not a standard preset', () => {
-      const html = renderToString(
-        <RadiusSelector value={12} onChange={() => {}} />
-      );
+      const html = renderToString(<RadiusSelector value={12} onChange={() => {}} />);
 
       assert.match(html, /Custom straight-line distance \(km\):/);
       assert.match(html, /value="12"/);
@@ -226,12 +204,7 @@ describe('Search Discovery UI Components', () => {
 
   describe('DiagnosticSearchBox', () => {
     it('renders integrated search discovery card', () => {
-      const html = renderToString(
-        <DiagnosticSearchBox
-          initialQuery="Lipid"
-          initialRadiusKm={5}
-        />
-      );
+      const html = renderToString(<DiagnosticSearchBox initialQuery="Lipid" initialRadiusKm={5} />);
 
       assert.match(html, /Search Diagnostic Services/);
       assert.match(html, /role="combobox"/);

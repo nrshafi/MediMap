@@ -75,7 +75,7 @@ describe('DiscoveryView component behavior', () => {
         lat={DHAKA_LANDMARKS.shahbagh.coordinates.latitude}
         lng={DHAKA_LANDMARKS.shahbagh.coordinates.longitude}
         radius={3}
-      />
+      />,
     );
 
     // Header branding
@@ -110,7 +110,13 @@ describe('DiscoveryView component behavior', () => {
   });
 
   it('clicking a landmark preset triggers onSearchChange with updated coordinates', () => {
-    let changedParams: { query?: string; radius?: number; lat?: number; lng?: number; selectedBranchId?: string } | null = null;
+    let changedParams: {
+      query?: string;
+      radius?: number;
+      lat?: number;
+      lng?: number;
+      selectedBranchId?: string;
+    } | null = null;
 
     const { container } = renderComponent(
       <DiscoveryView
@@ -121,11 +127,13 @@ describe('DiscoveryView component behavior', () => {
         onSearchChange={(params) => {
           changedParams = params;
         }}
-      />
+      />,
     );
 
     // Find Dhanmondi preset button
-    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('.medimap-preset-btn'));
+    const buttons = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('.medimap-preset-btn'),
+    );
     const dhanmondiBtn = buttons.find((btn) => btn.textContent?.includes('Dhanmondi'));
     assert.ok(dhanmondiBtn, 'Dhanmondi preset button should exist');
 
@@ -134,11 +142,23 @@ describe('DiscoveryView component behavior', () => {
     });
 
     assert.ok(changedParams !== null);
-    const targetParams = changedParams as { query?: string; radius?: number; lat?: number; lng?: number; selectedBranchId?: string };
+    const targetParams = changedParams as {
+      query?: string;
+      radius?: number;
+      lat?: number;
+      lng?: number;
+      selectedBranchId?: string;
+    };
     assert.equal(targetParams.query, 'Complete Blood Count');
     assert.equal(targetParams.radius, 3);
-    assert.ok(Math.abs((targetParams.lat ?? 0) - DHAKA_LANDMARKS.popularDhanmondi.coordinates.latitude) < 0.001);
-    assert.ok(Math.abs((targetParams.lng ?? 0) - DHAKA_LANDMARKS.popularDhanmondi.coordinates.longitude) < 0.001);
+    assert.ok(
+      Math.abs((targetParams.lat ?? 0) - DHAKA_LANDMARKS.popularDhanmondi.coordinates.latitude) <
+        0.001,
+    );
+    assert.ok(
+      Math.abs((targetParams.lng ?? 0) - DHAKA_LANDMARKS.popularDhanmondi.coordinates.longitude) <
+        0.001,
+    );
   });
 
   it('selecting a branch card triggers onSearchChange with selectedBranchId', () => {
@@ -153,7 +173,7 @@ describe('DiscoveryView component behavior', () => {
         onSearchChange={(params) => {
           changedParams = params;
         }}
-      />
+      />,
     );
 
     const firstCard = container.querySelector<HTMLDivElement>('.medimap-branch-card');
@@ -176,19 +196,22 @@ describe('DiscoveryView component behavior', () => {
     const { container } = renderComponent(
       <DiscoveryView
         query="Complete Blood Count"
-        lat={23.7000}
-        lng={90.3500}
+        lat={23.7}
+        lng={90.35}
         radius={0.2}
         onSearchChange={(params) => {
           changedParams = params;
         }}
-      />
+      />,
     );
 
     // Empty state container should render
     const emptyState = container.querySelector('.medimap-discovery-empty-state');
     assert.ok(emptyState, 'Empty state should render when 0 branches match');
-    assert.match(emptyState.textContent ?? '', /No diagnostic branches within 0.2 km straight-line radius/);
+    assert.match(
+      emptyState.textContent ?? '',
+      /No diagnostic branches within 0.2 km straight-line radius/,
+    );
 
     // Expand radius button
     const expandBtn = emptyState.querySelector<HTMLButtonElement>('.medimap-empty-action-btn');
@@ -209,7 +232,7 @@ describe('DiscoveryView component behavior', () => {
         lat={DHAKA_LANDMARKS.shahbagh.coordinates.latitude}
         lng={DHAKA_LANDMARKS.shahbagh.coordinates.longitude}
         radius={5}
-      />
+      />,
     );
 
     const branchCards = container.querySelectorAll('.medimap-branch-card');
@@ -226,5 +249,4 @@ describe('DiscoveryView component behavior', () => {
       assert.match(card.textContent ?? '', /km \(straight-line\)/);
     }
   });
-
 });

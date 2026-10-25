@@ -15,8 +15,13 @@ const secureDescriptor = Object.getOwnPropertyDescriptor(window, 'isSecureContex
 const center = { latitude: 23.7383, longitude: 90.3957 };
 const position: GeolocationPosition = {
   coords: {
-    latitude: 23.7946, longitude: 90.4143, accuracy: 20,
-    altitude: null, altitudeAccuracy: null, heading: null, speed: null,
+    latitude: 23.7946,
+    longitude: 90.4143,
+    accuracy: 20,
+    altitude: null,
+    altitudeAccuracy: null,
+    heading: null,
+    speed: null,
     toJSON: () => ({}),
   },
   timestamp: 0,
@@ -24,7 +29,9 @@ const position: GeolocationPosition = {
 };
 
 function render(coordinates = center) {
-  act(() => root?.render(<LocationSelector center={coordinates} onSelect={(value) => calls.push(value)} />));
+  act(() =>
+    root?.render(<LocationSelector center={coordinates} onSelect={(value) => calls.push(value)} />),
+  );
 }
 
 beforeEach(() => {
@@ -33,14 +40,20 @@ beforeEach(() => {
   Object.defineProperty(window, 'isSecureContext', { configurable: true, value: true });
   Object.defineProperty(navigator, 'geolocation', {
     configurable: true,
-    value: { getCurrentPosition: (callback: PositionCallback) => { success = callback; } },
+    value: {
+      getCurrentPosition: (callback: PositionCallback) => {
+        success = callback;
+      },
+    },
   });
   container = document.createElement('div');
   document.body.append(container);
   root = createRoot(container);
   render();
   assert.equal(success, undefined);
-  const button = Array.from(container.querySelectorAll('button')).find((element) => element.textContent === 'Use my location');
+  const button = Array.from(container.querySelectorAll('button')).find(
+    (element) => element.textContent === 'Use my location',
+  );
   assert.ok(button);
   act(() => button.click());
   assert.ok(success);
@@ -76,5 +89,8 @@ it('ignores a location callback after an external center change and synchronizes
 it('rejects invalid browser coordinates without changing the center', () => {
   act(() => success?.({ ...position, coords: { ...position.coords, latitude: NaN } }));
   assert.deepEqual(calls, []);
-  assert.match(container.querySelector('[role="status"]')?.textContent ?? '', /invalid coordinates/);
+  assert.match(
+    container.querySelector('[role="status"]')?.textContent ?? '',
+    /invalid coordinates/,
+  );
 });

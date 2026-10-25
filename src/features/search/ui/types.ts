@@ -1,19 +1,11 @@
 import type { ReactNode } from 'react';
-import type {
-  CanonicalService,
-  MatchType,
-  QueryMatch,
-  ResolutionResult,
-} from '../types';
+import type { CanonicalService, MatchType, QueryMatch, ResolutionResult } from '../types';
 
 /**
  * Origin type for a completed search selection.
  */
 export type SearchSelectionType =
-  | 'suggestion'
-  | 'ambiguity_resolution'
-  | 'typo_correction'
-  | 'direct';
+  'suggestion' | 'ambiguity_resolution' | 'typo_correction' | 'direct';
 
 /**
  * Result payload emitted when a diagnostic service is selected.

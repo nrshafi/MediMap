@@ -17,11 +17,7 @@ export interface CanonicalService {
 }
 
 export type MatchType =
-  | 'exact_canonical'
-  | 'exact_alias'
-  | 'prefix'
-  | 'keyword'
-  | 'typo_suggestion';
+  'exact_canonical' | 'exact_alias' | 'prefix' | 'keyword' | 'typo_suggestion';
 
 export interface QueryMatch {
   readonly canonicalService: CanonicalService;
@@ -47,4 +43,3 @@ export interface ResolutionResult {
   readonly matches: readonly QueryMatch[];
   readonly typoSuggestions?: readonly TypoSuggestion[];
 }
-

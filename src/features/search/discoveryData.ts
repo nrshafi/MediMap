@@ -9,7 +9,6 @@ import { DEFAULT_DIAGNOSTIC_CATALOG } from './diagnosticCatalog';
 import { resolveDiagnosticQuery } from './resolutionEngine';
 import type { CanonicalService } from './types';
 
-
 export interface BranchServicePrice {
   readonly serviceId: string;
   readonly basePriceBdt: number | null;
@@ -17,7 +16,6 @@ export interface BranchServicePrice {
   readonly verificationStatus: 'verified' | 'unverified';
   readonly verifiedAt: string | null;
 }
-
 
 export interface MockBranchListing {
   readonly id: string;
@@ -33,7 +31,6 @@ export interface MockBranchListing {
   readonly isSample?: boolean;
 }
 
-
 export interface LocationPreset {
   readonly id: string;
   readonly name: string;
@@ -41,7 +38,6 @@ export interface LocationPreset {
   readonly coordinates: Coordinates;
   readonly area: string;
 }
-
 
 export const DHAKA_LOCATION_PRESETS: readonly LocationPreset[] = [
   {
@@ -109,7 +105,7 @@ export const DEFAULT_DISCOVERY_SERVICE_ID = 'complete-blood-count';
 export const DEFAULT_DISCOVERY_CENTER: Coordinates = DHAKA_LANDMARKS.shahbagh.coordinates;
 
 export function filterBranchesByQueryAndLocation(
-  options: DiscoveryQueryFilterOptions = {}
+  options: DiscoveryQueryFilterOptions = {},
 ): DiscoveryQueryResult {
   const catalog = options.catalog ?? DEFAULT_DIAGNOSTIC_CATALOG;
   const branches = options.branches ?? MOCK_BRANCH_LISTINGS;
@@ -118,13 +114,14 @@ export function filterBranchesByQueryAndLocation(
   const radiusKm = parsedRadius.valid ? parsedRadius.radiusKm : 3;
   const resolution = resolveDiagnosticQuery(
     options.queryText ?? (options.serviceId === undefined ? 'Complete Blood Count' : ''),
-    catalog
+    catalog,
   );
-  const service = options.serviceId !== undefined
-    ? catalog.find((entry) => entry.id === options.serviceId)
-    : resolution.status === 'resolved' && resolution.primaryMatch?.matchType !== 'typo_suggestion'
-      ? resolution.primaryMatch?.canonicalService
-      : undefined;
+  const service =
+    options.serviceId !== undefined
+      ? catalog.find((entry) => entry.id === options.serviceId)
+      : resolution.status === 'resolved' && resolution.primaryMatch?.matchType !== 'typo_suggestion'
+        ? resolution.primaryMatch?.canonicalService
+        : undefined;
 
   if (!service) {
     return { canonicalService: null, resolution, center, radiusKm, branches: [] };
@@ -149,7 +146,12 @@ export function filterBranchesByQueryAndLocation(
     isSample: branch.isSample ?? false,
     isVerified: !branch.isSample && branch.price.verificationStatus === 'verified',
     straightLineDistanceKm: distanceKm,
-    route: createUnavailableRouteResult(center, branch.coordinates, 'not_configured', 'Routing provider has not been configured.'),
+    route: createUnavailableRouteResult(
+      center,
+      branch.coordinates,
+      'not_configured',
+      'Routing provider has not been configured.',
+    ),
   }));
 
   return { canonicalService: service, resolution, center, radiusKm, branches: items };

@@ -6,11 +6,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { DHAKA_LANDMARKS } from '../../../features/map/landmarks';
 import type { Coordinates } from '../../../features/map/types';
-import {
-  enrichBranchesWithRoutes,
-  getBranchRoutes,
-  mapConcurrent,
-} from '../branchRouting';
+import { enrichBranchesWithRoutes, getBranchRoutes, mapConcurrent } from '../branchRouting';
 import {
   createUnavailableRouteResult,
   FallbackRoutingAdapter,
@@ -30,7 +26,7 @@ describe('buildOsrmUrl', () => {
     // OSRM requires {lon},{lat};{lon},{lat}
     assert.equal(
       url,
-      'https://router.project-osrm.org/route/v1/driving/90.3976,23.7259;90.4312,23.8103?overview=false&steps=false&alternatives=false'
+      'https://router.project-osrm.org/route/v1/driving/90.3976,23.7259;90.4312,23.8103?overview=false&steps=false&alternatives=false',
     );
   });
 
@@ -335,8 +331,12 @@ describe('Branch Routing Helpers', () => {
           throw new Error('Adapter failed');
         }
         return {
-          status: 'available', origin: start, destination,
-          roadDistanceKm: 12, travelDurationMinutes: 30, source: 'test',
+          status: 'available',
+          origin: start,
+          destination,
+          roadDistanceKm: 12,
+          travelDurationMinutes: 30,
+          source: 'test',
         };
       },
     });
@@ -394,7 +394,7 @@ describe('Branch Routing Helpers', () => {
           code: 'Ok',
           routes: [{ distance, duration }],
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     };
 
@@ -470,7 +470,10 @@ describe('Branch Routing Helpers', () => {
       DHAKA_LANDMARKS.evercare.coordinates,
     ];
 
-    const mockAdapter: { name: string; calculateRoute: (orig: Coordinates, dest: Coordinates) => Promise<RouteResult> } = {
+    const mockAdapter: {
+      name: string;
+      calculateRoute: (orig: Coordinates, dest: Coordinates) => Promise<RouteResult>;
+    } = {
       name: 'test-adapter',
       calculateRoute: async (_orig, dest) => {
         return {

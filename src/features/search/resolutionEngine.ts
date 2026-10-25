@@ -1,12 +1,7 @@
 import { DEFAULT_DIAGNOSTIC_CATALOG } from './diagnosticCatalog';
 import { normalizeText, tokenize } from './normalizer';
 import { checkTypoMatch } from './typoMatcher';
-import type {
-  CanonicalService,
-  QueryMatch,
-  ResolutionResult,
-  TypoSuggestion,
-} from './types';
+import type { CanonicalService, QueryMatch, ResolutionResult, TypoSuggestion } from './types';
 
 interface ScoredCandidate {
   readonly text: string;
@@ -32,7 +27,7 @@ function evaluateTierMatches(
   query: string,
   normalizedQuery: string,
   matches: readonly QueryMatch[],
-  typoSuggestions?: readonly TypoSuggestion[]
+  typoSuggestions?: readonly TypoSuggestion[],
 ): ResolutionResult {
   if (matches.length === 0) {
     return {
@@ -99,7 +94,7 @@ function evaluateTierMatches(
  */
 export function resolveDiagnosticQuery(
   query: string,
-  catalog: readonly CanonicalService[] = DEFAULT_DIAGNOSTIC_CATALOG
+  catalog: readonly CanonicalService[] = DEFAULT_DIAGNOSTIC_CATALOG,
 ): ResolutionResult {
   const normalizedQuery = normalizeText(query);
 
@@ -315,12 +310,7 @@ export function resolveDiagnosticQuery(
       score: Math.round(candidate.similarity * 40),
     }));
 
-    return evaluateTierMatches(
-      query,
-      normalizedQuery,
-      typoMatches,
-      typoSuggestions
-    );
+    return evaluateTierMatches(query, normalizedQuery, typoMatches, typoSuggestions);
   }
 
   // No matches in any tier
@@ -333,4 +323,3 @@ export function resolveDiagnosticQuery(
     typoSuggestions: [],
   };
 }
-

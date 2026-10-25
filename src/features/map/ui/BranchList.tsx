@@ -21,9 +21,7 @@ export const BranchList: React.FC<BranchListProps> = ({
   useEffect(() => {
     if (selectedBranchId && interactionSource === 'map') {
       if (typeof document !== 'undefined') {
-        const cardElement = document.getElementById(
-          `branch-card-${selectedBranchId}`
-        );
+        const cardElement = document.getElementById(`branch-card-${selectedBranchId}`);
         if (cardElement && typeof cardElement.scrollIntoView === 'function') {
           cardElement.scrollIntoView({
             behavior: 'smooth',
@@ -36,11 +34,7 @@ export const BranchList: React.FC<BranchListProps> = ({
 
   if (branches.length === 0) {
     return (
-      <div
-        className="medimap-branch-list-empty"
-        data-testid="branch-list-empty"
-        role="status"
-      >
+      <div className="medimap-branch-list-empty" data-testid="branch-list-empty" role="status">
         <div className="medimap-empty-icon" aria-hidden="true">
           <svg
             viewBox="0 0 24 24"

@@ -24,15 +24,14 @@ export function RadiusSelector({
   const baseId = id ?? `medimap-radius-${generatedId}`;
 
   // Determine active preset
-  const isPresetValue = (v: number): v is 1 | 3 | 5 =>
-    v === 1 || v === 3 || v === 5;
+  const isPresetValue = (v: number): v is 1 | 3 | 5 => v === 1 || v === 3 || v === 5;
 
   const [activePreset, setActivePreset] = useState<RadiusPreset>(() =>
-    isPresetValue(value) ? value : 'custom'
+    isPresetValue(value) ? value : 'custom',
   );
 
   const [customInputValue, setCustomInputValue] = useState<string>(() =>
-    isPresetValue(value) ? '10' : String(value)
+    isPresetValue(value) ? '10' : String(value),
   );
 
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -54,9 +53,7 @@ export function RadiusSelector({
       if (!isNaN(parsed) && parsed >= MIN_RADIUS_KM && parsed <= MAX_RADIUS_KM) {
         onChange(parsed);
       } else {
-        setValidationError(
-          `Enter a distance between ${MIN_RADIUS_KM} km and ${MAX_RADIUS_KM} km.`
-        );
+        setValidationError(`Enter a distance between ${MIN_RADIUS_KM} km and ${MAX_RADIUS_KM} km.`);
       }
     } else {
       onChange(preset);
@@ -74,9 +71,7 @@ export function RadiusSelector({
 
     const parsed = parseFloat(rawValue);
     if (isNaN(parsed) || parsed < MIN_RADIUS_KM || parsed > MAX_RADIUS_KM) {
-      setValidationError(
-        `Distance must be between ${MIN_RADIUS_KM} km and ${MAX_RADIUS_KM} km.`
-      );
+      setValidationError(`Distance must be between ${MIN_RADIUS_KM} km and ${MAX_RADIUS_KM} km.`);
     } else {
       setValidationError(null);
       onChange(parsed);
@@ -91,9 +86,7 @@ export function RadiusSelector({
     >
       <div className="medimap-radius-header">
         <legend className="medimap-radius-legend">Straight-line radius</legend>
-        <span className="medimap-radius-hint">
-          Radial distance filter
-        </span>
+        <span className="medimap-radius-hint">Radial distance filter</span>
       </div>
 
       <div
@@ -106,9 +99,7 @@ export function RadiusSelector({
           return (
             <label
               key={preset}
-              className={`medimap-radius-pill ${
-                isChecked ? 'medimap-radius-pill-active' : ''
-              }`}
+              className={`medimap-radius-pill ${isChecked ? 'medimap-radius-pill-active' : ''}`}
             >
               <input
                 type="radio"
@@ -144,10 +135,7 @@ export function RadiusSelector({
 
       {activePreset === 'custom' ? (
         <div className="medimap-custom-radius-box">
-          <label
-            htmlFor={`${baseId}-custom-input`}
-            className="medimap-custom-radius-label"
-          >
+          <label htmlFor={`${baseId}-custom-input`} className="medimap-custom-radius-label">
             Custom straight-line distance (km):
           </label>
           <div className="medimap-custom-radius-control">
@@ -161,20 +149,14 @@ export function RadiusSelector({
               onChange={handleCustomInputChange}
               disabled={disabled}
               className="medimap-custom-radius-input"
-              aria-describedby={
-                validationError ? `${baseId}-error` : undefined
-              }
+              aria-describedby={validationError ? `${baseId}-error` : undefined}
               aria-invalid={Boolean(validationError)}
             />
             <span className="medimap-custom-radius-unit">km</span>
           </div>
 
           {validationError ? (
-            <p
-              id={`${baseId}-error`}
-              className="medimap-radius-error-message"
-              role="alert"
-            >
+            <p id={`${baseId}-error`} className="medimap-radius-error-message" role="alert">
               {validationError}
             </p>
           ) : (

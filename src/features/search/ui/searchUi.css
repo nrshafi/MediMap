@@ -109,7 +109,9 @@
   background-color: var(--bg-surface);
   border: 1.5px solid var(--border-default);
   border-radius: 8px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .medimap-search-input-box:focus-within {

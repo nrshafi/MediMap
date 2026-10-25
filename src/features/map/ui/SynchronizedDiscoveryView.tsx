@@ -32,7 +32,8 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
   // Internal selection state for uncontrolled mode
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
   const [dismissedBranchId, setDismissedBranchId] = useState<string | null>(null);
-  const selectedBranchId = controlledSelectedId !== undefined ? controlledSelectedId : internalSelectedId;
+  const selectedBranchId =
+    controlledSelectedId !== undefined ? controlledSelectedId : internalSelectedId;
   useEffect(() => {
     setDismissedBranchId(null);
   }, [selectedBranchId]);
@@ -73,7 +74,10 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
   // Live region announcement string
   const announcementText = useMemo(() => {
     if (!selectedBranch) return '';
-    const price = selectedBranch.basePriceBdt === null ? 'Price currently unavailable' : `Base price BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`;
+    const price =
+      selectedBranch.basePriceBdt === null
+        ? 'Price currently unavailable'
+        : `Base price BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`;
     return `Selected ${selectedBranch.providerName}, ${selectedBranch.branchName}. ${price}. ${selectedBranch.straightLineDistanceKm.toFixed(1)} km straight-line distance.`;
   }, [selectedBranch]);
 
@@ -87,7 +91,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
       }
       onSelectBranch?.(branchId, 'map');
     },
-    [controlledSelectedId, onSelectBranch]
+    [controlledSelectedId, onSelectBranch],
   );
 
   // Handle branch selection from list
@@ -100,7 +104,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
       }
       onSelectBranch?.(branchId, 'list');
     },
-    [controlledSelectedId, onSelectBranch]
+    [controlledSelectedId, onSelectBranch],
   );
 
   // Dismiss floating card on mobile
@@ -116,9 +120,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
     setMobileViewMode('list');
     setInteractionSource('map');
     if (selectedBranchId && typeof document !== 'undefined') {
-      const cardElement = document.getElementById(
-        `branch-card-${selectedBranchId}`
-      );
+      const cardElement = document.getElementById(`branch-card-${selectedBranchId}`);
       if (cardElement && typeof cardElement.scrollIntoView === 'function') {
         cardElement.scrollIntoView({
           behavior: 'smooth',
@@ -161,9 +163,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
           tabIndex={mobileViewMode === 'list' ? 0 : -1}
           onKeyDown={handleTabKeyDown}
           onClick={() => setMobileViewMode('list')}
-          className={`medimap-mobile-tab-btn ${
-            mobileViewMode === 'list' ? 'is-active' : ''
-          }`}
+          className={`medimap-mobile-tab-btn ${mobileViewMode === 'list' ? 'is-active' : ''}`}
         >
           <svg
             className="medimap-tab-icon"
@@ -188,9 +188,7 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
           tabIndex={mobileViewMode === 'map' ? 0 : -1}
           onKeyDown={handleTabKeyDown}
           onClick={() => setMobileViewMode('map')}
-          className={`medimap-mobile-tab-btn ${
-            mobileViewMode === 'map' ? 'is-active' : ''
-          }`}
+          className={`medimap-mobile-tab-btn ${mobileViewMode === 'map' ? 'is-active' : ''}`}
         >
           <svg
             className="medimap-tab-icon"
@@ -259,15 +257,15 @@ export const SynchronizedDiscoveryView: React.FC<SynchronizedDiscoveryViewProps>
               >
                 <div className="medimap-floating-card-body">
                   <div className="medimap-floating-card-info">
-                    <h4 className="medimap-floating-title">
-                      {selectedBranch.providerName}
-                    </h4>
+                    <h4 className="medimap-floating-title">{selectedBranch.providerName}</h4>
                     <p className="medimap-floating-subtitle">
                       {selectedBranch.branchName} · {selectedBranch.area}
                     </p>
                     <div className="medimap-floating-metrics">
                       <span className="medimap-floating-price">
-                        {selectedBranch.basePriceBdt === null ? 'Price currently unavailable' : `BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`}
+                        {selectedBranch.basePriceBdt === null
+                          ? 'Price currently unavailable'
+                          : `BDT ${selectedBranch.basePriceBdt.toLocaleString('en-US')}`}
                       </span>
                       <span className="medimap-floating-dist">
                         {selectedBranch.straightLineDistanceKm.toFixed(1)} km straight-line

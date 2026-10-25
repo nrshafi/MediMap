@@ -104,7 +104,7 @@ export interface RoutingAdapter {
   calculateRoute(
     origin: Coordinates,
     destination: Coordinates,
-    options?: RouteRequestOptions
+    options?: RouteRequestOptions,
   ): Promise<RouteResult>;
 }
 

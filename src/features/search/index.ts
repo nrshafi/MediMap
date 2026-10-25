@@ -11,18 +11,10 @@ export type {
   TypoSuggestion,
 } from './types';
 
-export {
-  normalizeText,
-  stripZeroWidth,
-  tokenize,
-} from './normalizer';
+export { normalizeText, stripZeroWidth, tokenize } from './normalizer';
 
 export type { TypoMatchResult } from './typoMatcher';
-export {
-  calculateSimilarity,
-  checkTypoMatch,
-  damerauLevenshteinDistance,
-} from './typoMatcher';
+export { calculateSimilarity, checkTypoMatch, damerauLevenshteinDistance } from './typoMatcher';
 
 export { DEFAULT_DIAGNOSTIC_CATALOG } from './diagnosticCatalog';
 
@@ -67,4 +59,3 @@ export type {
   LocationPreset,
   MockBranchListing,
 } from './discoveryData';
-

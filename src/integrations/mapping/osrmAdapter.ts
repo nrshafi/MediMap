@@ -5,11 +5,7 @@
 import { isValidCoordinate } from '../../features/map/coordinates';
 import type { Coordinates } from '../../features/map/types';
 import { createUnavailableRouteResult } from './fallback';
-import type {
-  RouteRequestOptions,
-  RouteResult,
-  RoutingAdapter,
-} from './types';
+import type { RouteRequestOptions, RouteResult, RoutingAdapter } from './types';
 
 /**
  * Default public OSRM demonstration service URL.
@@ -53,7 +49,7 @@ export interface OsrmAdapterOptions {
 export function buildOsrmUrl(
   baseUrl: string,
   origin: Coordinates,
-  destination: Coordinates
+  destination: Coordinates,
 ): string {
   const cleanBase = baseUrl.replace(/\/+$/, '');
   const originPart = `${origin.longitude},${origin.latitude}`;
@@ -120,8 +116,7 @@ export class OsrmAdapter implements RoutingAdapter {
 
   constructor(options?: OsrmAdapterOptions) {
     this.baseUrl = options?.baseUrl ?? DEFAULT_OSRM_BASE_URL;
-    this.defaultTimeoutMs =
-      options?.defaultTimeoutMs ?? DEFAULT_ROUTING_TIMEOUT_MS;
+    this.defaultTimeoutMs = options?.defaultTimeoutMs ?? DEFAULT_ROUTING_TIMEOUT_MS;
     this.fetchFn = options?.fetchFn;
   }
 
@@ -136,14 +131,14 @@ export class OsrmAdapter implements RoutingAdapter {
   async calculateRoute(
     origin: Coordinates,
     destination: Coordinates,
-    options?: RouteRequestOptions
+    options?: RouteRequestOptions,
   ): Promise<RouteResult> {
     if (!isValidCoordinate(origin) || !isValidCoordinate(destination)) {
       return createUnavailableRouteResult(
         origin,
         destination,
         'invalid_coordinates',
-        'Origin or destination coordinates are not valid WGS 84 values.'
+        'Origin or destination coordinates are not valid WGS 84 values.',
       );
     }
 
@@ -156,7 +151,7 @@ export class OsrmAdapter implements RoutingAdapter {
         origin,
         destination,
         'aborted',
-        'Route calculation request was aborted.'
+        'Route calculation request was aborted.',
       );
     }
 
@@ -193,7 +188,7 @@ export class OsrmAdapter implements RoutingAdapter {
             origin,
             destination,
             'rate_limit',
-            'OSRM routing rate limit exceeded (HTTP 429).'
+            'OSRM routing rate limit exceeded (HTTP 429).',
           );
         }
 
@@ -202,7 +197,7 @@ export class OsrmAdapter implements RoutingAdapter {
             origin,
             destination,
             'upstream_error',
-            `OSRM routing request failed with HTTP ${response.status}.`
+            `OSRM routing request failed with HTTP ${response.status}.`,
           );
         }
       }
@@ -218,19 +213,16 @@ export class OsrmAdapter implements RoutingAdapter {
           origin,
           destination,
           'upstream_error',
-          'OSRM service returned invalid JSON.'
+          'OSRM service returned invalid JSON.',
         );
       }
 
-      if (
-        isPlainObject(rawData) &&
-        (rawData.code === 'NoRoute' || rawData.code === 'NoSegment')
-      ) {
+      if (isPlainObject(rawData) && (rawData.code === 'NoRoute' || rawData.code === 'NoSegment')) {
         return createUnavailableRouteResult(
           origin,
           destination,
           'no_route',
-          'No road route found between coordinates.'
+          'No road route found between coordinates.',
         );
       }
 
@@ -239,15 +231,13 @@ export class OsrmAdapter implements RoutingAdapter {
           origin,
           destination,
           'upstream_error',
-          'OSRM service returned an invalid or malformed payload.'
+          'OSRM service returned an invalid or malformed payload.',
         );
       }
 
       const primaryRoute = rawData.routes[0];
-      const roadDistanceKm =
-        Math.round((primaryRoute.distance / 1000) * 100) / 100;
-      const travelDurationMinutes =
-        Math.round((primaryRoute.duration / 60) * 10) / 10;
+      const roadDistanceKm = Math.round((primaryRoute.distance / 1000) * 100) / 100;
+      const travelDurationMinutes = Math.round((primaryRoute.duration / 60) * 10) / 10;
 
       return {
         status: 'available',
@@ -263,7 +253,7 @@ export class OsrmAdapter implements RoutingAdapter {
           origin,
           destination,
           'timeout',
-          `Route calculation timed out after ${timeoutMs}ms.`
+          `Route calculation timed out after ${timeoutMs}ms.`,
         );
       }
 
@@ -272,17 +262,16 @@ export class OsrmAdapter implements RoutingAdapter {
           origin,
           destination,
           'aborted',
-          'Route calculation request was aborted.'
+          'Route calculation request was aborted.',
         );
       }
 
-      const message =
-        error instanceof Error ? error.message : 'Unknown network failure';
+      const message = error instanceof Error ? error.message : 'Unknown network failure';
       return createUnavailableRouteResult(
         origin,
         destination,
         'network_error',
-        `Network error during route request: ${message}`
+        `Network error during route request: ${message}`,
       );
     } finally {
       clearTimeout(timerId);

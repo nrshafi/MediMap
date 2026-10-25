@@ -22,10 +22,12 @@ Verify current official documentation and installed versions before later implem
 ## Initial application setup
 
 The first implementation is a static "Coming soon" page with React, strict TypeScript, TanStack Start, and Vite.
-Use stable Bun 1.4.3 for package management, local scripts, and strict TypeScript checking.
-Use `bun check` for type checking and Oxlint for linting. Stable Bun 1.4.3 does not provide native linting.
+Use stable Bun 1.4.4 for package management, local scripts, formatting, and strict TypeScript checking.
+Use `bun check --no-script` for type checking and Oxlint for linting. Bun's native linter remains canary-only in 1.4.4.
 Keep the existing lint rules and exclusions in `.oxlintrc.json`.
-Run Vite through Bun. A formatter remains unselected.
+Run Vite through Bun. Use `bun fmt` with the options in `bunfig.toml`.
+Require a three-day minimum release age for new dependency resolution. Keep existing versions in `bun.lock`.
+Use exact-version exceptions only for reviewed urgent updates. Keep Bun's default installation retry settings.
 Prefer Bun native utilities for local scripts and compatible unit tests.
 Use stable releases only. Do not adopt a prerelease to obtain a native utility.
 Keep Bun-specific APIs out of browser and Cloudflare Workers application code.
@@ -101,6 +103,10 @@ Cloudflare free-tier suitability must be checked against the expected workload.
 Map, geocoding, and routing services require separate capability and billing checks.
 
 ## Documentation checked
+
+Verified Bun 1.4.4 on 25 October 2026 against installed CLI help and the official [release notes](https://bun.sh/blog/bun-v1.4.4).
+Checked [formatting](https://bun.com/docs/format), [installation](https://bun.com/docs/pm/cli/install), and [coverage](https://bun.com/docs/test/code-coverage).
+The [linter documentation](https://bun.com/docs/lint) limits native linting to canary builds. Retain Oxlint until stable Bun supports equivalent checks.
 
 Verified the Bun migration on 14 October 2026 against [Bun 1.4.3 release notes](https://bun.com/blog/release-notes/bun-v1.4.3) and installed CLI help.
 Use release-specific documentation and installed commands to distinguish stable capabilities from unreleased documentation.

@@ -69,7 +69,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
     return DHAKA_LOCATION_PRESETS.find(
       (preset) =>
         preset.coordinates.latitude === centerCoordinates.latitude &&
-        preset.coordinates.longitude === centerCoordinates.longitude
+        preset.coordinates.longitude === centerCoordinates.longitude,
     );
   }, [centerCoordinates]);
 
@@ -95,7 +95,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         selectedBranchId: undefined,
       });
     },
-    [centerCoordinates, onSearchChange]
+    [centerCoordinates, onSearchChange],
   );
 
   // Handle branch card or map pin selection
@@ -109,7 +109,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         selectedBranchId: branchId,
       });
     },
-    [activeQuery, activeRadius, centerCoordinates, onSearchChange]
+    [activeQuery, activeRadius, centerCoordinates, onSearchChange],
   );
 
   // Update the center and clear branch selection.
@@ -123,7 +123,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         selectedBranchId: undefined,
       });
     },
-    [activeQuery, activeRadius, onSearchChange]
+    [activeQuery, activeRadius, onSearchChange],
   );
 
   // Update the radius without selecting a service.
@@ -137,7 +137,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         selectedBranchId: undefined,
       });
     },
-    [activeQuery, centerCoordinates, onSearchChange]
+    [activeQuery, centerCoordinates, onSearchChange],
   );
 
   const locationDisplayLabel = activePreset
@@ -174,8 +174,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
       {/* Main content body */}
       <main className="medimap-discovery-main" role="main">
         <p className="medimap-sample-notice" role="note">
-          Demonstration with sample data. Prices, availability, and branch details have not been verified.
-          Road estimates are unavailable until a routing provider is configured.
+          Demonstration with sample data. Prices, availability, and branch details have not been
+          verified. Road estimates are unavailable until a routing provider is configured.
         </p>
         {/* Diagnostic Search Box */}
         <section
@@ -186,13 +186,15 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
             initialQuery={activeQuery}
             initialRadiusKm={activeRadius}
             onSelectService={handleSelectService}
-            onQueryChange={(nextQuery) => onSearchChange?.({
-              query: nextQuery,
-              radius: activeRadius,
-              lat: centerCoordinates.latitude,
-              lng: centerCoordinates.longitude,
-              selectedBranchId: undefined,
-            })}
+            onQueryChange={(nextQuery) =>
+              onSearchChange?.({
+                query: nextQuery,
+                radius: activeRadius,
+                lat: centerCoordinates.latitude,
+                lng: centerCoordinates.longitude,
+                selectedBranchId: undefined,
+              })
+            }
             onRadiusChange={handleRadiusChange}
           />
         </section>
@@ -232,7 +234,10 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                   ? 'Select a suggested service to continue'
                   : 'No matching diagnostic service'}
             </h2>
-            <p>Use the search controls to select a service. No branch results are shown for this query.</p>
+            <p>
+              Use the search controls to select a service. No branch results are shown for this
+              query.
+            </p>
           </section>
         ) : branches.length === 0 ? (
           <section
@@ -260,9 +265,9 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
               No diagnostic branches within {activeRadius} km straight-line radius
             </h3>
             <p className="medimap-empty-state-desc">
-              No sample branches offering <strong>{canonicalService.name}</strong> were
-              found within {activeRadius} km straight-line distance of {locationDisplayLabel}.
-              Try expanding your search radius or selecting a different location.
+              No sample branches offering <strong>{canonicalService.name}</strong> were found within{' '}
+              {activeRadius} km straight-line distance of {locationDisplayLabel}. Try expanding your
+              search radius or selecting a different location.
             </p>
             <div className="medimap-empty-state-actions">
               {activeRadius < 5 && (

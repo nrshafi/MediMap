@@ -85,6 +85,8 @@ Apply the workspace unslop and ASD-STE100 skills to the relevant prose.
 
 Use `bun install --frozen-lockfile`, `bun run typecheck`, `bun run lint`, and `bun run build`.
 Use `bun test` when compatible unit tests exist. Integration and browser test tools remain open.
+Run `bun run format:check` before completion. Use `bun run test:coverage` when reviewing unit and component coverage.
+Prefer stable Bun replacements when they preserve required behavior. Bun 1.4.4 replaces a separate formatter, but its native linter remains canary-only.
 For documentation-only changes, review the documents and links. Application checks apply when application code exists or changes.
 
 ## Delivery schedule

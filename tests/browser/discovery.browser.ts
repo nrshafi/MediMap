@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('query edits clear old results and radius survives explicit selection and reload', async ({ page }) => {
+test('query edits clear old results and radius survives explicit selection and reload', async ({
+  page,
+}) => {
   await page.goto('/discovery?q=CBC&radius=3');
   const input = page.getByRole('combobox', { name: 'Search diagnostic tests' });
   const cards = page.getByTestId('branch-result-card');
@@ -16,7 +18,9 @@ test('query edits clear old results and radius survives explicit selection and r
   await radius5.focus();
   await radius5.press('Space');
   await expect.poll(() => new URL(page.url()).searchParams.get('radius')).toBe('5');
-  await expect(page.getByRole('region', { name: 'Active search filters and result summary' })).toContainText('5 km');
+  await expect(
+    page.getByRole('region', { name: 'Active search filters and result summary' }),
+  ).toContainText('5 km');
   const chestOption = page.getByRole('button', { name: /Select CT Scan Chest/ });
   await chestOption.focus();
   await chestOption.press('Enter');
@@ -36,7 +40,9 @@ test('query edits clear old results and radius survives explicit selection and r
   await expect(cards).toHaveCount(0);
 });
 
-test('keyboard service selection, branch selection, and mobile summary dismissal work', async ({ page }, testInfo) => {
+test('keyboard service selection, branch selection, and mobile summary dismissal work', async ({
+  page,
+}, testInfo) => {
   await page.goto('/discovery?q=CBC&radius=5');
   const input = page.getByRole('combobox');
   await expect(input).toHaveAttribute('aria-expanded', 'true');
@@ -56,7 +62,9 @@ test('keyboard service selection, branch selection, and mobile summary dismissal
   await pin.focus();
   await pin.press('Enter');
   await expect(pin).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(() => new URL(page.url()).searchParams.get('selectedBranchId')).toBe('bsmmu-shahbagh');
+  await expect
+    .poll(() => new URL(page.url()).searchParams.get('selectedBranchId'))
+    .toBe('bsmmu-shahbagh');
   if (testInfo.project.name === 'mobile') {
     const summary = page.getByRole('dialog');
     await expect(summary).toBeVisible();
@@ -66,29 +74,50 @@ test('keyboard service selection, branch selection, and mobile summary dismissal
     await expect(summary).toBeVisible();
     await summary.getByRole('button', { name: 'View in list' }).click();
   }
-  await expect(page.locator('#branch-card-bsmmu-shahbagh')).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('#branch-card-bsmmu-shahbagh')).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
   await page.getByRole('button', { name: 'Change test' }).click();
   await expect(page.getByTestId('branch-result-card')).toHaveCount(0);
   await expect(input).toBeFocused();
 });
 
-test('location changes preserve map/list identity and rendered controls remain usable', async ({ page }, testInfo) => {
+test('location changes preserve map/list identity and rendered controls remain usable', async ({
+  page,
+}, testInfo) => {
   await page.goto('/discovery?q=CBC');
   await expect(page.getByRole('combobox')).toHaveAttribute('aria-expanded', 'true');
   await page.getByRole('button', { name: /Set location to Gulshan-2/ }).click();
   const cards = page.getByTestId('branch-result-card');
   await expect(cards.first()).toContainText('United Hospital');
   await page.reload();
-  await expect(page.getByRole('button', { name: /Set location to Gulshan-2/ })).toHaveAttribute('aria-pressed', 'true');
-  const ids = await cards.evaluateAll((elements) => elements.map((element) => element.id.replace('branch-card-', '')).sort());
-  const pins = await page.locator('[data-testid^="map-pin-"]').evaluateAll((elements) => elements.map((element) => element.getAttribute('data-testid')?.replace('map-pin-', '')).sort());
+  await expect(page.getByRole('button', { name: /Set location to Gulshan-2/ })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  const ids = await cards.evaluateAll((elements) =>
+    elements.map((element) => element.id.replace('branch-card-', '')).sort(),
+  );
+  const pins = await page
+    .locator('[data-testid^="map-pin-"]')
+    .evaluateAll((elements) =>
+      elements
+        .map((element) => element.getAttribute('data-testid')?.replace('map-pin-', ''))
+        .sort(),
+    );
   expect(ids.length).toBeGreaterThan(0);
   expect(pins).toEqual(ids);
   if (testInfo.project.name === 'mobile') {
     const listTab = page.getByRole('tab', { name: 'List', exact: false });
     const mapTab = page.getByRole('tab', { name: 'Map', exact: true });
     await expect(mapTab).toBeVisible();
-    for (const control of [listTab, mapTab, page.getByRole('button', { name: 'Clear search input' }), page.getByRole('button', { name: /Set location to Gulshan-2/ })]) {
+    for (const control of [
+      listTab,
+      mapTab,
+      page.getByRole('button', { name: 'Clear search input' }),
+      page.getByRole('button', { name: /Set location to Gulshan-2/ }),
+    ]) {
       const bounds = await control.boundingBox();
       expect(bounds).not.toBeNull();
       expect(bounds!.height).toBeGreaterThanOrEqual(44);
@@ -99,5 +128,7 @@ test('location changes preserve map/list identity and rendered controls remain u
     await expect(page.locator('.medimap-dhaka-svg')).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath('discovery-mobile.png'), fullPage: true });
   }
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
 });

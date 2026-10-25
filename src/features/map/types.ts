@@ -57,9 +57,7 @@ export interface CoordinateValidationSuccess {
   readonly coordinates: Coordinates;
 }
 
-export type CoordinateValidationResult =
-  | CoordinateValidationSuccess
-  | CoordinateValidationError;
+export type CoordinateValidationResult = CoordinateValidationSuccess | CoordinateValidationError;
 
 export interface RadiusFilterInputSuccess {
   readonly valid: true;
@@ -73,6 +71,4 @@ export interface RadiusFilterInputError {
   readonly error: string;
 }
 
-export type RadiusFilterInputResult =
-  | RadiusFilterInputSuccess
-  | RadiusFilterInputError;
+export type RadiusFilterInputResult = RadiusFilterInputSuccess | RadiusFilterInputError;

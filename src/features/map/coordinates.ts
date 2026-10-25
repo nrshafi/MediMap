@@ -2,11 +2,7 @@
  * Geographic coordinates and bounding box validation utilities for MediMap.
  */
 
-import type {
-  CoordinateValidationResult,
-  Coordinates,
-  GeoBoundingBox,
-} from './types';
+import type { CoordinateValidationResult, Coordinates, GeoBoundingBox } from './types';
 
 /**
  * Standard bounding boxes for the Dhaka metropolitan area.
@@ -18,16 +14,16 @@ export const DHAKA_BOUNDING_BOXES: {
   readonly greaterDhaka: GeoBoundingBox;
 } = {
   core: {
-    minLat: 23.6800,
-    maxLat: 23.9000,
-    minLon: 90.3200,
-    maxLon: 90.4500,
+    minLat: 23.68,
+    maxLat: 23.9,
+    minLon: 90.32,
+    maxLon: 90.45,
   },
   greaterDhaka: {
-    minLat: 23.5500,
-    maxLat: 24.0200,
-    minLon: 90.1800,
-    maxLon: 90.5800,
+    minLat: 23.55,
+    maxLat: 24.02,
+    minLon: 90.18,
+    maxLon: 90.58,
   },
 } as const;
 
@@ -116,10 +112,7 @@ export function validateCoordinate(coord: unknown): CoordinateValidationResult {
 /**
  * Checks whether a given coordinate falls within a specified bounding box.
  */
-export function isWithinBoundingBox(
-  coord: Coordinates,
-  box: GeoBoundingBox,
-): boolean {
+export function isWithinBoundingBox(coord: Coordinates, box: GeoBoundingBox): boolean {
   return (
     coord.latitude >= box.minLat &&
     coord.latitude <= box.maxLat &&
@@ -136,10 +129,7 @@ export function isWithinDhakaRegion(
   coord: Coordinates,
   region: 'core' | 'greater' = 'core',
 ): boolean {
-  const box =
-    region === 'greater'
-      ? DHAKA_BOUNDING_BOXES.greaterDhaka
-      : DHAKA_BOUNDING_BOXES.core;
+  const box = region === 'greater' ? DHAKA_BOUNDING_BOXES.greaterDhaka : DHAKA_BOUNDING_BOXES.core;
 
   return isWithinBoundingBox(coord, box);
 }

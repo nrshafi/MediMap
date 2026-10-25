@@ -43,7 +43,7 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
         onSelect?.(branch.id);
       }
     },
-    [branch.id, onSelect]
+    [branch.id, onSelect],
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -68,13 +68,13 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
   const roadKm = routeAvailable
     ? branch.route?.roadDistanceKm
     : isRouteExplicitlyUnavailable
-    ? undefined
-    : branch.roadDistanceKm;
+      ? undefined
+      : branch.roadDistanceKm;
   const durationMin = routeAvailable
     ? branch.route?.travelDurationMinutes
     : isRouteExplicitlyUnavailable
-    ? undefined
-    : branch.travelDurationMinutes;
+      ? undefined
+      : branch.travelDurationMinutes;
 
   const hasRoadEstimate =
     typeof roadKm === 'number' &&
@@ -107,9 +107,7 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
         </div>
         <div className="medimap-branch-price-block">
           <span className="medimap-branch-price-label">Base price</span>
-          <span className="medimap-branch-price-value">
-            {formatBdt(branch.basePriceBdt)}
-          </span>
+          <span className="medimap-branch-price-value">{formatBdt(branch.basePriceBdt)}</span>
         </div>
       </div>
 
@@ -129,9 +127,7 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
           </svg>
           {branch.area}
         </span>
-        {branch.address && (
-          <span className="medimap-branch-address">{branch.address}</span>
-        )}
+        {branch.address && <span className="medimap-branch-address">{branch.address}</span>}
       </div>
 
       <div className="medimap-branch-metrics-grid">
@@ -163,7 +159,9 @@ export const BranchResultCard: React.FC<BranchResultCardProps> = ({
             branch.isVerified ? 'is-verified' : 'is-unverified'
           }`}
         >
-          {branch.isSample ? <span>Sample price</span> : branch.isVerified ? (
+          {branch.isSample ? (
+            <span>Sample price</span>
+          ) : branch.isVerified ? (
             <>
               <svg
                 className="medimap-badge-icon"

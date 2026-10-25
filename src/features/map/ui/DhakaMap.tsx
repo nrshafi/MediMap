@@ -13,23 +13,23 @@ import type { DhakaMapProps, DiscoveryBranchItem } from './types';
  * Illustrative water polylines for the Dhaka location schematic.
  */
 const BURIGANGA_RIVER: Coordinates[] = [
-  { latitude: 23.702, longitude: 90.350 },
+  { latitude: 23.702, longitude: 90.35 },
   { latitude: 23.708, longitude: 90.365 },
-  { latitude: 23.715, longitude: 90.380 },
-  { latitude: 23.712, longitude: 90.400 },
-  { latitude: 23.700, longitude: 90.418 },
+  { latitude: 23.715, longitude: 90.38 },
+  { latitude: 23.712, longitude: 90.4 },
+  { latitude: 23.7, longitude: 90.418 },
   { latitude: 23.685, longitude: 90.435 },
-  { latitude: 23.675, longitude: 90.450 },
+  { latitude: 23.675, longitude: 90.45 },
 ];
 
 const TURAG_RIVER: Coordinates[] = [
-  { latitude: 23.880, longitude: 90.320 },
-  { latitude: 23.850, longitude: 90.332 },
-  { latitude: 23.815, longitude: 90.340 },
+  { latitude: 23.88, longitude: 90.32 },
+  { latitude: 23.85, longitude: 90.332 },
+  { latitude: 23.815, longitude: 90.34 },
   { latitude: 23.785, longitude: 90.348 },
-  { latitude: 23.760, longitude: 90.352 },
-  { latitude: 23.740, longitude: 90.360 },
-  { latitude: 23.715, longitude: 90.370 },
+  { latitude: 23.76, longitude: 90.352 },
+  { latitude: 23.74, longitude: 90.36 },
+  { latitude: 23.715, longitude: 90.37 },
 ];
 
 const HATIRJHEEL_LAKE: Coordinates[] = [
@@ -51,7 +51,7 @@ const DHAKA_DISTRICT_LABELS = [
   { name: 'Gulshan', coords: { latitude: 23.7925, longitude: 90.4167 } },
   { name: 'Dhanmondi', coords: { latitude: 23.7461, longitude: 90.3742 } },
   { name: 'Shahbagh', coords: { latitude: 23.7388, longitude: 90.3957 } },
-  { name: 'Old Dhaka', coords: { latitude: 23.7100, longitude: 90.4050 } },
+  { name: 'Old Dhaka', coords: { latitude: 23.71, longitude: 90.405 } },
 ];
 
 /**
@@ -118,7 +118,8 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
   }, [centerCoordinates, projector]);
 
   const radiusCirclePx = useMemo(() => {
-    if (!centerCoordinates || radiusKm === undefined || !Number.isFinite(radiusKm) || radiusKm <= 0) return 0;
+    if (!centerCoordinates || radiusKm === undefined || !Number.isFinite(radiusKm) || radiusKm <= 0)
+      return 0;
     const offsetPoint = projector.project({
       latitude: centerCoordinates.latitude + (radiusKm / 6371) * (180 / Math.PI),
       longitude: centerCoordinates.longitude,
@@ -155,22 +156,73 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
           preserveAspectRatio="xMidYMid meet"
         >
           {/* Map canvas background */}
-          <rect
-            width="800"
-            height="600"
-            fill="var(--bg-base)"
-            className="medimap-map-canvas-bg"
-          />
+          <rect width="800" height="600" fill="var(--bg-base)" className="medimap-map-canvas-bg" />
 
           {/* Coordinate grid lines */}
           <g className="medimap-map-grid" role="presentation">
-            <line x1="100" y1="0" x2="100" y2="600" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="300" y1="0" x2="300" y2="600" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="500" y1="0" x2="500" y2="600" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="700" y1="0" x2="700" y2="600" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="0" y1="150" x2="800" y2="150" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="0" y1="300" x2="800" y2="300" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
-            <line x1="0" y1="450" x2="800" y2="450" stroke="var(--border-default)" strokeWidth="0.8" strokeDasharray="4 4" />
+            <line
+              x1="100"
+              y1="0"
+              x2="100"
+              y2="600"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="300"
+              y1="0"
+              x2="300"
+              y2="600"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="500"
+              y1="0"
+              x2="500"
+              y2="600"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="700"
+              y1="0"
+              x2="700"
+              y2="600"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="0"
+              y1="150"
+              x2="800"
+              y2="150"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="0"
+              y1="300"
+              x2="800"
+              y2="300"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
+            <line
+              x1="0"
+              y1="450"
+              x2="800"
+              y2="450"
+              stroke="var(--border-default)"
+              strokeWidth="0.8"
+              strokeDasharray="4 4"
+            />
           </g>
 
           {/* Stylized Dhaka water bodies */}
@@ -258,12 +310,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 opacity="0.5"
               />
               {/* Center point pin */}
-              <circle
-                cx={centerPoint.x}
-                cy={centerPoint.y}
-                r="4.5"
-                fill="var(--accent-primary)"
-              />
+              <circle cx={centerPoint.x} cy={centerPoint.y} r="4.5" fill="var(--accent-primary)" />
             </g>
           )}
 
@@ -301,13 +348,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   style={{ cursor: 'pointer' }}
                 >
                   {/* 44px minimum touch target hit circle (radius 22px) */}
-                  <circle
-                    cx={pt.x}
-                    cy={pt.y}
-                    r={22}
-                    fill="transparent"
-                    pointerEvents="all"
-                  />
+                  <circle cx={pt.x} cy={pt.y} r={22} fill="transparent" pointerEvents="all" />
 
                   {/* Outer selection ring */}
                   {isSelected && (
@@ -331,15 +372,11 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                       isSelected
                         ? 'var(--text-primary)'
                         : isHovered
-                        ? 'var(--accent-primary)'
-                        : 'var(--bg-surface)'
+                          ? 'var(--accent-primary)'
+                          : 'var(--bg-surface)'
                     }
                     stroke={
-                      isSelected
-                        ? '#ffffff'
-                        : isHovered
-                        ? '#ffffff'
-                        : 'var(--accent-primary)'
+                      isSelected ? '#ffffff' : isHovered ? '#ffffff' : 'var(--accent-primary)'
                     }
                     strokeWidth={isSelected || isHovered ? 2.5 : 2}
                   />
@@ -351,11 +388,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                     textAnchor="middle"
                     fontSize={isSelected ? '12' : '11'}
                     fontWeight="700"
-                    fill={
-                      isSelected || isHovered
-                        ? '#ffffff'
-                        : 'var(--text-primary)'
-                    }
+                    fill={isSelected || isHovered ? '#ffffff' : 'var(--text-primary)'}
                     pointerEvents="none"
                   >
                     {badgeNumber}
@@ -382,32 +415,16 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 fill="var(--text-primary)"
                 opacity="0.95"
               />
-              <polygon
-                points="0,0 -6,-6 6,-6"
-                fill="var(--text-primary)"
-                opacity="0.95"
-              />
-              <text
-                x="0"
-                y="-18"
-                textAnchor="middle"
-                fill="#ffffff"
-                fontSize="10"
-                fontWeight="600"
-              >
+              <polygon points="0,0 -6,-6 6,-6" fill="var(--text-primary)" opacity="0.95" />
+              <text x="0" y="-18" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="600">
                 {activeBranch.providerName.length > 20
                   ? `${activeBranch.providerName.slice(0, 19)}…`
                   : activeBranch.providerName}
               </text>
-              <text
-                x="0"
-                y="-6"
-                textAnchor="middle"
-                fill="#a3e3db"
-                fontSize="9"
-                fontWeight="700"
-              >
-                {activeBranch.basePriceBdt === null ? 'Price unavailable' : `BDT ${activeBranch.basePriceBdt.toLocaleString('en-US')}`}
+              <text x="0" y="-6" textAnchor="middle" fill="#a3e3db" fontSize="9" fontWeight="700">
+                {activeBranch.basePriceBdt === null
+                  ? 'Price unavailable'
+                  : `BDT ${activeBranch.basePriceBdt.toLocaleString('en-US')}`}
               </text>
             </g>
           )}

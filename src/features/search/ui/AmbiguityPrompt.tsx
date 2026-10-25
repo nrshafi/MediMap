@@ -40,12 +40,10 @@ export function AmbiguityPrompt({
           </svg>
         </div>
         <div className="medimap-ambiguity-titles">
-          <h3 className="medimap-ambiguity-title">
-            Specific test selection required
-          </h3>
+          <h3 className="medimap-ambiguity-title">Specific test selection required</h3>
           <p className="medimap-ambiguity-description">
-            Multiple diagnostic tests match &ldquo;{query}&rdquo;. Select the
-            specific test to continue:
+            Multiple diagnostic tests match &ldquo;{query}&rdquo;. Select the specific test to
+            continue:
           </p>
         </div>
       </div>
@@ -67,23 +65,16 @@ export function AmbiguityPrompt({
             >
               <div className="medimap-ambiguity-card-info">
                 <div className="medimap-ambiguity-card-header">
-                  <span className="medimap-ambiguity-service-name">
-                    {service.name}
-                  </span>
-                  <span className="medimap-category-tag">
-                    {service.category}
-                  </span>
+                  <span className="medimap-ambiguity-service-name">{service.name}</span>
+                  <span className="medimap-category-tag">{service.category}</span>
                 </div>
 
                 {service.description ? (
-                  <p className="medimap-ambiguity-card-desc">
-                    {service.description}
-                  </p>
+                  <p className="medimap-ambiguity-card-desc">{service.description}</p>
                 ) : null}
 
                 {match.matchedText &&
-                match.matchedText.toLowerCase() !==
-                  service.name.toLowerCase() ? (
+                match.matchedText.toLowerCase() !== service.name.toLowerCase() ? (
                   <span className="medimap-ambiguity-matched-alias">
                     Matched: &ldquo;{match.matchedText}&rdquo;
                   </span>
@@ -100,11 +91,7 @@ export function AmbiguityPrompt({
 
       {onCancel ? (
         <div className="medimap-ambiguity-footer">
-          <button
-            type="button"
-            className="medimap-ambiguity-cancel-btn"
-            onClick={onCancel}
-          >
+          <button type="button" className="medimap-ambiguity-cancel-btn" onClick={onCancel}>
             Cancel and edit query
           </button>
         </div>

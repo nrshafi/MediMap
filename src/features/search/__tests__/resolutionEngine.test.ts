@@ -44,7 +44,10 @@ describe('typoMatcher', () => {
   it('does not equate broad test categories or different variants with a specific test', () => {
     for (const query of ['KFT', 'Thyroid Profile', 'HRCT Chest', 'রক্ত পরীক্ষা', 'হার্ট পরীক্ষা']) {
       const result = resolveDiagnosticQuery(query);
-      assert.ok(result.status !== 'resolved' || result.primaryMatch?.matchType === 'typo_suggestion', query);
+      assert.ok(
+        result.status !== 'resolved' || result.primaryMatch?.matchType === 'typo_suggestion',
+        query,
+      );
     }
   });
 
@@ -107,11 +110,6 @@ describe('typoMatcher', () => {
 });
 
 describe('resolutionEngine', () => {
-
-
-
-
-
   it('flags ambiguous prefix match for "usg" across multiple clinical services', () => {
     // "usg" prefix matches "USG of Whole Abdomen" and "USG of Pelvis"
     const result = resolveDiagnosticQuery('usg');
@@ -139,8 +137,6 @@ describe('resolutionEngine', () => {
     assert.equal(result.primaryMatch.matchType, 'keyword');
   });
 
-
-
   it('provides typo suggestion for single service (Tier 5)', () => {
     const result = resolveDiagnosticQuery('lipidd');
     assert.equal(result.status, 'resolved');
@@ -160,8 +156,6 @@ describe('resolutionEngine', () => {
     assert.ok(result.matches.length >= 2);
     assert.ok(result.typoSuggestions && result.typoSuggestions.length >= 2);
   });
-
-
 
   it('allows custom catalog injection', () => {
     const customCatalog = [DEFAULT_DIAGNOSTIC_CATALOG[0]];

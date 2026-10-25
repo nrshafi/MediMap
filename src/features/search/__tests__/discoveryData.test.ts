@@ -26,17 +26,21 @@ describe('Discovery Data & Query Filter Engine', () => {
     const branch = MOCK_BRANCH_LISTINGS[0];
     const result = filterBranchesByQueryAndLocation({
       center: branch.coordinates,
-      branches: [{
-        ...branch,
-        isSample: false,
-        servicePrices: [{
-          serviceId: DEFAULT_DISCOVERY_SERVICE_ID,
-          basePriceBdt: null,
-          priceSource: 'Provider price list',
-          verificationStatus: 'unverified',
-          verifiedAt: null,
-        }],
-      }],
+      branches: [
+        {
+          ...branch,
+          isSample: false,
+          servicePrices: [
+            {
+              serviceId: DEFAULT_DISCOVERY_SERVICE_ID,
+              basePriceBdt: null,
+              priceSource: 'Provider price list',
+              verificationStatus: 'unverified',
+              verifiedAt: null,
+            },
+          ],
+        },
+      ],
     });
     assert.equal(result.branches.length, 1);
     assert.equal(result.branches[0].basePriceBdt, null);
@@ -56,14 +60,23 @@ describe('Discovery Data & Query Filter Engine', () => {
   it('keeps sample fixtures unverified and references valid, unique services and branch identifiers', () => {
     const serviceIds = new Set(DEFAULT_DIAGNOSTIC_CATALOG.map((service) => service.id));
     assert.ok(MOCK_BRANCH_LISTINGS.length > 0);
-    assert.equal(new Set(MOCK_BRANCH_LISTINGS.map((branch) => branch.id)).size, MOCK_BRANCH_LISTINGS.length);
+    assert.equal(
+      new Set(MOCK_BRANCH_LISTINGS.map((branch) => branch.id)).size,
+      MOCK_BRANCH_LISTINGS.length,
+    );
     for (const branch of MOCK_BRANCH_LISTINGS) {
       assert.ok(isValidCoordinate(branch.coordinates));
       assert.equal(branch.isSample, true);
-      assert.equal(new Set(branch.servicePrices.map((price) => price.serviceId)).size, branch.servicePrices.length);
+      assert.equal(
+        new Set(branch.servicePrices.map((price) => price.serviceId)).size,
+        branch.servicePrices.length,
+      );
       for (const price of branch.servicePrices) {
         assert.ok(serviceIds.has(price.serviceId), price.serviceId);
-        assert.ok(price.basePriceBdt === null || Number.isFinite(price.basePriceBdt) && price.basePriceBdt > 0);
+        assert.ok(
+          price.basePriceBdt === null ||
+            (Number.isFinite(price.basePriceBdt) && price.basePriceBdt > 0),
+        );
         assert.equal(price.verificationStatus, 'unverified');
         assert.equal(price.verifiedAt, null);
         assert.equal(price.priceSource, null);
@@ -73,7 +86,10 @@ describe('Discovery Data & Query Filter Engine', () => {
 
   it('provides valid location presets with unique identifiers', () => {
     assert.ok(DHAKA_LOCATION_PRESETS.length > 0);
-    assert.equal(new Set(DHAKA_LOCATION_PRESETS.map((preset) => preset.id)).size, DHAKA_LOCATION_PRESETS.length);
+    assert.equal(
+      new Set(DHAKA_LOCATION_PRESETS.map((preset) => preset.id)).size,
+      DHAKA_LOCATION_PRESETS.length,
+    );
     for (const preset of DHAKA_LOCATION_PRESETS) assert.ok(isValidCoordinate(preset.coordinates));
   });
 
@@ -151,7 +167,7 @@ describe('Discovery Data & Query Filter Engine', () => {
 
     it('returns empty array when radius is too tight for any hospital branch', () => {
       const emptyResult = filterBranchesByQueryAndLocation({
-        center: { latitude: 23.7000, longitude: 90.3500 }, // Southern edge with no hospitals
+        center: { latitude: 23.7, longitude: 90.35 }, // Southern edge with no hospitals
         radiusKm: 0.2,
       });
 
@@ -167,8 +183,9 @@ describe('Discovery Data & Query Filter Engine', () => {
 
       for (let i = 1; i < result.branches.length; i++) {
         assert.ok(
-          result.branches[i].straightLineDistanceKm >= result.branches[i - 1].straightLineDistanceKm,
-          `Branches should be sorted ascending by straight-line distance: ${result.branches[i - 1].straightLineDistanceKm} <= ${result.branches[i].straightLineDistanceKm}`
+          result.branches[i].straightLineDistanceKm >=
+            result.branches[i - 1].straightLineDistanceKm,
+          `Branches should be sorted ascending by straight-line distance: ${result.branches[i - 1].straightLineDistanceKm} <= ${result.branches[i].straightLineDistanceKm}`,
         );
       }
     });

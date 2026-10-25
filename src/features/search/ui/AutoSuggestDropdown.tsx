@@ -22,7 +22,7 @@ export function AutoSuggestDropdown({
       return;
     }
     const activeElement = listboxRef.current.querySelector<HTMLElement>(
-      `[data-option-index="${activeIndex}"]`
+      `[data-option-index="${activeIndex}"]`,
     );
     if (activeElement) {
       activeElement.scrollIntoView({ block: 'nearest' });
@@ -49,14 +49,9 @@ export function AutoSuggestDropdown({
         </div>
       ) : items.length === 0 ? (
         trimmedQuery.length > 0 ? (
-          <div
-            className="medimap-dropdown-status medimap-dropdown-empty"
-            role="status"
-          >
+          <div className="medimap-dropdown-status medimap-dropdown-empty" role="status">
             {emptyMessage ?? (
-              <span>
-                No diagnostic tests found for &ldquo;{trimmedQuery}&rdquo;
-              </span>
+              <span>No diagnostic tests found for &ldquo;{trimmedQuery}&rdquo;</span>
             )}
           </div>
         ) : null
@@ -88,26 +83,18 @@ export function AutoSuggestDropdown({
                     {isTypo ? (
                       <span className="medimap-typo-label">
                         Did you mean:{' '}
-                        <strong>
-                          {item.matchedText ?? item.canonicalService.name}
-                        </strong>
+                        <strong>{item.matchedText ?? item.canonicalService.name}</strong>
                       </span>
                     ) : (
-                      <span className="medimap-service-name">
-                        {item.canonicalService.name}
-                      </span>
+                      <span className="medimap-service-name">{item.canonicalService.name}</span>
                     )}
 
-                    <span className="medimap-category-tag">
-                      {item.category}
-                    </span>
+                    <span className="medimap-category-tag">{item.category}</span>
                   </div>
 
                   <div className="medimap-option-meta">
                     {isTypo ? (
-                      <span className="medimap-badge medimap-badge-typo">
-                        Typo correction
-                      </span>
+                      <span className="medimap-badge medimap-badge-typo">Typo correction</span>
                     ) : item.matchedAlias &&
                       item.matchedAlias.toLowerCase() !==
                         item.canonicalService.name.toLowerCase() ? (

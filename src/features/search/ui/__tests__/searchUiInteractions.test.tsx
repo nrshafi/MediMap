@@ -4,12 +4,7 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import React, { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { DEFAULT_DIAGNOSTIC_CATALOG } from '../../diagnosticCatalog';
-import {
-  AutoSuggestDropdown,
-  DiagnosticSearchBox,
-  RadiusSelector,
-  SearchInput,
-} from '../index';
+import { AutoSuggestDropdown, DiagnosticSearchBox, RadiusSelector, SearchInput } from '../index';
 import type { SearchSelection, SuggestionItem } from '../types';
 import { win } from './setupDom';
 
@@ -52,13 +47,11 @@ function renderComponent(ui: React.ReactElement): RenderResult {
 function changeInputValue(input: HTMLInputElement, value: string) {
   const nativeSetter = Object.getOwnPropertyDescriptor(
     win.HTMLInputElement.prototype,
-    'value'
+    'value',
   )?.set;
   act(() => {
     nativeSetter?.call(input, value);
-    input.dispatchEvent(
-      new win.Event('input', { bubbles: true }) as unknown as Event
-    );
+    input.dispatchEvent(new win.Event('input', { bubbles: true }) as unknown as Event);
   });
 }
 
@@ -68,7 +61,7 @@ function clickElement(element: HTMLElement) {
       new win.MouseEvent('click', {
         bubbles: true,
         cancelable: true,
-      }) as unknown as MouseEvent
+      }) as unknown as MouseEvent,
     );
   });
 }
@@ -80,7 +73,7 @@ function pressKey(element: HTMLElement, key: string) {
         key,
         bubbles: true,
         cancelable: true,
-      }) as unknown as KeyboardEvent
+      }) as unknown as KeyboardEvent,
     );
   });
 }
@@ -101,7 +94,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
 
   describe('1. SearchInput and User Input Handling', () => {
     it('keeps the suggestion dropdown closed for an ambiguous query on ArrowDown', () => {
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CT" debounceMs={50} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox initialQuery="CT" debounceMs={50} />,
+      );
       const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
       act(() => jest.advanceTimersByTime(50));
       assert.ok(container.querySelector('.medimap-ambiguity-panel'));
@@ -111,7 +106,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('keeps dismissed suggestions closed after the debounce interval', () => {
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />,
+      );
       const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
       act(() => jest.advanceTimersByTime(50));
       assert.equal(input.getAttribute('aria-expanded'), 'true');
@@ -121,7 +118,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('clears old suggestions immediately while the next query is pending', () => {
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />,
+      );
       const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
       act(() => jest.advanceTimersByTime(50));
       assert.equal(input.getAttribute('aria-expanded'), 'true');
@@ -131,7 +130,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('keeps selected suggestions closed after the selected name changes the input', () => {
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />,
+      );
       const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
       act(() => jest.advanceTimersByTime(50));
       pressKey(input, 'Enter');
@@ -141,7 +142,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('clears selected service when the external query changes', () => {
-      const { container, root } = renderComponent(<DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />);
+      const { container, root } = renderComponent(
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />,
+      );
       const input = container.querySelector('input[role="combobox"]') as HTMLInputElement;
       act(() => jest.advanceTimersByTime(50));
       pressKey(input, 'Enter');
@@ -154,7 +157,13 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     it('emits radius changes without selecting a diagnostic service', () => {
       const selections: SearchSelection[] = [];
       const radii: number[] = [];
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="Lipid Profle" onSelectService={(selection) => selections.push(selection)} onRadiusChange={(radius) => radii.push(radius)} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox
+          initialQuery="Lipid Profle"
+          onSelectService={(selection) => selections.push(selection)}
+          onRadiusChange={(radius) => radii.push(radius)}
+        />,
+      );
       const radius = container.querySelector('input[type="radio"][value="5"]') as HTMLInputElement;
       clickElement(radius);
       assert.equal(selections.length, 0);
@@ -162,12 +171,17 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('synchronizes radius controls when an external action changes the radius', () => {
-      const { container, root } = renderComponent(<RadiusSelector value={0.2} onChange={() => {}} />);
+      const { container, root } = renderComponent(
+        <RadiusSelector value={0.2} onChange={() => {}} />,
+      );
       act(() => root.render(<RadiusSelector value={5} onChange={() => {}} />));
       assert.equal((container.querySelector('input[value="5"]') as HTMLInputElement).checked, true);
       assert.equal(container.querySelector('.medimap-custom-radius-input'), null);
       act(() => root.render(<RadiusSelector value={0.1} onChange={() => {}} />));
-      assert.equal((container.querySelector('.medimap-custom-radius-input') as HTMLInputElement).value, '0.1');
+      assert.equal(
+        (container.querySelector('.medimap-custom-radius-input') as HTMLInputElement).value,
+        '0.1',
+      );
     });
 
     it('verifies debounce timing behavior: keystrokes within debounce interval do not trigger premature resolution', () => {
@@ -195,11 +209,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       act(() => {
         jest.advanceTimersByTime(100);
       });
-      assert.equal(
-        debouncedQueries.length,
-        0,
-        'Debounced callback must not fire at 100ms'
-      );
+      assert.equal(debouncedQueries.length, 0, 'Debounced callback must not fire at 100ms');
 
       // Keystroke 2: "CB" at t = 100ms (resets timer to t + 250ms = 350ms)
       changeInputValue(input, 'CB');
@@ -210,7 +220,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(
         debouncedQueries.length,
         0,
-        'Debounced callback must not fire after rapid consecutive keystroke'
+        'Debounced callback must not fire after rapid consecutive keystroke',
       );
 
       // Keystroke 3: "CBC" at t = 200ms (resets timer to t + 250ms = 450ms)
@@ -224,22 +234,18 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(
         debouncedQueries.length,
         0,
-        'Debounced callback must not fire before exact debounce threshold'
+        'Debounced callback must not fire before exact debounce threshold',
       );
 
       // Advance remaining 1ms (t = 450ms)
       act(() => {
         jest.advanceTimersByTime(1);
       });
-      assert.equal(
-        debouncedQueries.length,
-        1,
-        'Debounced callback must fire once'
-      );
+      assert.equal(debouncedQueries.length, 1, 'Debounced callback must fire once');
       assert.equal(
         debouncedQueries[0],
         'CBC',
-        'Debounced callback must resolve the latest keystroke query'
+        'Debounced callback must resolve the latest keystroke query',
       );
     });
 
@@ -290,9 +296,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       const input = container.querySelector<HTMLInputElement>('input')!;
       assert.equal(input.value, 'Ultrasound');
 
-      const clearBtn = container.querySelector<HTMLButtonElement>(
-        '.medimap-search-clear-btn'
-      );
+      const clearBtn = container.querySelector<HTMLButtonElement>('.medimap-search-clear-btn');
       assert.ok(clearBtn, 'Clear button must be rendered for non-empty query');
 
       clickElement(clearBtn!);
@@ -301,37 +305,33 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(
         win.document.activeElement,
         input,
-        'Focus must be restored to search input after clearing'
+        'Focus must be restored to search input after clearing',
       );
     });
 
     it('verifies clear button does not render when value is empty or input is disabled', () => {
       const { container: emptyContainer } = renderComponent(
-        <SearchInput value="" onChange={() => {}} />
+        <SearchInput value="" onChange={() => {}} />,
       );
       assert.equal(
         emptyContainer.querySelector('.medimap-search-clear-btn'),
         null,
-        'Clear button should not render when value is empty'
+        'Clear button should not render when value is empty',
       );
 
       const { container: disabledContainer } = renderComponent(
-        <SearchInput value="CBC" onChange={() => {}} disabled={true} />
+        <SearchInput value="CBC" onChange={() => {}} disabled={true} />,
       );
       assert.equal(
         disabledContainer.querySelector('.medimap-search-clear-btn'),
         null,
-        'Clear button should not render when input is disabled'
+        'Clear button should not render when input is disabled',
       );
     });
 
     it('verifies aria-live="polite" screen reader announcements for result counts, loading, and clear states', () => {
       const { container, root } = renderComponent(
-        <SearchInput
-          value="CBC"
-          onChange={() => {}}
-          announcement="Found 1 matching test."
-        />
+        <SearchInput value="CBC" onChange={() => {}} announcement="Found 1 matching test." />,
       );
 
       const liveRegion = container.querySelector('[aria-live="polite"]');
@@ -342,20 +342,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
 
       // Update announcement
       act(() => {
-        root.render(
-          <SearchInput
-            value=""
-            onChange={() => {}}
-            announcement="Search cleared."
-          />
-        );
+        root.render(<SearchInput value="" onChange={() => {}} announcement="Search cleared." />);
       });
       assert.equal(liveRegion!.textContent, 'Search cleared.');
     });
 
     it('verifies loading spinner renders and marks aria-busy when isLoading is true', () => {
       const { container } = renderComponent(
-        <SearchInput value="MRI" onChange={() => {}} isLoading={true} />
+        <SearchInput value="MRI" onChange={() => {}} isLoading={true} />,
       );
 
       const input = container.querySelector<HTMLInputElement>('input')!;
@@ -370,7 +364,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
   describe('2. WAI-ARIA 1.2 Combobox and Listbox Keyboard Navigation', () => {
     it('ArrowDown from closed combobox opens listbox and highlights first item (aria-activedescendant)', () => {
       const { container } = renderComponent(
-        <DiagnosticSearchBox initialQuery="CBC" debounceMs={100} />
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={100} />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -384,11 +378,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       assert.equal(input.getAttribute('aria-expanded'), 'true');
       const activeDescendant = input.getAttribute('aria-activedescendant');
       assert.ok(activeDescendant, 'aria-activedescendant must be set');
-      assert.match(
-        activeDescendant!,
-        /-listbox-opt-0$/,
-        'Must highlight first item (index 0)'
-      );
+      assert.match(activeDescendant!, /-listbox-opt-0$/, 'Must highlight first item (index 0)');
 
       const firstOption = container.querySelector(`#${activeDescendant}`);
       assert.ok(firstOption);
@@ -396,7 +386,9 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
     });
 
     it('cycles through actual typo suggestions in both keyboard directions', () => {
-      const { container } = renderComponent(<DiagnosticSearchBox initialQuery="lipidd" debounceMs={50} />);
+      const { container } = renderComponent(
+        <DiagnosticSearchBox initialQuery="lipidd" debounceMs={50} />,
+      );
       const input = container.querySelector<HTMLInputElement>('[role="combobox"]')!;
       act(() => jest.advanceTimersByTime(50));
       const options = Array.from(container.querySelectorAll<HTMLElement>('[role="option"]'));
@@ -422,7 +414,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
           onSelectService={(sel) => {
             selectedResult = sel;
           }}
-        />
+        />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -430,14 +422,8 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       pressKey(input, 'Enter');
 
       assert.ok(selectedResult);
-      assert.equal(
-        (selectedResult as SearchSelection).canonicalService.id,
-        'lipid-profile'
-      );
-      assert.equal(
-        (selectedResult as SearchSelection).selectionType,
-        'suggestion'
-      );
+      assert.equal((selectedResult as SearchSelection).canonicalService.id, 'lipid-profile');
+      assert.equal((selectedResult as SearchSelection).selectionType, 'suggestion');
       assert.equal(input.value, 'Lipid Profile');
 
       // Dropdown must close
@@ -447,7 +433,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
 
     it('Escape closes listbox, clears aria-activedescendant, and preserves input value', () => {
       const { container } = renderComponent(
-        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />
+        <DiagnosticSearchBox initialQuery="CBC" debounceMs={50} />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -458,28 +444,18 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       // Press Escape
       pressKey(input, 'Escape');
 
-      assert.equal(
-        input.getAttribute('aria-expanded'),
-        'false',
-        'Dropdown must close on Escape'
-      );
+      assert.equal(input.getAttribute('aria-expanded'), 'false', 'Dropdown must close on Escape');
       assert.equal(
         input.getAttribute('aria-activedescendant'),
         null,
-        'aria-activedescendant must be cleared on Escape'
+        'aria-activedescendant must be cleared on Escape',
       );
-      assert.equal(
-        input.value,
-        'CBC',
-        'Input query must be preserved on Escape'
-      );
+      assert.equal(input.value, 'CBC', 'Input query must be preserved on Escape');
     });
   });
 
   describe('3. AutoSuggestDropdown Rendering and Badges', () => {
-    const cbcService = DEFAULT_DIAGNOSTIC_CATALOG.find(
-      (s) => s.id === 'complete-blood-count'
-    )!;
+    const cbcService = DEFAULT_DIAGNOSTIC_CATALOG.find((s) => s.id === 'complete-blood-count')!;
 
     it('renders canonical name, category tag, and English / Bengali alias badges', () => {
       let selectedItem: SuggestionItem | null = null;
@@ -518,12 +494,10 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
             selectedItem = it;
           }}
           query="CBC"
-        />
+        />,
       );
 
-      const optionElements = container.querySelectorAll(
-        '.medimap-dropdown-option'
-      );
+      const optionElements = container.querySelectorAll('.medimap-dropdown-option');
       assert.equal(optionElements.length, 2);
 
       // Check active item
@@ -573,7 +547,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
             selectedTypo = it;
           }}
           query="Compleet"
-        />
+        />,
       );
 
       const typoLabel = container.querySelector('.medimap-typo-label');
@@ -598,14 +572,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
           activeIndex={-1}
           onSelect={() => {}}
           query="Unknown Diagnostic Test"
-        />
+        />,
       );
 
       const emptyDiv = container.querySelector('.medimap-dropdown-empty');
       assert.ok(emptyDiv);
       assert.match(
         emptyDiv!.textContent!,
-        /No diagnostic tests found for “Unknown Diagnostic Test”/
+        /No diagnostic tests found for “Unknown Diagnostic Test”/,
       );
     });
   });
@@ -613,7 +587,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
   describe('4. Ambiguity Resolution Flow', () => {
     it('renders AmbiguityPrompt when query is clinically ambiguous and displays candidate cards', () => {
       const { container } = renderComponent(
-        <DiagnosticSearchBox initialQuery="" debounceMs={50} />
+        <DiagnosticSearchBox initialQuery="" debounceMs={50} />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -623,22 +597,14 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
         jest.advanceTimersByTime(50);
       });
 
-      const ambiguityPanel = container.querySelector(
-        '.medimap-ambiguity-panel'
-      );
-      assert.ok(
-        ambiguityPanel,
-        'Ambiguity panel must be rendered for ambiguous query'
-      );
+      const ambiguityPanel = container.querySelector('.medimap-ambiguity-panel');
+      assert.ok(ambiguityPanel, 'Ambiguity panel must be rendered for ambiguous query');
 
       const title = container.querySelector('.medimap-ambiguity-title');
       assert.equal(title?.textContent, 'Specific test selection required');
 
       const cards = container.querySelectorAll('.medimap-ambiguity-card');
-      assert.ok(
-        cards.length >= 2,
-        `Expected multiple clinical choices, found ${cards.length}`
-      );
+      assert.ok(cards.length >= 2, `Expected multiple clinical choices, found ${cards.length}`);
     });
 
     it('clicking an ambiguity card explicitly resolves to that specific canonical service', () => {
@@ -650,7 +616,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
           onSelectService={(sel) => {
             resolvedSelection = sel;
           }}
-        />
+        />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -659,42 +625,30 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
         jest.advanceTimersByTime(50);
       });
 
-      const cards = container.querySelectorAll<HTMLButtonElement>(
-        '.medimap-ambiguity-card'
-      );
+      const cards = container.querySelectorAll<HTMLButtonElement>('.medimap-ambiguity-card');
       assert.ok(cards.length >= 2);
 
       // Select first card (e.g. CT Scan Brain)
-      const firstCardName = cards[0].querySelector(
-        '.medimap-ambiguity-service-name'
-      )?.textContent;
+      const firstCardName = cards[0].querySelector('.medimap-ambiguity-service-name')?.textContent;
       clickElement(cards[0]);
 
       assert.ok(resolvedSelection);
-      assert.equal(
-        (resolvedSelection as SearchSelection).selectionType,
-        'ambiguity_resolution'
-      );
-      assert.equal(
-        (resolvedSelection as SearchSelection).canonicalService.name,
-        firstCardName
-      );
+      assert.equal((resolvedSelection as SearchSelection).selectionType, 'ambiguity_resolution');
+      assert.equal((resolvedSelection as SearchSelection).canonicalService.name, firstCardName);
       assert.equal(input.value, firstCardName);
 
       // Ambiguity panel must be closed after explicit resolution
       assert.equal(container.querySelector('.medimap-ambiguity-panel'), null);
 
       // Confirmation banner should be displayed
-      const banner = container.querySelector(
-        '.medimap-selected-service-banner'
-      );
+      const banner = container.querySelector('.medimap-selected-service-banner');
       assert.ok(banner);
       assert.match(banner!.textContent!, new RegExp(firstCardName!));
     });
 
     it('cancel button dismisses ambiguity prompt and restores input focus', () => {
       const { container } = renderComponent(
-        <DiagnosticSearchBox initialQuery="" debounceMs={50} />
+        <DiagnosticSearchBox initialQuery="" debounceMs={50} />,
       );
       const input = container.querySelector<HTMLInputElement>('input')!;
 
@@ -705,36 +659,32 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
 
       assert.ok(container.querySelector('.medimap-ambiguity-panel'));
 
-      const cancelBtn = container.querySelector<HTMLButtonElement>(
-        '.medimap-ambiguity-cancel-btn'
-      );
+      const cancelBtn = container.querySelector<HTMLButtonElement>('.medimap-ambiguity-cancel-btn');
       assert.ok(cancelBtn, 'Cancel button must be rendered');
 
       clickElement(cancelBtn!);
       assert.equal(
         container.querySelector('.medimap-ambiguity-panel'),
         null,
-        'Ambiguity panel must be dismissed on cancel'
+        'Ambiguity panel must be dismissed on cancel',
       );
       assert.equal(
         win.document.activeElement,
         input,
-        'Input focus must be restored after cancelling ambiguity'
+        'Input focus must be restored after cancelling ambiguity',
       );
     });
   });
 
   describe('5. RadiusSelector and Straight-Line Metrics', () => {
     it('verifies radiogroup structure and explicit Straight-line radius wording', () => {
-      const { container } = renderComponent(
-        <RadiusSelector value={3} onChange={() => {}} />
-      );
+      const { container } = renderComponent(<RadiusSelector value={3} onChange={() => {}} />);
 
       const legend = container.querySelector('.medimap-radius-legend');
       assert.equal(
         legend?.textContent,
         'Straight-line radius',
-        'Legend must explicitly use "Straight-line radius" to avoid road distance conflation'
+        'Legend must explicitly use "Straight-line radius" to avoid road distance conflation',
       );
 
       const hint = container.querySelector('.medimap-radius-hint');
@@ -742,10 +692,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
 
       const radiogroup = container.querySelector('[role="radiogroup"]');
       assert.ok(radiogroup);
-      assert.equal(
-        radiogroup!.getAttribute('aria-label'),
-        'Straight-line search radius'
-      );
+      assert.equal(radiogroup!.getAttribute('aria-label'), 'Straight-line search radius');
 
       const pills = container.querySelectorAll('.medimap-radius-pill');
       assert.equal(pills.length, 4, 'Must have 1km, 3km, 5km, and Custom pills');
@@ -811,9 +758,7 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       clickElement(customRadio);
 
       // Custom numeric input must appear
-      const numInput = container.querySelector<HTMLInputElement>(
-        '.medimap-custom-radius-input'
-      );
+      const numInput = container.querySelector<HTMLInputElement>('.medimap-custom-radius-input');
       assert.ok(numInput, 'Custom numeric input must be rendered');
       assert.equal(numInput!.getAttribute('type'), 'number');
       assert.equal(numInput!.getAttribute('min'), '0.1');
@@ -823,60 +768,34 @@ describe('Search Discovery UI Comprehensive Interaction Test Suite', () => {
       // Test valid custom distance: 15 km
       changeInputValue(numInput!, '15');
       assert.equal(emittedRadius, 15);
-      assert.equal(
-        container.querySelector('.medimap-radius-error-message'),
-        null
-      );
+      assert.equal(container.querySelector('.medimap-radius-error-message'), null);
 
       changeInputValue(numInput!, '0.05');
-      const errorBelow = container.querySelector(
-        '.medimap-radius-error-message'
-      );
+      const errorBelow = container.querySelector('.medimap-radius-error-message');
       assert.ok(errorBelow);
-      assert.match(
-        errorBelow!.textContent!,
-        /Distance must be between 0.1 km and 100 km/
-      );
+      assert.match(errorBelow!.textContent!, /Distance must be between 0.1 km and 100 km/);
       assert.equal(numInput!.getAttribute('aria-invalid'), 'true');
-      assert.equal(
-        emittedRadius,
-        15,
-        'Invalid radius should not update emitted radius'
-      );
+      assert.equal(emittedRadius, 15, 'Invalid radius should not update emitted radius');
 
       changeInputValue(numInput!, '101');
-      const errorAbove = container.querySelector(
-        '.medimap-radius-error-message'
-      );
+      const errorAbove = container.querySelector('.medimap-radius-error-message');
       assert.ok(errorAbove);
-      assert.match(
-        errorAbove!.textContent!,
-        /Distance must be between 0.1 km and 100 km/
-      );
+      assert.match(errorAbove!.textContent!, /Distance must be between 0.1 km and 100 km/);
 
       // Test empty string rejection
       changeInputValue(numInput!, '   ');
-      const errorEmpty = container.querySelector(
-        '.medimap-radius-error-message'
-      );
+      const errorEmpty = container.querySelector('.medimap-radius-error-message');
       assert.ok(errorEmpty);
       assert.match(errorEmpty!.textContent!, /Please enter a radius distance/);
 
       // Valid boundary values
       changeInputValue(numInput!, '0.5');
       assert.equal(emittedRadius, 0.5);
-      assert.equal(
-        container.querySelector('.medimap-radius-error-message'),
-        null
-      );
+      assert.equal(container.querySelector('.medimap-radius-error-message'), null);
 
       changeInputValue(numInput!, '50');
       assert.equal(emittedRadius, 50);
-      assert.equal(
-        container.querySelector('.medimap-radius-error-message'),
-        null
-      );
+      assert.equal(container.querySelector('.medimap-radius-error-message'), null);
     });
   });
-
 });

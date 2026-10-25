@@ -6,12 +6,7 @@ import type {
   RouteAvailableResult,
   RouteUnavailableResult,
 } from '../../../../integrations/mapping/types';
-import {
-  BranchList,
-  BranchResultCard,
-  DhakaMap,
-  SynchronizedDiscoveryView,
-} from '../index';
+import { BranchList, BranchResultCard, DhakaMap, SynchronizedDiscoveryView } from '../index';
 import type { DiscoveryBranchItem, InteractionSource } from '../types';
 
 interface RenderResult {
@@ -52,7 +47,7 @@ function pressKey(element: Element, key: string): void {
         key,
         bubbles: true,
         cancelable: true,
-      })
+      }),
     );
   });
 }
@@ -64,7 +59,7 @@ function clickElement(element: Element): void {
       new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
-      })
+      }),
     );
   });
 }
@@ -75,13 +70,13 @@ function mouseEnterElement(element: Element): void {
       new MouseEvent('mouseover', {
         bubbles: true,
         cancelable: true,
-      })
+      }),
     );
     element.dispatchEvent(
       new MouseEvent('mouseenter', {
         bubbles: false,
         cancelable: true,
-      })
+      }),
     );
   });
 }
@@ -92,13 +87,13 @@ function mouseLeaveElement(element: Element): void {
       new MouseEvent('mouseout', {
         bubbles: true,
         cancelable: true,
-      })
+      }),
     );
     element.dispatchEvent(
       new MouseEvent('mouseleave', {
         bubbles: false,
         cancelable: true,
-      })
+      }),
     );
   });
 }
@@ -214,11 +209,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
             selectedBranchId = id;
             selectedSource = source ?? null;
           }}
-        />
+        />,
       );
 
       const targetPin = container.querySelector(
-        '[data-testid="map-pin-branch-evercare-bashundhara"]'
+        '[data-testid="map-pin-branch-evercare-bashundhara"]',
       );
       assert.ok(targetPin, 'Evercare pin should exist in DOM');
 
@@ -232,28 +227,20 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       // Verify pin highlighted with both classes and ARIA attributes
       assert.ok(
         targetPin.classList.contains('map-pin--selected'),
-        'Pin must have map-pin--selected class'
+        'Pin must have map-pin--selected class',
       );
-      assert.ok(
-        targetPin.classList.contains('is-selected'),
-        'Pin must retain is-selected class'
-      );
+      assert.ok(targetPin.classList.contains('is-selected'), 'Pin must retain is-selected class');
       assert.equal(targetPin.getAttribute('aria-pressed'), 'true');
       assert.equal(targetPin.getAttribute('aria-expanded'), 'true');
 
       // Verify corresponding list card highlighted
-      const targetCard = container.querySelector(
-        '#branch-card-branch-evercare-bashundhara'
-      );
+      const targetCard = container.querySelector('#branch-card-branch-evercare-bashundhara');
       assert.ok(targetCard, 'Evercare card should exist in list');
       assert.ok(
         targetCard.classList.contains('branch-card--selected'),
-        'Card must have branch-card--selected class'
+        'Card must have branch-card--selected class',
       );
-      assert.ok(
-        targetCard.classList.contains('is-selected'),
-        'Card must retain is-selected class'
-      );
+      assert.ok(targetCard.classList.contains('is-selected'), 'Card must retain is-selected class');
       assert.equal(targetCard.getAttribute('aria-selected'), 'true');
     });
 
@@ -268,12 +255,10 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
             selectedBranchId = id;
             selectedSource = source ?? null;
           }}
-        />
+        />,
       );
 
-      const targetCard = container.querySelector(
-        '#branch-card-branch-popular-dhanmondi'
-      );
+      const targetCard = container.querySelector('#branch-card-branch-popular-dhanmondi');
       assert.ok(targetCard, 'Popular card must exist in list');
 
       // Click card
@@ -286,18 +271,16 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       // Verify card highlighted
       assert.ok(
         targetCard.classList.contains('branch-card--selected'),
-        'List card must receive branch-card--selected class'
+        'List card must receive branch-card--selected class',
       );
       assert.equal(targetCard.getAttribute('aria-selected'), 'true');
 
       // Verify corresponding map pin highlighted
-      const targetPin = container.querySelector(
-        '[data-testid="map-pin-branch-popular-dhanmondi"]'
-      );
+      const targetPin = container.querySelector('[data-testid="map-pin-branch-popular-dhanmondi"]');
       assert.ok(targetPin, 'Popular map pin must exist');
       assert.ok(
         targetPin.classList.contains('map-pin--selected'),
-        'Map pin must receive map-pin--selected class'
+        'Map pin must receive map-pin--selected class',
       );
       assert.equal(targetPin.getAttribute('aria-pressed'), 'true');
     });
@@ -313,13 +296,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
             reportedId = id;
             reportedSource = source ?? null;
           }}
-        />
+        />,
       );
 
       const card = container.querySelector('#branch-card-branch-labaid-dhanmondi')!;
-      const selectBtn = card.querySelector<HTMLButtonElement>(
-        '.medimap-card-select-btn'
-      )!;
+      const selectBtn = card.querySelector<HTMLButtonElement>('.medimap-card-select-btn')!;
       assert.ok(selectBtn);
 
       clickElement(selectBtn);
@@ -334,15 +315,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
         <SynchronizedDiscoveryView
           branches={sampleBranches}
           selectedBranchId="branch-square-panthapath"
-        />
+        />,
       );
 
-      let squarePin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      );
-      let squareCard = container.querySelector(
-        '#branch-card-branch-square-panthapath'
-      );
+      let squarePin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]');
+      let squareCard = container.querySelector('#branch-card-branch-square-panthapath');
       assert.ok(squarePin?.classList.contains('map-pin--selected'));
       assert.ok(squareCard?.classList.contains('branch-card--selected'));
 
@@ -352,25 +329,19 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
           <SynchronizedDiscoveryView
             branches={sampleBranches}
             selectedBranchId="branch-evercare-bashundhara"
-          />
+          />,
         );
       });
 
-      squarePin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      );
-      squareCard = container.querySelector(
-        '#branch-card-branch-square-panthapath'
-      );
+      squarePin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]');
+      squareCard = container.querySelector('#branch-card-branch-square-panthapath');
       assert.equal(squarePin?.classList.contains('map-pin--selected'), false);
       assert.equal(squareCard?.classList.contains('branch-card--selected'), false);
 
       const evercarePin = container.querySelector(
-        '[data-testid="map-pin-branch-evercare-bashundhara"]'
+        '[data-testid="map-pin-branch-evercare-bashundhara"]',
       );
-      const evercareCard = container.querySelector(
-        '#branch-card-branch-evercare-bashundhara'
-      );
+      const evercareCard = container.querySelector('#branch-card-branch-evercare-bashundhara');
       assert.ok(evercarePin?.classList.contains('map-pin--selected'));
       assert.ok(evercareCard?.classList.contains('branch-card--selected'));
     });
@@ -382,15 +353,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
   describe('2. Bidirectional Hover Synchronization', () => {
     it('mouse enter on a pin triggers hover state on the pin and highlights the matching branch card', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={sampleBranches} />
+        <SynchronizedDiscoveryView branches={sampleBranches} />,
       );
 
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      )!;
-      const card = container.querySelector(
-        '#branch-card-branch-square-panthapath'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')!;
+      const card = container.querySelector('#branch-card-branch-square-panthapath')!;
 
       // Initial state: not hovered
       assert.equal(pin.classList.contains('map-pin--hovered'), false);
@@ -399,13 +366,10 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       // Trigger hover on pin
       mouseEnterElement(pin);
 
-      assert.ok(
-        pin.classList.contains('map-pin--hovered'),
-        'Pin should have map-pin--hovered'
-      );
+      assert.ok(pin.classList.contains('map-pin--hovered'), 'Pin should have map-pin--hovered');
       assert.ok(
         card.classList.contains('branch-card--hovered'),
-        'Matching card should have branch-card--hovered'
+        'Matching card should have branch-card--hovered',
       );
 
       // Map renders tooltip bubble on active hover
@@ -416,26 +380,19 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('mouse enter on a card triggers hover state on the pin marker and renders map tooltip', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={sampleBranches} />
+        <SynchronizedDiscoveryView branches={sampleBranches} />,
       );
 
-      const card = container.querySelector(
-        '#branch-card-branch-labaid-dhanmondi'
-      )!;
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-labaid-dhanmondi"]'
-      )!;
+      const card = container.querySelector('#branch-card-branch-labaid-dhanmondi')!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-labaid-dhanmondi"]')!;
 
       mouseEnterElement(card);
 
       assert.ok(
         card.classList.contains('branch-card--hovered'),
-        'Card must have branch-card--hovered'
+        'Card must have branch-card--hovered',
       );
-      assert.ok(
-        pin.classList.contains('map-pin--hovered'),
-        'Pin must have map-pin--hovered'
-      );
+      assert.ok(pin.classList.contains('map-pin--hovered'), 'Pin must have map-pin--hovered');
 
       // Verify tooltip
       const tooltip = container.querySelector('.medimap-map-tooltip-group');
@@ -446,15 +403,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('mouse leave cleans up hover states from both elements and removes tooltip', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={sampleBranches} />
+        <SynchronizedDiscoveryView branches={sampleBranches} />,
       );
 
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-popular-dhanmondi"]'
-      )!;
-      const card = container.querySelector(
-        '#branch-card-branch-popular-dhanmondi'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-popular-dhanmondi"]')!;
+      const card = container.querySelector('#branch-card-branch-popular-dhanmondi')!;
 
       // Enter
       mouseEnterElement(pin);
@@ -472,15 +425,13 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('focus and blur on card synchronize hover state for keyboard users', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={sampleBranches} />
+        <SynchronizedDiscoveryView branches={sampleBranches} />,
       );
 
       const card = container.querySelector<HTMLDivElement>(
-        '#branch-card-branch-square-panthapath'
+        '#branch-card-branch-square-panthapath',
       )!;
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')!;
 
       act(() => {
         card.focus();
@@ -501,9 +452,7 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
   // =========================================================================
   describe('3. Keyboard & Accessibility', () => {
     it('pins have role="button", tabIndex={0}, aria-pressed, and aria-expanded', () => {
-      const { container } = renderComponent(
-        <DhakaMap branches={sampleBranches} />
-      );
+      const { container } = renderComponent(<DhakaMap branches={sampleBranches} />);
 
       const pins = container.querySelectorAll('.medimap-pin-group');
       assert.equal(pins.length, 4);
@@ -515,7 +464,7 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
         assert.equal(pin.getAttribute('aria-expanded'), 'false');
         assert.ok(
           (pin.getAttribute('aria-label')?.length ?? 0) > 0,
-          'Pin must provide informative aria-label'
+          'Pin must provide informative aria-label',
         );
       });
     });
@@ -528,12 +477,10 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
           onSelectBranch={(id) => {
             selectedId = id;
           }}
-        />
+        />,
       );
 
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')!;
       pressKey(pin, 'Enter');
 
       assert.equal(selectedId, 'branch-square-panthapath');
@@ -547,12 +494,10 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
           onSelectBranch={(id) => {
             selectedId = id;
           }}
-        />
+        />,
       );
 
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-popular-dhanmondi"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-popular-dhanmondi"]')!;
       pressKey(pin, ' ');
 
       assert.equal(selectedId, 'branch-popular-dhanmondi');
@@ -560,7 +505,7 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('polite live region announcement updates when a branch is selected', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={sampleBranches} />
+        <SynchronizedDiscoveryView branches={sampleBranches} />,
       );
 
       const liveRegion = container.querySelector('[role="status"]');
@@ -570,39 +515,30 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       assert.equal(liveRegion.textContent, '');
 
       // Select pin
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')!;
       clickElement(pin);
 
       // Verify live region text has clinical details
       assert.ok(
-        liveRegion.textContent?.includes('Selected Square Hospital, Panthapath Main Branch')
+        liveRegion.textContent?.includes('Selected Square Hospital, Panthapath Main Branch'),
       );
       assert.ok(liveRegion.textContent?.includes('Base price BDT 2,500'));
       assert.ok(liveRegion.textContent?.includes('1.8 km straight-line distance'));
     });
 
     it('zoom controls toolbar is accessible with aria-label and works on click and keyboard', () => {
-      const { container } = renderComponent(
-        <DhakaMap branches={sampleBranches} />
-      );
+      const { container } = renderComponent(<DhakaMap branches={sampleBranches} />);
 
       const toolbar = container.querySelector('[role="toolbar"]');
       assert.ok(toolbar);
-      assert.equal(
-        toolbar.getAttribute('aria-label'),
-        'Map view and zoom controls'
-      );
+      assert.equal(toolbar.getAttribute('aria-label'), 'Map view and zoom controls');
 
-      const zoomInBtn = container.querySelector<HTMLButtonElement>(
-        'button[aria-label="Zoom in"]'
-      )!;
+      const zoomInBtn = container.querySelector<HTMLButtonElement>('button[aria-label="Zoom in"]')!;
       const zoomOutBtn = container.querySelector<HTMLButtonElement>(
-        'button[aria-label="Zoom out"]'
+        'button[aria-label="Zoom out"]',
       )!;
       const resetBtn = container.querySelector<HTMLButtonElement>(
-        'button[aria-label="Reset map view"]'
+        'button[aria-label="Reset map view"]',
       )!;
 
       assert.ok(zoomInBtn);
@@ -630,15 +566,11 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
     });
 
     it('disables zoom in at maximum zoom level and disables zoom out at minimum zoom level', () => {
-      const { container } = renderComponent(
-        <DhakaMap branches={sampleBranches} />
-      );
+      const { container } = renderComponent(<DhakaMap branches={sampleBranches} />);
 
-      const zoomInBtn = container.querySelector<HTMLButtonElement>(
-        'button[aria-label="Zoom in"]'
-      )!;
+      const zoomInBtn = container.querySelector<HTMLButtonElement>('button[aria-label="Zoom in"]')!;
       const zoomOutBtn = container.querySelector<HTMLButtonElement>(
-        'button[aria-label="Zoom out"]'
+        'button[aria-label="Zoom out"]',
       )!;
 
       // Initial zoom is 1: zoomOut is disabled
@@ -663,10 +595,7 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
   describe('4. Mobile Screen Switching & Floating Card', () => {
     it('mobile segmented tablist switches between activeView === "list" and activeView === "map"', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView
-          branches={sampleBranches}
-          initialViewMode="list"
-        />
+        <SynchronizedDiscoveryView branches={sampleBranches} initialViewMode="list" />,
       );
 
       const rootSection = container.querySelector('.medimap-discovery-view')!;
@@ -704,27 +633,17 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('in mobile map mode, selecting a pin renders the floating bottom summary card with branch details', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView
-          branches={sampleBranches}
-          initialViewMode="map"
-        />
+        <SynchronizedDiscoveryView branches={sampleBranches} initialViewMode="map" />,
       );
 
       // Initially no floating card
-      assert.equal(
-        container.querySelector('[data-testid="mobile-floating-summary"]'),
-        null
-      );
+      assert.equal(container.querySelector('[data-testid="mobile-floating-summary"]'), null);
 
       // Select pin on map
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-evercare-bashundhara"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-evercare-bashundhara"]')!;
       clickElement(pin);
 
-      const summaryCard = container.querySelector(
-        '[data-testid="mobile-floating-summary"]'
-      );
+      const summaryCard = container.querySelector('[data-testid="mobile-floating-summary"]');
       assert.ok(summaryCard, 'Floating bottom summary card must render');
       assert.equal(summaryCard.getAttribute('role'), 'dialog');
 
@@ -745,51 +664,33 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
 
     it('clicking dismiss button ✕ on mobile summary card closes the floating card in uncontrolled mode', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView
-          branches={sampleBranches}
-          initialViewMode="map"
-        />
+        <SynchronizedDiscoveryView branches={sampleBranches} initialViewMode="map" />,
       );
 
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-square-panthapath"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')!;
       clickElement(pin);
       assert.ok(container.querySelector('[data-testid="mobile-floating-summary"]'));
 
-      const closeBtn = container.querySelector<HTMLButtonElement>(
-        '.medimap-floating-close-btn'
-      )!;
+      const closeBtn = container.querySelector<HTMLButtonElement>('.medimap-floating-close-btn')!;
       assert.ok(closeBtn);
-      assert.equal(
-        closeBtn.getAttribute('aria-label'),
-        'Dismiss branch summary'
-      );
+      assert.equal(closeBtn.getAttribute('aria-label'), 'Dismiss branch summary');
 
       clickElement(closeBtn);
 
-      assert.equal(
-        container.querySelector('[data-testid="mobile-floating-summary"]'),
-        null
-      );
+      assert.equal(container.querySelector('[data-testid="mobile-floating-summary"]'), null);
     });
 
     it('clicking View in list on the mobile summary card switches activeView to list and scrolls to that card', () => {
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView
-          branches={sampleBranches}
-          initialViewMode="map"
-        />
+        <SynchronizedDiscoveryView branches={sampleBranches} initialViewMode="map" />,
       );
 
       // Select pin
-      const pin = container.querySelector(
-        '[data-testid="map-pin-branch-evercare-bashundhara"]'
-      )!;
+      const pin = container.querySelector('[data-testid="map-pin-branch-evercare-bashundhara"]')!;
       clickElement(pin);
 
       const viewInListBtn = container.querySelector<HTMLButtonElement>(
-        '.medimap-floating-view-btn'
+        '.medimap-floating-view-btn',
       )!;
       assert.ok(viewInListBtn);
       assert.equal(viewInListBtn.textContent?.trim(), 'View in list');
@@ -814,27 +715,21 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
   // =========================================================================
   describe('5. Invariants Verification', () => {
     it('Invariant 7: preserves prices and straight-line metrics when route is unavailable, displaying Road estimate unavailable', () => {
-      const { container } = renderComponent(
-        <BranchResultCard branch={sampleBranches[1]} />
-      );
+      const { container } = renderComponent(<BranchResultCard branch={sampleBranches[1]} />);
 
       // Base price is preserved and visible
       const priceVal = container.querySelector('.medimap-branch-price-value');
       assert.equal(priceVal?.textContent?.trim(), 'BDT 3,200');
 
       // Straight-line distance is preserved and explicitly labeled
-      const straightLineMetric = container.querySelector(
-        '.medimap-metric-straight-line'
-      );
-      assert.ok(
-        straightLineMetric?.textContent?.includes('8.5 km (straight-line)')
-      );
+      const straightLineMetric = container.querySelector('.medimap-metric-straight-line');
+      assert.ok(straightLineMetric?.textContent?.includes('8.5 km (straight-line)'));
 
       // Explicit fallback label rendered
       const roadMetric = container.querySelector('.medimap-metric-road');
       assert.ok(
         roadMetric?.textContent?.includes('Road estimate unavailable'),
-        'Must display explicit Road estimate unavailable label'
+        'Must display explicit Road estimate unavailable label',
       );
 
       // Verification badge is intact
@@ -856,30 +751,20 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
         straightLineDistanceKm: 6.2,
       };
 
-      const { container } = renderComponent(
-        <BranchResultCard branch={branchWithoutRoute} />
-      );
+      const { container } = renderComponent(<BranchResultCard branch={branchWithoutRoute} />);
 
       const priceVal = container.querySelector('.medimap-branch-price-value');
       assert.equal(priceVal?.textContent?.trim(), 'BDT 950');
 
-      const straightLineMetric = container.querySelector(
-        '.medimap-metric-straight-line'
-      );
-      assert.ok(
-        straightLineMetric?.textContent?.includes('6.2 km (straight-line)')
-      );
+      const straightLineMetric = container.querySelector('.medimap-metric-straight-line');
+      assert.ok(straightLineMetric?.textContent?.includes('6.2 km (straight-line)'));
 
       const roadMetric = container.querySelector('.medimap-metric-road');
-      assert.ok(
-        roadMetric?.textContent?.includes('Road estimate unavailable')
-      );
+      assert.ok(roadMetric?.textContent?.includes('Road estimate unavailable'));
     });
 
     it('Invariant 8: map-list parity invariant guarantees DhakaMap renders exactly N pins and BranchList renders exactly N cards for empty collections (N=0)', () => {
-      const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={[]} />
-      );
+      const { container } = renderComponent(<SynchronizedDiscoveryView branches={[]} />);
 
       const pins = container.querySelectorAll('.medimap-pin-group');
       const cards = container.querySelectorAll('.medimap-branch-card');
@@ -890,19 +775,13 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       assert.ok(emptyState, 'BranchList must render empty state placeholder when N=0');
 
       // Standalone BranchList empty state parity verification
-      const { container: standaloneContainer } = renderComponent(
-        <BranchList branches={[]} />
-      );
-      assert.ok(
-        standaloneContainer.querySelector('[data-testid="branch-list-empty"]')
-      );
+      const { container: standaloneContainer } = renderComponent(<BranchList branches={[]} />);
+      assert.ok(standaloneContainer.querySelector('[data-testid="branch-list-empty"]'));
     });
 
     it('Invariant 8: map-list parity invariant guarantees DhakaMap renders exactly N pins and BranchList renders exactly N cards for single branch (N=1)', () => {
       const single = [sampleBranches[0]];
-      const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={single} />
-      );
+      const { container } = renderComponent(<SynchronizedDiscoveryView branches={single} />);
 
       const pins = container.querySelectorAll('.medimap-pin-group');
       const cards = container.querySelectorAll('.medimap-branch-card');
@@ -910,33 +789,32 @@ describe('Synchronized Discovery Map & List Interactions Test Suite', () => {
       assert.equal(pins.length, 1);
       assert.equal(cards.length, 1);
       assert.equal(
-        container.querySelector('[data-testid="map-pin-branch-square-panthapath"]')?.getAttribute('role'),
-        'button'
+        container
+          .querySelector('[data-testid="map-pin-branch-square-panthapath"]')
+          ?.getAttribute('role'),
+        'button',
       );
       assert.ok(container.querySelector('#branch-card-branch-square-panthapath'));
     });
 
     it('Invariant 8: map-list parity invariant guarantees exact N-card and N-pin parity for multi-item collections', () => {
-      const generatedBranches: DiscoveryBranchItem[] = Array.from(
-        { length: 8 },
-        (_, idx) => ({
-          id: `branch-test-${idx + 1}`,
-          providerName: `Provider ${idx + 1}`,
-          branchName: `Branch ${idx + 1}`,
-          area: 'Dhanmondi',
-          coordinates: {
-            latitude: 23.74 + idx * 0.005,
-            longitude: 90.38 + idx * 0.005,
-          },
-          basePriceBdt: 1000 + idx * 100,
-          priceVerifiedAt: '2026-10-15',
-          isVerified: idx % 2 === 0,
-          straightLineDistanceKm: 1.0 + idx * 0.5,
-        })
-      );
+      const generatedBranches: DiscoveryBranchItem[] = Array.from({ length: 8 }, (_, idx) => ({
+        id: `branch-test-${idx + 1}`,
+        providerName: `Provider ${idx + 1}`,
+        branchName: `Branch ${idx + 1}`,
+        area: 'Dhanmondi',
+        coordinates: {
+          latitude: 23.74 + idx * 0.005,
+          longitude: 90.38 + idx * 0.005,
+        },
+        basePriceBdt: 1000 + idx * 100,
+        priceVerifiedAt: '2026-10-15',
+        isVerified: idx % 2 === 0,
+        straightLineDistanceKm: 1.0 + idx * 0.5,
+      }));
 
       const { container } = renderComponent(
-        <SynchronizedDiscoveryView branches={generatedBranches} />
+        <SynchronizedDiscoveryView branches={generatedBranches} />,
       );
 
       const pins = container.querySelectorAll('.medimap-pin-group');

@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-24 10:14:04 +06:00`.
+Last updated: `2026-10-25 06:38:36 +06:00`.
 
 ## Current phase
 
@@ -36,6 +36,26 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Bun 1.4.4 tooling upgrade (2026-10-25 06:38:36 +06:00)
+
+- Updated the selected Bun version and minimum engine version to 1.4.4. The installed runtime is `1.4.4+38afee6c8`.
+- Added native formatting commands and a three-day minimum release age for new dependency resolution.
+- Added an optional text coverage command. Kept TypeScript 7.0.2, which matches the installed Bun runtime.
+- Retained Oxlint 1.88.0 and its rules because native Bun linting remains canary-only.
+- Updated the architecture, code standards, workflow rules, and README before applying the formatter.
+- Passed frozen-lockfile installation with 124 installs across 187 packages and no dependency changes.
+- Applied the initial formatter pass to 69 files. Generated routes and agent configuration directories remain excluded.
+- Passed formatting checks across 72 files, strict type checking across 64 files, linting, and client and server production builds.
+- Passed all 244 unit and component tests with text coverage enabled. Coverage describes imported modules, not the complete application.
+- Passed an isolated dependency installation after downloading missing locked packages. Its lockfile matched the project lockfile exactly.
+- The offline clean-install attempt lacked cached packages. The sandbox blocked downloads, and an unrestricted install completed successfully.
+- All 26 sandbox browser scenarios passed. Windows server shutdown stalled and required stopping the confirmed test server.
+- Passed all 26 browser scenarios at desktop and 375 px mobile widths in an unrestricted run. The command exited successfully after 1.2 minutes.
+- Removed the isolated installation and download cache after verification. Retained ignored verification logs in `.bun-tmp`.
+- No product behavior changed. No separate manual visual check was performed for this formatting and tooling update.
+- Added no dependencies. Preserved `bun.lock`, the lint configuration values, and the generated route file. No commit, push, or deployment occurred.
+- The next product unit remains source-backed branch data after hospital inventory and mapping-provider decisions.
 
 ### Provider-independent discovery location input (2026-10-24 10:14:04 +06:00)
 
@@ -314,7 +334,7 @@ These are confirmed constraints for later feature implementation. Full details a
 - Free-tier workload fit for the selected services.
 - Effect of incorrect-price reports on verification status and statistics eligibility.
 - Default sorting, comparison limits, price history, and rating aggregation.
-- Validation, formatting, and Workers integration test tools. Discovery browser tests use Playwright Test with Chromium.
+- Validation and Workers integration test tools. Formatting uses Bun. Discovery browser tests use Playwright Test with Chromium.
 - Exact folder paths, migration review rules, and production migration application rules.
 - Remaining optional P1 features.
 

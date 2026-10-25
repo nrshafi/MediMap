@@ -14,21 +14,10 @@ import { describe, it } from 'node:test';
 import { calculateHaversineDistanceKm } from '../../../features/map/haversine';
 import { DHAKA_LANDMARKS } from '../../../features/map/landmarks';
 import type { Coordinates } from '../../../features/map/types';
-import {
-  enrichBranchesWithRoutes,
-  getBranchRoutes,
-  mapConcurrent,
-} from '../branchRouting';
-import {
-  executeWithFallback,
-  FallbackRoutingAdapter,
-} from '../fallback';
+import { enrichBranchesWithRoutes, getBranchRoutes, mapConcurrent } from '../branchRouting';
+import { executeWithFallback, FallbackRoutingAdapter } from '../fallback';
 import { OsrmAdapter } from '../osrmAdapter';
-import type {
-  RoutableBranch,
-  RouteResult,
-  RoutingAdapter,
-} from '../types';
+import type { RoutableBranch, RouteResult, RoutingAdapter } from '../types';
 
 /**
  * Sample branch fixture with pricing and verification metadata.
@@ -51,9 +40,7 @@ interface ClinicalBranchFixture extends RoutableBranch {
   readonly coordinates: Coordinates;
 }
 
-function createSampleBranch(
-  overrides?: Partial<ClinicalBranchFixture>
-): ClinicalBranchFixture {
+function createSampleBranch(overrides?: Partial<ClinicalBranchFixture>): ClinicalBranchFixture {
   return {
     branchId: 'branch-sq-panthapath',
     providerId: 'provider-square',
@@ -262,10 +249,7 @@ describe('Invariant 1: Core Branch and Price Data Accessibility When Routing Fai
 
   it('preserves all branch and pricing fields when upstream returns non-JSON or HTML', async () => {
     const originalBranch = createSampleBranch();
-    const nonJsonPayloads = [
-      'Not JSON string',
-      '<html><body>502 Bad Gateway</body></html>',
-    ];
+    const nonJsonPayloads = ['Not JSON string', '<html><body>502 Bad Gateway</body></html>'];
 
     for (const payload of nonJsonPayloads) {
       const mockFetch: typeof fetch = async (): Promise<Response> => {
@@ -339,7 +323,7 @@ describe('Invariant 1: Core Branch and Price Data Accessibility When Routing Fai
 
     const fallbackAdapter = new FallbackRoutingAdapter(
       'upstream_error',
-      'Routing provider is disabled by operational policy'
+      'Routing provider is disabled by operational policy',
     );
 
     const enriched = await enrichBranchesWithRoutes([originalBranch], origin, fallbackAdapter);
@@ -392,7 +376,7 @@ describe('Invariant 2: Separation of Metrics (Straight-Line Radius vs Road Dista
             },
           ],
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     };
 
@@ -436,13 +420,13 @@ describe('Invariant 2: Separation of Metrics (Straight-Line Radius vs Road Dista
 
     // Filter by straight-line radius 5 km
     const eligibleBranches = [branchA, branchB, branchC].filter(
-      (b) => b.straightLineDistanceKm <= 5.0
+      (b) => b.straightLineDistanceKm <= 5.0,
     );
 
     assert.equal(eligibleBranches.length, 2);
     assert.deepEqual(
       eligibleBranches.map((b) => b.branchId),
-      ['branch-a', 'branch-b']
+      ['branch-a', 'branch-b'],
     );
 
     // Now enrich eligible branches
@@ -456,7 +440,7 @@ describe('Invariant 2: Separation of Metrics (Straight-Line Radius vs Road Dista
           code: 'Ok',
           routes: [{ distance, duration }],
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     };
 
@@ -464,12 +448,12 @@ describe('Invariant 2: Separation of Metrics (Straight-Line Radius vs Road Dista
     const enriched = await enrichBranchesWithRoutes(
       eligibleBranches,
       DHAKA_LANDMARKS.dmch.coordinates,
-      adapter
+      adapter,
     );
 
     // Straight-line distance sorting
     const sortedByStraightLine = [...enriched].sort(
-      (a, b) => a.straightLineDistanceKm - b.straightLineDistanceKm
+      (a, b) => a.straightLineDistanceKm - b.straightLineDistanceKm,
     );
     assert.equal(sortedByStraightLine[0].branchId, 'branch-a');
     assert.equal(sortedByStraightLine[1].branchId, 'branch-b');
@@ -497,7 +481,7 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
 
     const result = await adapter.calculateRoute(
       DHAKA_LANDMARKS.dmch.coordinates,
-      DHAKA_LANDMARKS.evercare.coordinates
+      DHAKA_LANDMARKS.evercare.coordinates,
     );
 
     assert.equal(adapter.name, 'fallback');
@@ -595,7 +579,7 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
       if (url.includes(String(DHAKA_LANDMARKS.bsmmu.coordinates.longitude))) {
         return new Response(
           JSON.stringify({ code: 'Ok', routes: [{ distance: 1800, duration: 360 }] }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } }
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
         );
       }
       if (url.includes(String(DHAKA_LANDMARKS.squareHospital.coordinates.longitude))) {
@@ -607,7 +591,7 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
       if (url.includes(String(DHAKA_LANDMARKS.unitedHospital.coordinates.longitude))) {
         return new Response(
           JSON.stringify({ code: 'Ok', routes: [{ distance: 10500, duration: 1500 }] }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } }
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
         );
       }
       return new Response('Not Found', { status: 404 });
@@ -708,14 +692,16 @@ describe('Requirement 3: Fallback Handler Behavior & Batch Concurrency', () => {
     const items = [1, 2, 3];
 
     for (const concurrency of [-5, 0, Number.NaN, Infinity, 1.5]) {
-      await assert.rejects(mapConcurrent(items, concurrency, async (item) => item * 10), RangeError);
+      await assert.rejects(
+        mapConcurrent(items, concurrency, async (item) => item * 10),
+        RangeError,
+      );
     }
 
     // Concurrency > length handles without error
     const resLarge = await mapConcurrent(items, 100, async (x) => x * 10);
     assert.deepEqual(resLarge, [10, 20, 30]);
   });
-
 });
 
 describe('Requirement 5: Error and Edge Cases', () => {
@@ -728,7 +714,7 @@ describe('Requirement 5: Error and Edge Cases', () => {
           code: 'Ok',
           routes: [{ distance: 0.0, duration: 0.0 }],
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
       );
     };
 
@@ -824,11 +810,9 @@ describe('Requirement 5: Error and Edge Cases', () => {
     const adapter = new OsrmAdapter({ fetchFn: mockFetch });
     const preAbortedSignal = AbortSignal.abort();
 
-    const result = await adapter.calculateRoute(
-      dmch,
-      DHAKA_LANDMARKS.evercare.coordinates,
-      { signal: preAbortedSignal }
-    );
+    const result = await adapter.calculateRoute(dmch, DHAKA_LANDMARKS.evercare.coordinates, {
+      signal: preAbortedSignal,
+    });
 
     assert.equal(fetchDispatched, false);
     assert.equal(result.status, 'unavailable');
@@ -850,11 +834,9 @@ describe('Requirement 5: Error and Edge Cases', () => {
     };
 
     const adapter = new OsrmAdapter({ fetchFn: mockFetch, defaultTimeoutMs: 10 });
-    const result = await adapter.calculateRoute(
-      dmch,
-      DHAKA_LANDMARKS.squareHospital.coordinates,
-      { timeoutMs: 10 }
-    );
+    const result = await adapter.calculateRoute(dmch, DHAKA_LANDMARKS.squareHospital.coordinates, {
+      timeoutMs: 10,
+    });
 
     assert.equal(result.status, 'unavailable');
     if (result.status === 'unavailable') {

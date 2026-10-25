@@ -25,7 +25,7 @@ export function createUnavailableRouteResult(
   origin: Coordinates,
   destination: Coordinates,
   reason: RouteUnavailableReason,
-  message: string
+  message: string,
 ): RouteUnavailableResult {
   return {
     status: 'unavailable',
@@ -39,18 +39,14 @@ export function createUnavailableRouteResult(
 /**
  * Type guard for successful road route results.
  */
-export function isRouteAvailable(
-  result: RouteResult
-): result is RouteAvailableResult {
+export function isRouteAvailable(result: RouteResult): result is RouteAvailableResult {
   return result.status === 'available';
 }
 
 /**
  * Type guard for unavailable road route results.
  */
-export function isRouteUnavailable(
-  result: RouteResult
-): result is RouteUnavailableResult {
+export function isRouteUnavailable(result: RouteResult): result is RouteUnavailableResult {
   return result.status === 'unavailable';
 }
 
@@ -66,19 +62,13 @@ export function isRouteUnavailable(
 export async function executeWithFallback(
   origin: Coordinates,
   destination: Coordinates,
-  operation: () => Promise<RouteResult>
+  operation: () => Promise<RouteResult>,
 ): Promise<RouteResult> {
   try {
     return await operation();
   } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : 'Unknown routing execution error';
-    return createUnavailableRouteResult(
-      origin,
-      destination,
-      'unknown',
-      message
-    );
+    const message = error instanceof Error ? error.message : 'Unknown routing execution error';
+    return createUnavailableRouteResult(origin, destination, 'unknown', message);
   }
 }
 
@@ -91,18 +81,15 @@ export class FallbackRoutingAdapter implements RoutingAdapter {
 
   constructor(
     private readonly defaultReason: RouteUnavailableReason = 'upstream_error',
-    private readonly defaultMessage: string = 'Routing service is offline or unavailable.'
+    private readonly defaultMessage: string = 'Routing service is offline or unavailable.',
   ) {}
 
-  async calculateRoute(
-    origin: Coordinates,
-    destination: Coordinates
-  ): Promise<RouteResult> {
+  async calculateRoute(origin: Coordinates, destination: Coordinates): Promise<RouteResult> {
     return createUnavailableRouteResult(
       origin,
       destination,
       this.defaultReason,
-      this.defaultMessage
+      this.defaultMessage,
     );
   }
 }

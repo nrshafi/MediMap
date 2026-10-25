@@ -1,25 +1,12 @@
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { DEFAULT_DIAGNOSTIC_CATALOG } from '../diagnosticCatalog';
 import { resolveDiagnosticQuery } from '../resolutionEngine';
-import type {
-  CanonicalService,
-  QueryMatch,
-  ResolutionResult,
-} from '../types';
+import type { CanonicalService, QueryMatch, ResolutionResult } from '../types';
 import { AmbiguityPrompt } from './AmbiguityPrompt';
 import { AutoSuggestDropdown } from './AutoSuggestDropdown';
 import { RadiusSelector } from './RadiusSelector';
 import { SearchInput } from './SearchInput';
-import type {
-  DiagnosticSearchBoxProps,
-  SearchSelection,
-  SuggestionItem,
-} from './types';
+import type { DiagnosticSearchBoxProps, SearchSelection, SuggestionItem } from './types';
 
 /**
  * Diagnostic search box integrating debounced search, auto-suggestions,
@@ -46,11 +33,8 @@ export function DiagnosticSearchBox({
 
   const [query, setQuery] = useState(initialQuery);
   const [radiusKm, setRadiusKm] = useState(initialRadiusKm);
-  const [selectedService, setSelectedService] = useState<CanonicalService | null>(
-    null
-  );
-  const [resolutionResult, setResolutionResult] =
-    useState<ResolutionResult | null>(null);
+  const [selectedService, setSelectedService] = useState<CanonicalService | null>(null);
+  const [resolutionResult, setResolutionResult] = useState<ResolutionResult | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [announcement, setAnnouncement] = useState('');
@@ -58,7 +42,7 @@ export function DiagnosticSearchBox({
   // Synchronize internal state if initialQuery or initialRadiusKm props change
   useEffect(() => {
     setQuery(initialQuery);
-    setSelectedService((current) => current?.name === initialQuery ? current : null);
+    setSelectedService((current) => (current?.name === initialQuery ? current : null));
     setResolutionResult(null);
     setIsDropdownOpen(false);
     setActiveIndex(-1);
@@ -71,10 +55,7 @@ export function DiagnosticSearchBox({
   // Close dropdown on outside click
   useEffect(() => {
     const handleDocumentClick = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
@@ -107,7 +88,7 @@ export function DiagnosticSearchBox({
         let matchedLanguage: 'en' | 'bn' | undefined;
         if (matchedAlias) {
           const aliasObj = service.aliases.find(
-            (a) => a.alias.toLowerCase() === matchedAlias.toLowerCase()
+            (a) => a.alias.toLowerCase() === matchedAlias.toLowerCase(),
           );
           if (aliasObj) {
             matchedLanguage = aliasObj.language;
@@ -180,21 +161,19 @@ export function DiagnosticSearchBox({
     if (result.status === 'ambiguous') {
       setIsDropdownOpen(false);
       setAnnouncement(
-        `Multiple diagnostic tests match "${trimmed}". Explicit selection is required.`
+        `Multiple diagnostic tests match "${trimmed}". Explicit selection is required.`,
       );
     } else if (result.status === 'resolved') {
       setIsDropdownOpen(true);
       setAnnouncement(
-        `Found ${result.matches.length} matching test${
-          result.matches.length === 1 ? '' : 's'
-        }.`
+        `Found ${result.matches.length} matching test${result.matches.length === 1 ? '' : 's'}.`,
       );
     } else {
       // not_found
       setIsDropdownOpen(true);
       if (result.typoSuggestions && result.typoSuggestions.length > 0) {
         setAnnouncement(
-          `No exact match found. Displaying ${result.typoSuggestions.length} typo suggestions.`
+          `No exact match found. Displaying ${result.typoSuggestions.length} typo suggestions.`,
         );
       } else {
         setAnnouncement(`No diagnostic tests found for "${trimmed}".`);
@@ -213,8 +192,7 @@ export function DiagnosticSearchBox({
     const selection: SearchSelection = {
       canonicalService: service,
       query: service.name,
-      selectionType:
-        item.kind === 'typo_suggestion' ? 'typo_correction' : 'suggestion',
+      selectionType: item.kind === 'typo_suggestion' ? 'typo_correction' : 'suggestion',
       radiusKm,
     };
 
@@ -268,7 +246,7 @@ export function DiagnosticSearchBox({
             setAnnouncement(
               `Found ${result.matches.length} matching test${
                 result.matches.length === 1 ? '' : 's'
-              }.`
+              }.`,
             );
           } else if (result.status === 'ambiguous') {
             setIsDropdownOpen(false);
@@ -294,9 +272,7 @@ export function DiagnosticSearchBox({
       }
       case 'ArrowUp': {
         event.preventDefault();
-        setActiveIndex((prev) =>
-          prev <= 0 ? suggestionItems.length - 1 : prev - 1
-        );
+        setActiveIndex((prev) => (prev <= 0 ? suggestionItems.length - 1 : prev - 1));
         break;
       }
       case 'Enter': {
@@ -323,19 +299,12 @@ export function DiagnosticSearchBox({
       : undefined;
 
   const isAmbiguous =
-    resolutionResult?.status === 'ambiguous' &&
-    resolutionResult.matches.length > 0;
+    resolutionResult?.status === 'ambiguous' && resolutionResult.matches.length > 0;
 
   return (
-    <div
-      ref={containerRef}
-      id={boxId}
-      className={`medimap-search-card ${className}`.trim()}
-    >
+    <div ref={containerRef} id={boxId} className={`medimap-search-card ${className}`.trim()}>
       <div className="medimap-search-card-header">
-        <h2 className="medimap-search-card-title">
-          Search Diagnostic Services
-        </h2>
+        <h2 className="medimap-search-card-title">Search Diagnostic Services</h2>
         <p className="medimap-search-card-subtitle">
           Find diagnostic tests, compare branch prices, and locate nearby centers.
         </p>
@@ -387,12 +356,8 @@ export function DiagnosticSearchBox({
         >
           <div className="medimap-selected-service-info">
             <span className="medimap-selected-badge">Selected test</span>
-            <span className="medimap-selected-name">
-              {selectedService.name}
-            </span>
-            <span className="medimap-selected-category">
-              {selectedService.category}
-            </span>
+            <span className="medimap-selected-name">{selectedService.name}</span>
+            <span className="medimap-selected-category">{selectedService.category}</span>
           </div>
           <button
             type="button"
@@ -409,11 +374,7 @@ export function DiagnosticSearchBox({
 
       {/* Radius selector */}
       <div className="medimap-search-radius-wrapper">
-        <RadiusSelector
-          id={`${boxId}-radius`}
-          value={radiusKm}
-          onChange={handleRadiusChange}
-        />
+        <RadiusSelector id={`${boxId}-radius`} value={radiusKm} onChange={handleRadiusChange} />
       </div>
     </div>
   );

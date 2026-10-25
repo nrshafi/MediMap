@@ -25,7 +25,7 @@ export function damerauLevenshteinDistance(source: string, target: string): numb
   }
 
   const matrix: number[][] = Array.from({ length: sourceLength + 1 }, () =>
-    new Array<number>(targetLength + 1).fill(0)
+    new Array<number>(targetLength + 1).fill(0),
   );
 
   for (let i = 0; i <= sourceLength; i += 1) {
@@ -45,15 +45,10 @@ export function damerauLevenshteinDistance(source: string, target: string): numb
       matrix[i][j] = Math.min(
         matrix[i - 1][j] + 1,
         matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + substitutionCost
+        matrix[i - 1][j - 1] + substitutionCost,
       );
 
-      if (
-        i > 1 &&
-        j > 1 &&
-        source[i - 1] === target[j - 2] &&
-        source[i - 2] === target[j - 1]
-      ) {
+      if (i > 1 && j > 1 && source[i - 1] === target[j - 2] && source[i - 2] === target[j - 1]) {
         matrix[i][j] = Math.min(matrix[i][j], matrix[i - 2][j - 2] + 1);
       }
     }
@@ -65,11 +60,7 @@ export function damerauLevenshteinDistance(source: string, target: string): numb
 /**
  * Calculate string similarity ratio from 0 to 1 based on distance.
  */
-export function calculateSimilarity(
-  source: string,
-  target: string,
-  distance: number
-): number {
+export function calculateSimilarity(source: string, target: string, distance: number): number {
   const maxLength = Math.max(source.length, target.length);
   if (maxLength === 0) {
     return 1;
@@ -116,4 +107,3 @@ export function checkTypoMatch(query: string, target: string): TypoMatchResult {
 
   return { isMatch: false, distance, similarity };
 }
-

@@ -43,4 +43,3 @@ export function tokenize(text: string): string[] {
   const matches = normalized.match(TOKEN_REGEX);
   return matches ? Array.from(matches) : [];
 }
-

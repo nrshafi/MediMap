@@ -42,7 +42,10 @@ describe('Coordinates & Bounding Box Validation', () => {
     assert.equal(isValidCoordinate(12345), false);
     assert.equal(isValidCoordinate(true), false);
     assert.equal(isValidCoordinate([]), false);
-    assert.equal(isValidCoordinate(() => {}), false);
+    assert.equal(
+      isValidCoordinate(() => {}),
+      false,
+    );
 
     // Missing or wrong properties
     assert.equal(isValidCoordinate({}), false);
@@ -109,7 +112,10 @@ describe('Coordinates & Bounding Box Validation', () => {
       assert.ok(nonFiniteLat.error.includes('must be finite numbers'));
     }
 
-    const nonFiniteLon = validateCoordinate({ latitude: 23.7, longitude: Number.POSITIVE_INFINITY });
+    const nonFiniteLon = validateCoordinate({
+      latitude: 23.7,
+      longitude: Number.POSITIVE_INFINITY,
+    });
     assert.equal(nonFiniteLon.valid, false);
     if (!nonFiniteLon.valid) {
       assert.ok(nonFiniteLon.error.includes('must be finite numbers'));
@@ -166,10 +172,22 @@ describe('Coordinates & Bounding Box Validation', () => {
 
     // Boundary edge tests: epsilon outside boundary
     const eps = 0.0001;
-    assert.equal(isWithinBoundingBox({ latitude: box.minLat - eps, longitude: box.minLon }, box), false);
-    assert.equal(isWithinBoundingBox({ latitude: box.maxLat + eps, longitude: box.maxLon }, box), false);
-    assert.equal(isWithinBoundingBox({ latitude: box.minLat, longitude: box.minLon - eps }, box), false);
-    assert.equal(isWithinBoundingBox({ latitude: box.maxLat, longitude: box.maxLon + eps }, box), false);
+    assert.equal(
+      isWithinBoundingBox({ latitude: box.minLat - eps, longitude: box.minLon }, box),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox({ latitude: box.maxLat + eps, longitude: box.maxLon }, box),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox({ latitude: box.minLat, longitude: box.minLon - eps }, box),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox({ latitude: box.maxLat, longitude: box.maxLon + eps }, box),
+      false,
+    );
   });
 
   it('evaluates Greater Dhaka bounding box and peripheral locations accurately', () => {
@@ -177,22 +195,22 @@ describe('Coordinates & Bounding Box Validation', () => {
     const greaterBox = DHAKA_BOUNDING_BOXES.greaterDhaka;
 
     // Savar center: (23.8500, 90.2600) -> outside core, inside greater
-    const savarCoord = { latitude: 23.8500, longitude: 90.2600 };
+    const savarCoord = { latitude: 23.85, longitude: 90.26 };
     assert.equal(isWithinBoundingBox(savarCoord, coreBox), false);
     assert.equal(isWithinBoundingBox(savarCoord, greaterBox), true);
 
     // Gazipur center: (23.9900, 90.4200) -> outside core, inside greater
-    const gazipurCoord = { latitude: 23.9900, longitude: 90.4200 };
+    const gazipurCoord = { latitude: 23.99, longitude: 90.42 };
     assert.equal(isWithinBoundingBox(gazipurCoord, coreBox), false);
     assert.equal(isWithinBoundingBox(gazipurCoord, greaterBox), true);
 
     // Narayanganj center: (23.6200, 90.5000) -> outside core, inside greater
-    const narayanganjCoord = { latitude: 23.6200, longitude: 90.5000 };
+    const narayanganjCoord = { latitude: 23.62, longitude: 90.5 };
     assert.equal(isWithinBoundingBox(narayanganjCoord, coreBox), false);
     assert.equal(isWithinBoundingBox(narayanganjCoord, greaterBox), true);
 
     // Keraniganj south: (23.6800, 90.3100) -> minLon of core is 90.3200, so outside core, inside greater
-    const keraniganjCoord = { latitude: 23.6800, longitude: 90.3100 };
+    const keraniganjCoord = { latitude: 23.68, longitude: 90.31 };
     assert.equal(isWithinBoundingBox(keraniganjCoord, coreBox), false);
     assert.equal(isWithinBoundingBox(keraniganjCoord, greaterBox), true);
 
@@ -208,17 +226,65 @@ describe('Coordinates & Bounding Box Validation', () => {
     assert.equal(isWithinBoundingBox(tokyoCoord, greaterBox), false);
 
     // Exact Greater Dhaka min/max boundary corners
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.minLat, longitude: greaterBox.minLon }, greaterBox), true);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.maxLat, longitude: greaterBox.maxLon }, greaterBox), true);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.minLat, longitude: greaterBox.maxLon }, greaterBox), true);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.maxLat, longitude: greaterBox.minLon }, greaterBox), true);
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.minLat, longitude: greaterBox.minLon },
+        greaterBox,
+      ),
+      true,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.maxLat, longitude: greaterBox.maxLon },
+        greaterBox,
+      ),
+      true,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.minLat, longitude: greaterBox.maxLon },
+        greaterBox,
+      ),
+      true,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.maxLat, longitude: greaterBox.minLon },
+        greaterBox,
+      ),
+      true,
+    );
 
     // Outside Greater Dhaka by epsilon
     const eps = 0.0001;
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.minLat - eps, longitude: greaterBox.minLon }, greaterBox), false);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.maxLat + eps, longitude: greaterBox.maxLon }, greaterBox), false);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.minLat, longitude: greaterBox.minLon - eps }, greaterBox), false);
-    assert.equal(isWithinBoundingBox({ latitude: greaterBox.maxLat, longitude: greaterBox.maxLon + eps }, greaterBox), false);
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.minLat - eps, longitude: greaterBox.minLon },
+        greaterBox,
+      ),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.maxLat + eps, longitude: greaterBox.maxLon },
+        greaterBox,
+      ),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.minLat, longitude: greaterBox.minLon - eps },
+        greaterBox,
+      ),
+      false,
+    );
+    assert.equal(
+      isWithinBoundingBox(
+        { latitude: greaterBox.maxLat, longitude: greaterBox.maxLon + eps },
+        greaterBox,
+      ),
+      false,
+    );
   });
 
   it('checks Dhaka core vs Greater Dhaka region through isWithinDhakaRegion', () => {
@@ -227,7 +293,7 @@ describe('Coordinates & Bounding Box Validation', () => {
     assert.equal(isWithinDhakaRegion(DHAKA_LANDMARKS.dmch.coordinates, 'core'), true);
     assert.equal(isWithinDhakaRegion(DHAKA_LANDMARKS.dmch.coordinates, 'greater'), true);
 
-    const savarCoord = { latitude: 23.8500, longitude: 90.2600 };
+    const savarCoord = { latitude: 23.85, longitude: 90.26 };
     assert.equal(isWithinDhakaRegion(savarCoord), false);
     assert.equal(isWithinDhakaRegion(savarCoord, 'core'), false);
     assert.equal(isWithinDhakaRegion(savarCoord, 'greater'), true);
@@ -414,13 +480,19 @@ describe('Branch Radius Filtering Engine', () => {
       { latitude: 91, longitude: 90 },
       { latitude: Number.NaN, longitude: 90 },
     ]) {
-      assert.throws(() => filterBranchesByRadius([], { center: invalidCenter, maxRadiusKm: 3 }), RangeError);
+      assert.throws(
+        () => filterBranchesByRadius([], { center: invalidCenter, maxRadiusKm: 3 }),
+        RangeError,
+      );
     }
     for (const maxRadiusKm of [0, -1, 0.05, 101, Infinity, Number.NaN]) {
       assert.throws(() => filterBranchesByRadius([], { center, maxRadiusKm }), RangeError);
     }
     for (const limit of [-1, 0.5, Infinity, Number.NaN]) {
-      assert.throws(() => filterBranchesByRadius([], { center, maxRadiusKm: 3, limit }), RangeError);
+      assert.throws(
+        () => filterBranchesByRadius([], { center, maxRadiusKm: 3, limit }),
+        RangeError,
+      );
     }
   });
 
@@ -429,11 +501,18 @@ describe('Branch Radius Filtering Engine', () => {
     const validBranch = { id: 'valid', name: 'Valid', coordinates: center };
     const candidates = [
       { id: 'invalid-range', name: 'Invalid', coordinates: { latitude: 100, longitude: 90 } },
-      { id: 'invalid-finite', name: 'Invalid', coordinates: { latitude: Number.NaN, longitude: 90 } },
+      {
+        id: 'invalid-finite',
+        name: 'Invalid',
+        coordinates: { latitude: Number.NaN, longitude: 90 },
+      },
       validBranch,
     ];
     const results = filterBranchesByRadius(candidates, { center, maxRadiusKm: 3 });
-    assert.deepEqual(results.map((result) => result.branch), [validBranch]);
+    assert.deepEqual(
+      results.map((result) => result.branch),
+      [validBranch],
+    );
     assert.equal(results[0].distanceKm, 0);
   });
 
@@ -573,7 +652,7 @@ describe('Branch Radius Filtering Engine', () => {
   });
 
   it('performs strict mathematical boundary tests for inclusion/exclusion at R - eps, R, and R + eps', () => {
-    const center: Coordinates = { latitude: 23.7500, longitude: 90.3800 };
+    const center: Coordinates = { latitude: 23.75, longitude: 90.38 };
 
     // Function to calculate a coordinate exactly d km north along the meridian
     // Formula: DeltaLat = (d / EARTH_RADIUS_KM) * (180 / Math.PI)
@@ -598,8 +677,14 @@ describe('Branch Radius Filtering Engine', () => {
       const distInside = calculateHaversineDistanceKm(center, coordInside);
       const distOutside = calculateHaversineDistanceKm(center, coordOutside);
 
-      assert.ok(distInside < exactDistance, `Expected distInside < ${exactDistance}, got ${distInside}`);
-      assert.ok(distOutside > exactDistance, `Expected distOutside > ${exactDistance}, got ${distOutside}`);
+      assert.ok(
+        distInside < exactDistance,
+        `Expected distInside < ${exactDistance}, got ${distInside}`,
+      );
+      assert.ok(
+        distOutside > exactDistance,
+        `Expected distOutside > ${exactDistance}, got ${distOutside}`,
+      );
 
       const boundaryBranches: LocatableBranch[] = [
         { id: `b-inside-${targetR}`, name: 'Inside', coordinates: coordInside },
@@ -692,12 +777,17 @@ describe('Branch Radius Filtering Engine', () => {
     const farmgate = DHAKA_LANDMARKS.farmgate.coordinates;
 
     const outsideCoreBranch = {
-      id: 'outside-core', name: 'Outside core',
+      id: 'outside-core',
+      name: 'Outside core',
       coordinates: { latitude: 24, longitude: 90.4 },
     };
-    assert.equal(filterBranchesByRadius([outsideCoreBranch], {
-      center: farmgate, maxRadiusKm: 100,
-    }).length, 1);
+    assert.equal(
+      filterBranchesByRadius([outsideCoreBranch], {
+        center: farmgate,
+        maxRadiusKm: 100,
+      }).length,
+      1,
+    );
 
     const results = filterBranchesByRadius([...branches, outsideCoreBranch], {
       center: farmgate,

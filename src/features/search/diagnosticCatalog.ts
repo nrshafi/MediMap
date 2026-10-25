@@ -28,7 +28,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     id: 'lipid-profile',
     name: 'Lipid Profile',
     category: 'Biochemistry',
-    description: 'Evaluates cardiovascular risk by measuring total cholesterol, HDL, LDL, and triglycerides.',
+    description:
+      'Evaluates cardiovascular risk by measuring total cholesterol, HDL, LDL, and triglycerides.',
     aliases: [
       { alias: 'Lipid Profile', language: 'en' },
       { alias: 'Lipid Panel', language: 'en' },
@@ -44,7 +45,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     id: 'ct-chest',
     name: 'CT Scan Chest',
     category: 'Radiology',
-    description: 'Cross-sectional computed tomography imaging of the lungs, airway, and chest structures.',
+    description:
+      'Cross-sectional computed tomography imaging of the lungs, airway, and chest structures.',
     aliases: [
       { alias: 'CT Chest', language: 'en' },
       { alias: 'CT Scan Chest', language: 'en' },
@@ -77,7 +79,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     id: 'usg-whole-abdomen',
     name: 'USG of Whole Abdomen',
     category: 'Ultrasonography',
-    description: 'Ultrasound evaluation of liver, gallbladder, kidneys, spleen, pancreas, and bladder.',
+    description:
+      'Ultrasound evaluation of liver, gallbladder, kidneys, spleen, pancreas, and bladder.',
     aliases: [
       { alias: 'USG Whole Abdomen', language: 'en' },
       { alias: 'USG of Whole Abdomen', language: 'en' },
@@ -247,7 +250,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     id: 'mri-brain',
     name: 'MRI of Brain',
     category: 'Radiology',
-    description: 'High-resolution magnetic resonance imaging of brain parenchyma and vascular structures.',
+    description:
+      'High-resolution magnetic resonance imaging of brain parenchyma and vascular structures.',
     aliases: [
       { alias: 'MRI Brain', language: 'en' },
       { alias: 'MRI of Brain', language: 'en' },
@@ -261,7 +265,8 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     id: 'mri-lumbar-spine',
     name: 'MRI of Lumbar Spine',
     category: 'Radiology',
-    description: 'Magnetic resonance imaging of lumbar vertebrae, intervertebral discs, and nerve roots.',
+    description:
+      'Magnetic resonance imaging of lumbar vertebrae, intervertebral discs, and nerve roots.',
     aliases: [
       { alias: 'MRI Lumbar Spine', language: 'en' },
       { alias: 'MRI L/S Spine', language: 'en' },
@@ -284,4 +289,3 @@ export const DEFAULT_DIAGNOSTIC_CATALOG: readonly CanonicalService[] = [
     ],
   },
 ];
-

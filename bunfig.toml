@@ -1,5 +1,17 @@
+[install]
+minimumReleaseAge = "3d"
+
 [run]
 shell = "bun"
 
 [test]
 preload = ["./src/features/search/ui/__tests__/setupDom.ts"]
+
+[fmt]
+printWidth = 100
+tabWidth = 2
+useTabs = false
+semi = true
+singleQuote = true
+sortImports = false
+ignorePatterns = ["src/routeTree.gen.ts", ".agents/**", ".codex/**"]

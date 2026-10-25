@@ -44,7 +44,19 @@ Show a sample-data notice and label sample prices. Preserve unknown prices and d
 Return no branch results for ambiguous, unmatched, or unconfirmed typo queries. Require explicit service selection.
 Use one radius range, 0.1 to 100 km, across URL validation, domain filtering, and controls.
 Show routing as unavailable until a selected provider supplies validated results. The OSRM adapter is an optional integration, not the default provider.
-The SVG map is a schematic preview. Provider selection, source-backed data, D1 access, and complete location selection remain unfinished.
+The SVG map is a schematic preview. Provider selection, source-backed data, D1 access, address search, and map-based location selection remain unfinished.
+
+### Provider-independent location input
+
+Support location presets, manual WGS 84 coordinates, and browser geolocation in the discovery demonstration.
+Request browser location only after a user action. Keep the current center when permission, validation, or location acquisition fails.
+Accept finite latitude from -90 to 90 and longitude from -180 to 180, consistent with URL validation.
+Do not restrict coordinates to the sample dataset area. Locations without nearby sample branches use the existing empty state.
+Keep the query and radius when the center changes. Clear branch selection and synchronize the center through the existing URL parameters.
+Ignore late location callbacks after cancellation, another location selection, external center changes, or component removal.
+Show coordinate signs correctly. Do not label southern or western coordinates as north or east.
+Coordinates appear in the URL. Disclose this before location acquisition or manual submission.
+Address search and selection on a geographic map depend on provider selection and remain deferred.
 
 ## System boundaries
 

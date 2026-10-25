@@ -4,14 +4,15 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-16 19:54:49 +06:00`.
+Last updated: `2026-10-24 10:14:04 +06:00`.
 
 ## Current phase
 
 Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with `88caff9`.
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
-Source-backed branch data, D1 integration, provider selection, and complete location input remain unfinished.
+Source-backed branch data, D1 integration, provider selection, address search, and map-based location input remain unfinished.
+Provider-independent location controls now support browser location and manual coordinates.
 Discovery query and radius changes now synchronize with the active results and URL.
 The current test audit and verification are in [test-review.md](test-review.md).
 
@@ -35,6 +36,26 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Provider-independent discovery location input (2026-10-24 10:14:04 +06:00)
+
+- Added browser location and manual coordinate input beside the existing Dhaka presets.
+- Validated coordinate bounds and preserved the active center and results after failed location requests or invalid manual input.
+- Preserved the query and radius, cleared branch selection, and reused URL synchronization when the center changed.
+- Added request cancellation and ignored callbacks after another location selection, external center changes, or component removal.
+- Disclosed coordinates in the URL and shared links. Corrected southern and western coordinate labels.
+- Recorded location behavior and UI states in the existing architecture and UI context files.
+- Passed 244 unit and component tests across 16 files, strict type checking, linting, and the client and server production builds.
+- Added browser regressions for validation, permission failures, unavailable location, timeout, cancellation, callback order, URL reload, and mobile controls.
+- Passed all 26 browser scenarios at desktop and 375 by 812 mobile widths. The unrestricted run exited successfully after 51 seconds.
+- The sandbox run passed the scenarios but stalled during Windows server shutdown. The unrestricted run resolved process cleanup.
+- Inspected the mobile screenshot. Coordinate fields and actions remained readable, with no horizontal overflow. Browser checks confirmed control dimensions of at least 44 px.
+- Added regressions for invalid browser coordinates and callbacks after external center changes or component removal.
+- Verified React 19.3.1 hooks against [React documentation](https://react.dev/reference/react/useEffect).
+- Checked browser location against [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition).
+- Verified Playwright Test 1.64.1 usage against its [geolocation](https://playwright.dev/docs/emulation#geolocation) and [page API](https://playwright.dev/docs/api/class-page) documentation.
+- Added no dependencies. No commit, push, or deployment occurred.
+- Source-backed branch data still requires the hospital inventory and mapping-provider decisions. Address search and geographic map selection remain deferred.
 
 ### Discovery state synchronization and test review (2026-10-16 19:54:49 +06:00)
 
@@ -299,6 +320,7 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Next steps
 
-1. Define the next functional unit and its acceptance criteria when requested.
-2. Select authentication integration and the mapping provider before implementing affected features.
-3. Resolve open behavior in the relevant context files before implementing dependent features.
+1. Confirm the hospital and branch inventory and select the mapping provider before the source-backed branch-data unit.
+2. Define source records and acceptance criteria for a source-backed branch listing flow, including explicit unknown prices.
+3. Select authentication integration before account-dependent features. Address search and geographic map selection still require provider decisions.
+4. Resolve open behavior in the relevant context files before implementing dependent features.

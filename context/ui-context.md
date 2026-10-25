@@ -45,6 +45,15 @@ Support keyboard selection and visible focus on search options, map pins, and br
 At mobile widths, show list and map view controls and allow dismissal of the selected branch summary.
 Label the schematic map as a preview. Do not imply that its decorative geography is verified.
 
+### Discovery location controls
+
+Group presets, browser location, and manual coordinates in a location section.
+Use visible latitude and longitude labels, coordinate bounds, and validation feedback beside the manual form.
+Show a pending location message with a cancel button. Keep presets and manual input available during acquisition.
+Explain permission denial, timeout, unavailable location, and unsupported browser location. Keep the current results on failure.
+Use a polite status region for location feedback. Use existing color tokens, visible focus, and controls at least 44 px high.
+Stack coordinate fields on mobile. Disclose that coordinates appear in the page URL and shared links.
+
 ## Future UI decisions
 
-Define controls, interaction states, error and success colors, and component conventions when functional pages are in scope.
+Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

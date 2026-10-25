@@ -14,6 +14,7 @@ import {
   filterBranchesByQueryAndLocation,
 } from '../discoveryData';
 import { DiagnosticSearchBox } from './DiagnosticSearchBox';
+import { LocationSelector } from './LocationSelector';
 import type { SearchSelection } from './types';
 import './discoveryView.css';
 
@@ -67,8 +68,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
   const activePreset = useMemo(() => {
     return DHAKA_LOCATION_PRESETS.find(
       (preset) =>
-        Math.abs(preset.coordinates.latitude - centerCoordinates.latitude) < 0.001 &&
-        Math.abs(preset.coordinates.longitude - centerCoordinates.longitude) < 0.001
+        preset.coordinates.latitude === centerCoordinates.latitude &&
+        preset.coordinates.longitude === centerCoordinates.longitude
     );
   }, [centerCoordinates]);
 
@@ -111,14 +112,14 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
     [activeQuery, activeRadius, centerCoordinates, onSearchChange]
   );
 
-  // Handle preset location switch
-  const handleSelectPreset = useCallback(
-    (presetCoordinates: Coordinates) => {
+  // Update the center and clear branch selection.
+  const handleLocationChange = useCallback(
+    (coordinates: Coordinates) => {
       onSearchChange?.({
         query: activeQuery,
         radius: activeRadius,
-        lat: presetCoordinates.latitude,
-        lng: presetCoordinates.longitude,
+        lat: coordinates.latitude,
+        lng: coordinates.longitude,
         selectedBranchId: undefined,
       });
     },
@@ -141,7 +142,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
 
   const locationDisplayLabel = activePreset
     ? activePreset.name
-    : `${centerCoordinates.latitude.toFixed(3)}°N, ${centerCoordinates.longitude.toFixed(3)}°E`;
+    : `${Math.abs(centerCoordinates.latitude).toFixed(3)}°${centerCoordinates.latitude < 0 ? 'S' : 'N'}, ${Math.abs(centerCoordinates.longitude).toFixed(3)}°${centerCoordinates.longitude < 0 ? 'W' : 'E'}`;
 
   return (
     <div className={`medimap-discovery-page ${className}`.trim()}>
@@ -196,52 +197,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
           />
         </section>
 
-        {/* Location Presets Selector */}
-        <section
-          className="medimap-preset-selector"
-          aria-label="Dhaka reference location presets"
-        >
-          <div className="medimap-preset-header">
-            <svg
-              className="medimap-preset-icon"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <h3 className="medimap-preset-title">Select Center Location</h3>
-            <span className="medimap-preset-hint">
-              (Preset transit hubs and urban centers across Dhaka)
-            </span>
-          </div>
-
-          <div
-            className="medimap-preset-buttons"
-            role="group"
-            aria-label="Dhaka landmark location presets"
-          >
-            {DHAKA_LOCATION_PRESETS.map((preset) => {
-              const isSelected = activePreset?.id === preset.id;
-              return (
-                <button
-                  key={preset.id}
-                  type="button"
-                  onClick={() => handleSelectPreset(preset.coordinates)}
-                  className={`medimap-preset-btn ${isSelected ? 'is-active' : ''}`}
-                  aria-pressed={isSelected}
-                  aria-label={`Set location to ${preset.name} (${preset.area})`}
-                >
-                  {preset.name}
-                </button>
-              );
-            })}
-          </div>
-        </section>
+        <LocationSelector center={centerCoordinates} onSelect={handleLocationChange} />
 
         {/* Active Filters Context Banner */}
         <section
@@ -331,7 +287,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                 <button
                   type="button"
                   className="medimap-empty-action-btn medimap-empty-action-btn-secondary"
-                  onClick={() => handleSelectPreset(DEFAULT_DISCOVERY_CENTER)}
+                  onClick={() => handleLocationChange(DEFAULT_DISCOVERY_CENTER)}
                 >
                   Reset to Central Dhaka (Shahbagh)
                 </button>

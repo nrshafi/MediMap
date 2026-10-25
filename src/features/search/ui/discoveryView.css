@@ -400,3 +400,75 @@
   color: var(--text-primary);
   background: var(--bg-surface);
 }
+
+.medimap-location-hint {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.medimap-location-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.medimap-coordinate-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.medimap-coordinate-form label {
+  display: flex;
+  flex: 1 1 160px;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.medimap-coordinate-form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.medimap-coordinate-form input:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.medimap-location-status {
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.medimap-location-status:empty {
+  display: none;
+}
+
+.medimap-location-actions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (max-width: 480px) {
+  .medimap-coordinate-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .medimap-coordinate-form label {
+    flex: none;
+  }
+}

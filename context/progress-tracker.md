@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-25 06:38:36 +06:00`.
+Last updated: `2026-10-27 16:30:14 +06:00`.
 
 ## Current phase
 
@@ -12,6 +12,8 @@ Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with 
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
 Source-backed branch data, D1 integration, provider selection, address search, and map-based location input remain unfinished.
+Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
+This research export remains separate from application fixtures and D1. Canonical service mapping and publication checks remain unfinished.
 Provider-independent location controls now support browser location and manual coordinates.
 Discovery query and radius changes now synchronize with the active results and URL.
 The current test audit and verification are in [test-review.md](test-review.md).
@@ -36,6 +38,38 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Additional hospital tariff collection (2026-10-27 16:30:14 +06:00)
+
+- Added Farabi General Hospital in Dhanmondi, Monowara Orthopedic and General Hospital in Kamalapur, and Ad-din Medical College Hospital in Moghbazar.
+- Added 677 source-checked listings from these hospitals: 97 from Farabi, 111 from Monowara, and 469 from Ad-din.
+- The collector now reads 23 official tariff/contact pages, including thirteen Ad-din diagnostic tariff pages.
+- Parsed 2,301 rows. Retained 2,090 listings, excluded 201 rows, and combined ten repeated rows with their evidence.
+- Moved two earlier BMU catch-all CT descriptions to review as unspecified variants. No price was transferred between branches.
+- Preserved source labels, visible amounts, branch addresses, content hashes, and retrieval times.
+- Recorded explicit taka evidence from Ad-din and Monowara. Retained Ad-din's 23 February 2026 site-update date separately from effective dates.
+- Added parser checks for individual price blocks, visible/metadata mismatches, taka table headers, and source-update dates.
+- A fresh network collection reproduced the expanded row counts. Twelve focused collector tests and collector type checking passed.
+- Passed all 256 unit/component/data tests across 17 files, application and collector type checking, linting, formatting, and client/server production builds.
+- No UI changed, so no additional browser or mobile layout checks ran. No D1 integration, commit, push, or deployment was added.
+
+### Official hospital tariff collection (2026-10-27 16:07:28 +06:00)
+
+- Removed the fixed hospital count and complete-service coverage requirement from the project scope and PRD.
+- The owner authorized evidence-based selection. One verified diagnostic listing can qualify a hospital, with no fixed hospital or branch count.
+- Parsed official Holy Family pathology/radiology tables and BMU Super Specialized Hospital investigations, with official branch contact pages.
+- Read 1,615 published rows. Retained 1,415 source-checked listings, excluded 191 rows, and combined nine repeated rows with their evidence.
+- Holy Family contributes 584 listings at Eskatan Garden Road. BMU Super Specialized Hospital contributes 831 listings at Shahbag.
+- Recorded original provider labels, source rows, URLs, capture times, and content hashes in separate research exports.
+- Excluded conflicting prices, zero or invalid amounts, therapies, ancillary fees, and unclear variants. No tariff was copied between branches.
+- Added a repeatable local extractor using the existing Happy DOM dependency and eight parser/data integrity tests. Added no dependencies.
+- Verified a fresh network collection. Both collection runs produced the same row counts.
+- The [source review](../data/catalog/README.md) records omitted candidates, collection commands, and publication limits.
+- Canonical service IDs, source effective dates, geographic coordinates, and opening hours remain unknown. Currency follows domestic tariff context and requires publication confirmation.
+- Passed all 252 unit/component/data tests across 17 files, application type checking, collector type checking, linting, and formatting checks.
+- Passed client and server production builds. The collector and research exports also passed separate formatting checks.
+- No UI changed, so no additional browser or mobile layout checks ran.
+- Public discovery and D1 remain unchanged. No commit, push, or deployment occurred.
 
 ### Bun 1.4.4 tooling upgrade (2026-10-25 06:38:36 +06:00)
 
@@ -325,7 +359,7 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Open questions
 
-- Exact inventory of 10 hospitals and their Dhaka branches, including unavailable source data.
+- Additional Dhaka hospitals and branches with verifiable service, standard-price, and location evidence. No fixed collection count applies.
 - Exact final delivery date in early December 2026.
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
@@ -340,7 +374,7 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Next steps
 
-1. Confirm the hospital and branch inventory and select the mapping provider before the source-backed branch-data unit.
-2. Define source records and acceptance criteria for a source-backed branch listing flow, including explicit unknown prices.
+1. Review canonical mappings and publication checks for collected tariff records. Add further hospitals or branches when official evidence is available.
+2. Define source records and acceptance criteria for a source-backed branch listing flow. Current-price/history rules and mapping-provider selection remain open.
 3. Select authentication integration before account-dependent features. Address search and geographic map selection still require provider decisions.
 4. Resolve open behavior in the relevant context files before implementing dependent features.

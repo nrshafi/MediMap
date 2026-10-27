@@ -2056,8 +2056,11 @@ These newer explicit decisions take priority where earlier sections conflict.
 
 - The required initial release includes all P0 requirements plus map results, review subratings, and review reporting.
 - Verified Visit evidence and bulk import are deferred from the required release. Other P1 requirements remain optional unless explicitly selected.
-- The initial dataset covers 10 hospitals, their Dhaka branches, and all diagnostic services within MediMap scope at those branches.
-- This hospital selection is the initial collection target. It does not remove other diagnostic-provider types from the product model.
+- The initial dataset uses official service, standard-price, and branch-location evidence to select Dhaka hospitals and branches.
+- The 27 October 2026 decision removes fixed hospital and branch counts and the complete-service coverage requirement.
+- A hospital can qualify with one verified diagnostic service. Include more hospitals or branches when their information can be verified.
+- Exclude hospitals and records that cannot be verified. Record partial coverage without claiming a complete hospital catalog.
+- This collection policy does not remove other diagnostic-provider types from the product model.
 - The current version has an English interface with English and Bangla service aliases.
 - Submission is due in early December 2026. Development must finish before submission. The exact final delivery date remains open. Internal milestone dates are defined below.
 - The team has three people. The project owner expects to do most implementation with AI agents.

@@ -71,6 +71,12 @@ The browser must not access D1 directly or receive server secrets.
 D1 stores relational application records for providers, branches, categories, canonical services, aliases, branch-service listings, prices, sources, reviews, and reports.
 Keep original provider service names separate from canonical service names.
 Keep price sources and verification information associated with branch-specific prices.
+Keep collected website research in `data/catalog/`, separate from discovery fixtures and database seeds.
+The extraction script in `scripts/data/` records original provider labels, row references, source URLs, retrieval times, and content hashes.
+Source retrieval does not establish a provider's effective date, live appointment availability, or a canonical service mapping.
+Record published site-update dates separately from tariff effective dates. Record explicit currency labels or contextual currency assignments for each source.
+Retain disputed rows in a separate review export. Do not select a price from conflicting rows or interpret zero as free.
+These research exports do not change the public discovery data source or establish a D1 schema.
 Verified Visit evidence uploads are deferred from the required release. No evidence-storage product is selected.
 
 ## Authentication and access

@@ -17,7 +17,10 @@ Decisions from the context interview will supplement this baseline. New explicit
 4. Let administrators maintain the dataset and resolve incorrect-information reports.
 5. Provide a usable mobile experience for the core search and comparison flow.
 
-The release dataset must cover 10 hospitals, their Dhaka branches, and all diagnostic services within MediMap scope at those branches. No fixed service or price-record count applies. The exact hospital and branch inventory remains open.
+Select Dhaka hospitals and branches using verifiable official service, standard-price, and location evidence.
+No fixed hospital, branch, service, or price-record count applies. A hospital can qualify with one verified diagnostic service.
+Include additional branches only when evidence supports their own listings. Exclude hospitals and records that cannot be verified.
+These decisions, confirmed on 27 October 2026, replace the earlier ten-hospital and complete-service coverage requirements.
 
 ## Core user flow
 
@@ -90,11 +93,13 @@ The required release includes all P0 features, map results, review subratings, a
 9. Unknown prices, opening hours, and travel estimates remain distinguishable from known values.
 10. The core flow works on mobile devices.
 
-Dataset completeness must be checked against an inventory of the selected hospitals, their Dhaka branches, and their in-scope services. Unknown prices must remain explicit. Accessibility and performance targets remain open for the UI and implementation phases.
+Check collected records against an evidence inventory. Do not claim that partial collection covers every service or branch of a hospital.
+Preserve unknown values. Exclude records without verified service, standard-price, and branch-location evidence from the collected price dataset.
+Accessibility and performance targets remain open for the UI and implementation phases.
 
 ## Pending product decisions
 
-- Exact hospital and Dhaka branch inventory, including handling of unavailable source data.
+- Additional hospitals and Dhaka branches with verifiable official data. Collection has no fixed count or complete-catalog requirement.
 - Exact final delivery date in early December 2026.
 - Accessibility and performance acceptance targets.
 - Remaining optional P1 features.

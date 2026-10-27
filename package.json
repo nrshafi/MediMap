@@ -8,11 +8,16 @@
     "bun": ">=1.4.4"
   },
   "scripts": {
-    "dev": "bun --bun vite dev",
-    "build": "bun --bun vite build",
-    "typecheck": "bun check --no-script",
-    "format": "bun fmt src tests *.ts *.json bunfig.toml .oxlintrc.json README.md",
-    "format:check": "bun fmt --check src tests *.ts *.json bunfig.toml .oxlintrc.json README.md",
+    "dev": "WRANGLER_LOG_PATH=.bun-tmp/wrangler.log node node_modules/vite/bin/vite.js dev",
+    "build": "WRANGLER_LOG_PATH=.bun-tmp/wrangler.log node node_modules/vite/bin/vite.js build",
+    "cf:types": "WRANGLER_LOG_PATH=.bun-tmp/wrangler.log node node_modules/wrangler/bin/wrangler.js types --include-runtime false",
+    "db:migrate": "WRANGLER_LOG_PATH=.bun-tmp/wrangler.log node node_modules/wrangler/bin/wrangler.js d1 migrations apply DB --local",
+    "db:seed": "WRANGLER_LOG_PATH=.bun-tmp/wrangler.log node node_modules/wrangler/bin/wrangler.js d1 execute DB --local --file seeds/catalog.sql",
+    "db:setup": "bun run scripts/database/setup.ts",
+    "test:database": "bun run scripts/database/test.ts",
+    "typecheck": "bun check --no-script && bun check --no-script --project tsconfig.tooling.json",
+    "format": "bun fmt src tests scripts/database *.ts *.json *.jsonc bunfig.toml .oxlintrc.json README.md",
+    "format:check": "bun fmt --check src tests scripts/database *.ts *.json *.jsonc bunfig.toml .oxlintrc.json README.md",
     "test:coverage": "bun test --coverage --coverage-reporter=text",
     "test:browser": "PLAYWRIGHT_BROWSERS_PATH=.bun-cache/playwright playwright test",
     "test:browser:install": "PLAYWRIGHT_BROWSERS_PATH=.bun-cache/playwright playwright install chromium --only-shell",
@@ -26,14 +31,19 @@
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "1.49.0",
+    "@cloudflare/workers-types": "5.20260730.1",
     "@playwright/test": "1.64.1",
+    "@types/bun": "1.4.4",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "happy-dom": "^21.0.1",
+    "miniflare": "4.20260730.0",
     "oxlint": "1.88.0",
     "typescript": "7.0.2",
-    "vite": "^8.3.4"
+    "vite": "^8.3.4",
+    "wrangler": "4.116.0"
   }
 }

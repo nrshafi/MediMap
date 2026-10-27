@@ -25,7 +25,8 @@ The first implementation is a static "Coming soon" page with React, strict TypeS
 Use stable Bun 1.4.4 for package management, local scripts, formatting, and strict TypeScript checking.
 Use `bun check --no-script` for type checking and Oxlint for linting. Bun's native linter remains canary-only in 1.4.4.
 Keep the existing lint rules and exclusions in `.oxlintrc.json`.
-Run Vite through Bun. Use `bun fmt` with the options in `bunfig.toml`.
+Run Vite and Wrangler through Node. Wrangler does not support the Bun runtime.
+Use `bun fmt` with the options in `bunfig.toml`.
 Require a three-day minimum release age for new dependency resolution. Keep existing versions in `bun.lock`.
 Use exact-version exceptions only for reviewed urgent updates. Keep Bun's default installation retry settings.
 Prefer Bun native utilities for local scripts and compatible unit tests.
@@ -35,8 +36,11 @@ Use supported web APIs and Workers bindings in the deployed application.
 Keep route entry points in `src/routes` and the landing-page component in `src/features/landing`.
 The initial setup uses React 19.3, TanStack Start 1.169.1, TanStack Router 1.170.44, and Vite 8.3.4.
 Match the editor's TypeScript package to `process.versions.typescript` in the selected Bun version.
-This unit does not configure hosting, storage, authentication, or other product functionality.
-Cloudflare Workers remains the intended deployment target for later implementation.
+The catalog foundation adds local Workers execution through Cloudflare Vite plugin 1.49.0 and Wrangler 4.116.0.
+These pinned stable releases use Miniflare 4.20260730.0. Later stable CLI releases currently depend on prerelease Miniflare.
+The compatibility date is 2026-07-30, matching the selected stable workerd runtime. Review it when upgrading these packages.
+Bun remains the package manager. Workers tooling can use Node when its subprocess runtime requires Node.
+No remote database or deployment is part of this foundation.
 
 ## Discovery prototype
 
@@ -65,6 +69,9 @@ Address search and selection on a geographic map depend on provider selection an
 Separate the user interface, search logic, application logic, database access, location integration, authentication, and administration.
 Use one Workers application deployment. Keep public pages, administration, backend logic, database access, and integrations in separate internal modules. Organize application modules by feature. Share database access and integrations. Exact folder names remain open.
 The browser must not access D1 directly or receive server secrets.
+Generate binding names with `wrangler types --include-runtime false`.
+Import matching Workers types selectively through `src/worker-bindings.d.ts` to avoid browser DOM conflicts.
+Check application types with `tsconfig.json` and Node/Bun tooling types separately with `tsconfig.tooling.json`.
 
 ## Storage model
 
@@ -78,6 +85,31 @@ Record published site-update dates separately from tariff effective dates. Recor
 Retain disputed rows in a separate review export. Do not select a price from conflicting rows or interpret zero as free.
 These research exports do not change the public discovery data source or establish a D1 schema.
 Verified Visit evidence uploads are deferred from the required release. No evidence-storage product is selected.
+
+### Catalog foundation
+
+The implementation request on 27 October 2026 authorizes the local catalog slice described in the foundation proposal.
+Mapping-provider selection remains open. Local catalog reads do not depend on that selection.
+Use `migrations/` for ordered schema changes and `seeds/catalog.sql` for the separately reviewed initial import.
+Keep repositories in `src/features/catalog/server/` and public contracts in `src/features/catalog/contracts.ts`.
+The read-only `/admin/catalog` inspector exposes published catalog fields only. Authentication and all administrator writes remain later work.
+Keep its reusable layout and core navigation in separate administration modules. Accept additional navigation through an explicit prop.
+
+Each active branch-service listing has at most one current price revision, selected by a nullable reference.
+The selected revision must belong to that listing. Keep previous revisions when the current reference changes.
+Future price writes must insert a revision and change the reference in one D1 batch.
+Store prices as positive integer paisa. Return BDT amounts at the public read boundary.
+A missing current revision returns null price, source, and verification date.
+Verified revisions require an official source and an actual review timestamp. Website review does not imply provider confirmation.
+Keep source-update dates, review timestamps, and unknown tariff-effective dates separate.
+Do not expire prices by age. Report-related status transitions and statistics remain outside this slice.
+Only active categories, services, providers, branches, and listings appear in public reads.
+Read failures return an explicit error. Never substitute research exports or discovery fixtures.
+
+The initial reviewed import maps Ad-din Moghbazar's published `CBC` to the existing `complete-blood-count` canonical ID.
+The official hematology tariff lists 400 taka. Its contact page supports the branch address.
+Coordinates, opening hours, telephone details, and tariff-effective dates remain null until separately verified.
+The broader research export remains unpublished and requires individual mapping and currency checks.
 
 ## Authentication and access
 
@@ -134,7 +166,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Authentication library, session handling, and administrator assignment rules.
 - Mapping, geocoding, and routing provider selection.
-- Price history and rating aggregation. Define how reports affect verification status and statistics eligibility.
+- Rating aggregation and report-related verification and statistics-eligibility transitions.
 - Default sorting, comparison limits, and the definition of current records.
 
 

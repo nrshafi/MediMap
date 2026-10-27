@@ -18,9 +18,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'bun --bun node_modules/vite/bin/vite.js --host 127.0.0.1 --port 3100 --strictPort',
+    command: 'bun run scripts/database/browser-server.ts',
     url: 'http://127.0.0.1:3100',
     reuseExistingServer: false,
-    timeout: 60_000,
+    timeout: 120_000,
   },
 });

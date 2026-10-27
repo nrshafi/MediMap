@@ -13,5 +13,11 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["src", "vite.config.ts", "playwright.config.ts", "tests/browser"]
+  "include": [
+    "src",
+    "playwright.config.ts",
+    "tests/browser",
+    "tests/catalog",
+    "worker-configuration.d.ts"
+  ]
 }

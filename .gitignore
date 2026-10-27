@@ -1,4 +1,7 @@
 node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*
 .npm-cache/
 .bun-cache/
 .bun-tmp/

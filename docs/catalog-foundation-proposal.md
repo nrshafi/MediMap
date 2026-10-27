@@ -5,24 +5,24 @@ Prepared on 27 October 2026. Data-collection scope updated after the project own
 The project owner authorized collection from official hospital sites with verifiable services, standard prices, and locations.
 Hospital and branch counts are unrestricted. A hospital can qualify with one verified diagnostic service.
 Exclude hospitals and records that cannot be verified. Complete service coverage is not required.
-Mapping-provider and current-price/history decisions remain open.
-Implementation recommendations remain proposed. Data collection follows the updated project scope.
+The implementation request on 27 October 2026 authorized the local catalog slice and its proposed current-price/history rule.
+Mapping-provider selection remains open and does not block local catalog reads.
+The [implemented read contracts](catalog-read-contracts.md) record the schema, reviewed initial import, and validation rules.
 The [source review and collected data](../data/catalog/README.md) record the current research results and limitations.
 
-## Recommended first implementation unit
+## First implementation unit
 
 Build local Workers/D1 support, catalog migrations, validated read repositories, and a read-only administration data view.
 Start the development database empty. Show an explicit empty state until approved records exist.
 Use synthetic records only in an isolated test database. Label them as test data and exclude them from development seeds.
 Never use discovery fixtures as database fallback data.
 
-This sequence needs an explicit change to the current prerequisite order.
-The existing workflow requires hospital inventory and mapping-provider selection before the source-backed branch-data unit.
-The proposal defers those decisions until data collection and mapping integration, respectively.
-Source-backed acceptance remains incomplete until an approved branch-service record has supporting evidence.
-An empty database or synthetic test record cannot satisfy that acceptance check.
+The owner requested implementation after the official-site collection and the next-step discussion.
+The local slice uses one reviewed Ad-din CBC record with explicit currency and branch evidence.
+The remaining research requires individual review before import. Mapping selection remains a prerequisite for mapping integration.
+An empty database or synthetic test record cannot satisfy source-backed acceptance.
 
-## Proposed current-price and history rule
+## Selected current-price and history rule
 
 - Keep one branch-service listing for each branch and canonical service pair.
 - Keep price revisions as separate records. Retain previous revisions when prices change.
@@ -72,8 +72,8 @@ Provider contact requires separate authorization. This research sent no messages
 
 ## Implementation documentation
 
-The current repository has TanStack Start and Vite, but no Workers integration or D1 binding configuration.
-Check installed package compatibility before selecting additional stable development dependencies.
+The repository now has local Workers/D1 configuration, ordered migrations, validated reads, and a read-only catalog inspector.
+The implemented read-contract document records pinned stable dependencies and reproducible commands.
 
 Official sources checked on 27 October 2026:
 
@@ -82,16 +82,12 @@ Official sources checked on 27 October 2026:
 - [D1 migrations](https://developers.cloudflare.com/d1/reference/migrations/) documents ordered SQL files and migration tracking.
 - [D1 limits](https://developers.cloudflare.com/d1/platform/limits/) provides limits for the later workload assessment. Workload fit is not established.
 
-No dependencies, migrations, runtime bindings, or application behavior changed during this preparation.
-No application checks ran because this change contains documentation only.
-
 ## Decisions needed next
 
-1. Approve the empty-database implementation unit and defer inventory/provider selection as described above, or retain the existing prerequisite order.
-2. Approve or revise the proposed current-price/history rule.
-3. Collect verifiable records under the approved evidence-based policy. Resolve provider boundaries before assigning stored IDs.
+1. Select authentication, session, and administrator-assignment policies before protected writes.
+2. Review canonical mappings and currency evidence for additional collected records before import.
+3. Select mapping providers after checking coverage, licensing, attribution, free usage, and expected workload.
 
-After approval, update the existing architecture and workflow records before application implementation.
-Keep the mapping provider unresolved until its coverage, licensing, attribution, free usage, and workload have been reviewed.
+Report-related verification transitions and statistics eligibility still need a separate decision before their implementation.
 
 This document uses STE-guided technical prose. It does not claim formal ASD-STE100 compliance.

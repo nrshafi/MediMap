@@ -54,6 +54,16 @@ Explain permission denial, timeout, unavailable location, and unsupported browse
 Use a polite status region for location feedback. Use existing color tokens, visible focus, and controls at least 44 px high.
 Stack coordinate fields on mobile. Disclose that coordinates appear in the page URL and shared links.
 
+## Catalog inspector
+
+Use the existing teal, surface, border, system sans-serif, and Georgia tokens for the read-only catalog inspector.
+Show the selected service, provider label, branch address, price, source, and review date in a single readable record.
+Use a service selector with an explicit apply button. Preserve selection in the URL.
+Show unknown fields as unknown. Distinguish website review from provider confirmation.
+Use visible keyboard focus and controls at least 44 px high. Stack record fields at 375 px without horizontal scrolling.
+Show separate empty, invalid-request, and database-error states. Provide a retry link for read failures.
+Keep core navigation separate from the reusable layout. Accept extension entries through a typed prop.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

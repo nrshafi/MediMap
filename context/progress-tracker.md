@@ -4,16 +4,19 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-27 16:30:14 +06:00`.
+Last updated: `2026-10-27 17:37:39 +06:00`.
 
 ## Current phase
 
 Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with `88caff9`.
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
-Source-backed branch data, D1 integration, provider selection, address search, and map-based location input remain unfinished.
+Local D1 migrations, server reads, and a read-only catalog inspector are implemented and verified.
+The owner requested a local commit of this implementation on 27 October 2026.
+Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
-This research export remains separate from application fixtures and D1. Canonical service mapping and publication checks remain unfinished.
+This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
+Canonical mapping and publication checks remain unfinished for the remaining research records.
 Provider-independent location controls now support browser location and manual coordinates.
 Discovery query and radius changes now synchronize with the active results and URL.
 The current test audit and verification are in [test-review.md](test-review.md).
@@ -38,6 +41,20 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Source-backed local catalog foundation (2026-10-27 17:32:59 +06:00)
+
+- Added local Workers/D1 configuration, generated binding types, versioned schema migrations, and a reviewed Ad-din CBC import.
+- Added validated catalog, service, branch, and branch-service reads with prepared queries and explicit failure results.
+- Added `/admin/catalog`, URL-based service selection, evidence links, unknown metadata, and reusable administration navigation.
+- Defined nullable current-price references and immutable price revisions. Reports and statistics remain later work.
+- Applied both migrations to an empty local D1 database. Real D1 tests passed all ten scenarios plus their parent test.
+- Unit and component tests passed all 258 tests. The full desktop/mobile browser suite passed all 32 checks, including JavaScript-disabled filtering.
+- Application and Node/Bun tooling type checks, lint, formatting, and client/Workers production builds passed.
+- Inspected the rendered 375 px mobile screen. Checked field stacking, evidence links, focus, control heights, and horizontal overflow.
+- Kept generated routes tool-managed. Confirmed SQL and D1 implementation details are absent from the browser build.
+- Added reproducible local setup and public read-contract documentation. Public discovery retains its labeled sample data.
+- Authentication, administrator writes, remote resources, and deployment remain outside this implementation unit.
 
 ### Additional hospital tariff collection (2026-10-27 16:30:14 +06:00)
 
@@ -367,14 +384,14 @@ These are confirmed constraints for later feature implementation. Full details a
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
 - Effect of incorrect-price reports on verification status and statistics eligibility.
-- Default sorting, comparison limits, price history, and rating aggregation.
-- Validation and Workers integration test tools. Formatting uses Bun. Discovery browser tests use Playwright Test with Chromium.
-- Exact folder paths, migration review rules, and production migration application rules.
+- Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
+- Validation libraries for future authentication and writes. Catalog reads use explicit TypeScript validation and real Miniflare/D1 tests.
+- Production migration application rules. Local numbered migrations and core catalog paths are now defined.
 - Remaining optional P1 features.
 
 ## Next steps
 
 1. Review canonical mappings and publication checks for collected tariff records. Add further hospitals or branches when official evidence is available.
-2. Define source records and acceptance criteria for a source-backed branch listing flow. Current-price/history rules and mapping-provider selection remain open.
-3. Select authentication integration before account-dependent features. Address search and geographic map selection still require provider decisions.
+2. Continue with Google authentication and server access controls after selecting the session and administrator-assignment policies.
+3. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 4. Resolve open behavior in the relevant context files before implementing dependent features.

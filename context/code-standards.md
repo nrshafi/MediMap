@@ -136,6 +136,8 @@ Checked on 8 October 2026:
 
 ## Pending decisions
 
-- Additional feature paths, validation library, and Workers integration test tools. The application uses Bun formatting and Playwright Test.
+- Authentication and write-validation libraries remain open. Catalog reads use explicit TypeScript validation without an additional validation package.
+- Catalog code uses `src/features/catalog/`; administration uses `src/features/administration/`. Keep SQL in `.server.ts` repository modules.
+- Real D1 integration tests use Miniflare/workerd through Node. Bun bundles the TypeScript test entry point and runs compatible unit tests.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

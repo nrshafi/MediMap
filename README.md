@@ -39,7 +39,7 @@ Open [localhost:3000](http://localhost:3000) after starting the development serv
 4. Run `bun run dev`.
 5. Open [the catalog inspector](http://localhost:3000/admin/catalog).
 
-The inspector reads local D1 through server-only repositories. It exposes public fields and has no write operations.
+The inspector requires a server-confirmed administrator session and has no write operations.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.
@@ -54,11 +54,24 @@ Keep secrets in ignored `.dev.vars` or `.env` files. Do not store credentials in
 
 Run `bun run test:database` for isolated, real workerd/D1 integration tests. The tests do not use the development database.
 Browser tests apply local migrations and seed data before starting the Workers development server.
+They use isolated state in `.bun-tmp/browser-d1-state`, with synthetic accounts and sessions outside the development database.
 Cloudflare tooling can access its user-level development registry and retrieve development request metadata at startup.
 
 The project pins Cloudflare Vite plugin 1.49.0, Wrangler 4.116.0, and Miniflare 4.20260730.0.
 These releases use stable Miniflare. The compatibility date matches their workerd runtime, 30 July 2026.
 Review runtime changes and update the compatibility date when upgrading this toolchain.
+
+## Google sign-in
+
+Open `/sign-in` or `/account` for Google account access. Public discovery does not require sign-in.
+Follow [authentication setup](docs/authentication.md) to configure the OAuth web client and local secrets.
+Copy `.dev.vars.example` to `.dev.vars` and provide `AUTH_ORIGIN`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET`.
+The Google callback is `/auth/google/callback` on that exact origin.
+The sign-in button stays disabled until configuration is available.
+
+Sessions last seven days without automatic renewal. Google sign-in never grants administrator access.
+The setup document includes the separate owner-run grant procedure and server contracts for later features.
+Real Google login verification remains pending until OAuth credentials are configured.
 
 Browser tests use Playwright Test 1.64.1 and Chromium. The test command starts a separate local server on port 3100.
 Browser downloads stay in `.bun-cache/playwright`. Test traces and screenshots stay in `.bun-tmp/playwright-results`.

@@ -1,5 +1,6 @@
 import type { BranchService, CatalogResult, Page, Service } from '../catalog/contracts';
 import { AdminLayout } from './AdminLayout';
+import type { authFailure } from '../authentication/server/access.server';
 
 export type InspectorData = {
   catalog: Page<Service>;
@@ -121,7 +122,7 @@ export function CatalogInspector({
   moreHref,
   catalogMoreHref,
 }: {
-  result: CatalogResult<InspectorData>;
+  result: CatalogResult<InspectorData> | ReturnType<typeof authFailure>;
   serviceId: string;
   moreHref?: string;
   catalogMoreHref?: string;
@@ -138,7 +139,27 @@ export function CatalogInspector({
       <p className="admin-notice">
         Read-only catalog. Use the source links to check the published details.
       </p>
-      {!result.ok ? (
+      {!result.ok && ['unauthenticated', 'expired', 'forbidden'].includes(result.code) ? (
+        <section className="catalog-state" role="alert">
+          <h2>
+            {result.code === 'forbidden'
+              ? 'Administrator access required'
+              : result.code === 'expired'
+                ? 'Session expired'
+                : 'Sign in to continue'}
+          </h2>
+          <p>{result.message}</p>
+          <a
+            href={
+              result.code === 'forbidden'
+                ? '/account'
+                : `/sign-in?returnTo=%2Fadmin%2Fcatalog&reason=${result.code === 'expired' ? 'expired' : 'required'}`
+            }
+          >
+            {result.code === 'forbidden' ? 'Open your account' : 'Sign in with Google'}
+          </a>
+        </section>
+      ) : !result.ok ? (
         <section className="catalog-state" role="alert">
           <h2>
             {result.code === 'invalid_request' ? 'Invalid catalog request' : 'Catalog unavailable'}

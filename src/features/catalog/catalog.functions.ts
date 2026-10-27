@@ -1,4 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
+import { getRequest, setResponseHeader } from '@tanstack/react-start/server';
+import { requireAdministrator, authFailure } from '../authentication/server/access.server';
 import { env } from 'cloudflare:workers';
 import { catalogId, listingQuery, record } from './contracts';
 import { CatalogRepository } from './server/repository.server';
@@ -12,6 +14,12 @@ export const readCatalog = createServerFn({ method: 'GET' })
 export const inspectCatalog = createServerFn({ method: 'GET' })
   .validator((input: unknown) => input)
   .handler(async ({ data }) => {
+    setResponseHeader('Cache-Control', 'private, no-store');
+    try {
+      await requireAdministrator(getRequest(), env.DB);
+    } catch (error) {
+      return authFailure(error);
+    }
     try {
       const input = record(data);
       const query = listingQuery(input);

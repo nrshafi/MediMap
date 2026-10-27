@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { useBrowserSession } from './session-fixture';
+
+test.beforeEach(async ({ context }) => {
+  await useBrowserSession(context, 'admin');
+});
 
 test('catalog inspector reads reviewed D1 data and preserves unknown metadata', async ({
   page,

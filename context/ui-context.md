@@ -64,6 +64,16 @@ Use visible keyboard focus and controls at least 44 px high. Stack record fields
 Show separate empty, invalid-request, and database-error states. Provide a retry link for read failures.
 Keep core navigation separate from the reusable layout. Accept extension entries through a typed prop.
 
+## Account access
+
+Use the existing teal palette and system typography for sign-in and account screens.
+Keep Google as the only sign-in option. Explain that browsing does not require an account.
+Use ordinary POST forms for sign-in initiation and sign-out so both actions work without JavaScript.
+Show distinct messages for expired sessions, cancelled or failed sign-in, missing configuration, and denied administrator access.
+Do not show secrets, tokens, provider errors, or raw database messages.
+Keep form controls at least 44 px high and stack account actions at 375 px.
+The administration inspector requires server-confirmed administrator access. Hidden navigation does not establish authorization.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

@@ -13,7 +13,7 @@ This document records confirmed constraints. Unanswered architecture questions r
 | Runtime and hosting | Cloudflare Workers | One application deployment with separate internal modules. |
 | Database | Cloudflare D1 | Direct prepared SQL queries and versioned SQL migrations. No ORM selected. |
 | HTTP routing | Hono if required | Optional. Decide after the application structure is selected. |
-| Authentication | Google sign-in | Only sign-in method for the first version. Authentication library and session implementation remain open. |
+| Authentication | Google OpenID Connect through oauth4webapi | D1 accounts and hashed seven-day sessions. Owner-controlled administrator grants. |
 | Mapping and routing | Pending provider research | Check Dhaka coverage, maps, geocoding, road distance, travel time, and free usage before selecting a provider. |
 
 The package versions are recorded in `package.json` and `bun.lock`.
@@ -92,7 +92,8 @@ The implementation request on 27 October 2026 authorizes the local catalog slice
 Mapping-provider selection remains open. Local catalog reads do not depend on that selection.
 Use `migrations/` for ordered schema changes and `seeds/catalog.sql` for the separately reviewed initial import.
 Keep repositories in `src/features/catalog/server/` and public contracts in `src/features/catalog/contracts.ts`.
-The read-only `/admin/catalog` inspector exposes published catalog fields only. Authentication and all administrator writes remain later work.
+The read-only `/admin/catalog` inspector exposes published catalog fields only and now requires administrator access.
+General catalog read contracts remain public. Administrator writes remain later work.
 Keep its reusable layout and core navigation in separate administration modules. Accept additional navigation through an explicit prop.
 
 Each active branch-service listing has at most one current price revision, selected by a nullable reference.
@@ -119,7 +120,19 @@ The broader research export remains unpublished and requires individual mapping 
 - Administrators maintain core published data and moderate reviews and reports.
 - Users submit data corrections as reports. Users cannot directly overwrite published core data.
 - Google sign-in is the only account method for the first version. Assign administrator access separately from ordinary sign-in.
-- Authentication library, sessions, report-submission access, and administrator assignment rules remain open.
+- Use `oauth4webapi` for Google's authorization-code OpenID Connect flow, with PKCE, state, nonce, and signature validation.
+- Store accounts by Google's stable subject identifier. Do not merge accounts or assign privileges by email address.
+- Keep opaque application-session tokens in HttpOnly cookies and store only their SHA-256 hashes in D1.
+- Store short-lived, single-use OAuth attempts in D1. Bind each attempt to a separate browser cookie.
+- Keep Google access, refresh, and ID tokens out of persistent storage and browser responses.
+- Put authentication code in `src/features/authentication/` and use new numbered migrations after the catalog schema.
+- Keep public catalog reads and discovery accessible. Protect the administration inspector on the server.
+- Require same-origin POST requests for sign-in initiation and sign-out. Validate callback state, nonce, issuer, audience, expiry, and signature.
+- Accept return destinations only as validated local paths. Never trust callback-supplied account IDs or role fields.
+- The owner approved seven-day absolute sessions without automatic renewal on 27 October 2026.
+- Only an explicit owner-run database operation can grant administrator access. Sign-in never creates or changes a grant.
+- Revoke existing sessions when a grant changes. Check current grants from D1 on every privileged request.
+- No administrator account is assigned by default. Live Google verification requires an OAuth web client and local secret configuration.
 
 ## Invariants
 
@@ -164,7 +177,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Additional TanStack packages and selected package versions.
 - Need for Hono within the single application deployment.
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
-- Authentication library, session handling, and administrator assignment rules.
+- Live Google OAuth client configuration and report-submission access policy.
 - Mapping, geocoding, and routing provider selection.
 - Rating aggregation and report-related verification and statistics-eligibility transitions.
 - Default sorting, comparison limits, and the definition of current records.

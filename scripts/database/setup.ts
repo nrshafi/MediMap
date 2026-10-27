@@ -3,6 +3,7 @@ for (const args of [
   ['d1', 'migrations', 'apply', 'DB', '--local'],
   ['d1', 'execute', 'DB', '--local', '--file', 'seeds/catalog.sql'],
 ]) {
+  if (process.env.MEDIMAP_D1_STATE) args.push('--persist-to', process.env.MEDIMAP_D1_STATE);
   const child = Bun.spawn(['node', 'node_modules/wrangler/bin/wrangler.js', ...args], {
     stdin: 'ignore',
     stdout: 'inherit',

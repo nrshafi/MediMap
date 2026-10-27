@@ -10,12 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
+import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
+import { Route as AuthGoogleCallbackRouteImport } from './routes/auth.google.callback'
+import { Route as AuthGoogleStartRouteImport } from './routes/auth.google.start'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiscoveryRoute = DiscoveryRouteImport.update({
@@ -23,40 +33,105 @@ const DiscoveryRoute = DiscoveryRouteImport.update({
   path: '/discovery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminCatalogRoute = AdminCatalogRouteImport.update({
   id: '/admin/catalog',
   path: '/admin/catalog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSignOutRoute = AuthSignOutRouteImport.update({
+  id: '/auth/sign-out',
+  path: '/auth/sign-out',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthGoogleCallbackRoute = AuthGoogleCallbackRouteImport.update({
+  id: '/auth/google/callback',
+  path: '/auth/google/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthGoogleStartRoute = AuthGoogleStartRouteImport.update({
+  id: '/auth/google/start',
+  path: '/auth/google/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
+  '/auth/sign-out': typeof AuthSignOutRoute
+  '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/auth/google/start': typeof AuthGoogleStartRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
+  '/auth/sign-out': typeof AuthSignOutRoute
+  '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/auth/google/start': typeof AuthGoogleStartRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
+  '/auth/sign-out': typeof AuthSignOutRoute
+  '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/auth/google/start': typeof AuthGoogleStartRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/discovery' | '/admin/catalog'
+  fullPaths:
+    | '/'
+    | '/account'
+    | '/discovery'
+    | '/sign-in'
+    | '/admin/catalog'
+    | '/auth/sign-out'
+    | '/auth/google/callback'
+    | '/auth/google/start'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/discovery' | '/admin/catalog'
-  id: '__root__' | '/' | '/discovery' | '/admin/catalog'
+  to:
+    | '/'
+    | '/account'
+    | '/discovery'
+    | '/sign-in'
+    | '/admin/catalog'
+    | '/auth/sign-out'
+    | '/auth/google/callback'
+    | '/auth/google/start'
+  id:
+    | '__root__'
+    | '/'
+    | '/account'
+    | '/discovery'
+    | '/sign-in'
+    | '/admin/catalog'
+    | '/auth/sign-out'
+    | '/auth/google/callback'
+    | '/auth/google/start'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRoute
   DiscoveryRoute: typeof DiscoveryRoute
+  SignInRoute: typeof SignInRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
+  AuthSignOutRoute: typeof AuthSignOutRoute
+  AuthGoogleCallbackRoute: typeof AuthGoogleCallbackRoute
+  AuthGoogleStartRoute: typeof AuthGoogleStartRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,11 +143,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/discovery': {
       id: '/discovery'
       path: '/discovery'
       fullPath: '/discovery'
       preLoaderRoute: typeof DiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/catalog': {
@@ -82,13 +171,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCatalogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/sign-out': {
+      id: '/auth/sign-out'
+      path: '/auth/sign-out'
+      fullPath: '/auth/sign-out'
+      preLoaderRoute: typeof AuthSignOutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/google/callback': {
+      id: '/auth/google/callback'
+      path: '/auth/google/callback'
+      fullPath: '/auth/google/callback'
+      preLoaderRoute: typeof AuthGoogleCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/google/start': {
+      id: '/auth/google/start'
+      path: '/auth/google/start'
+      fullPath: '/auth/google/start'
+      preLoaderRoute: typeof AuthGoogleStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRoute,
   DiscoveryRoute: DiscoveryRoute,
+  SignInRoute: SignInRoute,
   AdminCatalogRoute: AdminCatalogRoute,
+  AuthSignOutRoute: AuthSignOutRoute,
+  AuthGoogleCallbackRoute: AuthGoogleCallbackRoute,
+  AuthGoogleStartRoute: AuthGoogleStartRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

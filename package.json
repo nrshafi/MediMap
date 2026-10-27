@@ -27,6 +27,7 @@
   "dependencies": {
     "@tanstack/react-router": "^1.170.44",
     "@tanstack/react-start": "^1.169.1",
+    "oauth4webapi": "3.8.8",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },

@@ -18,6 +18,7 @@
     "playwright.config.ts",
     "tests/browser",
     "tests/catalog",
+    "tests/auth",
     "worker-configuration.d.ts"
   ]
 }

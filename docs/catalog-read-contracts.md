@@ -1,8 +1,9 @@
 # Catalog read contracts
 
 The local catalog foundation exposes public records through server-only prepared D1 queries.
-Authentication and administrator writes are separate implementation units.
-The read-only inspector is available at `/admin/catalog`. No account is required for these public fields.
+General catalog reads remain public. The read-only inspector at `/admin/catalog` now requires server-confirmed administrator access.
+See [authentication contracts](authentication.md) for Google sign-in, sessions, and the owner-controlled grant procedure.
+Administrator write operations remain a later implementation unit.
 The inspector's GET form also works before JavaScript hydration.
 
 ## Initial reviewed import
@@ -80,7 +81,7 @@ The inspector uses `inspectCatalog` to combine the service selector, selected se
 
 `AdminLayout` accepts `activeHref`, `children`, and an optional array of `{ href, label }` navigation entries.
 The core catalog entry stays in `navigation.ts`. Later review administration supplies its own extension entries.
-This layout provides no authorization. Future privileged pages must enforce server access checks before reading private records or writing data.
+This layout provides no authorization. Privileged pages must call the shared server checks before private reads or writes.
 
 ## Verification and documentation
 

@@ -9,7 +9,13 @@ export default defineConfig({
     watch: { ignored: ['**/.wrangler/**', '**/.bun-tmp/**', '**/.bun-cache/**'] },
   },
   plugins: [
-    cloudflare({ viteEnvironment: { name: 'ssr' }, inspectorPort: false }),
+    cloudflare({
+      viteEnvironment: { name: 'ssr' },
+      inspectorPort: false,
+      ...(process.env.MEDIMAP_D1_STATE
+        ? { persistState: { path: process.env.MEDIMAP_D1_STATE } }
+        : {}),
+    }),
     tanstackStart(),
     react(),
   ],

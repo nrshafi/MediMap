@@ -17,7 +17,7 @@ export function AdminLayout({
         <a className="admin-brand" href="/">
           MediMap
         </a>
-        <span>Catalog workspace</span>
+        <a href="/account">Your account</a>
       </header>
       <nav className="admin-nav" aria-label="Administration">
         {[...coreAdministrationNavigation, ...navigation].map((item) => (
@@ -31,7 +31,7 @@ export function AdminLayout({
         ))}
       </nav>
       <main id="main-content">{children}</main>
-      <footer className="admin-footer">Public records · Read-only access</footer>
+      <footer className="admin-footer">Administrator workspace · Read-only catalog</footer>
     </div>
   );
 }

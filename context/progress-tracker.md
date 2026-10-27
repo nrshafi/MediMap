@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-27 17:37:39 +06:00`.
+Last updated: `2026-10-27 21:30:22 +06:00`.
 
 ## Current phase
 
@@ -12,7 +12,7 @@ Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with 
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
 Local D1 migrations, server reads, and a read-only catalog inspector are implemented and verified.
-The owner requested a local commit of this implementation on 27 October 2026.
+Google account, session, and authorization code is implemented and locally verified. Real Google login verification awaits OAuth credentials.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -41,6 +41,22 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Google account and access implementation, live provider check pending (2026-10-27 19:08:31 +06:00)
+
+- Approved seven-day sessions without automatic renewal and explicit owner-controlled administrator grants.
+- Added an authentication migration, stable Google-subject accounts, hashed sessions, single-use OAuth attempts, and grant-change session revocation.
+- Added OpenID Connect with state, PKCE, nonce, signature, issuer, audience, expiry, and verified-email checks through `oauth4webapi`.
+- Added sign-in/account screens and POST sign-out. Protected catalog inspection on the server while retaining public catalog reads and discovery.
+- Applied the authentication migration locally. All 25 real D1 integration tests passed, including both parent tests.
+- Passed 260 unit/component tests and all 44 desktop/mobile browser checks. Added JavaScript-disabled sign-out and protected-catalog checks.
+- Passed application/tooling type checks, lint, formatting, frozen dependency installation, and client/Workers production builds.
+- Inspected sign-in and account screens at 375 px. Verified the sign-in header remains in the initial viewport.
+- Browser tests use separate D1 state and OAuth settings. Confirmed the development database still contains zero accounts and zero administrator grants.
+- Confirmed authentication SQL, provider-secret names, and OAuth client implementation are absent from the browser build.
+- Added the local secret template, setup guide, owner-only grant procedure, and shared authorization contracts. Local commit authorized on 27 October 2026.
+- No Google OAuth web-client credentials are configured. Real Google login verification remains blocked until the owner configures that client.
+- No real account received administrator access. No remote resources or deployments are part of this unit.
 
 ### Source-backed local catalog foundation (2026-10-27 17:32:59 +06:00)
 
@@ -380,18 +396,18 @@ These are confirmed constraints for later feature implementation. Full details a
 - Exact final delivery date in early December 2026.
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
-- Authentication library, sessions, administrator assignment, and report-submission access.
+- Google OAuth client credentials for live login verification, plus the later report-submission access policy.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
 - Effect of incorrect-price reports on verification status and statistics eligibility.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
-- Validation libraries for future authentication and writes. Catalog reads use explicit TypeScript validation and real Miniflare/D1 tests.
+- Validation libraries for future administrator writes. Authentication uses oauth4webapi; catalog reads use explicit TypeScript validation and real Miniflare/D1 tests.
 - Production migration application rules. Local numbered migrations and core catalog paths are now defined.
 - Remaining optional P1 features.
 
 ## Next steps
 
 1. Review canonical mappings and publication checks for collected tariff records. Add further hospitals or branches when official evidence is available.
-2. Continue with Google authentication and server access controls after selecting the session and administrator-assignment policies.
+2. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
 3. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 4. Resolve open behavior in the relevant context files before implementing dependent features.

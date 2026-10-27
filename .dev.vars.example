@@ -1,0 +1,5 @@
+# Copy to .dev.vars. Set the exact browser origin and Google OAuth web-client credentials.
+# These are empty examples, not working credentials.
+AUTH_ORIGIN="http://localhost:3000"
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""

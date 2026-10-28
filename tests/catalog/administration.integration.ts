@@ -68,7 +68,7 @@ test('catalog administration against actual local D1', async (t) => {
     const db = await mf.getD1Database('DB');
     const names = (await readdir('migrations')).filter((name) => name.endsWith('.sql')).sort();
     // Rehearse the upgrade with the previous schema and existing reviewed data.
-    for (const name of names.filter((name) => !name.startsWith('0004'))) {
+    for (const name of names.filter((name) => name < '0004')) {
       const sql = await readFile(`migrations/${name}`, 'utf8');
       const statements = sql.match(/\s*CREATE TRIGGER[\s\S]*?END;|[^;]+;/g);
       assert.ok(statements);
@@ -85,10 +85,12 @@ test('catalog administration against actual local D1', async (t) => {
         "INSERT INTO service_aliases(id, service_id, alias, language) VALUES ('complete-blood-count-cbc-en', 'complete-blood-count', 'CBC', 'en')",
       )
       .run();
-    const sql = await readFile('migrations/0004_catalog_administration.sql', 'utf8');
-    const statements = sql.match(/\s*CREATE TRIGGER[\s\S]*?END;|[^;]+;/g);
-    assert.ok(statements);
-    await db.batch(statements.map((statement) => db.prepare(statement)));
+    for (const name of names.filter((name) => name >= '0004')) {
+      const sql = await readFile(`migrations/${name}`, 'utf8');
+      const statements = sql.match(/\s*CREATE TRIGGER[\s\S]*?END;|[^;]+;/g);
+      assert.ok(statements);
+      await db.batch(statements.map((statement) => db.prepare(statement)));
+    }
     const seed = (await readFile('seeds/catalog.sql', 'utf8'))
       .replace(/^--.*$/gm, '')
       .split(';')

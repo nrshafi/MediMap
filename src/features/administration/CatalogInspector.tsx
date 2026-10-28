@@ -1,6 +1,7 @@
 import type { BranchService, CatalogResult, Page, Service } from '../catalog/contracts';
 import { AdminLayout } from './AdminLayout';
 import type { authFailure } from '../authentication/server/access.server';
+import { dayHoursLabel, weekDays } from '../providers/hours';
 
 export type InspectorData = {
   catalog: Page<Service>;
@@ -72,7 +73,22 @@ function Listing({ listing }: { listing: BranchService }) {
         </div>
         <div>
           <dt>Opening hours</dt>
-          <dd>{branch.openingHours ?? 'Unknown'}</dd>
+          <dd>
+            {branch.openingHours ? (
+              <>
+                <p>Usual weekly hours · Asia/Dhaka</p>
+                <ul>
+                  {weekDays.map((day) => (
+                    <li key={day}>
+                      {day}: {dayHoursLabel(branch.openingHours?.days[day] ?? null)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              'Unknown'
+            )}
+          </dd>
         </div>
         <div>
           <dt>Coordinates</dt>
@@ -86,6 +102,38 @@ function Listing({ listing }: { listing: BranchService }) {
           <dt>Telephone</dt>
           <dd>{branch.phone ?? 'Unknown'}</dd>
         </div>
+        {branch.alternativePhone && (
+          <div>
+            <dt>Alternative telephone</dt>
+            <dd>{branch.alternativePhone}</dd>
+          </div>
+        )}
+        {branch.website && (
+          <div>
+            <dt>Branch website</dt>
+            <dd>
+              <a href={branch.website} rel="noreferrer" target="_blank">
+                Open branch website
+              </a>
+            </dd>
+          </div>
+        )}
+        {branch.provider.website && (
+          <div>
+            <dt>Provider website</dt>
+            <dd>
+              <a href={branch.provider.website} rel="noreferrer" target="_blank">
+                Open provider website
+              </a>
+            </dd>
+          </div>
+        )}
+        {branch.provider.phone && (
+          <div>
+            <dt>Provider telephone</dt>
+            <dd>{branch.provider.phone}</dd>
+          </div>
+        )}
       </dl>
       <div className="catalog-evidence">
         <h3>Source evidence</h3>

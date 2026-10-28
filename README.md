@@ -42,6 +42,8 @@ Open [localhost:3000](http://localhost:3000) after starting the development serv
 The inspector requires a server-confirmed administrator session and has no write operations.
 Open `/admin/catalog/manage` for protected category, service, and English/Bangla alias administration.
 See [catalog administration](docs/catalog-administration.md) for validation, correction, deactivation, and migration details.
+Open `/admin/providers` for provider and branch contacts, coordinates, and weekly opening hours.
+See [provider administration](docs/provider-administration.md) for source requirements and the updated branch read contract.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.

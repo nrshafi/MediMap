@@ -4,6 +4,10 @@ import { AuthError } from '../../authentication/contracts';
 import { catalogReadFailure } from '../server/reads.server';
 import { CatalogAdministrationRepository } from './repository.server';
 import { CatalogEditError, parseEdit, managementHref } from './contracts';
+import {
+  readAdministrationForm,
+  InvalidAdministrationForm,
+} from '../../administration/server/form.server';
 
 export async function readManagement(request: Request, db: D1Database, input: unknown) {
   try {
@@ -35,44 +39,9 @@ export async function writeManagement(request: Request, db: D1Database, environm
             : 401;
     return Response.json(failure, { status, headers });
   }
-  const input: Record<string, string> = {};
   let target: Record<string, string | undefined> = {};
   try {
-    if (
-      request.headers.get('content-type')?.split(';')[0].trim() !==
-      'application/x-www-form-urlencoded'
-    )
-      throw new CatalogEditError('invalid_request');
-    const reader = request.body?.getReader();
-    if (!reader) throw new CatalogEditError('invalid_request');
-    const chunks: Uint8Array[] = [];
-    let size = 0;
-    try {
-      while (true) {
-        const chunk = await reader.read();
-        if (chunk.done) break;
-        size += chunk.value.byteLength;
-        if (size > 16384) {
-          await reader.cancel();
-          throw new CatalogEditError('invalid_request');
-        }
-        chunks.push(chunk.value);
-      }
-    } finally {
-      reader.releaseLock();
-    }
-    const body = new Uint8Array(size);
-    let offset = 0;
-    for (const chunk of chunks) {
-      body.set(chunk, offset);
-      offset += chunk.length;
-    }
-    const form = new URLSearchParams(new TextDecoder('utf-8', { fatal: true }).decode(body));
-    for (const [key, value] of form) {
-      if (Object.hasOwn(input, key)) throw new CatalogEditError('invalid_request');
-      Object.defineProperty(input, key, { value, enumerable: true });
-    }
-    const edit = parseEdit(input);
+    const edit = parseEdit(await readAdministrationForm(request));
     const selection =
       edit.entity === 'category'
         ? { category: edit.id }
@@ -93,7 +62,7 @@ export async function writeManagement(request: Request, db: D1Database, environm
     const code =
       error instanceof CatalogEditError
         ? error.code
-        : error instanceof AuthError
+        : error instanceof AuthError || error instanceof InvalidAdministrationForm
           ? 'invalid_request'
           : 'unavailable';
     return new Response(null, {

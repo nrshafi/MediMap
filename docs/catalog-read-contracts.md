@@ -71,6 +71,8 @@ Pass a returned cursor as `after` to continue in stable ID order.
 Each read excludes inactive records and inactive ancestors. Missing active records return null or an empty page.
 Service reads include active aliases only. Deactivation preserves stored aliases and their original service IDs.
 The repository validates stored values before returning public contracts.
+Branch reads now include provider contacts, branch website, alternative telephone, and typed `WeeklyHours | null` schedules.
+See [provider administration](provider-administration.md) for the Dhaka-time, overnight, unknown-day, and deactivation contracts.
 
 `readCatalog` in `catalog.functions.ts` exposes GET reads using a validated `kind` request.
 Use `catalog`, `service`, `branch`, `listing`, or `listings` as `kind`.

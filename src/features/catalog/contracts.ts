@@ -1,3 +1,5 @@
+import type { WeeklyHours } from '../providers/hours';
+
 export type Source = {
   id: string;
   url: string;
@@ -16,10 +18,12 @@ export type Service = {
 export type Branch = {
   id: string;
   name: string;
-  provider: { id: string; name: string };
+  provider: { id: string; name: string; phone: string | null; website: string | null };
   address: string;
   phone: string | null;
-  openingHours: string | null;
+  alternativePhone: string | null;
+  website: string | null;
+  openingHours: WeeklyHours | null;
   coordinates: { latitude: number; longitude: number } | null;
   contactSource: Source | null;
 };

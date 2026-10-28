@@ -6,7 +6,7 @@ The stored catalog and the read-only inspector reflect accepted changes immediat
 
 ## Local setup
 
-1. Run `bun run db:setup` to apply migrations `0001` through `0004` and the reviewed seed.
+1. Run `bun run db:setup` to apply current numbered migrations and the reviewed seed.
 2. Configure the Google OAuth web client as described in [authentication setup](authentication.md).
 3. Complete sign-in, then use the documented owner-run operation to grant administrator access.
 4. Sign in again after the grant changes.

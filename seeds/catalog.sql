@@ -4,8 +4,8 @@ INSERT INTO services(id, category_id, name, search_key)
   VALUES ('complete-blood-count', 'hematology', 'Complete Blood Count', 'complete blood count') ON CONFLICT(id) DO NOTHING;
 INSERT INTO service_aliases(id, service_id, alias, language, search_key)
   VALUES ('complete-blood-count-cbc-en', 'complete-blood-count', 'CBC', 'en', 'cbc') ON CONFLICT(id) DO NOTHING;
-INSERT INTO providers(id, name)
-  VALUES ('addin-medical-college-hospital', 'Ad-din Medical College Hospital') ON CONFLICT(id) DO NOTHING;
+INSERT INTO providers(id, name, search_key)
+  VALUES ('addin-medical-college-hospital', 'Ad-din Medical College Hospital', 'ad-din medical college hospital') ON CONFLICT(id) DO NOTHING;
 INSERT INTO sources(id, provider_id, url, kind, retrieved_at, sha256, source_updated_date, currency_evidence)
   VALUES ('addin-hematology-20261027', 'addin-medical-college-hospital',
     'https://awmch.addinhospital.org/hematology-service-charge', 'official_tariff',
@@ -15,9 +15,9 @@ INSERT INTO sources(id, provider_id, url, kind, retrieved_at, sha256)
   VALUES ('addin-contact-20261027', 'addin-medical-college-hospital',
     'https://awmch.addinhospital.org/contact/', 'official_contact', '2026-10-27T10:28:23.315Z',
     'f4d487b1e750ef07fc12fcae91ea2222cb030b951901ec540c8b42bf3472be87') ON CONFLICT(id) DO NOTHING;
-INSERT INTO branches(id, provider_id, name, address, contact_source_id)
+INSERT INTO branches(id, provider_id, name, address, contact_source_id, search_key)
   VALUES ('addin-moghbazar', 'addin-medical-college-hospital', 'Moghbazar',
-    '2 Bara Maghbazar, Dhaka 1217', 'addin-contact-20261027') ON CONFLICT(id) DO NOTHING;
+    '2 Bara Maghbazar, Dhaka 1217', 'addin-contact-20261027', 'moghbazar') ON CONFLICT(id) DO NOTHING;
 INSERT INTO branch_services(id, branch_id, service_id, provider_service_name)
   VALUES ('addin-moghbazar-complete-blood-count', 'addin-moghbazar', 'complete-blood-count', 'CBC')
   ON CONFLICT(id) DO NOTHING;

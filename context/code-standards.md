@@ -138,6 +138,7 @@ Checked on 8 October 2026:
 
 - Authentication uses `oauth4webapi` with direct D1 account/session persistence. Catalog writes use explicit TypeScript validation without an additional package.
 - Catalog reads use explicit TypeScript validation without an additional validation package.
+- Provider and branch writes also use explicit TypeScript validation and the shared bounded HTML form parser.
 - Catalog code uses `src/features/catalog/`; administration uses `src/features/administration/`. Keep SQL in `.server.ts` repository modules.
 - Real D1 integration tests use Miniflare/workerd through Node. Bun bundles the TypeScript test entry point and runs compatible unit tests.
 - Migration review and production application rules.

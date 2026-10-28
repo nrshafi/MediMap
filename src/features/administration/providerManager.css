@@ -1,0 +1,35 @@
+.provider-coordinate-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.provider-hours {
+  min-width: 0;
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+}
+.provider-hours legend {
+  font-weight: 600;
+  padding: 0 8px;
+}
+.provider-hours p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--text-muted);
+}
+.provider-hours input {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .provider-coordinate-fields {
+    grid-template-columns: 1fr;
+  }
+  .provider-hours {
+    padding: 14px;
+  }
+}

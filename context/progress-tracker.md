@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 14:21:25 +06:00`.
+Last updated: `2026-10-28 14:59:06 +06:00`.
 
 ## Current phase
 
@@ -14,6 +14,7 @@ Search, radius filtering, routing fallback, and map/list interactions have regre
 Local D1 migrations, server reads, and a read-only catalog inspector are implemented and verified.
 Google account, session, and authorization code is implemented and locally verified. Real Google login verification awaits OAuth credentials.
 Protected category, canonical service, and English/Bangla alias administration is implemented and locally verified.
+Protected provider/branch administration and typed weekly-hours reads are implemented and locally verified.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -42,6 +43,21 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Provider and branch administration (2026-10-28 14:59:06 +06:00)
+
+- Committed the catalog administration unit locally as `555b12f`. No push occurred.
+- Defined nullable contacts and coordinates, protected provider/branch edits, and a typed Asia/Dhaka weekly-hours contract.
+- Applied the fifth migration and repeatable seed locally. Retained existing identity, listing, price, source, and unknown-field data.
+- Added shared hours parsing and opening-status logic for unknown days, closed days, split shifts, all-day hours, and overnight periods.
+- Connected provider/branch forms, protected server operations, contact evidence checks, and complete public branch reads.
+- Passed 52 real local D1 integration tests, including provider edits, rejected access, source ownership, retained history, and malformed schedules.
+- Passed all 275 unit/component tests across 24 files, application/tooling types, lint, formatting, frozen installation, and client/Workers builds.
+- Passed all 60 desktop/mobile browser checks, including provider/branch publication, coordinate-range feedback, and native forms without JavaScript.
+- Inspected the initial, branch-edit, and weekly-hours screens at 375 px. Fields remain readable without horizontal page overflow.
+- Added `docs/provider-administration.md` and updated public branch contracts, setup documentation, and existing context files.
+- Confirmed that browser bundles contain no provider SQL, server repository, or secret variable names. Public discovery and mapping code remain unchanged.
+- Live Google acceptance still requires credentials. This new unit remains uncommitted.
 
 ### Protected catalog administration (2026-10-28 14:20:01 +06:00)
 
@@ -425,7 +441,7 @@ These are confirmed constraints for later feature implementation. Full details a
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Add protected provider and branch administration with validated contacts, coordinates, and structured opening hours.
+2. Add branch-service, base-price, and source administration. Resolve report-related price-status decisions before dependent transitions.
 3. Review canonical mappings and publication checks for collected tariff records. Add hospitals or branches when official evidence is available.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

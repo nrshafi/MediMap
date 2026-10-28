@@ -1,3 +1,5 @@
+import { storedHours } from '../../providers/hours';
+import { contactPhone, contactWebsite } from '../../providers/contracts';
 import {
   catalogId,
   catalogQuery,
@@ -23,10 +25,6 @@ function storedId(value: unknown): string {
   } catch {
     throw new Error('Invalid stored record ID');
   }
-}
-
-function nullableText(value: unknown): string | null {
-  return value === null ? null : text(value);
 }
 
 function isoTimestamp(value: unknown): string {
@@ -98,10 +96,17 @@ function branch(row: Record<string, unknown>): Branch {
   return {
     id: storedId(row.branch_id),
     name: text(row.branch_name),
-    provider: { id: storedId(row.provider_id), name: text(row.provider_name) },
+    provider: {
+      id: storedId(row.provider_id),
+      name: text(row.provider_name),
+      phone: contactPhone(row.provider_phone),
+      website: contactWebsite(row.provider_website),
+    },
     address: text(row.address),
-    phone: nullableText(row.phone),
-    openingHours: nullableText(row.opening_hours),
+    phone: contactPhone(row.phone),
+    alternativePhone: contactPhone(row.alternative_phone),
+    website: contactWebsite(row.website),
+    openingHours: storedHours(row.opening_hours),
     coordinates,
     contactSource,
   };
@@ -158,8 +163,8 @@ function price(row: Record<string, unknown>): CurrentPrice | null {
   };
 }
 
-const branchColumns = `b.id AS branch_id, b.name AS branch_name, b.address, b.phone,
-  b.opening_hours, b.latitude, b.longitude, p.id AS provider_id, p.name AS provider_name,
+const branchColumns = `b.id AS branch_id, b.name AS branch_name, b.address, b.phone, b.alternative_phone, b.website,
+  b.opening_hours, b.latitude, b.longitude, p.id AS provider_id, p.name AS provider_name, p.phone AS provider_phone, p.website AS provider_website,
   cs.id AS contact_id, cs.url AS contact_url, cs.kind AS contact_kind,
   cs.retrieved_at AS contact_retrieved_at, cs.source_updated_date AS contact_source_updated_date`;
 const branchJoins = `JOIN providers p ON p.id = b.provider_id AND p.active = 1

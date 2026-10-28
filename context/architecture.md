@@ -128,6 +128,25 @@ Existing stored names and aliases are ASCII. Backfill their keys with SQLite low
 New writes and reviewed seeds must supply keys from the shared Unicode normalizer.
 The live Google acceptance check remains pending credentials while local administrator-write verification proceeds.
 
+### Provider and branch administration
+
+Use `/admin/providers` for provider and branch administration. Keep its contracts and repositories in `src/features/providers/`.
+Keep provider identity separate from each physical branch. Preserve IDs and branch ownership during correction and deactivation.
+Add provider contacts, branch website and alternative telephone, revisions, and normalized duplicate keys in migration `0005_provider_administration.sql`.
+Keep contacts and coordinate pairs nullable. Require valid HTTP or HTTPS websites without embedded credentials.
+Active branches require a selected official contact source for their own provider and administrator confirmation of the details.
+New branches without that evidence remain inactive. No source snapshot, price, coordinate, or contact detail is invented.
+Existing public branch reads expose typed weekly hours and nullable contact fields. Public discovery integration remains separate.
+Use the same current-administrator, exact-Origin POST, bounded-form, and revision checks as catalog administration.
+
+Weekly hours use `Asia/Dhaka`. Store seven days as null for unknown, an empty period array for closed, or validated periods.
+Periods use 24-hour times. `00:00` to `24:00` means all day. Earlier closing times continue into the next day.
+Opening boundaries are inclusive and closing boundaries are exclusive. Reject equal boundaries and overlapping periods, including week boundaries.
+An explicitly closed day has no periods starting that day. A previous day's overnight period still applies.
+Return unknown opening status when an unknown current or previous day could affect a time without a known open period.
+These are usual weekly hours. Date-specific holidays and temporary-closure exceptions remain outside this unit.
+Keep opening-status calculation separate from persistence and accept an explicit instant for reproducible checks.
+
 ## Authentication and access
 
 - Browsing, service search, and comparison are public.

@@ -85,6 +85,17 @@ Do not show secrets, tokens, provider errors, or raw database messages.
 Keep form controls at least 44 px high and stack account actions at 375 px.
 The administration inspector requires server-confirmed administrator access. Hidden navigation does not establish authorization.
 
+## Provider and branch administration
+
+Reuse the administration layout, form styles, visible labels, and 44 px minimum controls.
+Separate provider identity and contacts from branch address, contacts, coordinates, and weekly hours.
+Show fixed IDs and revisions on correction forms. Keep missing contacts and coordinates blank.
+Label blank weekly days as unknown. Accept `closed` or comma-separated `HH:mm-HH:mm` periods for each day.
+Explain overnight periods and `00:00-24:00` before the weekly fields. Do not infer hours from other branches.
+Require official contact evidence and confirmation before an active branch save.
+Show source links, inactive status, saved feedback, rejected values, and outdated-edit recovery.
+Keep native forms usable without JavaScript. Stack fields and schedule rows at 375 px.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

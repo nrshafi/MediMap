@@ -1,0 +1,38 @@
+{
+  "reviewedOn": "2026-10-28",
+  "hashEncoding": "UTF-8 with LF line endings",
+  "files": [
+    {
+      "name": "0001_catalog.sql",
+      "sha256": "e21471ac897660a772857479a1f2cb9f10d0a0a202c92c4ea88d4747dae8c7ae"
+    },
+    {
+      "name": "0002_price_revision_integrity.sql",
+      "sha256": "a9fe0108ef928876553f876ffad5dad16809f6a34c234933a7b43e27360597cf"
+    },
+    {
+      "name": "0003_authentication.sql",
+      "sha256": "30a0c25630117efdfe92497de543cbb7d6ba7e7503c388a354957318e618505a"
+    },
+    {
+      "name": "0004_catalog_administration.sql",
+      "sha256": "91c13e1cbeda69fb1068d031a9acf6d7d8014311a11511ad735a484c71bf3b5f"
+    },
+    {
+      "name": "0005_provider_administration.sql",
+      "sha256": "7db122a81c9e912cfafc97a16f8b4b3d5d5b8f1f00c10408d7bd39d4f2aed4d1"
+    },
+    {
+      "name": "0006_pricing_administration.sql",
+      "sha256": "86ab751532641270c1922e857d0a4fa8c9ec38089c9b51c97c3967f4801d2c20"
+    },
+    {
+      "name": "0007_correction_reports.sql",
+      "sha256": "93158cd572f0ba40cabe5bed2a21550886fd1a1cf7a76f720005027f4efc99c7"
+    },
+    {
+      "name": "0008_report_resolution.sql",
+      "sha256": "497d0ade46f339428e44e2459337b40539ad38ea3fb2f55cac465a8595aeb567"
+    }
+  ]
+}

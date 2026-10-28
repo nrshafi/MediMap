@@ -4,6 +4,14 @@
 
 This document records confirmed constraints. Unanswered architecture questions remain open and do not authorize implementation choices.
 
+### Release preparation
+
+Keep release checks local. Use a fresh workspace directory for migration and SQL export/restore rehearsals.
+Record migration hashes before rehearsal and reject changes to the reviewed migration set.
+Package the built Worker with Wrangler's dry-run mode. Packaging does not establish production credentials, bindings, CPU fit, or live Google acceptance.
+Keep the configured D1 placeholder until the owner supplies an authorized remote target.
+Record provider dependencies and unresolved release requirements in a runbook outside `context/`.
+
 ## Stack
 
 | Layer | Selected technology | Role and pending decisions |

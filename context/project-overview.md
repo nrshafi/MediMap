@@ -113,7 +113,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Team: three people. The project owner expects to do most implementation with AI agents.
 - Current version: English interface with English and Bangla service aliases.
 - Use free tiers first. Obtain explicit approval before enabling paid services.
-- Cloudflare free tiers are the intended hosting budget. Workload fit has not yet been verified.
+- Cloudflare free tiers are the intended hosting budget. The local pilot model is in `docs/workers-release-runbook.md`; production CPU and actual workload remain unverified.
 - Selected technologies: React with TanStack Start, one Cloudflare Workers application deployment, and Cloudflare D1 with direct SQL.
 - Google sign-in is the only account method for the first version. Assign administrator access separately.
 - Add Hono only if required. Select the mapping and routing provider after capability and budget checks.

@@ -23,6 +23,8 @@
     "catalog:check": "bun scripts/data/reviewedCatalog.cli.ts",
     "db:catalog:apply": "bun scripts/database/reviewed-catalog.ts --apply",
     "db:catalog:check": "bun scripts/database/reviewed-catalog.ts --check",
+    "db:rehearse": "bun scripts/database/rehearse.ts",
+    "release:package": "bun scripts/database/release-package.ts",
     "test:coverage": "bun test --coverage --coverage-reporter=text",
     "test:browser": "PLAYWRIGHT_BROWSERS_PATH=.bun-cache/playwright playwright test",
     "test:browser:install": "PLAYWRIGHT_BROWSERS_PATH=.bun-cache/playwright playwright install chromium --only-shell",

@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 21:25:05 +06:00`.
+Last updated: `2026-10-28 21:48:08 +06:00`.
 
 ## Current phase
 
@@ -19,6 +19,8 @@ Protected branch-service, price revision, and official-source administration is 
 Incorrect-information submission is implemented and locally verified. Sign-in, rolling quotas, pending duplicates, and immediate price disputes are enforced.
 Administrator correction resolution is implemented and locally verified. Fresh source review is required, and other pending price reports keep known prices disputed.
 The reviewed publication subset is implemented and reconciled locally with 196 listings, 136 canonical services, and three hospital branches.
+Local release preparation is verified, with migration hashes, a successful failure/restore rehearsal, dry-run packaging, and the release runbook.
+Production acceptance still requires real credentials, target bindings, CPU/workload checks, mapping selection, query redaction, and public integration.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 The research export remains separate from application fixtures and reviewed D1 data. The original CBC listing and review history remain intact.
@@ -47,6 +49,33 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Release-preparation commit checks (2026-10-28 21:48:08 +06:00)
+
+- The owner requested the local release-preparation commit and a description of the next step.
+- Rechecked 295 unit/component tests, application/tooling types, lint, formatting for 196 files, generated catalog artifacts, and whitespace. All passed.
+- Confirmed the completed 82-test browser run, SQL recovery rehearsal, and final dry-run packaging report for the unchanged implementation.
+- Prepared the local-only release scripts, reviewed migration manifest, runbook, configuration, and context updates for this commit.
+- Real Google acceptance remains the next setup requirement. Remote target selection, mapping-provider fit, production measurements, and public integration remain open.
+- No push, remote resource, production migration, or deployment is part of this commit.
+
+### Dataset commit and local release rehearsal (2026-10-28 21:38:43 +06:00)
+
+- Committed the verified dataset and production error-page fixes as `bdcecdd`, with 32 files. No push occurred.
+- Added reviewed hashes for all eight unchanged migrations and commands that accept no remote or deployment arguments.
+- Rehearsed a populated schema upgrade, repeated migration application, an intentionally failed migration, and a separate SQL restore in fresh local databases.
+- The failed migration left no table or ledger entry. Restored schema, application-table data hashes, eight migration records, and all 196 catalog listings matched.
+- Used D1's supported `quick_check` and foreign-key checks. Restored tables/indexes, data, then triggers after direct full import exposed forward references.
+- Measured the 454,656-byte local database and actual catalog query scans. The documented pilot model uses 1,094,300 read rows daily, including its reserve.
+- Passed local Wrangler dry-run packaging with a 1,378.08 KiB uncompressed upload and no checked server-only browser markers.
+- Added a release runbook with bindings, ordered migrations, backup/recovery, workload assumptions, integration contracts, and unresolved acceptance checks.
+- Disabled automatic invocation logs and set trace sampling to zero pending verified redaction of OAuth/location query strings. Regenerated Worker bindings.
+- Passed current types, lint, and formatting. Rechecked the final rehearsal audit after tightening its workspace-path guard.
+- Passed the final fixed packaging check, including explicit D1 identity and observability configuration. Both release commands reject remote/deployment arguments.
+- Passed all 82 desktop/mobile checks against the final release configuration, including the existing discovery regressions.
+- Rechecked all 295 unit/component tests, application/tooling types, lint, formatting for 196 files, artifact generation, and the unchanged 196-listing development audit.
+- The complete 107-test D1 regression run passed before this tooling unit. No application SQL or migration changed afterward; the new restore rehearsal also passed.
+- New release-preparation work remains uncommitted. No remote identity, live Google flow, production CPU, or public integration acceptance is claimed.
 
 ### Production-preview verification (2026-10-28 21:21:37 +06:00)
 
@@ -553,15 +582,15 @@ These are confirmed constraints for later feature implementation. Full details a
 - Accessibility and performance acceptance targets.
 - Google OAuth client credentials for live login verification.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
-- Free-tier workload fit for the selected services.
+- Production CPU and actual workload fit. The local pilot capacity model is in `docs/workers-release-runbook.md`; mapping-provider usage remains unresolved.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
-- Production migration application rules. Local numbered migrations and core catalog paths are now defined.
+- Authorized production account/database/origin, protected backup storage, and migration execution approval. The reviewed local procedure is now documented.
 - Remaining optional P1 features.
 
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Prepare the Workers release runbook, local migration rehearsal, binding checks, and explicit workload assessment.
+2. Select authorized production targets and resolve the release runbook's remaining acceptance requirements before deployment.
 3. Add hospitals or branches when their diagnostic services, standard prices, and locations have verified official evidence.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

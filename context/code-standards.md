@@ -40,6 +40,7 @@
 - Do not concatenate user input into SQL.
 - Keep queries in server-side repositories, outside UI components.
 - Store schema changes in versioned SQL migrations.
+- Check reviewed migration hashes before release rehearsals. Never rewrite an applied migration to repair an upgrade.
 - Preserve price sources and verification metadata.
 - Apply the report-based freshness policy. Do not add an age-based expiry rule.
 - Require server-confirmed sign-in for correction reports. Derive reporter identity from the session.
@@ -150,5 +151,5 @@ Checked on 8 October 2026:
 - Run database suites sequentially to limit peak Workers-runtime memory. Test source-backed datasets in isolation from browser demonstration fixtures.
 - Keep reviewed source-row mappings explicit. Freeze evidence and mapping inputs with review hashes before generating development data.
 - Keep Bun-specific CLI code separate from pure data modules that Node database checks import.
-- Migration review and production application rules.
+- Use `docs/workers-release-runbook.md` for migration hashes, local rehearsal, backup/restore order, and the separately authorized production procedure.
 - UI conventions, accessibility targets, and performance thresholds.

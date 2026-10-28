@@ -4,7 +4,13 @@
   "main": "@tanstack/react-start/server-entry",
   "compatibility_date": "2026-07-30",
   "compatibility_flags": ["nodejs_compat"],
-  "observability": { "enabled": true },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": false, "head_sampling_rate": 1 },
+    // OAuth callback codes and location coordinates use query strings.
+    // Configure verified URL redaction before collecting automatic traces.
+    "traces": { "enabled": true, "head_sampling_rate": 0 },
+  },
   "d1_databases": [
     {
       "binding": "DB",

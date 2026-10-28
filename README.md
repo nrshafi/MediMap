@@ -28,6 +28,8 @@ Application and tooling types use separate configurations to avoid browser and B
 | Apply safe lint fixes                                | `bun run lint:fix`              |
 | Format source, tests, root configuration, and README | `bun run format`                |
 | Check formatting without changes                     | `bun run format:check`          |
+| Rehearse local migrations, rollback, and SQL restore | `bun run db:rehearse`           |
+| Build and check Worker packaging without deployment  | `bun run release:package`       |
 
 Open [localhost:3000](http://localhost:3000) after starting the development server.
 
@@ -77,6 +79,8 @@ These releases use stable Miniflare. The compatibility date matches their worker
 Review runtime changes and update the compatibility date when upgrading this toolchain.
 
 ## Google sign-in
+
+See the [Workers release runbook](docs/workers-release-runbook.md) for migration order, backup/recovery, bindings, workload assumptions, and remaining release requirements.
 
 Open `/sign-in` or `/account` for Google account access. Public discovery does not require sign-in.
 Follow [authentication setup](docs/authentication.md) to configure the OAuth web client and local secrets.

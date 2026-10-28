@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-27 21:30:22 +06:00`.
+Last updated: `2026-10-28 14:21:25 +06:00`.
 
 ## Current phase
 
@@ -13,6 +13,7 @@ The discovery route is a sample-data demonstration. Earlier milestones do not es
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
 Local D1 migrations, server reads, and a read-only catalog inspector are implemented and verified.
 Google account, session, and authorization code is implemented and locally verified. Real Google login verification awaits OAuth credentials.
+Protected category, canonical service, and English/Bangla alias administration is implemented and locally verified.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -41,6 +42,22 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Protected catalog administration (2026-10-28 14:20:01 +06:00)
+
+- Added protected category, service, and English/Bangla alias forms with same-origin POST handling.
+- Added migration `0004_catalog_administration.sql` for normalized keys, revisions, alias activation, and collision constraints.
+- Kept record IDs and alias ownership fixed. Added correction confirmation and outdated-form rejection.
+- Updated public reads to omit inactive aliases. Public discovery components remain unchanged.
+- Applied the fourth migration and repeatable seed locally. Rehearsed the upgrade against the previous schema and retained reviewed listing evidence.
+- Passed all 39 real D1 integration tests, including concurrent collisions, outdated edits, pagination, alias resolution, and retained listing/price relationships.
+- Passed 266 unit/component tests, application/tooling type checks, lint, and frozen installation.
+- Repaired form-label associations and failed-create feedback. Passed all 52 desktop/mobile browser checks, including native forms without JavaScript.
+- Inspected initial and edit screens at desktop and 375 px mobile widths. Fields stack without horizontal page overflow.
+- Passed formatting and client/Workers production builds. Browser bundles contain no catalog SQL, write repository, or secret variable names.
+- The browser runner logged a sign-in hydration warning about screenshot-time `caret-color` styling. No browser checks failed.
+- Added setup and write-contract documentation in `docs/catalog-administration.md`. Updated public read documentation and existing context files.
+- Live Google login acceptance still requires OAuth credentials. No commit, push, remote resource, or deployment occurred.
 
 ### Google account and access implementation, live provider check pending (2026-10-27 19:08:31 +06:00)
 
@@ -401,13 +418,14 @@ These are confirmed constraints for later feature implementation. Full details a
 - Free-tier workload fit for the selected services.
 - Effect of incorrect-price reports on verification status and statistics eligibility.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
-- Validation libraries for future administrator writes. Authentication uses oauth4webapi; catalog reads use explicit TypeScript validation and real Miniflare/D1 tests.
+- Validation for later provider, price, and report writes. Catalog administration uses explicit TypeScript validation and real Miniflare/D1 tests.
 - Production migration application rules. Local numbered migrations and core catalog paths are now defined.
 - Remaining optional P1 features.
 
 ## Next steps
 
-1. Review canonical mappings and publication checks for collected tariff records. Add further hospitals or branches when official evidence is available.
-2. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-3. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
-4. Resolve open behavior in the relevant context files before implementing dependent features.
+1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
+2. Add protected provider and branch administration with validated contacts, coordinates, and structured opening hours.
+3. Review canonical mappings and publication checks for collected tariff records. Add hospitals or branches when official evidence is available.
+4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
+5. Resolve open behavior in the relevant context files before implementing dependent features.

@@ -31,7 +31,7 @@ export function AdminLayout({
         ))}
       </nav>
       <main id="main-content">{children}</main>
-      <footer className="admin-footer">Administrator workspace · Read-only catalog</footer>
+      <footer className="admin-footer">Administrator workspace</footer>
     </div>
   );
 }

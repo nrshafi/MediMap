@@ -15,6 +15,8 @@ import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
+import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
+import { Route as AdminCatalogWriteRouteImport } from './routes/admin.catalog_.write'
 import { Route as AuthGoogleCallbackRouteImport } from './routes/auth.google.callback'
 import { Route as AuthGoogleStartRouteImport } from './routes/auth.google.start'
 
@@ -48,6 +50,16 @@ const AuthSignOutRoute = AuthSignOutRouteImport.update({
   path: '/auth/sign-out',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCatalogManageRoute = AdminCatalogManageRouteImport.update({
+  id: '/admin/catalog_/manage',
+  path: '/admin/catalog/manage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCatalogWriteRoute = AdminCatalogWriteRouteImport.update({
+  id: '/admin/catalog_/write',
+  path: '/admin/catalog/write',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthGoogleCallbackRoute = AuthGoogleCallbackRouteImport.update({
   id: '/auth/google/callback',
   path: '/auth/google/callback',
@@ -66,6 +78,8 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/admin/catalog/manage': typeof AdminCatalogManageRoute
+  '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -76,6 +90,8 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/admin/catalog/manage': typeof AdminCatalogManageRoute
+  '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -87,6 +103,8 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/admin/catalog_/manage': typeof AdminCatalogManageRoute
+  '/admin/catalog_/write': typeof AdminCatalogWriteRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -99,6 +117,8 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/admin/catalog'
     | '/auth/sign-out'
+    | '/admin/catalog/manage'
+    | '/admin/catalog/write'
     | '/auth/google/callback'
     | '/auth/google/start'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +129,8 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/admin/catalog'
     | '/auth/sign-out'
+    | '/admin/catalog/manage'
+    | '/admin/catalog/write'
     | '/auth/google/callback'
     | '/auth/google/start'
   id:
@@ -119,6 +141,8 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/admin/catalog'
     | '/auth/sign-out'
+    | '/admin/catalog_/manage'
+    | '/admin/catalog_/write'
     | '/auth/google/callback'
     | '/auth/google/start'
   fileRoutesById: FileRoutesById
@@ -130,6 +154,8 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
   AuthSignOutRoute: typeof AuthSignOutRoute
+  AdminCatalogManageRoute: typeof AdminCatalogManageRoute
+  AdminCatalogWriteRoute: typeof AdminCatalogWriteRoute
   AuthGoogleCallbackRoute: typeof AuthGoogleCallbackRoute
   AuthGoogleStartRoute: typeof AuthGoogleStartRoute
 }
@@ -178,6 +204,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignOutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/catalog_/manage': {
+      id: '/admin/catalog_/manage'
+      path: '/admin/catalog/manage'
+      fullPath: '/admin/catalog/manage'
+      preLoaderRoute: typeof AdminCatalogManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/catalog_/write': {
+      id: '/admin/catalog_/write'
+      path: '/admin/catalog/write'
+      fullPath: '/admin/catalog/write'
+      preLoaderRoute: typeof AdminCatalogWriteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/google/callback': {
       id: '/auth/google/callback'
       path: '/auth/google/callback'
@@ -202,6 +242,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   AdminCatalogRoute: AdminCatalogRoute,
   AuthSignOutRoute: AuthSignOutRoute,
+  AdminCatalogManageRoute: AdminCatalogManageRoute,
+  AdminCatalogWriteRoute: AdminCatalogWriteRoute,
   AuthGoogleCallbackRoute: AuthGoogleCallbackRoute,
   AuthGoogleStartRoute: AuthGoogleStartRoute,
 }

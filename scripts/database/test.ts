@@ -1,6 +1,10 @@
 // Bundle project TypeScript for Node; Miniflare runs the actual workerd D1 implementation.
 const build = await Bun.build({
-  entrypoints: ['tests/catalog/catalog.integration.ts', 'tests/auth/auth.integration.ts'],
+  entrypoints: [
+    'tests/catalog/catalog.integration.ts',
+    'tests/auth/auth.integration.ts',
+    'tests/catalog/administration.integration.ts',
+  ],
   root: 'tests',
   outdir: '.bun-tmp/catalog-tests',
   target: 'node',
@@ -16,6 +20,7 @@ const child = Bun.spawn(
     '--test',
     '.bun-tmp/catalog-tests/catalog/catalog.integration.js',
     '.bun-tmp/catalog-tests/auth/auth.integration.js',
+    '.bun-tmp/catalog-tests/catalog/administration.integration.js',
   ],
   {
     stdout: 'inherit',

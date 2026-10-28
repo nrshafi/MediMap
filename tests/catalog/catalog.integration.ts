@@ -74,7 +74,9 @@ test('catalog foundation against real local D1', async (t) => {
       async () => {
         await assert.rejects(
           db
-            .prepare("INSERT INTO services(id, category_id, name) VALUES ('bad', 'missing', 'Bad')")
+            .prepare(
+              "INSERT INTO services(id, category_id, name, search_key) VALUES ('bad', 'missing', 'Bad', 'bad')",
+            )
             .run(),
         );
         await assert.rejects(
@@ -209,8 +211,13 @@ test('catalog foundation against real local D1', async (t) => {
       'bound names round-trip, pagination works and cross-listing price references fail',
       async () => {
         await db
-          .prepare('INSERT INTO services(id, category_id, name) VALUES (?, ?, ?)')
-          .bind('another-service', 'hematology', "Name with ' and ; DROP TABLE services")
+          .prepare('INSERT INTO services(id, category_id, name, search_key) VALUES (?, ?, ?, ?)')
+          .bind(
+            'another-service',
+            'hematology',
+            "Name with ' and ; DROP TABLE services",
+            "name with ' and ; drop table services",
+          )
           .run();
         await db
           .prepare(

@@ -6,7 +6,7 @@ import { catalogId, listingQuery, record } from './contracts';
 import { CatalogRepository } from './server/repository.server';
 import { catalogRead, catalogReadFailure } from './server/reads.server';
 
-// All operations expose public records only. Administrator writes require later server authorization.
+// General reads expose public records. Inspection requires administrator access.
 export const readCatalog = createServerFn({ method: 'GET' })
   .validator((input: unknown) => input)
   .handler(({ data }) => catalogRead(env.DB, data));

@@ -199,6 +199,21 @@ export function CatalogInspector({
               <a href={catalogMoreHref}>More services</a>
             </p>
           )}
+          {result.data.selectedService && (
+            <section className="catalog-state" aria-label="Selected catalog record">
+              <h2>Selected canonical service</h2>
+              <p>{result.data.selectedService.name}</p>
+              <p className="admin-muted">Stable ID: {result.data.selectedService.id}</p>
+              <ul>
+                {result.data.selectedService.aliases.map((alias) => (
+                  <li key={`${alias.language}-${alias.name}`} lang={alias.language}>
+                    {alias.name} · {alias.language === 'bn' ? 'Bangla' : 'English'}
+                  </li>
+                ))}
+              </ul>
+              {!result.data.selectedService.aliases.length && <p>No active aliases.</p>}
+            </section>
+          )}
           <p className="admin-muted" role="status">
             {result.data.listings.items.length}{' '}
             {result.data.listings.items.length === 1 ? 'listing' : 'listings'} on this page

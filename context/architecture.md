@@ -93,7 +93,7 @@ Mapping-provider selection remains open. Local catalog reads do not depend on th
 Use `migrations/` for ordered schema changes and `seeds/catalog.sql` for the separately reviewed initial import.
 Keep repositories in `src/features/catalog/server/` and public contracts in `src/features/catalog/contracts.ts`.
 The read-only `/admin/catalog` inspector exposes published catalog fields only and now requires administrator access.
-General catalog read contracts remain public. Administrator writes remain later work.
+General catalog read contracts remain public.
 Keep its reusable layout and core navigation in separate administration modules. Accept additional navigation through an explicit prop.
 
 Each active branch-service listing has at most one current price revision, selected by a nullable reference.
@@ -111,6 +111,22 @@ The initial reviewed import maps Ad-din Moghbazar's published `CBC` to the exist
 The official hematology tariff lists 400 taka. Its contact page supports the branch address.
 Coordinates, opening hours, telephone details, and tariff-effective dates remain null until separately verified.
 The broader research export remains unpublished and requires individual mapping and currency checks.
+
+### Catalog administration
+
+Use `/admin/catalog/manage` for category, canonical service, and English/Bangla alias forms.
+Keep validation and write repositories in `src/features/catalog/administration/`.
+Check current administrator access and same-origin POST requirements before every write.
+Use explicit TypeScript validation without an additional dependency.
+Normalize duplicate keys with the existing search normalizer. Reserve inactive names and aliases against reuse.
+Reject exact normalized collisions between canonical names and aliases. Prefix and keyword matches can remain ambiguous.
+Preserve stable record IDs and alias ownership. Corrections must retain the diagnostic meaning of the service.
+Create a separate service for a clinically different variant. Do not merge or delete referenced records.
+Use revision checks to reject changes from outdated forms. Deactivation hides records through existing public read filters.
+Migration `0004_catalog_administration.sql` adds normalized keys, revisions, alias activation, and collision constraints.
+Existing stored names and aliases are ASCII. Backfill their keys with SQLite lowercase and trim operations.
+New writes and reviewed seeds must supply keys from the shared Unicode normalizer.
+The live Google acceptance check remains pending credentials while local administrator-write verification proceeds.
 
 ## Authentication and access
 

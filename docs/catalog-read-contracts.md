@@ -3,7 +3,7 @@
 The local catalog foundation exposes public records through server-only prepared D1 queries.
 General catalog reads remain public. The read-only inspector at `/admin/catalog` now requires server-confirmed administrator access.
 See [authentication contracts](authentication.md) for Google sign-in, sessions, and the owner-controlled grant procedure.
-Administrator write operations remain a later implementation unit.
+Category, service, and alias writes use the separate [catalog administration contract](catalog-administration.md).
 The inspector's GET form also works before JavaScript hydration.
 
 ## Initial reviewed import
@@ -37,7 +37,8 @@ The remaining research rows require individual canonical mapping, currency check
 `0001_catalog.sql` creates categories, services, aliases, providers, sources, branches, listings, prices, and the seed-import ledger.
 `0002_price_revision_integrity.sql` requires official tariff evidence for verified prices and makes price revisions immutable.
 Foreign keys protect relationships. A unique constraint permits one listing for each branch and canonical-service pair.
-Aliases can refer to different services. Later resolution code must preserve that ambiguity.
+Exact normalized canonical names and aliases are unique in the stored catalog, including inactive records.
+Prefix and keyword matches can still return multiple services. Resolution must preserve that ambiguity.
 
 Store positive integer paisa in `prices.amount_minor`. The public price includes `amountMinor` and `amountBdt`.
 A listing selects at most one current revision through `current_price_id`. A composite foreign key requires the same listing ID.
@@ -68,6 +69,7 @@ IDs contain lowercase letters, digits, and single hyphen separators, with a maxi
 Page limits range from 1 to 100 and default to 50. `nextCursor` is null on the last page.
 Pass a returned cursor as `after` to continue in stable ID order.
 Each read excludes inactive records and inactive ancestors. Missing active records return null or an empty page.
+Service reads include active aliases only. Deactivation preserves stored aliases and their original service IDs.
 The repository validates stored values before returning public contracts.
 
 `readCatalog` in `catalog.functions.ts` exposes GET reads using a validated `kind` request.

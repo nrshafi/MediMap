@@ -200,7 +200,7 @@ export class CatalogRepository {
       this.db
         .prepare(
           `SELECT a.service_id, a.alias, a.language FROM service_aliases a
-        WHERE a.service_id IN (SELECT s.id ${filter}) ORDER BY a.language, a.alias`,
+        WHERE a.active = 1 AND a.service_id IN (SELECT s.id ${filter}) ORDER BY a.language, a.alias`,
         )
         .bind(query.after ?? '', query.limit + 1),
     ]);
@@ -236,7 +236,7 @@ export class CatalogRepository {
   private async aliases(id: string): Promise<Service['aliases']> {
     const rows = await this.db
       .prepare(
-        'SELECT alias, language FROM service_aliases WHERE service_id = ? ORDER BY language, alias',
+        'SELECT alias, language FROM service_aliases WHERE service_id = ? AND active = 1 ORDER BY language, alias',
       )
       .bind(id)
       .all<unknown>();

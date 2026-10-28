@@ -1,9 +1,9 @@
 -- Reviewed subset of official-site research. Never import the research export wholesale.
-INSERT INTO categories(id, name) VALUES ('hematology', 'Hematology') ON CONFLICT(id) DO NOTHING;
-INSERT INTO services(id, category_id, name)
-  VALUES ('complete-blood-count', 'hematology', 'Complete Blood Count') ON CONFLICT(id) DO NOTHING;
-INSERT INTO service_aliases(id, service_id, alias, language)
-  VALUES ('complete-blood-count-cbc-en', 'complete-blood-count', 'CBC', 'en') ON CONFLICT(id) DO NOTHING;
+INSERT INTO categories(id, name, search_key) VALUES ('hematology', 'Hematology', 'hematology') ON CONFLICT(id) DO NOTHING;
+INSERT INTO services(id, category_id, name, search_key)
+  VALUES ('complete-blood-count', 'hematology', 'Complete Blood Count', 'complete blood count') ON CONFLICT(id) DO NOTHING;
+INSERT INTO service_aliases(id, service_id, alias, language, search_key)
+  VALUES ('complete-blood-count-cbc-en', 'complete-blood-count', 'CBC', 'en', 'cbc') ON CONFLICT(id) DO NOTHING;
 INSERT INTO providers(id, name)
   VALUES ('addin-medical-college-hospital', 'Ad-din Medical College Hospital') ON CONFLICT(id) DO NOTHING;
 INSERT INTO sources(id, provider_id, url, kind, retrieved_at, sha256, source_updated_date, currency_evidence)

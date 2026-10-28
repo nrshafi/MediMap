@@ -64,6 +64,17 @@ Use visible keyboard focus and controls at least 44 px high. Stack record fields
 Show separate empty, invalid-request, and database-error states. Provide a retry link for read failures.
 Keep core navigation separate from the reusable layout. Accept extension entries through a typed prop.
 
+## Catalog administration
+
+Reuse the administration layout and existing color tokens for catalog forms.
+Separate category and service creation from record correction. Show stable IDs as read-only text after creation.
+Provide English and Bangla alias fields with an explicit language selector.
+Require confirmation that service and alias corrections preserve diagnostic meaning.
+Show active status and explain that inactive categories hide their services.
+Use ordinary POST forms, visible labels, browser validation, and fixed server feedback.
+Keep controls at least 44 px high and stack form fields at 375 px.
+Provide reload links for outdated edits and explicit access, validation, collision, and database-error states.
+
 ## Account access
 
 Use the existing teal palette and system typography for sign-in and account screens.

@@ -20,10 +20,18 @@ function priceLabel(minor: number): string {
   const value = BigInt(minor);
   return `BDT ${value / 100n}.${String(value % 100n).padStart(2, '0')}`;
 }
-function TargetDetails({ target, receipt = false }: { target: ReportTarget; receipt?: boolean }) {
+export function TargetDetails({
+  target,
+  receipt = false,
+  headingId = 'report-target-title',
+}: {
+  target: ReportTarget;
+  receipt?: boolean;
+  headingId?: string;
+}) {
   return (
-    <section className="report-target" aria-labelledby="report-target-title">
-      <h2 id="report-target-title">{receipt ? 'Details at submission' : 'Selected record'}</h2>
+    <section className="report-target" aria-labelledby={headingId}>
+      <h2 id={headingId}>{receipt ? 'Details at submission' : 'Selected record'}</h2>
       <p>
         <strong>{target.providerName}</strong>
         {target.branchName && (
@@ -120,7 +128,11 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
                   ? data.receipt.target.price
                     ? 'The reported price is disputed while this report is pending. It does not qualify for default price statistics.'
                     : 'The price remains unknown while this report is pending. It does not qualify for default price statistics.'
-                  : 'An administrator reviews the report before changing the published details.'}
+                  : data.receipt.status === 'accepted'
+                    ? 'An administrator accepted this report after review. The original submitted details remain below.'
+                    : data.receipt.status === 'rejected'
+                      ? 'An administrator reviewed and rejected this report. The original submitted details remain below.'
+                      : 'An administrator reviews the report before changing the published details.'}
               </p>
             </section>
             <TargetDetails target={data.receipt.target} receipt />

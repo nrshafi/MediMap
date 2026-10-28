@@ -17,12 +17,14 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminProvidersRouteImport } from './routes/admin.providers'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
 import { Route as ReportSubmitRouteImport } from './routes/report_.submit'
 import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
 import { Route as AdminCatalogWriteRouteImport } from './routes/admin.catalog_.write'
 import { Route as AdminPricesWriteRouteImport } from './routes/admin.prices_.write'
 import { Route as AdminProvidersWriteRouteImport } from './routes/admin.providers_.write'
+import { Route as AdminReportsResolveRouteImport } from './routes/admin.reports_.resolve'
 import { Route as AuthGoogleCallbackRouteImport } from './routes/auth.google.callback'
 import { Route as AuthGoogleStartRouteImport } from './routes/auth.google.start'
 
@@ -66,6 +68,11 @@ const AdminProvidersRoute = AdminProvidersRouteImport.update({
   path: '/admin/providers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/admin/reports',
+  path: '/admin/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignOutRoute = AuthSignOutRouteImport.update({
   id: '/auth/sign-out',
   path: '/auth/sign-out',
@@ -96,6 +103,11 @@ const AdminProvidersWriteRoute = AdminProvidersWriteRouteImport.update({
   path: '/admin/providers/write',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminReportsResolveRoute = AdminReportsResolveRouteImport.update({
+  id: '/admin/reports_/resolve',
+  path: '/admin/reports/resolve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthGoogleCallbackRoute = AuthGoogleCallbackRouteImport.update({
   id: '/auth/google/callback',
   path: '/auth/google/callback',
@@ -116,12 +128,14 @@ export interface FileRoutesByFullPath {
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/report/submit': typeof ReportSubmitRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
   '/admin/providers/write': typeof AdminProvidersWriteRoute
+  '/admin/reports/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -134,12 +148,14 @@ export interface FileRoutesByTo {
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/report/submit': typeof ReportSubmitRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
   '/admin/providers/write': typeof AdminProvidersWriteRoute
+  '/admin/reports/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -153,12 +169,14 @@ export interface FileRoutesById {
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/report_/submit': typeof ReportSubmitRoute
   '/admin/catalog_/manage': typeof AdminCatalogManageRoute
   '/admin/catalog_/write': typeof AdminCatalogWriteRoute
   '/admin/prices_/write': typeof AdminPricesWriteRoute
   '/admin/providers_/write': typeof AdminProvidersWriteRoute
+  '/admin/reports_/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
 }
@@ -173,12 +191,14 @@ export interface FileRouteTypes {
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
+    | '/admin/reports'
     | '/auth/sign-out'
     | '/report/submit'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
     | '/admin/providers/write'
+    | '/admin/reports/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
   fileRoutesByTo: FileRoutesByTo
@@ -191,12 +211,14 @@ export interface FileRouteTypes {
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
+    | '/admin/reports'
     | '/auth/sign-out'
     | '/report/submit'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
     | '/admin/providers/write'
+    | '/admin/reports/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
   id:
@@ -209,12 +231,14 @@ export interface FileRouteTypes {
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
+    | '/admin/reports'
     | '/auth/sign-out'
     | '/report_/submit'
     | '/admin/catalog_/manage'
     | '/admin/catalog_/write'
     | '/admin/prices_/write'
     | '/admin/providers_/write'
+    | '/admin/reports_/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
   fileRoutesById: FileRoutesById
@@ -228,12 +252,14 @@ export interface RootRouteChildren {
   AdminCatalogRoute: typeof AdminCatalogRoute
   AdminPricesRoute: typeof AdminPricesRoute
   AdminProvidersRoute: typeof AdminProvidersRoute
+  AdminReportsRoute: typeof AdminReportsRoute
   AuthSignOutRoute: typeof AuthSignOutRoute
   ReportSubmitRoute: typeof ReportSubmitRoute
   AdminCatalogManageRoute: typeof AdminCatalogManageRoute
   AdminCatalogWriteRoute: typeof AdminCatalogWriteRoute
   AdminPricesWriteRoute: typeof AdminPricesWriteRoute
   AdminProvidersWriteRoute: typeof AdminProvidersWriteRoute
+  AdminReportsResolveRoute: typeof AdminReportsResolveRoute
   AuthGoogleCallbackRoute: typeof AuthGoogleCallbackRoute
   AuthGoogleStartRoute: typeof AuthGoogleStartRoute
 }
@@ -296,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProvidersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/admin/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/sign-out': {
       id: '/auth/sign-out'
       path: '/auth/sign-out'
@@ -338,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProvidersWriteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/reports_/resolve': {
+      id: '/admin/reports_/resolve'
+      path: '/admin/reports/resolve'
+      fullPath: '/admin/reports/resolve'
+      preLoaderRoute: typeof AdminReportsResolveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/google/callback': {
       id: '/auth/google/callback'
       path: '/auth/google/callback'
@@ -364,12 +404,14 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCatalogRoute: AdminCatalogRoute,
   AdminPricesRoute: AdminPricesRoute,
   AdminProvidersRoute: AdminProvidersRoute,
+  AdminReportsRoute: AdminReportsRoute,
   AuthSignOutRoute: AuthSignOutRoute,
   ReportSubmitRoute: ReportSubmitRoute,
   AdminCatalogManageRoute: AdminCatalogManageRoute,
   AdminCatalogWriteRoute: AdminCatalogWriteRoute,
   AdminPricesWriteRoute: AdminPricesWriteRoute,
   AdminProvidersWriteRoute: AdminProvidersWriteRoute,
+  AdminReportsResolveRoute: AdminReportsResolveRoute,
   AuthGoogleCallbackRoute: AuthGoogleCallbackRoute,
   AuthGoogleStartRoute: AuthGoogleStartRoute,
 }

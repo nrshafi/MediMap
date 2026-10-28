@@ -104,7 +104,7 @@ function isIssue(value: string): value is keyof typeof issueLabels {
   return Object.hasOwn(issueLabels, value);
 }
 
-function decodeSnapshot(value: unknown): ReportTarget {
+export function decodeSnapshot(value: unknown): ReportTarget {
   const row = record(value);
   if (
     (row.kind !== 'listing' && row.kind !== 'branch' && row.kind !== 'provider') ||

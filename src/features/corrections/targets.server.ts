@@ -47,12 +47,13 @@ function price(row: Record<string, unknown>): ReportPrice | null {
 export async function readReportTarget(
   db: D1Database,
   inputValue: unknown,
+  includeInactive = false,
 ): Promise<ReportTarget | null> {
   const input = reportTargetQuery(inputValue);
   if (input.target === 'provider') {
     const value = await db
       .prepare(
-        'SELECT id, name, phone, website, revision FROM providers WHERE id = ? AND active = 1',
+        `SELECT id, name, phone, website, revision FROM providers WHERE id = ? ${includeInactive ? '' : 'AND active = 1'}`,
       )
       .bind(input.id)
       .first<unknown>();
@@ -81,7 +82,7 @@ export async function readReportTarget(
     input.target === 'branch'
       ? await db
           .prepare(
-            `SELECT b.id, b.revision, ${branchColumns} FROM branches b JOIN providers p ON p.id = b.provider_id AND p.active = 1 WHERE b.id = ? AND b.active = 1`,
+            `SELECT b.id, b.revision, ${branchColumns} FROM branches b JOIN providers p ON p.id = b.provider_id ${includeInactive ? '' : 'AND p.active = 1'} WHERE b.id = ? ${includeInactive ? '' : 'AND b.active = 1'}`,
           )
           .bind(input.id)
           .first<unknown>()
@@ -89,9 +90,9 @@ export async function readReportTarget(
           .prepare(
             `SELECT bs.id, bs.revision, bs.provider_service_name, bs.current_price_id, s.name AS service_name, ${branchColumns},
       pr.amount_minor, pr.currency, pr.status, pr.source_id, pr.source_row, pr.verified_at, pr.effective_date, pr.verification_method
-      FROM branch_services bs JOIN branches b ON b.id = bs.branch_id AND b.active = 1 JOIN providers p ON p.id = b.provider_id AND p.active = 1
-      JOIN services s ON s.id = bs.service_id AND s.active = 1 JOIN categories c ON c.id = s.category_id AND c.active = 1
-      LEFT JOIN prices pr ON pr.id = bs.current_price_id AND pr.listing_id = bs.id WHERE bs.id = ? AND bs.active = 1`,
+      FROM branch_services bs JOIN branches b ON b.id = bs.branch_id ${includeInactive ? '' : 'AND b.active = 1'} JOIN providers p ON p.id = b.provider_id ${includeInactive ? '' : 'AND p.active = 1'}
+      JOIN services s ON s.id = bs.service_id ${includeInactive ? '' : 'AND s.active = 1'} JOIN categories c ON c.id = s.category_id ${includeInactive ? '' : 'AND c.active = 1'}
+      LEFT JOIN prices pr ON pr.id = bs.current_price_id AND pr.listing_id = bs.id WHERE bs.id = ? ${includeInactive ? '' : 'AND bs.active = 1'}`,
           )
           .bind(input.id)
           .first<unknown>();

@@ -93,10 +93,11 @@ Elapsed time alone never changes a price status or its eligibility.
 The existing minimum of three eligible branches and branch/provider counts remain part of the later statistics implementation.
 
 On 28 October 2026, the owner required pending price reports to mark the current price disputed immediately.
-The later report submission transaction must append/select a disputed revision and preserve its source and actual prior review metadata.
+The report submission transaction appends/selects a disputed revision and preserves its source and actual prior review metadata.
 If no current amount is known, retain null instead of inventing a disputed amount.
-Report submission, rejected/accepted resolution, restoration, and competing-report handling are separate later implementation units.
-This administration unit does not claim that automatic report transitions or statistical charts are implemented.
+Report submission and [administrator resolution](correction-report-resolution.md) now provide the automatic report transitions.
+Pending price reports block verified price writes here. Resolve reports through the protected report queue before restoring verified status.
+Statistical charts remain separate implementation work.
 
 ## Server and migration contract
 

@@ -77,15 +77,15 @@ Elapsed time alone does not change price status.
 D1 rejects stale target revisions or observed price IDs before retaining any report or dispute effect.
 A failed dispute write rolls back the report, audit row, revision, and current-price selection together.
 Original report content and its target snapshot cannot be changed or deleted through application operations.
-The status field supports later administrator resolution. This unit adds no resolution endpoint or queue.
-The later resolution workflow must record its actor, reason, evidence, and history before changing report status.
+The [administrator resolution workflow](correction-report-resolution.md) records its actor, reason, evidence, and history before changing report status.
+Resolved submissions remain readable by their original reporter. Original report content remains unchanged.
 
 ## Responses and privacy
 
 Successful submission redirects with HTTP 303 to `/report?submitted=<report-id>`.
 The receipt shows the original target snapshot and submitted text, even after public details change.
 Only the submitting account can read that receipt. Administrator status alone does not grant receipt access through this route.
-The later administrator queue will use its own protected read contract.
+The administrator queue uses its own protected read contract at `/admin/reports`.
 
 | HTTP status | Failure |
 | --- | --- |

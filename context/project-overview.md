@@ -104,7 +104,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Exact final delivery date in early December 2026.
 - Accessibility and performance acceptance targets.
 - Remaining optional P1 features.
-- Default sorting and price-report resolution rules. Pending price reports immediately mark prices disputed and exclude them from statistics.
+- Default sorting. Pending price reports immediately mark prices disputed and exclude them from statistics.
 
 ## Delivery constraints
 
@@ -126,6 +126,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Prices do not become stale because of age. Reports trigger review.
 - Display verification dates even when prices are old.
 - Default statistics require at least three eligible branches and use verified current prices from active branch-service listings.
+- Price-report resolution requires fresh official-source review before restoring verified status, including rejection. Other pending price reports keep the price disputed.
 - Show eligible branch and distinct provider counts.
 - Present written comparison details in a table. Statistics apply to numerical values only.
 - Generated narrative summaries are excluded. Comparison charts remain in scope.

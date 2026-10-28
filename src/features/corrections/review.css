@@ -1,0 +1,47 @@
+.review-sources {
+  padding-left: 20px;
+}
+.review-sources li {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+.review-sources span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.review-reason {
+  min-height: 160px;
+  width: 100%;
+  resize: vertical;
+  padding: 12px;
+  font: inherit;
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  background: var(--bg-surface);
+}
+.admin-page .report-target {
+  margin: 16px 0;
+}
+.admin-page .report-target h2 {
+  font-size: 20px;
+}
+.admin-page .report-prose {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.admin-page main > section {
+  overflow-wrap: anywhere;
+}
+.review-queue li > div {
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .review-queue li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 12px 0;
+  }
+}

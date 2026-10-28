@@ -49,6 +49,8 @@ See [pricing administration](docs/pricing-administration.md) for evidence, retai
 Open `/report?target=listing&id=<listing-id>` for incorrect-information submission.
 Signed-in accounts can submit five reports per rolling 24 hours, with one pending report per target and issue.
 Price reports immediately mark the current price disputed. See [report submission](docs/correction-report-submission.md) for all target parameters and failure states.
+Open `/admin/reports` for the protected report queue and evidence-based decisions.
+See [report resolution](docs/correction-report-resolution.md) for price restoration, competing reports, retained history, and native form behavior.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.

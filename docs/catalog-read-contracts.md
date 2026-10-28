@@ -45,8 +45,9 @@ A listing selects at most one current revision through `current_price_id`. A com
 Insert a new revision and update the current reference in one D1 batch. Previous revisions remain available.
 A null reference means unknown price. The read returns null for the complete price object, including source and verification metadata.
 An unverified revision can have null source and verification fields. A verified revision requires official source and review evidence.
-Disputed revisions retain their history. The report workflow will define when to select a disputed revision.
-Prices do not expire by age. No statistics calculation or report-related eligibility transition is part of this slice.
+Disputed revisions retain their history. Price reports immediately select a disputed revision without changing its amount or source evidence.
+Reviewed report resolution restores verified status only after the last pending price report closes. See [resolution transitions](correction-report-resolution.md).
+Prices do not expire by age. Statistics calculations remain separate integration work.
 
 `seeds/catalog.sql` is a reviewed, repeatable local import. It does not overwrite existing records or reset later price selections.
 Research exports and demonstration fixtures are never fallback data sources.

@@ -44,6 +44,8 @@
 - Apply the report-based freshness policy. Do not add an age-based expiry rule.
 - Require server-confirmed sign-in for correction reports. Derive reporter identity from the session.
 - Enforce report quotas, pending duplicates, target revisions, and price-dispute effects atomically in D1.
+- Require current administrator access, reviewed official evidence, a reason, and target-version checks for every report resolution.
+- Keep resolution history immutable. Apply report status and price effects atomically. Other pending price reports must prevent verified status.
 - Preserve drafts in native form errors. Use a same-origin referrer policy so browser POST requests retain the required Origin header.
 - Keep one eligible price per branch-service listing in default statistics.
 - Test query results and relationships against the documented data rules.

@@ -58,6 +58,10 @@ try {
     'report-nojs-mobile',
     'report-limit-desktop',
     'report-limit-mobile',
+    'review-desktop',
+    'review-mobile',
+    'review-nojs-desktop',
+    'review-nojs-mobile',
   ]) {
     const login = await store.signIn(
       { subject: `${role}-${crypto.randomUUID()}`, email: `${role}@example.test` },

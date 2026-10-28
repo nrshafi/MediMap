@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 16:46:22 +06:00`.
+Last updated: `2026-10-28 17:14:25 +06:00`.
 
 ## Current phase
 
@@ -17,7 +17,8 @@ Protected category, canonical service, and English/Bangla alias administration i
 Protected provider/branch administration and typed weekly-hours reads are implemented and locally verified.
 Protected branch-service, price revision, and official-source administration is implemented and locally verified.
 Incorrect-information submission is implemented and locally verified. Sign-in, rolling quotas, pending duplicates, and immediate price disputes are enforced.
-Administrator correction resolution is the next implementation unit.
+Administrator correction resolution is implemented and locally verified. Fresh source review is required, and other pending price reports keep known prices disputed.
+Reviewed dataset completion is the next implementation unit.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -46,6 +47,40 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Administrator correction resolution (2026-10-28 17:14:25 +06:00)
+
+- The reporting unit is committed locally as `07527c8`. New administrator resolution changes remain uncommitted. No push occurred.
+- Added `/admin/reports` and POST-only `/admin/reports/resolve` with administrator checks, status filters, compound pagination, and off-page source selection.
+- Applied `0008_report_resolution.sql` locally and rehearsed upgrades with retained pending reports and disputed prices in isolated D1.
+- Recorded the owner's fresh-review and competing-report decisions in the product and architecture documents before enabling their price transitions.
+- Retained immutable administrator decisions, reasons, source references, actual review times, reviewed target snapshots, and resulting price references/statuses.
+- Kept reports and source evidence unchanged. Applied resolution status, listing audit, new price revision, and current-price pointer atomically.
+- Kept known prices disputed while another price report remains pending. Rejection cannot change the amount or effective date, clear known prices, or invent unknown amounts.
+- Required reviewed corrections through existing editors before non-price acceptance. Non-price rejection leaves core records unchanged.
+- Passed all 98 actual D1 tests, including accepted/rejected outcomes, competing decisions, stale forms, failed-write rollback, immutable history, and revoked grants.
+- Passed all 290 unit/component tests across 30 files, application/tooling types, lint, frozen installation, formatting for 181 files, and client/Workers production builds.
+- Passed the final full browser run with all 82 desktop/mobile checks. Native non-price correction and resolution also pass without JavaScript.
+- Corrected a test assertion after its expected wording differed from the fixed error message. A transient mobile checkbox failure did not recur in affected or full reruns.
+- Inspected desktop and 375 px resolution forms. No horizontal overflow appeared. The existing sign-in screenshot caret/hydration warning remains nonfatal.
+- Added `docs/correction-report-resolution.md` with transition examples and integration contracts. Updated existing setup, submission, pricing, catalog, and context documents.
+- Browser bundles contain no resolution SQL, authentication repository, or secret variable names. No application dependency was added.
+- Live Google acceptance still requires credentials. Dataset mapping, currency confirmation, broader D1 entry, and release preparation remain unfinished.
+
+### Administrator resolution implementation (2026-10-28 17:05:12 +06:00)
+
+- Added protected report queue, status filters, inactive-target review, official-source paging, and native resolution forms.
+- The owner approved fresh official-source review before restoring verified status, including rejection. Other pending price reports keep the price disputed.
+- Added immutable resolution records and guarded atomic report-status, price, and audit updates in the eighth migration.
+- Accepted non-price reports require a correction through existing editors before reviewed closure. Rejected non-price reports do not change core data.
+- Passed the first 98 real D1 checks, including rejection, competing reports, unknown prices, stale forms, grant revocation, and rollback.
+- Browser checks and the final verification pass are in progress. New resolution work remains uncommitted.
+
+### Report submission commit (2026-10-28 16:51:05 +06:00)
+
+- Committed incorrect-information submission locally as `07527c8`, with 30 files. No push occurred.
+- Rechecked all 285 unit/component tests, types, lint, formatting, staged contents, and whitespace before committing.
+- Started the protected queue and report detail contract. Price-resolution policy is awaiting an owner decision.
 
 ### Incorrect-information submission (2026-10-28 16:46:22 +06:00)
 
@@ -476,16 +511,14 @@ These are confirmed constraints for later feature implementation. Full details a
 - Google OAuth client credentials for live login verification.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
-- Price-report resolution and competing-report rules. Pending price reports immediately make current prices disputed and ineligible, as confirmed on 28 October 2026.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
-- Administrator report resolution and its evidence requirements. Submission and existing administrator writes use explicit validation and real Miniflare/D1 tests.
 - Production migration application rules. Local numbered migrations and core catalog paths are now defined.
 - Remaining optional P1 features.
 
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Implement the protected correction-report queue and evidence-based resolution after confirming restoration and competing-report rules.
-3. Review canonical mappings and publication checks for collected tariff records. Add hospitals or branches when official evidence is available.
+2. Complete reviewed dataset mapping, currency confirmation, source reconciliation, and publication checks before broader D1 entry.
+3. Add hospitals or branches when their diagnostic services, standard prices, and locations have verified official evidence.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

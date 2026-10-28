@@ -118,6 +118,13 @@ Show explicit target-changed, missing-target, access, duplicate, limit, success,
 Receipts show details recorded at submission. Do not label an observed snapshot as the current published record.
 Keep controls at least 44 px high and stack fields at 375 px.
 
+## Administrator report review
+
+Administrator report review uses the existing administration layout, stacked native forms, and 44 px controls.
+Show pending, accepted, rejected, and all-report filters. Keep report selection when paging through the queue or its official sources.
+Show the original submission beside current target details. Link existing editors for non-price corrections, then require a reviewed resolution.
+Retain typed resolution reasons on recoverable errors. Show completed decisions as history with no repeat-resolution form.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

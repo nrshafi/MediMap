@@ -1059,6 +1059,8 @@ Allow one pending report per account, target, and issue type.
 ## Price-report status decision
 
 Price-report policy confirmed on 28 October 2026: a pending price report immediately marks the current price disputed.
+Resolution policy confirmed on 28 October 2026: require fresh official-source review before restoring verified status, including report rejection.
+Keep the current price disputed while any other price report for that listing remains pending.
 Disputed prices are excluded from default statistics. Preserve source and verification history until administrator resolution.
 
 # 44. Opening hours

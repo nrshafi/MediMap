@@ -180,7 +180,20 @@ Use one report insert with transactional trigger effects to retain the report an
 Clone the current amount, source, actual review metadata, and effective date. Never apply a reporter's proposed correction to core data.
 Already-disputed or unknown current prices need no additional price revision. A stale target or price reference rejects submission without partial writes.
 Keep verified revisions and verified current-price selection blocked while an unresolved price report remains pending.
-Keep receipts private to the submitting account. Report resolution and its evidence requirements remain the next feature unit.
+Keep receipts private to the submitting account. Administrator report review uses a separate protected read contract.
+
+### Administrator correction queue
+
+Use `/admin/reports` for protected report filters, retained submissions, current target details, and resolution history.
+Read inactive targets for administrator review. Keep public reporting limited to active records.
+Keep original report text and its snapshot unchanged. Store resolution evidence, actor, reason, timestamp, and reviewed target state separately.
+For non-price issues, use the existing protected editors before accepting a correction. Require a changed target revision and reviewed official evidence.
+Record rejection reasons and evidence without changing core data. Reject stale resolution forms and repeated decisions.
+The owner approved fresh official-source review before restoring verified status, including rejection, on 28 October 2026.
+Resolve price reports individually. Each reviewed known amount creates a new revision that remains disputed while any price report stays pending.
+The last resolution can restore verified status only through that fresh review. Rejected price reports cannot change the current amount or effective date.
+Explicit unknown outcomes retain a null current price. Rejection cannot clear a known amount or invent an amount for an unknown price.
+Apply resolution history, report status, listing audit, and selected price atomically through one guarded resolution insert.
 
 ## Authentication and access
 
@@ -249,7 +262,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Live Google OAuth client configuration.
 - Mapping, geocoding, and routing provider selection.
-- Rating aggregation, report-resolution restoration rules, and competing-report handling. Pending price reports immediately make prices disputed and ineligible.
+- Rating aggregation. Price resolution now requires fresh source review, with disputed status while other price reports remain pending.
 - Default sorting, comparison limits, and the definition of current records.
 
 
@@ -270,7 +283,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Show the number of eligible branches and distinct providers.
 - Require at least three eligible branches for aggregate statistics.
 - Do not apply an age cutoff to statistics under the selected report-based freshness policy.
-- Disputed current prices are excluded from default statistics. Resolution and competing-report rules remain open for the report workflow.
+- Disputed current prices are excluded from default statistics. Freshly reviewed resolutions can restore verified status after all pending price reports close.
 
 ## Comparison output
 

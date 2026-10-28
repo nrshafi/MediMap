@@ -46,6 +46,9 @@ Open `/admin/providers` for provider and branch contacts, coordinates, and weekl
 See [provider administration](docs/provider-administration.md) for source requirements and the updated branch read contract.
 Open `/admin/prices` for branch-service availability, standard BDT price revisions, and official source records.
 See [pricing administration](docs/pricing-administration.md) for evidence, retained history, and revision checks.
+Open `/report?target=listing&id=<listing-id>` for incorrect-information submission.
+Signed-in accounts can submit five reports per rolling 24 hours, with one pending report per target and issue.
+Price reports immediately mark the current price disputed. See [report submission](docs/correction-report-submission.md) for all target parameters and failure states.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.

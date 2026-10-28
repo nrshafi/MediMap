@@ -50,6 +50,21 @@ try {
   const signOutMobile = await store.signIn(signOutIdentity, null);
   const signOutNoJsDesktop = await store.signIn(signOutIdentity, null);
   const signOutNoJsMobile = await store.signIn(signOutIdentity, null);
+  const reports: Record<string, string> = {};
+  for (const role of [
+    'report-desktop',
+    'report-mobile',
+    'report-nojs-desktop',
+    'report-nojs-mobile',
+    'report-limit-desktop',
+    'report-limit-mobile',
+  ]) {
+    const login = await store.signIn(
+      { subject: `${role}-${crypto.randomUUID()}`, email: `${role}@example.test` },
+      null,
+    );
+    reports[role] = login.token;
+  }
   await db
     .prepare('UPDATE auth_sessions SET created_at = ?, expires_at = ? WHERE token_hash = ?')
     .bind(Date.now() - 10000, Date.now() - 1000, await tokenHash(expired.token))
@@ -57,6 +72,7 @@ try {
   await writeFile(
     '.bun-tmp/browser-sessions.json',
     JSON.stringify({
+      ...reports,
       admin: admin.token,
       member: member.token,
       expired: expired.token,

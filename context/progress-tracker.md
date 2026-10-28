@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 15:48:32 +06:00`.
+Last updated: `2026-10-28 16:46:22 +06:00`.
 
 ## Current phase
 
@@ -16,6 +16,8 @@ Google account, session, and authorization code is implemented and locally verif
 Protected category, canonical service, and English/Bangla alias administration is implemented and locally verified.
 Protected provider/branch administration and typed weekly-hours reads are implemented and locally verified.
 Protected branch-service, price revision, and official-source administration is implemented and locally verified.
+Incorrect-information submission is implemented and locally verified. Sign-in, rolling quotas, pending duplicates, and immediate price disputes are enforced.
+Administrator correction resolution is the next implementation unit.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -44,6 +46,31 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Incorrect-information submission (2026-10-28 16:46:22 +06:00)
+
+- The owner approved sign-in, five reports per account per rolling 24 hours, and one pending report per account, target, and issue.
+- Added `/report` and its POST-only submission endpoint for listing, branch, and provider issues. Existing public discovery files remain unchanged.
+- Applied `0007_correction_reports.sql` locally. Rehearsed its upgrade with existing reviewed prices in isolated D1.
+- Retained original target snapshots, submitted text, reporter identity, and server timestamps. Receipts are private to their submitting account.
+- Made price-report insertion and disputed-price selection atomic. Preserved amounts, source evidence, review timestamps, effective dates, and preceding history.
+- Prevented verified price restoration while pending price reports remain. Other report issues do not change published core data.
+- Verified stale forms, concurrent duplicates and quota enforcement, unknown/already-disputed prices, forged identity, and complete rollback after failed writes.
+- Passed 285 unit/component tests across 28 files and all 83 real D1 integration tests, including parent tests.
+- Passed all 76 desktop/mobile browser checks, including JavaScript-disabled submission, private receipts, draft recovery, and quota feedback.
+- Corrected the referrer policy after native browser POST checks exposed an Origin-header conflict. Reporting now uses `same-origin`.
+- Inspected desktop and 375 px reporting screens. Passed type checks, lint, formatting for 167 files, frozen installation, and client/Workers production builds.
+- Browser bundles contain no report SQL, authentication repository, or secret variable names. No application dependency was added.
+- The browser run emitted the existing sign-in screenshot caret/hydration warning. All checks passed; the reporting checks emitted no page errors.
+- Added `docs/correction-report-submission.md` with routes, supported issues, privacy rules, status effects, and response contracts.
+- New report changes remain uncommitted. Administrator queue/resolution and real Google OAuth acceptance remain unfinished.
+
+### Price administration commit and report policy (2026-10-28 16:36:17 +06:00)
+
+- Committed branch-price and source administration locally as `67ff4c3`. No push occurred.
+- Started the standalone correction-report route, retained submissions, and database-enforced access and abuse rules.
+- Price reports create a disputed revision atomically. Pending reports prevent verified price restoration until administrator resolution.
+- Reporting verification is in progress. The earlier milestone's test counts do not establish acceptance of this implementation.
 
 ### Price and source administration (2026-10-28 15:48:32 +06:00)
 
@@ -446,19 +473,19 @@ These are confirmed constraints for later feature implementation. Full details a
 - Exact final delivery date in early December 2026.
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
-- Google OAuth client credentials for live login verification, plus the later report-submission access policy.
+- Google OAuth client credentials for live login verification.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
 - Price-report resolution and competing-report rules. Pending price reports immediately make current prices disputed and ineligible, as confirmed on 28 October 2026.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
-- Validation for later provider, price, and report writes. Catalog administration uses explicit TypeScript validation and real Miniflare/D1 tests.
+- Administrator report resolution and its evidence requirements. Submission and existing administrator writes use explicit validation and real Miniflare/D1 tests.
 - Production migration application rules. Local numbered migrations and core catalog paths are now defined.
 - Remaining optional P1 features.
 
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Define correction-report access and abuse controls, then implement standalone submission with the approved immediate-dispute price transition.
+2. Implement the protected correction-report queue and evidence-based resolution after confirming restoration and competing-report rules.
 3. Review canonical mappings and publication checks for collected tariff records. Add hospitals or branches when official evidence is available.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

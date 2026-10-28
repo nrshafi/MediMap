@@ -107,6 +107,17 @@ Show BDT decimal input with at most two decimal places. Never display zero for a
 Show retained price revisions, their source IDs, status, review dates, and creation dates.
 Use 44 px controls and stack forms at 375 px. Preserve current selection after rejected correction requests when possible.
 
+## Incorrect-information reporting
+
+Use a standalone report page with the existing teal palette and system typography.
+Identify the provider, branch, service, and observed price before the form when applicable.
+Limit issue choices to the selected target type. Keep user details and an optional correction/evidence link separate.
+Use native form validation and ordinary POST forms. Keep submitted text visible on rejected or failed requests.
+Use server-rendered error responses with the same form and styles, without hydration scripts on those responses.
+Show explicit target-changed, missing-target, access, duplicate, limit, success, and database-failure states.
+Receipts show details recorded at submission. Do not label an observed snapshot as the current published record.
+Keep controls at least 44 px high and stack fields at 375 px.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

@@ -1,6 +1,9 @@
 export class InvalidAdministrationForm extends Error {}
 
-export async function readAdministrationForm(request: Request): Promise<Record<string, string>> {
+export async function readAdministrationForm(
+  request: Request,
+  maximumBytes = 16384,
+): Promise<Record<string, string>> {
   if (
     request.headers.get('content-type')?.split(';')[0].trim() !==
     'application/x-www-form-urlencoded'
@@ -15,7 +18,7 @@ export async function readAdministrationForm(request: Request): Promise<Record<s
       const chunk = await reader.read();
       if (chunk.done) break;
       size += chunk.value.byteLength;
-      if (size > 16384) {
+      if (size > maximumBytes) {
         await reader.cancel();
         throw new InvalidAdministrationForm();
       }

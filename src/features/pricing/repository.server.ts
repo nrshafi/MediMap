@@ -355,6 +355,7 @@ export class PricingRepository {
     } catch (error) {
       if (error instanceof PricingError) throw error;
       const message = error instanceof Error ? error.message : '';
+      if (message.includes('price_report_pending')) throw new PricingError('pending_report');
       if (message.includes('pricing_conflict') || message.includes('listing_changes.listing_id'))
         throw new PricingError('conflict');
       if (message.includes('UNIQUE constraint failed')) throw new PricingError('duplicate');

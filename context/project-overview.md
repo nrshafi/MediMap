@@ -36,6 +36,7 @@ These decisions, confirmed on 27 October 2026, replace the earlier ten-hospital 
 10. Report incorrect information when necessary.
 
 Browsing and comparison do not require an account. Review submission requires an account.
+Incorrect-information reports also require sign-in. Limit each account to five reports per rolling 24 hours and one pending report per target and issue type.
 
 ## Features
 

@@ -164,7 +164,23 @@ Verified prices require their provider's official tariff, explicit currency evid
 Record a confirmed review at server time. A status-only correction can retain the previous review when amount, source, row, and effective date are unchanged.
 Unverified and disputed revisions cannot qualify for default statistics. Elapsed time alone never changes status.
 The owner decided on 28 October 2026 that pending price reports immediately select a disputed revision and exclude it from default statistics.
-Retain source and review history during that transition. Report submission and resolution operations remain later implementation units.
+Retain source and review history during that transition. Administrator resolution remains the next implementation unit.
+
+### Incorrect-information report targets
+
+Use `/report?target=listing|branch|provider&id=<stable-id>` for the standalone correction-report page.
+Keep report code in `src/features/corrections/`. Public discovery links remain separate integration work.
+Listing issues cover price, availability, duplicate listings, and service mapping. Branch issues cover hours, address, and telephone details.
+Provider issues cover provider information and telephone details.
+Read only active public targets. Retain the target identity, displayed revision, observed price reference, and submitted information for review.
+Reports cannot overwrite amounts, source evidence, addresses, contacts, or mappings. Only the approved price-dispute effect can change published status.
+The owner approved signed-in submission, five reports per account in a rolling 24 hours, and one pending report per account/target/issue type.
+Enforce quota, duplicate, target-version, and active-account checks inside D1. Do not accept reporter identity from submitted fields.
+Use one report insert with transactional trigger effects to retain the report and select a disputed price together.
+Clone the current amount, source, actual review metadata, and effective date. Never apply a reporter's proposed correction to core data.
+Already-disputed or unknown current prices need no additional price revision. A stale target or price reference rejects submission without partial writes.
+Keep verified revisions and verified current-price selection blocked while an unresolved price report remains pending.
+Keep receipts private to the submitting account. Report resolution and its evidence requirements remain the next feature unit.
 
 ## Authentication and access
 
@@ -231,7 +247,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Additional TanStack packages and selected package versions.
 - Need for Hono within the single application deployment.
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
-- Live Google OAuth client configuration and report-submission access policy.
+- Live Google OAuth client configuration.
 - Mapping, geocoding, and routing provider selection.
 - Rating aggregation, report-resolution restoration rules, and competing-report handling. Pending price reports immediately make prices disputed and ineligible.
 - Default sorting, comparison limits, and the definition of current records.

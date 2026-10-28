@@ -7,6 +7,8 @@ export const pricingMessages = {
     'Check the mapping, standard BDT amount, dates, source evidence, and confirmations.',
   duplicate: 'This source ID, snapshot, or branch-service listing already exists.',
   conflict: 'The listing changed. Reload it before saving another revision.',
+  pending_report:
+    'A pending price report keeps this listing disputed. Resolve the report before verifying another price.',
   unavailable: 'Pricing changes are unavailable. Reload before retrying.',
 } as const;
 export class PricingError extends Error {

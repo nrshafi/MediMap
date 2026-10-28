@@ -42,6 +42,9 @@
 - Store schema changes in versioned SQL migrations.
 - Preserve price sources and verification metadata.
 - Apply the report-based freshness policy. Do not add an age-based expiry rule.
+- Require server-confirmed sign-in for correction reports. Derive reporter identity from the session.
+- Enforce report quotas, pending duplicates, target revisions, and price-dispute effects atomically in D1.
+- Preserve drafts in native form errors. Use a same-origin referrer policy so browser POST requests retain the required Origin header.
 - Keep one eligible price per branch-service listing in default statistics.
 - Test query results and relationships against the documented data rules.
 

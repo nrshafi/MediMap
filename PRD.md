@@ -1051,6 +1051,11 @@ Users do not directly modify official MediMap data.
 
 ---
 
+## Report access decision
+
+The owner approved signed-in reporting on 28 October 2026, with five reports per account in a rolling 24 hours.
+Allow one pending report per account, target, and issue type.
+
 ## Price-report status decision
 
 Price-report policy confirmed on 28 October 2026: a pending price report immediately marks the current price disputed.

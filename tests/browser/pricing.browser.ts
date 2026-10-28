@@ -79,6 +79,7 @@ test('administrator verifies, disputes and clears a branch price while retaining
       .getByLabel('Revision notes')
       .fill('Synthetic test revision.\nSource history must remain.');
     await form.getByRole('button', { name: 'Save new price revision' }).click();
+    await page.waitForLoadState('load');
     await expect(page.getByRole('status')).toContainText('change saved');
     await expect(
       page
@@ -107,6 +108,7 @@ test('administrator verifies, disputes and clears a branch price while retaining
       .getByLabel('This is a standard base price without a promotion or discount.')
       .check();
     await dispute.getByRole('button', { name: 'Save new price revision' }).click();
+    await page.waitForLoadState('load');
     await expect(
       page
         .getByRole('region', { name: 'Retained price revisions', exact: true })
@@ -117,6 +119,7 @@ test('administrator verifies, disputes and clears a branch price while retaining
       .getByLabel('Set the current price to unknown and retain all previous revisions.')
       .check();
     await clear.getByRole('button', { name: 'Set current price to unknown' }).click();
+    await page.waitForLoadState('load');
     await expect(
       page.getByRole('region', { name: 'New price revision', exact: true }),
     ).toContainText('Current price unknown');

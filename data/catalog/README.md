@@ -51,8 +51,11 @@ Live appointment availability and phone confirmation were not checked.
 Monowara's government-rate wording remains provider wording. This collection does not independently verify government fee schedules.
 Hospital opening claims do not establish the operating hours of each diagnostic unit.
 
-The export has `publicationReady: false` until canonical mapping and the stated publication checks are complete.
-No records have been imported into D1 or connected to public discovery.
+The research export retains `publicationReady: false` and is not imported wholesale.
+A separate reviewed subset now has 196 listings across three hospital branches and 136 canonical services.
+See [reviewed data and local entry](../../docs/reviewed-hospital-dataset.md) for its explicit mappings and all publication holds.
+The [publication inventory](publication-inventory.json) accounts for every one of the 2,090 retained research listings.
+The additional reviewed seed is applied explicitly after foundation setup. Public discovery remains separate.
 The existing demonstration retains its separate sample fixtures.
 
 ## Excluded rows

@@ -52,6 +52,9 @@ Price reports immediately mark the current price disputed. See [report submissio
 Open `/admin/reports` for the protected report queue and evidence-based decisions.
 See [report resolution](docs/correction-report-resolution.md) for price restoration, competing reports, retained history, and native form behavior.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
+Run `bun run catalog:check`, then `bun run db:catalog:apply` to add the separately reviewed 196-listing dataset.
+Run `bun run db:catalog:check` to reconcile its three hospital branches and retained source evidence.
+See [reviewed hospital data](docs/reviewed-hospital-dataset.md) for mappings, held records, local entry, and regeneration.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.
 
@@ -64,8 +67,9 @@ The configured database ID is a local placeholder. Remote provisioning and deplo
 Keep secrets in ignored `.dev.vars` or `.env` files. Do not store credentials in `wrangler.jsonc`.
 
 Run `bun run test:database` for isolated, real workerd/D1 integration tests. The tests do not use the development database.
-Browser tests apply local migrations and seed data before starting the Workers development server.
-They use isolated state in `.bun-tmp/browser-d1-state`, with synthetic accounts and sessions outside the development database.
+Database suites run sequentially to limit peak runtime memory use.
+Browser tests apply local migrations, seed data, and synthetic sessions, then build and preview the application in local Workers.
+Each run uses fresh state under `.bun-tmp/browser-d1-state/`, with synthetic accounts and sessions outside the development database.
 Cloudflare tooling can access its user-level development registry and retrieve development request metadata at startup.
 
 The project pins Cloudflare Vite plugin 1.49.0, Wrangler 4.116.0, and Miniflare 4.20260730.0.

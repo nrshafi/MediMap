@@ -1,0 +1,3 @@
+data/catalog/reviewed-catalog.json text eol=lf
+data/catalog/publication-inventory.json text eol=lf
+seeds/reviewed-catalog.sql text eol=lf

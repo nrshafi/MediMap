@@ -109,7 +109,7 @@ No real account was granted administrator access during implementation.
 
 `bun run test:database` runs real local D1 tests for schema constraints, sessions, access checks, and Google protocol handling.
 The protocol fixtures use locally signed RS256 identity tokens and intercepted Google HTTP requests. They never contact Google as a user.
-Browser tests use separate state in `.bun-tmp/browser-d1-state` with synthetic accounts and persisted test sessions.
+Each browser run uses fresh state under `.bun-tmp/browser-d1-state/` with synthetic accounts and persisted test sessions.
 They generate isolated Worker configuration and empty test OAuth credentials in `.bun-tmp/browser-config`.
 The development database receives no synthetic accounts or administrator grants. There is no application test-login bypass.
 

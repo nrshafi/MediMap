@@ -21,7 +21,7 @@ await Bun.write(
 
 const browserEnvironment = {
   ...process.env,
-  MEDIMAP_D1_STATE: resolve('.bun-tmp/browser-d1-state'),
+  MEDIMAP_D1_STATE: resolve('.bun-tmp/browser-d1-state', crypto.randomUUID()),
   CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH: browserConfig,
 };
 const setup = Bun.spawn([process.execPath, 'run', 'scripts/database/setup.ts'], {
@@ -49,10 +49,22 @@ const fixture = Bun.spawn(['node', '.bun-tmp/auth-browser/browser-session.fixtur
 });
 const fixtureCode = await fixture.exited;
 if (fixtureCode !== 0) process.exit(fixtureCode);
+const build = Bun.spawn(['node', 'node_modules/vite/bin/vite.js', 'build'], {
+  stdout: 'inherit',
+  stderr: 'inherit',
+  env: {
+    ...browserEnvironment,
+    WRANGLER_LOG_PATH: '.bun-tmp/wrangler.log',
+    WRANGLER_SEND_METRICS: 'false',
+  },
+});
+const buildCode = await build.exited;
+if (buildCode !== 0) process.exit(buildCode);
 const server = Bun.spawn(
   [
     'node',
     'node_modules/vite/bin/vite.js',
+    'preview',
     '--host',
     '127.0.0.1',
     '--port',

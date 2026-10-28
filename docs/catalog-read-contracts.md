@@ -31,6 +31,8 @@ The review timestamp is `2026-10-27T11:20:41Z`. It is separate from source retri
 Website review does not establish telephone confirmation, appointment availability, or a provider-confirmed effective date.
 Coordinates, opening hours, telephone details, and the tariff-effective date remain null in this import.
 The remaining research rows require individual canonical mapping, currency checks, and review before import.
+The [additional reviewed dataset](reviewed-hospital-dataset.md) provides 196 listings, 136 canonical services, and three hospital branches.
+Its separate local seed preserves the original CBC identity and review metadata. Held research records do not enter public catalog reads.
 
 ## Storage and price selection
 

@@ -2,8 +2,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { ReportView } from './ReportView';
 import { submitReport } from './operations.server';
 import { reportHref } from './contracts';
-import stylesheet from '../../styles.css?url';
-import reportStyles from './report.css?url';
+import stylesheet from '../../styles.css?inline';
+import reportStyles from './report.css?inline';
 
 export async function reportSubmissionResponse(
   request: Request,
@@ -24,8 +24,7 @@ export async function reportSubmissionResponse(
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="noindex" />
         <title>Report incorrect information | MediMap</title>
-        <link rel="stylesheet" href={stylesheet} />
-        <link rel="stylesheet" href={reportStyles} />
+        <style>{`${stylesheet}\n${reportStyles}`}</style>
       </head>
       <body>
         <ReportView data={result.data} draft={result.draft} />

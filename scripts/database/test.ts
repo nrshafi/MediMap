@@ -8,6 +8,7 @@ const build = await Bun.build({
     'tests/catalog/pricing.integration.ts',
     'tests/catalog/corrections.integration.ts',
     'tests/catalog/resolution.integration.ts',
+    'tests/catalog/dataset.integration.ts',
   ],
   root: 'tests',
   outdir: '.bun-tmp/catalog-tests',
@@ -22,6 +23,7 @@ const child = Bun.spawn(
   [
     'node',
     '--test',
+    '--test-concurrency=1',
     '.bun-tmp/catalog-tests/catalog/catalog.integration.js',
     '.bun-tmp/catalog-tests/auth/auth.integration.js',
     '.bun-tmp/catalog-tests/catalog/administration.integration.js',
@@ -29,6 +31,7 @@ const child = Bun.spawn(
     '.bun-tmp/catalog-tests/catalog/pricing.integration.js',
     '.bun-tmp/catalog-tests/catalog/corrections.integration.js',
     '.bun-tmp/catalog-tests/catalog/resolution.integration.js',
+    '.bun-tmp/catalog-tests/catalog/dataset.integration.js',
   ],
   {
     stdout: 'inherit',

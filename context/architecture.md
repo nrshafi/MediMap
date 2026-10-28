@@ -112,6 +112,17 @@ The official hematology tariff lists 400 taka. Its contact page supports the bra
 Coordinates, opening hours, telephone details, and tariff-effective dates remain null until separately verified.
 The broader research export remains unpublished and requires individual mapping and currency checks.
 
+### Reviewed hospital dataset
+
+Keep reviewed publication inputs and their coverage/gap inventory in `data/catalog/`, separate from the unchanged research exports and discovery fixtures.
+Use explicit source-row mappings. Preserve specimen, method, laterality, view, timing, and panel differences rather than merging similar names.
+Generate an additional development seed from the reviewed inputs. Apply it explicitly after the foundation setup, with a local-only command.
+Preserve existing records and later administrator choices on reruns. Reconcile expected seed records against D1 without silently replacing changed data.
+Retain fresh source hashes, actual retrieval/review times, currency-label evidence, and official branch-address evidence.
+The existing `explicit_taka_header` currency code covers explicit Taka/Tk price labels, including labels outside table headers.
+Cross-check item-specific currency corroboration without extending it to unrelated rows from the same hospital.
+Keep unsupported records in the gap inventory. No minimum branch or service count applies, and partial coverage is permitted.
+
 ### Catalog administration
 
 Use `/admin/catalog/manage` for category, canonical service, and English/Bangla alias forms.

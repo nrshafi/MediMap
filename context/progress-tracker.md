@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 17:14:25 +06:00`.
+Last updated: `2026-10-28 21:25:05 +06:00`.
 
 ## Current phase
 
@@ -18,11 +18,11 @@ Protected provider/branch administration and typed weekly-hours reads are implem
 Protected branch-service, price revision, and official-source administration is implemented and locally verified.
 Incorrect-information submission is implemented and locally verified. Sign-in, rolling quotas, pending duplicates, and immediate price disputes are enforced.
 Administrator correction resolution is implemented and locally verified. Fresh source review is required, and other pending price reports keep known prices disputed.
-Reviewed dataset completion is the next implementation unit.
+The reviewed publication subset is implemented and reconciled locally with 196 listings, 136 canonical services, and three hospital branches.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
-This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
-Canonical mapping and publication checks remain unfinished for the remaining research records.
+The research export remains separate from application fixtures and reviewed D1 data. The original CBC listing and review history remain intact.
+The inventory holds 1,894 research listings for unresolved currency, mapping, or specific source concerns.
 Provider-independent location controls now support browser location and manual coordinates.
 Discovery query and radius changes now synchronize with the active results and URL.
 The current test audit and verification are in [test-review.md](test-review.md).
@@ -47,6 +47,49 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Production-preview verification (2026-10-28 21:21:37 +06:00)
+
+- Passed all 82 desktop/mobile browser checks against the built Worker in a fresh local database.
+- Changed browser regression startup from the hot-reload server to `vite build` and `vite preview`.
+- Found missing production CSS on native correction-report error responses. These responses now include compiled application styles directly.
+- Verified report submission, retained drafts, administrator resolution, touch targets, and native forms without JavaScript in production preview.
+- Inspected the 375 px report-error page. The draft and error message remain readable, and the submit button has the required touch height.
+- Rechecked all 295 unit/component tests, application/tooling types, lint, formatting, generated artifacts, and local catalog reconciliation.
+- The catalog audit still reports 196 expected listings, 196 verified current prices, no issues, and no administrator overrides.
+- A transient runtime startup failure and a bundled-library read failure interrupted an earlier check attempt. Sequential type and browser reruns passed.
+- The fresh full database rerun passed all 107 tests with no failures, skips, or cancellations.
+- Rechecked frozen installation and the client/Workers production build. New dataset and verification changes are ready for the requested local commit.
+
+### Reviewed local catalog and browser isolation (2026-10-28 20:51:06 +06:00)
+
+- Applied and reconciled all 196 reviewed listings locally. The audit found 196 retained seed prices and verified current prices, with no issues or overrides.
+- Passed 295 unit/component tests across 31 files, all 107 real D1 tests, types, lint, frozen installation, artifact checks, formatting, and production builds.
+- Retained 1,894 explicit holds and the original research exports. No application dependency or migration was added.
+- Added LF checkout rules for generated publication artifacts so Windows line endings do not invalidate reproducibility checks.
+- Initial browser runs exposed an early interaction after native navigation and accumulated test data beyond dropdown pagination.
+- Added document-load waits to the price scenario and a fresh isolated D1 directory for each browser run. Previous test state remains intact.
+- The clean-state full browser run is in progress. Both affected desktop flows and the mobile catalog flow have passed.
+- Inspected the 375 px price form. Controls and long record IDs fit without horizontal overflow.
+
+### Reviewed dataset generation (2026-10-28 20:15:27 +06:00)
+
+- Captured all 24 official pages successfully, including Farabi. Kept the original research exports unchanged.
+- Prepared 196 reviewed listings, 136 canonical services, three hospital branches, and 17 stored source records.
+- Accounted for all 2,090 research listings. Held 1,894 records for currency confirmation, mapping review, or seven specific concerns.
+- Kept Holy Family's two explicitly labelled Tk test rates separate from its other 582 rows. Farabi and BMU remain outside the reviewed publication subset.
+- Added frozen review hashes, exact-label checks, deterministic seed generation, local-only entry, and complete D1 reconciliation.
+- Passed isolated import, rollback, repeated-entry, unknown-price, pending-report, and public-read scenarios for the dataset.
+- The parallel database run hit Windows virtual-memory allocation failures in other runtimes. Database suites now run sequentially; final verification is in progress.
+- The development database has not yet received the additional reviewed seed. Final application follows the isolated checks.
+
+### Resolution commit and dataset review (2026-10-28 18:10:36 +06:00)
+
+- Committed administrator correction resolution locally as `1d2c845`, with 34 files. No push occurred.
+- Rechecked all 290 unit/component tests, types, lint, formatting, staged files, and whitespace before committing.
+- Started explicit source-row mappings and a complete publication/gap inventory. Fresh source review and local data reconciliation are in progress.
+- Found item-specific Holy Family Tk labels matching two pathology prices. Other rows still require their own currency evidence.
+- BMU currency confirmation remains unresolved. Farabi's tariff page timed out during current review.
 
 ### Administrator correction resolution (2026-10-28 17:14:25 +06:00)
 
@@ -518,7 +561,7 @@ These are confirmed constraints for later feature implementation. Full details a
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Complete reviewed dataset mapping, currency confirmation, source reconciliation, and publication checks before broader D1 entry.
+2. Prepare the Workers release runbook, local migration rehearsal, binding checks, and explicit workload assessment.
 3. Add hospitals or branches when their diagnostic services, standard prices, and locations have verified official evidence.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

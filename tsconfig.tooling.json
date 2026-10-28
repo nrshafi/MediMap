@@ -1,5 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": { "types": ["node", "bun"], "lib": ["ES2022"], "moduleDetection": "force" },
-  "include": ["vite.config.ts", "scripts/database/*.ts"]
+  "include": [
+    "vite.config.ts",
+    "scripts/database/*.ts",
+    "scripts/data/*.ts",
+    "src/worker-bindings.d.ts",
+    "worker-configuration.d.ts"
+  ]
 }

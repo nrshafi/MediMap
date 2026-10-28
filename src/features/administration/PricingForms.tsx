@@ -133,7 +133,7 @@ export function SourceForm({ provider }: { provider: Choice }) {
       <Input name="sourceUpdatedDate" label="Website update date" type="date" />
       <Select name="currencyEvidence" label="Tariff currency evidence" value="">
         <option value="">Unknown or not applicable</option>
-        <option value="explicit_taka_header">Explicit taka header</option>
+        <option value="explicit_taka_header">Explicit taka/Tk price label</option>
         <option value="explicit_taka_symbol">Explicit taka symbol</option>
       </Select>
       <Notes />

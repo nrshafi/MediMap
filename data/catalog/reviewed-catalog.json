@@ -1,0 +1,4311 @@
+{
+  "schemaVersion": 1,
+  "id": "reviewed-catalog-20261028",
+  "reviewedAt": "2026-10-28T14:00:54Z",
+  "reviewer": "Codex official-website review",
+  "evidenceSha256": "160aa35d36c65725188bb115b221d96052de54543ec62a9150d7dcba353ed7f8",
+  "providers": [
+    {
+      "id": "holy-family-red-crescent-hospital",
+      "name": "Holy Family Red Crescent Medical College Hospital"
+    },
+    {
+      "id": "monowara-orthopedic-general-hospital",
+      "name": "Monowara Orthopedic and General Hospital"
+    },
+    {
+      "id": "addin-medical-college-hospital",
+      "name": "Ad-din Medical College Hospital"
+    }
+  ],
+  "branches": [
+    {
+      "id": "holy-family-eskatan",
+      "providerId": "holy-family-red-crescent-hospital",
+      "name": "Eskatan Garden Road",
+      "address": "1, Eskatan Garden Road, Dhaka-1000, Bangladesh.",
+      "contactSourceId": "holy-family-contact-20261028",
+      "phone": null
+    },
+    {
+      "id": "mogh-kamalapur",
+      "providerId": "monowara-orthopedic-general-hospital",
+      "name": "Kamalapur Road",
+      "address": "35/7, 1 Kamalapur Rd, Dhaka 1203",
+      "contactSourceId": "mogh-contact-20261028",
+      "phone": null
+    },
+    {
+      "id": "addin-moghbazar",
+      "providerId": "addin-medical-college-hospital",
+      "name": "Moghbazar",
+      "address": "2 Bara Maghbazar, Dhaka 1217",
+      "contactSourceId": "addin-contact-20261027",
+      "phone": null
+    }
+  ],
+  "services": [
+    {
+      "id": "complete-blood-count",
+      "name": "Complete Blood Count",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": [
+        {
+          "id": "complete-blood-count-cbc-en",
+          "alias": "CBC",
+          "language": "en"
+        },
+        {
+          "id": "complete-blood-count-alias-328b1916839b",
+          "alias": "Full Blood Count",
+          "language": "en"
+        },
+        {
+          "id": "complete-blood-count-alias-7c6568417cdf",
+          "alias": "FBC",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "fasting-blood-sugar",
+      "name": "Fasting Blood Sugar",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "fasting-blood-sugar-alias-0c06881e8f68",
+          "alias": "FBS",
+          "language": "en"
+        },
+        {
+          "id": "fasting-blood-sugar-alias-7893362c7d82",
+          "alias": "Fasting Blood Glucose",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "random-blood-sugar",
+      "name": "Random Blood Sugar",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "random-blood-sugar-alias-c164000af9f0",
+          "alias": "RBS",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "post-prandial-blood-sugar",
+      "name": "Post-prandial Blood Sugar",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "post-prandial-blood-sugar-alias-98b912498b47",
+          "alias": "PPBS",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "glucose-2h-after-75g",
+      "name": "Blood Glucose, 2 Hours After 75 g Glucose",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "glucose-1h-after-75g",
+      "name": "Blood Glucose, 1 Hour After 75 g Glucose",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "glucose-1h-after-100g",
+      "name": "Blood Glucose, 1 Hour After 100 g Glucose",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "glucose-2h-after-100g",
+      "name": "Blood Glucose, 2 Hours After 100 g Glucose",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "glucose-3h-after-100g",
+      "name": "Blood Glucose, 3 Hours After 100 g Glucose",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ogtt-75g-two-samples",
+      "name": "OGTT, 75 g Glucose, 2 Samples",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ogtt-75g-three-samples",
+      "name": "OGTT, 75 g Glucose, 3 Samples",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "hba1c",
+      "name": "HbA1c",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "hba1c-alias-a9942f25dbf3",
+          "alias": "Glycated Hemoglobin",
+          "language": "en"
+        },
+        {
+          "id": "hba1c-alias-8d2833807557",
+          "alias": "Hemoglobin A1c",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "lipid-profile",
+      "name": "Lipid Profile",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "lipid-profile-alias-74fcac62033a",
+          "alias": "Lipid Panel",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "fasting-lipid-profile",
+      "name": "Fasting Lipid Profile",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-total-cholesterol",
+      "name": "Serum Total Cholesterol",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "hdl-cholesterol",
+      "name": "HDL Cholesterol",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ldl-cholesterol",
+      "name": "LDL Cholesterol",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-triglycerides",
+      "name": "Serum Triglycerides",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "urea",
+      "name": "Urea",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "blood-urea-nitrogen",
+      "name": "Blood Urea Nitrogen",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "blood-urea-nitrogen-alias-4a8d6aee1656",
+          "alias": "BUN",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "uric-acid",
+      "name": "Uric Acid",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-bilirubin-total",
+      "name": "Serum Bilirubin, Total",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "bilirubin-direct",
+      "name": "Bilirubin, Direct",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-bilirubin-indirect",
+      "name": "Serum Bilirubin, Indirect",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ast",
+      "name": "AST",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "ast-alias-a9b02a0d8824",
+          "alias": "SGOT",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "alt",
+      "name": "ALT",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "alt-alias-0946384454a6",
+          "alias": "SGPT",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "gamma-gt",
+      "name": "Gamma-GT",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "gamma-gt-alias-95adeeba3088",
+          "alias": "GGT",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "serum-alkaline-phosphatase",
+      "name": "Serum Alkaline Phosphatase",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "total-protein",
+      "name": "Total Protein",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-albumin",
+      "name": "Serum Albumin",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "albumin-globulin-ratio",
+      "name": "Albumin/Globulin Ratio",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-amylase",
+      "name": "Serum Amylase",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "lipase",
+      "name": "Lipase",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-calcium",
+      "name": "Serum Calcium",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-magnesium",
+      "name": "Serum Magnesium",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-zinc",
+      "name": "Serum Zinc",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "serum-ferritin",
+      "name": "Serum Ferritin",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "tibc",
+      "name": "Total Iron Binding Capacity",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "tibc-alias-67284ffdb7bb",
+          "alias": "TIBC",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "troponin-i",
+      "name": "Troponin I",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ldh",
+      "name": "LDH",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "ck-mb",
+      "name": "CK-MB",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "vitamin-b12",
+      "name": "Vitamin B12",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "vitamin-d-total",
+      "name": "Vitamin D, Total",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "vitamin-d3",
+      "name": "Vitamin D3 Level",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "crp",
+      "name": "C-Reactive Protein",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": [
+        {
+          "id": "crp-alias-2796e6d04680",
+          "alias": "CRP",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "ceruloplasmin",
+      "name": "Ceruloplasmin",
+      "categoryId": "biochemistry",
+      "categoryName": "Biochemistry",
+      "aliases": []
+    },
+    {
+      "id": "fibrinogen",
+      "name": "Fibrinogen",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "aptt",
+      "name": "APTT",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "factor-viii-assay",
+      "name": "Factor VIII Assay",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "factor-ix-assay",
+      "name": "Factor IX Assay",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "prothrombin-time",
+      "name": "Prothrombin Time",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "hemoglobin",
+      "name": "Hemoglobin",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "platelet-count",
+      "name": "Platelet Count",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "hematocrit",
+      "name": "Hematocrit",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "mcv",
+      "name": "MCV",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "mch",
+      "name": "MCH",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "mchc",
+      "name": "MCHC",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "esr",
+      "name": "ESR",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "reticulocyte-count",
+      "name": "Reticulocyte Count",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "bleeding-and-clotting-time",
+      "name": "Bleeding and Clotting Time",
+      "categoryId": "hematology",
+      "categoryName": "Hematology",
+      "aliases": []
+    },
+    {
+      "id": "thyroid-stimulating-hormone",
+      "name": "Thyroid Stimulating Hormone (TSH)",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": [
+        {
+          "id": "thyroid-stimulating-hormone-alias-092ad1079933",
+          "alias": "TSH",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "t3",
+      "name": "T3",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "t4",
+      "name": "T4",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "free-t3",
+      "name": "Free T3",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": [
+        {
+          "id": "free-t3-alias-003b99231584",
+          "alias": "FT3",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "free-t4",
+      "name": "Free T4",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": [
+        {
+          "id": "free-t4-alias-34d54ecfd524",
+          "alias": "FT4",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "t3-t4-tsh-panel",
+      "name": "T3, T4 and TSH Panel",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "free-t3-free-t4-tsh-panel",
+      "name": "Free T3, Free T4 and TSH Panel",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "prolactin",
+      "name": "Prolactin",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "testosterone",
+      "name": "Testosterone",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "fsh",
+      "name": "FSH",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "lh",
+      "name": "LH",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "oestrogen",
+      "name": "Oestrogen",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "estradiol",
+      "name": "Estradiol",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "progesterone",
+      "name": "Progesterone",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "acth",
+      "name": "ACTH",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "parathyroid-hormone",
+      "name": "Parathyroid Hormone",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": [
+        {
+          "id": "parathyroid-hormone-alias-898b9e752743",
+          "alias": "PTH",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "procalcitonin",
+      "name": "Procalcitonin",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "growth-hormone",
+      "name": "Growth Hormone",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "cortisol",
+      "name": "Cortisol",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "free-psa",
+      "name": "Free PSA",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "total-psa",
+      "name": "Total PSA",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "cea",
+      "name": "CEA",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "ca-19-9",
+      "name": "CA 19-9",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "ca-125",
+      "name": "CA 125",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "ca-15-3",
+      "name": "CA 15.3",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "anti-ccp",
+      "name": "Anti-CCP",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "igm",
+      "name": "IgM",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "igg",
+      "name": "IgG",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "iga",
+      "name": "IgA",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "ige",
+      "name": "IgE",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "complement-c3",
+      "name": "Complement C3",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "complement-c4",
+      "name": "Complement C4",
+      "categoryId": "immunology",
+      "categoryName": "Immunology",
+      "aliases": []
+    },
+    {
+      "id": "urine-routine",
+      "name": "Urine Routine Examination",
+      "categoryId": "clinical-pathology",
+      "categoryName": "Clinical Pathology",
+      "aliases": [
+        {
+          "id": "urine-routine-alias-a7c1c982fbb3",
+          "alias": "Urine R/M/E",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "stool-routine",
+      "name": "Stool Routine Examination",
+      "categoryId": "clinical-pathology",
+      "categoryName": "Clinical Pathology",
+      "aliases": []
+    },
+    {
+      "id": "stool-occult-blood",
+      "name": "Stool Occult Blood Test",
+      "categoryId": "clinical-pathology",
+      "categoryName": "Clinical Pathology",
+      "aliases": []
+    },
+    {
+      "id": "semen-analysis",
+      "name": "Semen Analysis",
+      "categoryId": "clinical-pathology",
+      "categoryName": "Clinical Pathology",
+      "aliases": []
+    },
+    {
+      "id": "mantoux-test",
+      "name": "Mantoux Test",
+      "categoryId": "clinical-pathology",
+      "categoryName": "Clinical Pathology",
+      "aliases": []
+    },
+    {
+      "id": "urine-pregnancy-test",
+      "name": "Urine Pregnancy Test",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "vdrl",
+      "name": "VDRL",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "tpha",
+      "name": "TPHA",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "widal-test",
+      "name": "Widal Test",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "aso-titre",
+      "name": "ASO Titre",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "hbsag-screening",
+      "name": "HBsAg Screening Test",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "hbsag-latex",
+      "name": "HBsAg, Latex",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "hbsag-confirmatory",
+      "name": "HBsAg Confirmatory Test",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "hbsag-elisa",
+      "name": "HBsAg, ELISA",
+      "categoryId": "virology",
+      "categoryName": "Virology",
+      "aliases": []
+    },
+    {
+      "id": "dengue-antibody",
+      "name": "Dengue Antibody IgG/IgM",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "dengue-antibody-ict",
+      "name": "Dengue Antibody IgM and IgG, ICT",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    },
+    {
+      "id": "dengue-igm-elisa",
+      "name": "Dengue IgM, ELISA",
+      "categoryId": "virology",
+      "categoryName": "Virology",
+      "aliases": []
+    },
+    {
+      "id": "dengue-igg-elisa",
+      "name": "Dengue IgG, ELISA",
+      "categoryId": "virology",
+      "categoryName": "Virology",
+      "aliases": []
+    },
+    {
+      "id": "dengue-ns1-antigen",
+      "name": "Dengue NS1 Antigen",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": [
+        {
+          "id": "dengue-ns1-antigen-alias-98c911bb381f",
+          "alias": "Dengue NS1",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "blood-culture-sensitivity",
+      "name": "Blood Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "blood-culture-anaerobic",
+      "name": "Blood Culture and Sensitivity, Anaerobic",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "urine-culture-sensitivity",
+      "name": "Urine Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "stool-culture-sensitivity",
+      "name": "Stool Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "pus-culture-sensitivity",
+      "name": "Pus Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "throat-swab-culture-sensitivity",
+      "name": "Throat Swab Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "hvs-culture-sensitivity",
+      "name": "High Vaginal Swab Culture and Sensitivity",
+      "categoryId": "microbiology",
+      "categoryName": "Microbiology",
+      "aliases": []
+    },
+    {
+      "id": "electrocardiogram",
+      "name": "Electrocardiogram (ECG)",
+      "categoryId": "cardiology",
+      "categoryName": "Cardiology",
+      "aliases": [
+        {
+          "id": "electrocardiogram-alias-20139ac71b2c",
+          "alias": "ECG",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "usg-whole-abdomen",
+      "name": "USG of Whole Abdomen",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": [
+        {
+          "id": "usg-whole-abdomen-alias-97250725a4c4",
+          "alias": "USG Whole Abdomen",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "usg-whole-abdomen-pvr",
+      "name": "USG of Whole Abdomen with PVR",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": []
+    },
+    {
+      "id": "usg-lower-abdomen",
+      "name": "USG of Lower Abdomen",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": []
+    },
+    {
+      "id": "usg-thyroid",
+      "name": "USG of Thyroid",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": []
+    },
+    {
+      "id": "usg-kub",
+      "name": "USG of KUB",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": []
+    },
+    {
+      "id": "transvaginal-ultrasound",
+      "name": "Transvaginal Ultrasound",
+      "categoryId": "ultrasonography",
+      "categoryName": "Ultrasonography",
+      "aliases": [
+        {
+          "id": "transvaginal-ultrasound-alias-830f6077270f",
+          "alias": "TVS",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "xray-chest",
+      "name": "X-Ray Chest P/A View",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": [
+        {
+          "id": "xray-chest-alias-6497ced73856",
+          "alias": "Chest X-ray P/A",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "xray-right-knee-bv",
+      "name": "Right Knee X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-left-knee-bv",
+      "name": "Left Knee X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-both-knees-bv",
+      "name": "Both Knees X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-cervical-spine-bv",
+      "name": "Cervical Spine X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-cervical-spine-ap",
+      "name": "Cervical Spine X-Ray, A/P",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-cervical-spine-lateral",
+      "name": "Cervical Spine X-Ray, Lateral",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-right-shoulder-bv",
+      "name": "Right Shoulder X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "xray-left-shoulder-bv",
+      "name": "Left Shoulder X-Ray, B/V",
+      "categoryId": "radiology",
+      "categoryName": "Radiology",
+      "aliases": []
+    },
+    {
+      "id": "covid-19-rt-pcr",
+      "name": "COVID-19 RT-PCR",
+      "categoryId": "pcr",
+      "categoryName": "PCR",
+      "aliases": []
+    },
+    {
+      "id": "covid-19-antigen-rapid",
+      "name": "COVID-19 Antigen Rapid Test",
+      "categoryId": "serology",
+      "categoryName": "Serology",
+      "aliases": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "addin-biochemistry-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/biochemistry-service-charge/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.091Z",
+      "sha256": "02a4f993b361d5e7d08fabad18d0c88a9fe5f78c626e3e8f7919245f55d82448",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-clinical-pathology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/pathology-service-charge/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.303Z",
+      "sha256": "5d8d0a77b7ff57765f0f955b5a36dfbf2eab8781cb24e005a9787c29e37543e8",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-contact-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/contact/",
+      "kind": "official_contact",
+      "retrievedAt": "2026-10-28T12:13:36.492Z",
+      "sha256": "f4d487b1e750ef07fc12fcae91ea2222cb030b951901ec540c8b42bf3472be87",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-hematology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/hematology-service-charge",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.063Z",
+      "sha256": "c2f0c2e26eb3c86b4157654741a9f5577c03872f799e20385724b1b5ee8ce5fe",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-immunology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/service-charge/immunology/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.695Z",
+      "sha256": "12f4e43e3d5ab691a1b50ac2f89760ccd43ba3f24a69b0ef189fad26fde42350",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-microbiology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/microbiology-service-charge/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.902Z",
+      "sha256": "9638c6b8ab03d7361d793647d07f31c858fc2510e816bea10c3229901e1ee210",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-radiology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/service-charge/radiology-imaging/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:37.263Z",
+      "sha256": "9f083fa7dbf34bbab19e41f5b73cb41356caa61ed52dccca0a43d0bbd0818025",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-serology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/service-charge/serology/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:38.133Z",
+      "sha256": "a2976eb08d829b0f630cb02ae8c8136f85606291744208191f8f18c9c6f61795",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-ultrasonography-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/service-charge/ultrasonography/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:38.172Z",
+      "sha256": "f640206debde1eeb72d68959b5ec6d197824f6e700d00da96e1f91893c58ad38",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-virology-20261028",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/service-charge/virology/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:38.273Z",
+      "sha256": "5e8064ed0bce051c15dcf1dce8efc6e60f8bb0e578d8121c37c00e5673bc3e61",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "holy-family-contact-20261028",
+      "providerId": "holy-family-red-crescent-hospital",
+      "url": "https://holyfamily.com.bd/contact-us",
+      "kind": "official_contact",
+      "retrievedAt": "2026-10-28T12:13:34.049Z",
+      "sha256": "97046d8580d9eaab98d212b4d72512409596a60c532a04a7fbd0b7b32585fbf0",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "holy-family-covid-20261028",
+      "providerId": "holy-family-red-crescent-hospital",
+      "url": "https://holyfamily.com.bd/about/covid-information",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:38.504Z",
+      "sha256": "dee587408419bc025fbfd80b98f1023ded673127b1ddd4751a7cf8160af74d14",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "holy-family-pathology-20261028",
+      "providerId": "holy-family-red-crescent-hospital",
+      "url": "https://holyfamily.com.bd/service/pathology-services",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:33.502Z",
+      "sha256": "2861cef6a851c359f5aa3cf30be8fa0891ffd8950f7f61435242fe765ed871a1",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "mogh-contact-20261028",
+      "providerId": "monowara-orthopedic-general-hospital",
+      "url": "https://www.mogh.com.bd/contact",
+      "kind": "official_contact",
+      "retrievedAt": "2026-10-28T12:13:36.831Z",
+      "sha256": "c8de753f7a1f3c4a01332f64c6d6b97fa5460454cfbd8e02d0b8e9679f4abcc5",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "mogh-tests-20261028",
+      "providerId": "monowara-orthopedic-general-hospital",
+      "url": "https://www.mogh.com.bd/available_tests",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-28T12:13:36.347Z",
+      "sha256": "d78cddc647a4135401fc48694392c95023a319631b5ed3f44f0b08dfd623e736",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_symbol",
+      "collector": "Codex official-website review",
+      "recordedAt": "2026-10-28T14:00:54Z"
+    },
+    {
+      "id": "addin-hematology-20261027",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/hematology-service-charge",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-10-27T10:28:23.332Z",
+      "sha256": "c2f0c2e26eb3c86b4157654741a9f5577c03872f799e20385724b1b5ee8ce5fe",
+      "sourceUpdatedDate": "2026-02-23",
+      "currencyEvidence": "explicit_taka_header",
+      "collector": null,
+      "recordedAt": null
+    },
+    {
+      "id": "addin-contact-20261027",
+      "providerId": "addin-medical-college-hospital",
+      "url": "https://awmch.addinhospital.org/contact/",
+      "kind": "official_contact",
+      "retrievedAt": "2026-10-27T10:28:23.315Z",
+      "sha256": "f4d487b1e750ef07fc12fcae91ea2222cb030b951901ec540c8b42bf3472be87",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": null,
+      "recordedAt": null
+    }
+  ],
+  "listings": [
+    {
+      "id": "addin-moghbazar-complete-blood-count",
+      "branchId": "addin-moghbazar",
+      "serviceId": "complete-blood-count",
+      "providerServiceName": "CBC",
+      "priceId": "addin-moghbazar-cbc-20261027",
+      "amountMinor": 40000,
+      "sourceId": "addin-hematology-20261027",
+      "sourceRow": 1,
+      "verifiedAt": "2026-10-27T11:20:41Z",
+      "researchIds": [
+        "research-a1e5d0a49cc4f34fe938"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-complete-blood-count",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "complete-blood-count",
+      "providerServiceName": "CBC (Govt Rate)",
+      "priceId": "reviewed-price-e7b35ae8fe47ba4d6c5e-20261028",
+      "amountMinor": 40000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 11,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f139e68fa38939cf08b2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-fasting-blood-sugar",
+      "branchId": "addin-moghbazar",
+      "serviceId": "fasting-blood-sugar",
+      "providerServiceName": "FBS (Fasting Plasma Glucose)",
+      "priceId": "reviewed-price-7d3fea9ed58166dbc381-20261028",
+      "amountMinor": 17000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-cb92c45b37bba8697a69"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-fasting-blood-sugar",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "fasting-blood-sugar",
+      "providerServiceName": "Blood Sugar Fasting",
+      "priceId": "reviewed-price-0db083686ecd8669f03f-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f3a5c7cde433295c2361"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-random-blood-sugar",
+      "branchId": "addin-moghbazar",
+      "serviceId": "random-blood-sugar",
+      "providerServiceName": "RBS (Random Blood Sugar)",
+      "priceId": "reviewed-price-ac0a9ee397e4bae5ecaf-20261028",
+      "amountMinor": 17000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 6,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a7cc9f36886166eb2199"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-random-blood-sugar",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "random-blood-sugar",
+      "providerServiceName": "Blood Sugar Random",
+      "priceId": "reviewed-price-4d65a88852296e7dc8a7-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-1644b9e771e847caad76"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-post-prandial-blood-sugar",
+      "branchId": "addin-moghbazar",
+      "serviceId": "post-prandial-blood-sugar",
+      "providerServiceName": "PPBS (Post Prandial Blood Sugar)",
+      "priceId": "reviewed-price-2f832114f8b4977fc75e-20261028",
+      "amountMinor": 17000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 5,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-783c8094e2dd9ae83e8f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-glucose-2h-after-75g",
+      "branchId": "addin-moghbazar",
+      "serviceId": "glucose-2h-after-75g",
+      "providerServiceName": "2 hrs after 75 gm Glucose",
+      "priceId": "reviewed-price-c754b790805ab71fb95f-20261028",
+      "amountMinor": 19000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 71,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4c2b4a1983729634fc0d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-glucose-2h-after-75g",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "glucose-2h-after-75g",
+      "providerServiceName": "B. Sugar After 2 Hrs 75G Glucose",
+      "priceId": "reviewed-price-0702dac978592f8ab3af-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 3,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-47181658c616a5b3f2ad"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-glucose-1h-after-75g",
+      "branchId": "addin-moghbazar",
+      "serviceId": "glucose-1h-after-75g",
+      "providerServiceName": "1 hrs after 75 gm Glucose",
+      "priceId": "reviewed-price-a364408384fd050bc435-20261028",
+      "amountMinor": 19000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 70,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-173c9aec48a920ec0141"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-glucose-1h-after-100g",
+      "branchId": "addin-moghbazar",
+      "serviceId": "glucose-1h-after-100g",
+      "providerServiceName": "1 hr after 100 gm Glucose",
+      "priceId": "reviewed-price-a9945701067e77449b5e-20261028",
+      "amountMinor": 19000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 2,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-fb5c0676a7e546969ddb"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-glucose-2h-after-100g",
+      "branchId": "addin-moghbazar",
+      "serviceId": "glucose-2h-after-100g",
+      "providerServiceName": "2 hrs after 100 gm glucose",
+      "priceId": "reviewed-price-c6219582d30b011fdf29-20261028",
+      "amountMinor": 19000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 3,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-9d67b2f6f818e0f22033"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-glucose-3h-after-100g",
+      "branchId": "addin-moghbazar",
+      "serviceId": "glucose-3h-after-100g",
+      "providerServiceName": "3 hrs after 100 gm Glucose",
+      "priceId": "reviewed-price-ff743e2be93c62a5b97f-20261028",
+      "amountMinor": 19000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 4,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-32b811a1332e0e64ab88"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ogtt-75g-two-samples",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ogtt-75g-two-samples",
+      "providerServiceName": "OGTT with 75gm Glucose (2 Samples)",
+      "priceId": "reviewed-price-2b6e54de94e03c2a2bc3-20261028",
+      "amountMinor": 35000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 76,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-47ce5de96176b15edf2f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ogtt-75g-three-samples",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ogtt-75g-three-samples",
+      "providerServiceName": "OGTT with 75gm Glucose (3 Sample)",
+      "priceId": "reviewed-price-d00259e5cb9849661322-20261028",
+      "amountMinor": 48000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 77,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f1758d66ad6046a8e8d0"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hba1c",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hba1c",
+      "providerServiceName": "HbA1C (Glycated Hemoglobin)",
+      "priceId": "reviewed-price-aada2dd7d3f224fddd14-20261028",
+      "amountMinor": 82000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 39,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-6c987d0b4e1590192476"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-hba1c",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "hba1c",
+      "providerServiceName": "HbA1c",
+      "priceId": "reviewed-price-f72884956bb012c1a71b-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 20,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2fbe2309c6970965229d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-lipid-profile",
+      "branchId": "addin-moghbazar",
+      "serviceId": "lipid-profile",
+      "providerServiceName": "Lipid Profile",
+      "priceId": "reviewed-price-b7964aa0a61ba9e67866-20261028",
+      "amountMinor": 82000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 41,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-dd8c15fc6f2805e11a5c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-lipid-profile",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "lipid-profile",
+      "providerServiceName": "Lipid Profile",
+      "priceId": "reviewed-price-a448c554398bb46c8b8e-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 25,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ed21a3feea05a24166d8"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-fasting-lipid-profile",
+      "branchId": "addin-moghbazar",
+      "serviceId": "fasting-lipid-profile",
+      "providerServiceName": "Fasting Lipid Profile",
+      "priceId": "reviewed-price-0b1d69605a1e3d8b6464-20261028",
+      "amountMinor": 82000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 46,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e8545e25cf7897d765d3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-total-cholesterol",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-total-cholesterol",
+      "providerServiceName": "S. Cholesterol (Total)",
+      "priceId": "reviewed-price-e74565b9b1e7e4c5de63-20261028",
+      "amountMinor": 27000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 12,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b2d46480a13a68e96f96"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-serum-total-cholesterol",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "serum-total-cholesterol",
+      "providerServiceName": "Serum Cholesterol",
+      "priceId": "reviewed-price-bdd835f2d46786c034f0-20261028",
+      "amountMinor": 40000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 40,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b3648c45285eb589209e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hdl-cholesterol",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hdl-cholesterol",
+      "providerServiceName": "S. Cholesterol (HDL)",
+      "priceId": "reviewed-price-9f6ae81ea6d8ba152354-20261028",
+      "amountMinor": 40000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 13,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-9531d91df4dced995ede"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ldl-cholesterol",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ldl-cholesterol",
+      "providerServiceName": "LDL-Cholesterol",
+      "priceId": "reviewed-price-946b94ac8276ee4ea21b-20261028",
+      "amountMinor": 60000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 14,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-80787b8e479c03e8c74c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-triglycerides",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-triglycerides",
+      "providerServiceName": "S. Triglycerides",
+      "priceId": "reviewed-price-eaf27921caf3cfeb983c-20261028",
+      "amountMinor": 32000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 15,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-62be456d2a588477de9b"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-urea",
+      "branchId": "addin-moghbazar",
+      "serviceId": "urea",
+      "providerServiceName": "Urea",
+      "priceId": "reviewed-price-da811e9ac47eb02f54bd-20261028",
+      "amountMinor": 22000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-928a93b83ac6ed11f4fd"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-urea",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "urea",
+      "providerServiceName": "Urea",
+      "priceId": "reviewed-price-c548a98795c485b808f9-20261028",
+      "amountMinor": 50000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 46,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e24d3534d3763a0d0fe5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-blood-urea-nitrogen",
+      "branchId": "addin-moghbazar",
+      "serviceId": "blood-urea-nitrogen",
+      "providerServiceName": "BUN (Blood Urea Nitrogen)",
+      "priceId": "reviewed-price-b14484f19e89a90bfa89-20261028",
+      "amountMinor": 22000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d53231eb4d5d558a8170"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-uric-acid",
+      "branchId": "addin-moghbazar",
+      "serviceId": "uric-acid",
+      "providerServiceName": "Uric Acid",
+      "priceId": "reviewed-price-9feb4afdc562b684524a-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-82bc679e8b1aca0afe46"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-uric-acid",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "uric-acid",
+      "providerServiceName": "Serum Uric Acid",
+      "priceId": "reviewed-price-f891feefc6f9904da032-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 42,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-3611c3923b181ca895ae"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-bilirubin-total",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-bilirubin-total",
+      "providerServiceName": "S. Bilirubin, Total",
+      "priceId": "reviewed-price-82974750798f3a2e481e-20261028",
+      "amountMinor": 28000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 16,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e080350c9e6f3fea884c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-serum-bilirubin-total",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "serum-bilirubin-total",
+      "providerServiceName": "Serum Bilirubin (Total)",
+      "priceId": "reviewed-price-20c1fdcf132755f4dad6-20261028",
+      "amountMinor": 50000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 38,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4571381a3b7a1c4e11a2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-bilirubin-direct",
+      "branchId": "addin-moghbazar",
+      "serviceId": "bilirubin-direct",
+      "providerServiceName": "Bilirubin, Direct",
+      "priceId": "reviewed-price-d30a9a5b2f99208dc6e2-20261028",
+      "amountMinor": 42000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 17,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-87b3a21d249683220bc7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-bilirubin-indirect",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-bilirubin-indirect",
+      "providerServiceName": "S. Bilirubin (Indirect)",
+      "priceId": "reviewed-price-fc302e9362bcd56867f0-20261028",
+      "amountMinor": 39000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d4043a96a580e5777b19"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ast",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ast",
+      "providerServiceName": "SGOT (AST)",
+      "priceId": "reviewed-price-033051b1ea38fd34fb95-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 20,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4ff2a2478d7d85cc68ce"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-ast",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "ast",
+      "providerServiceName": "SGOT (AST)",
+      "priceId": "reviewed-price-5facc5360a7c8bdaf274-20261028",
+      "amountMinor": 50000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 43,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-1e4ab719bc9391dfa3be"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-alt",
+      "branchId": "addin-moghbazar",
+      "serviceId": "alt",
+      "providerServiceName": "SGPT (ALT)",
+      "priceId": "reviewed-price-5fa68d887a90c8113760-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 21,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e7823bd647ea4df9cd52"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-alt",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "alt",
+      "providerServiceName": "SGPT (ALT)",
+      "priceId": "reviewed-price-a43be293455b90190890-20261028",
+      "amountMinor": 70000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 44,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-5d728eebde73eaf663f4"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-gamma-gt",
+      "branchId": "addin-moghbazar",
+      "serviceId": "gamma-gt",
+      "providerServiceName": "Gamma-GT (GGT)",
+      "priceId": "reviewed-price-f90f840a96b9fbdb899f-20261028",
+      "amountMinor": 66000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 19,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-6fa5ef0596e93cf6bd93"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-alkaline-phosphatase",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-alkaline-phosphatase",
+      "providerServiceName": "S. Alkaline Phosphatase",
+      "priceId": "reviewed-price-55854fa5ea3fe70ffa49-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 22,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a115a7c3aa5b58d761d5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-total-protein",
+      "branchId": "addin-moghbazar",
+      "serviceId": "total-protein",
+      "providerServiceName": "Protein, total",
+      "priceId": "reviewed-price-6d2334c9d30b0ac8c309-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 23,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2d3d31a0398228f182d1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-total-protein",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "total-protein",
+      "providerServiceName": "Protein: Total",
+      "priceId": "reviewed-price-07e2526bc063bcda41b4-20261028",
+      "amountMinor": 70000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 29,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ba8ee0b7719a34fefc5f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-albumin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-albumin",
+      "providerServiceName": "S. Albumin (ALB)",
+      "priceId": "reviewed-price-26da294d8cd46596bb8e-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 24,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0d7e5d0e9177168656ba"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-albumin-globulin-ratio",
+      "branchId": "addin-moghbazar",
+      "serviceId": "albumin-globulin-ratio",
+      "providerServiceName": "A/G Ratio",
+      "priceId": "reviewed-price-2ea1212beb3978b06b91-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 26,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a622f91823fb9dd0f868"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-albumin-globulin-ratio",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "albumin-globulin-ratio",
+      "providerServiceName": "Protein: A.G.Ratio",
+      "priceId": "reviewed-price-7cff86660eef9f389ee2-20261028",
+      "amountMinor": 100000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 28,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-fd4499991a70c9289d6d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-amylase",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-amylase",
+      "providerServiceName": "S. Amylase",
+      "priceId": "reviewed-price-03330c1fae3a886825bc-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 29,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2a2b0a5835a6664f8e58"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-serum-amylase",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "serum-amylase",
+      "providerServiceName": "Serum Amylase",
+      "priceId": "reviewed-price-1f20b13ad44e0e5c3b79-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 37,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-678d46771b00b4763200"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-lipase",
+      "branchId": "addin-moghbazar",
+      "serviceId": "lipase",
+      "providerServiceName": "Lipase",
+      "priceId": "reviewed-price-b6dbd3dbe4b8be04dd74-20261028",
+      "amountMinor": 76000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 56,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-c16fe669b1ccc303469d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-calcium",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-calcium",
+      "providerServiceName": "S. Calcium",
+      "priceId": "reviewed-price-bc977796870e359eb561-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 31,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-43a9b0ce227b09cd7bf9"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-serum-calcium",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "serum-calcium",
+      "providerServiceName": "Serum Calcium",
+      "priceId": "reviewed-price-c1b2e5f361ece441cff5-20261028",
+      "amountMinor": 70000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 39,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-86c5607cf6b8837e208d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-magnesium",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-magnesium",
+      "providerServiceName": "S. Magnesium",
+      "priceId": "reviewed-price-f7ca04237ecda1302cb8-20261028",
+      "amountMinor": 66000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 59,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0d7d6cf7611f7572db5e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-zinc",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-zinc",
+      "providerServiceName": "S. Zinc",
+      "priceId": "reviewed-price-d96e625bbbf1214a0846-20261028",
+      "amountMinor": 66000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 60,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f4c5100db0b6ac0fd163"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-serum-ferritin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "serum-ferritin",
+      "providerServiceName": "S. Ferritin",
+      "priceId": "reviewed-price-07a6062f70166a96842b-20261028",
+      "amountMinor": 101000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 35,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-801b1dbd44a789cf1cb4"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-serum-ferritin",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "serum-ferritin",
+      "providerServiceName": "S. Ferritin (Govt Rate)",
+      "priceId": "reviewed-price-a4901a0175b0022b6a75-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 35,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-073728649470672bf58d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-tibc",
+      "branchId": "addin-moghbazar",
+      "serviceId": "tibc",
+      "providerServiceName": "TIBC (Total Iron Binding Capacity)",
+      "priceId": "reviewed-price-13b6456df84c2e540076-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 34,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e95033b969473e00be70"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-troponin-i",
+      "branchId": "addin-moghbazar",
+      "serviceId": "troponin-i",
+      "providerServiceName": "Troponin – I",
+      "priceId": "reviewed-price-e6b4f87b032f74d0de04-20261028",
+      "amountMinor": 100000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 25,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-6ea494876e8116a4c481"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ldh",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ldh",
+      "providerServiceName": "S. LDH",
+      "priceId": "reviewed-price-63fc1d2e400344166f18-20261028",
+      "amountMinor": 61000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 28,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4c440e22f29355165032"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ck-mb",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ck-mb",
+      "providerServiceName": "S. CK-MB",
+      "priceId": "reviewed-price-a6288251dcbfc90fda2f-20261028",
+      "amountMinor": 76000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 57,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-088b6d97e6e5298acb04"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-vitamin-b12",
+      "branchId": "addin-moghbazar",
+      "serviceId": "vitamin-b12",
+      "providerServiceName": "Vitamin B 12",
+      "priceId": "reviewed-price-dcc7dc5b87212881dcd2-20261028",
+      "amountMinor": 151000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 58,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f525e2b0bc384b0c2c60"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-vitamin-d-total",
+      "branchId": "addin-moghbazar",
+      "serviceId": "vitamin-d-total",
+      "providerServiceName": "Vitamin-D (Total)",
+      "priceId": "reviewed-price-0df831082b9d6c9cf9ff-20261028",
+      "amountMinor": 221000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 89,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ce06ddfbfc20a00168c6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-vitamin-d3",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "vitamin-d3",
+      "providerServiceName": "Vita D3 Level",
+      "priceId": "reviewed-price-50ac757be318f0f0907c-20261028",
+      "amountMinor": 350000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 63,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-93d0f0ac2f3873a580f7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-crp",
+      "branchId": "addin-moghbazar",
+      "serviceId": "crp",
+      "providerServiceName": "CRP (C-Reactive Protein)",
+      "priceId": "reviewed-price-ac593a8d205050486e83-20261028",
+      "amountMinor": 61000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 82,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8f26128266a601a0e215"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-crp",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "crp",
+      "providerServiceName": "CRP (Govt Rate)",
+      "priceId": "reviewed-price-ba411d19e56dd73dec53-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 14,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-3225c9bbd253a4744378"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ceruloplasmin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ceruloplasmin",
+      "providerServiceName": "Ceruloplasmin",
+      "priceId": "reviewed-price-f83b10772aa2a6969e95-20261028",
+      "amountMinor": 87000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 83,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b3fdae3734afa097a713"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-fibrinogen",
+      "branchId": "addin-moghbazar",
+      "serviceId": "fibrinogen",
+      "providerServiceName": "Fibrinogen",
+      "priceId": "reviewed-price-a455736a3ec31690abc8-20261028",
+      "amountMinor": 91000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 85,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-60f8f99830676b09a1fa"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-aptt",
+      "branchId": "addin-moghbazar",
+      "serviceId": "aptt",
+      "providerServiceName": "APTT",
+      "priceId": "reviewed-price-dd15ac720ce3ee51d736-20261028",
+      "amountMinor": 70000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 84,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4f48771bcb493567bcc5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-factor-viii-assay",
+      "branchId": "addin-moghbazar",
+      "serviceId": "factor-viii-assay",
+      "providerServiceName": "Factor VIII Assay",
+      "priceId": "reviewed-price-f5d2e0d75bee1909d914-20261028",
+      "amountMinor": 89000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 87,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a19e6cc36edbca88c7b2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-factor-ix-assay",
+      "branchId": "addin-moghbazar",
+      "serviceId": "factor-ix-assay",
+      "providerServiceName": "Factor IX Assay",
+      "priceId": "reviewed-price-1a07348a2ead1172f614-20261028",
+      "amountMinor": 89000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 88,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-932ff861df2f7262740f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-prothrombin-time",
+      "branchId": "addin-moghbazar",
+      "serviceId": "prothrombin-time",
+      "providerServiceName": "Prothrombin Time",
+      "priceId": "reviewed-price-d6897b32d5cfa88faa13-20261028",
+      "amountMinor": 46000,
+      "sourceId": "addin-biochemistry-20261028",
+      "sourceRow": 40,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d52fc0a5ad620fb71f9e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-prothrombin-time",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "prothrombin-time",
+      "providerServiceName": "Prothrombin Time",
+      "priceId": "reviewed-price-fa13aee965a39de50ae2-20261028",
+      "amountMinor": 100000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 30,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-5af18469eb6d7d6bd3e5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hemoglobin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hemoglobin",
+      "providerServiceName": "HB %",
+      "priceId": "reviewed-price-6d81102a40b533619dd1-20261028",
+      "amountMinor": 13000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 2,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f18ee7b44ad23e57ae00"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-hemoglobin",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "hemoglobin",
+      "providerServiceName": "Hb%",
+      "priceId": "reviewed-price-947eac3d8847644ca95e-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 19,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-c3bb0d5563842b34e257"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-platelet-count",
+      "branchId": "addin-moghbazar",
+      "serviceId": "platelet-count",
+      "providerServiceName": "PC (Platelet Count)",
+      "priceId": "reviewed-price-41e6fc7b2bd4b39eced6-20261028",
+      "amountMinor": 23000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 3,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a6474db48cbf02c52d2d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-platelet-count",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "platelet-count",
+      "providerServiceName": "Platelet Count (PC)",
+      "priceId": "reviewed-price-23176b7fb09b8d738b23-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 27,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d446cd87f2a786dfbece"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hematocrit",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hematocrit",
+      "providerServiceName": "Hct (Hematocrit)",
+      "priceId": "reviewed-price-26191b3ae4061396a44a-20261028",
+      "amountMinor": 23000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 4,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8e7455e05204e4615f48"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-mcv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "mcv",
+      "providerServiceName": "MCV",
+      "priceId": "reviewed-price-139d51e038fab4bf2d2e-20261028",
+      "amountMinor": 21000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 6,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-daed234b931686d85163"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-mch",
+      "branchId": "addin-moghbazar",
+      "serviceId": "mch",
+      "providerServiceName": "MCH",
+      "priceId": "reviewed-price-6ad04a462d57169ab171-20261028",
+      "amountMinor": 21000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8b631af7e261096e8e06"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-mchc",
+      "branchId": "addin-moghbazar",
+      "serviceId": "mchc",
+      "providerServiceName": "MCHC",
+      "priceId": "reviewed-price-67c37138369f4a03479b-20261028",
+      "amountMinor": 21000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-6f8a3cf36483e5b091ce"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-esr",
+      "branchId": "addin-moghbazar",
+      "serviceId": "esr",
+      "providerServiceName": "ESR",
+      "priceId": "reviewed-price-6e54d05fa8ad20171790-20261028",
+      "amountMinor": 13000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-dad7e33c40acaed4efbb"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-esr",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "esr",
+      "providerServiceName": "ESR",
+      "priceId": "reviewed-price-18d6ec625cd29d2163e3-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d694bf559f52ea8e80e0"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-reticulocyte-count",
+      "branchId": "addin-moghbazar",
+      "serviceId": "reticulocyte-count",
+      "providerServiceName": "Reticulocyte Count",
+      "priceId": "reviewed-price-c89d1ff1cb0d3b5c9efe-20261028",
+      "amountMinor": 31000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0c1c5f6db83df623183c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-bleeding-and-clotting-time",
+      "branchId": "addin-moghbazar",
+      "serviceId": "bleeding-and-clotting-time",
+      "providerServiceName": "BT & CT",
+      "priceId": "reviewed-price-dbf865d8bff167d13f80-20261028",
+      "amountMinor": 21000,
+      "sourceId": "addin-hematology-20261028",
+      "sourceRow": 19,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8fa3a73f4091a40a7fdf"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-bleeding-and-clotting-time",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "bleeding-and-clotting-time",
+      "providerServiceName": "BT CT",
+      "priceId": "reviewed-price-864034006320050a9642-20261028",
+      "amountMinor": 20000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 10,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-9359b5ca878290acdfe7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-thyroid-stimulating-hormone",
+      "branchId": "addin-moghbazar",
+      "serviceId": "thyroid-stimulating-hormone",
+      "providerServiceName": "TSH",
+      "priceId": "reviewed-price-c50f5e2d284b7908d50a-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 3,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-620052ae2dbfc3a964b4"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-thyroid-stimulating-hormone",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "thyroid-stimulating-hormone",
+      "providerServiceName": "TSH",
+      "priceId": "reviewed-price-09ec543ed11973a8abf7-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 62,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-519cc77035de8f78d654"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-t3",
+      "branchId": "addin-moghbazar",
+      "serviceId": "t3",
+      "providerServiceName": "T3",
+      "priceId": "reviewed-price-b4d96682a17484a5f6f3-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-c9d1e244fde51e05e818"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-t3",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "t3",
+      "providerServiceName": "T3",
+      "priceId": "reviewed-price-f7e6f2a1afc4dcacd319-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 58,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-794c6f6e17e5a0c7cbaf"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-t4",
+      "branchId": "addin-moghbazar",
+      "serviceId": "t4",
+      "providerServiceName": "T4",
+      "priceId": "reviewed-price-546279be4a99426a215a-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 2,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-bc2920afbd06d5e6e61e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-t4",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "t4",
+      "providerServiceName": "T4",
+      "priceId": "reviewed-price-883ead9cae0854722502-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 60,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-862c6fd6ab86138fffe6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-free-t3",
+      "branchId": "addin-moghbazar",
+      "serviceId": "free-t3",
+      "providerServiceName": "FT3",
+      "priceId": "reviewed-price-1846d3318e7fdbb6fcc4-20261028",
+      "amountMinor": 76000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 4,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-64eb54a836f823cb64f6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-free-t3",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "free-t3",
+      "providerServiceName": "FT3 (Free T3)",
+      "priceId": "reviewed-price-501c2c08dfd3c6e96f13-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 52,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b591ca22b49df16b3e26"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-free-t4",
+      "branchId": "addin-moghbazar",
+      "serviceId": "free-t4",
+      "providerServiceName": "FT4",
+      "priceId": "reviewed-price-51fdd25d21f720019003-20261028",
+      "amountMinor": 76000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 5,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2616abb900ec0302c20f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-free-t4",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "free-t4",
+      "providerServiceName": "FT4 (Free T4)",
+      "priceId": "reviewed-price-4c3232a9ffed71e5cd8c-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 53,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0aabb4f78c6f371b4a2a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-t3-t4-tsh-panel",
+      "branchId": "addin-moghbazar",
+      "serviceId": "t3-t4-tsh-panel",
+      "providerServiceName": "T3, T4, TSH",
+      "priceId": "reviewed-price-b827e2a3e20c7c6db789-20261028",
+      "amountMinor": 171000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 6,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-607675467c2baf202e7f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-t3-t4-tsh-panel",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "t3-t4-tsh-panel",
+      "providerServiceName": "T3, T4, TSH",
+      "priceId": "reviewed-price-026d3c1926ced0767167-20261028",
+      "amountMinor": 240000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 59,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-93bce16255bafcb357f0"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-free-t3-free-t4-tsh-panel",
+      "branchId": "addin-moghbazar",
+      "serviceId": "free-t3-free-t4-tsh-panel",
+      "providerServiceName": "FT3, FT4, TSH",
+      "priceId": "reviewed-price-8cba60068476dfa0b7ba-20261028",
+      "amountMinor": 201000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e702fcd1ba009d6766a1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-prolactin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "prolactin",
+      "providerServiceName": "S. Prolactin",
+      "priceId": "reviewed-price-518b3a6407838882c9b4-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-c9cb996da8189e21ee97"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-prolactin",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "prolactin",
+      "providerServiceName": "Prolactin",
+      "priceId": "reviewed-price-2c6ee578bf0376fc583a-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 57,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-14f88d888fb2fa963bc5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-testosterone",
+      "branchId": "addin-moghbazar",
+      "serviceId": "testosterone",
+      "providerServiceName": "Testosterone",
+      "priceId": "reviewed-price-2670a98bcf3bb6ae4a1f-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 10,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a5433c7333111fd501bd"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-testosterone",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "testosterone",
+      "providerServiceName": "Testosterone",
+      "priceId": "reviewed-price-880439d84b6cdb094847-20261028",
+      "amountMinor": 100000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 61,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ca2d481b20ba4f310ab1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-fsh",
+      "branchId": "addin-moghbazar",
+      "serviceId": "fsh",
+      "providerServiceName": "FSH",
+      "priceId": "reviewed-price-c99040b67a837cad5525-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 11,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-1c80cde044fb31ab4c8e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-fsh",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "fsh",
+      "providerServiceName": "FSH",
+      "priceId": "reviewed-price-55495b9ff5a23ee58b36-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 51,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-73ec6f800de8ef6e0556"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-lh",
+      "branchId": "addin-moghbazar",
+      "serviceId": "lh",
+      "providerServiceName": "LH",
+      "priceId": "reviewed-price-4de2d317957f84081382-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 12,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0f726b3f90781e33af91"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-lh",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "lh",
+      "providerServiceName": "LH",
+      "priceId": "reviewed-price-b2c988f8d2a50a3c71e1-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 54,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b947fc8ce1de5a26071b"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-oestrogen",
+      "branchId": "addin-moghbazar",
+      "serviceId": "oestrogen",
+      "providerServiceName": "Oestrogen",
+      "priceId": "reviewed-price-ae88ae6bc28cc4b971e1-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 13,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0728ecbcdd99638df278"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-oestrogen",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "oestrogen",
+      "providerServiceName": "Oestrogen",
+      "priceId": "reviewed-price-1d4b9f830d31df990775-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 55,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-5cdb63b8a35c692165bc"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-estradiol",
+      "branchId": "addin-moghbazar",
+      "serviceId": "estradiol",
+      "providerServiceName": "Estradiol",
+      "priceId": "reviewed-price-2ba85890add9b14f7f5c-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 14,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-027259f65be79fbbf084"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-progesterone",
+      "branchId": "addin-moghbazar",
+      "serviceId": "progesterone",
+      "providerServiceName": "Progesterone",
+      "priceId": "reviewed-price-13eb4276015aae439cef-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 15,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-5b59e00462a9c64aff62"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-progesterone",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "progesterone",
+      "providerServiceName": "Progesterone",
+      "priceId": "reviewed-price-0af1f2aaba912e511f58-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 56,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-acc837e8becd7d4a8964"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-acth",
+      "branchId": "addin-moghbazar",
+      "serviceId": "acth",
+      "providerServiceName": "ACTH",
+      "priceId": "reviewed-price-9d9e15ce6ea00da98286-20261028",
+      "amountMinor": 119000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 16,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-cf437d26aacc0d65df0c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-parathyroid-hormone",
+      "branchId": "addin-moghbazar",
+      "serviceId": "parathyroid-hormone",
+      "providerServiceName": "PTH (Parathyroid Hormone)",
+      "priceId": "reviewed-price-793b1cd8cef8ecf936bd-20261028",
+      "amountMinor": 119000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 17,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-36b0491f5f0a8e0e74d8"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-procalcitonin",
+      "branchId": "addin-moghbazar",
+      "serviceId": "procalcitonin",
+      "providerServiceName": "Pro Calcitonin",
+      "priceId": "reviewed-price-be63b8b0ed29de6d3a37-20261028",
+      "amountMinor": 201000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-61c50a6c6ff4254d87e6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-procalcitonin",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "procalcitonin",
+      "providerServiceName": "S. Procalcitonin (Govt Rate)",
+      "priceId": "reviewed-price-a3c90f6d916e37135fba-20261028",
+      "amountMinor": 200000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 36,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8f896c658b01cec7e0ce"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-growth-hormone",
+      "branchId": "addin-moghbazar",
+      "serviceId": "growth-hormone",
+      "providerServiceName": "Growth Hormone (GH)",
+      "priceId": "reviewed-price-f9b7ab39e3afeb2b3b8d-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 19,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f72fce96ed1abe30005d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-cortisol",
+      "branchId": "addin-moghbazar",
+      "serviceId": "cortisol",
+      "providerServiceName": "Cortisol",
+      "priceId": "reviewed-price-1534706c95e55c6cc285-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 20,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-17fdff092549efef2073"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-free-psa",
+      "branchId": "addin-moghbazar",
+      "serviceId": "free-psa",
+      "providerServiceName": "Free PSA",
+      "priceId": "reviewed-price-9c27d0f789779c005690-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 22,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-78292446f7fc95ab665f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-total-psa",
+      "branchId": "addin-moghbazar",
+      "serviceId": "total-psa",
+      "providerServiceName": "PSA (Total Prostate Specific Antigen)",
+      "priceId": "reviewed-price-cdf955efebb0fc875ff4-20261028",
+      "amountMinor": 76000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 45,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-788f441ec22a559103ef"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-cea",
+      "branchId": "addin-moghbazar",
+      "serviceId": "cea",
+      "providerServiceName": "CEA",
+      "priceId": "reviewed-price-d88f8dadc5b2c20f9666-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 23,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-227d982d761b4360e0f8"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ca-19-9",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ca-19-9",
+      "providerServiceName": "CA – 19-9",
+      "priceId": "reviewed-price-7a5298134aae30324f6d-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 24,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-fd16c79a52f0f4529104"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ca-125",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ca-125",
+      "providerServiceName": "CA 125",
+      "priceId": "reviewed-price-f1ab375cafef78ca85f8-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 25,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-64b28e9aaf9b295d0d6a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ca-15-3",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ca-15-3",
+      "providerServiceName": "CA 15.3",
+      "priceId": "reviewed-price-023eb019eda631054274-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 46,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d77222ba0999841d9d46"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-anti-ccp",
+      "branchId": "addin-moghbazar",
+      "serviceId": "anti-ccp",
+      "providerServiceName": "Anti CCP",
+      "priceId": "reviewed-price-b93d7cac2b0628869c1b-20261028",
+      "amountMinor": 91000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 47,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-89c59e64c9155c0e521f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-igm",
+      "branchId": "addin-moghbazar",
+      "serviceId": "igm",
+      "providerServiceName": "S. IgM",
+      "priceId": "reviewed-price-a85ff858aea0e2c7cdd9-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 36,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-eed043b5c5ffcfb88819"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-igg",
+      "branchId": "addin-moghbazar",
+      "serviceId": "igg",
+      "providerServiceName": "S. IgG",
+      "priceId": "reviewed-price-e03fc53902d196b02e1e-20261028",
+      "amountMinor": 81000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 35,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-7bb458e5e2bc321915d5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-iga",
+      "branchId": "addin-moghbazar",
+      "serviceId": "iga",
+      "providerServiceName": "S. IgA",
+      "priceId": "reviewed-price-1cfc81705afd0602f7f5-20261028",
+      "amountMinor": 84000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 37,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f36077003a277cd6f6b2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-ige",
+      "branchId": "addin-moghbazar",
+      "serviceId": "ige",
+      "providerServiceName": "S. IgE",
+      "priceId": "reviewed-price-439753c1ed517c55c94a-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 38,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4208d1f2959bd4373cc7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-complement-c3",
+      "branchId": "addin-moghbazar",
+      "serviceId": "complement-c3",
+      "providerServiceName": "C3",
+      "priceId": "reviewed-price-50f23773143d0b351610-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 42,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-07d943acd90c0f995bda"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-complement-c4",
+      "branchId": "addin-moghbazar",
+      "serviceId": "complement-c4",
+      "providerServiceName": "C4",
+      "priceId": "reviewed-price-ece51b88af3a6490cb14-20261028",
+      "amountMinor": 71000,
+      "sourceId": "addin-immunology-20261028",
+      "sourceRow": 43,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-c21ba9b0007bad3f4817"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-urine-routine",
+      "branchId": "addin-moghbazar",
+      "serviceId": "urine-routine",
+      "providerServiceName": "URINE R/M/E",
+      "priceId": "reviewed-price-777853bda923fd78c5ac-20261028",
+      "amountMinor": 17000,
+      "sourceId": "addin-clinical-pathology-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-1a89977f30c950e55384"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-urine-routine",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "urine-routine",
+      "providerServiceName": "Urine R/M/E",
+      "priceId": "reviewed-price-aca6555659f54f5c519e-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 95,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-20d5c3e94ccec4ba5923"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-stool-routine",
+      "branchId": "addin-moghbazar",
+      "serviceId": "stool-routine",
+      "providerServiceName": "Stool R/E",
+      "priceId": "reviewed-price-97abdd93c4587c7b93c5-20261028",
+      "amountMinor": 17000,
+      "sourceId": "addin-clinical-pathology-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ed1eff85f9d6865342a5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-stool-routine",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "stool-routine",
+      "providerServiceName": "Stool R/E",
+      "priceId": "reviewed-price-19e3f3e3648fa9421d13-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 82,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-1a868a2596454ef76e93"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-stool-occult-blood",
+      "branchId": "addin-moghbazar",
+      "serviceId": "stool-occult-blood",
+      "providerServiceName": "OBT (Occult Blood Test)",
+      "priceId": "reviewed-price-1594e42f4749c886fe39-20261028",
+      "amountMinor": 31000,
+      "sourceId": "addin-clinical-pathology-20261028",
+      "sourceRow": 3,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-dc591418860c9393ab6a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-stool-occult-blood",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "stool-occult-blood",
+      "providerServiceName": "Stool OBT",
+      "priceId": "reviewed-price-b05cf9c67411986f393e-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 81,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b396301cf97434260656"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-semen-analysis",
+      "branchId": "addin-moghbazar",
+      "serviceId": "semen-analysis",
+      "providerServiceName": "SEMEN ANALYSIS",
+      "priceId": "reviewed-price-3d5136d077edd9da8bf6-20261028",
+      "amountMinor": 41000,
+      "sourceId": "addin-clinical-pathology-20261028",
+      "sourceRow": 17,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b128dba0e9febeea2fdf"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-semen-analysis",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "semen-analysis",
+      "providerServiceName": "Semen Analysis",
+      "priceId": "reviewed-price-dbc75dea9615e2250333-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 79,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-39316318e0383b3e3704"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-mantoux-test",
+      "branchId": "addin-moghbazar",
+      "serviceId": "mantoux-test",
+      "providerServiceName": "MT (Mantoux Test)",
+      "priceId": "reviewed-price-16aeb7c7685b1d29eac6-20261028",
+      "amountMinor": 26000,
+      "sourceId": "addin-clinical-pathology-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-959f683ae39acd306a16"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-mantoux-test",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "mantoux-test",
+      "providerServiceName": "MT Test",
+      "priceId": "reviewed-price-0b392649f8e85aaa68ca-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 77,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-90f571f827fd79cf6587"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-urine-pregnancy-test",
+      "branchId": "addin-moghbazar",
+      "serviceId": "urine-pregnancy-test",
+      "providerServiceName": "Urine Pregnancy Test",
+      "priceId": "reviewed-price-f8b927a4f864f219626c-20261028",
+      "amountMinor": 20000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ad36fba7e4fe8f8458f4"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-urine-pregnancy-test",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "urine-pregnancy-test",
+      "providerServiceName": "Urine Pregnancy Test",
+      "priceId": "reviewed-price-aa81b70ef4b67e5ad925-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 94,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-caef04e0d17159482217"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-vdrl",
+      "branchId": "addin-moghbazar",
+      "serviceId": "vdrl",
+      "providerServiceName": "VDRL",
+      "priceId": "reviewed-price-059f2b3ac0ca1ca84941-20261028",
+      "amountMinor": 31000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 10,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-89fda61f715c7d994ad7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-vdrl",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "vdrl",
+      "providerServiceName": "VDRL",
+      "priceId": "reviewed-price-60ee0301c6ef38c33fed-20261028",
+      "amountMinor": 50000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 47,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ce0376009f58335ec47e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-tpha",
+      "branchId": "addin-moghbazar",
+      "serviceId": "tpha",
+      "providerServiceName": "TPHA",
+      "priceId": "reviewed-price-aa841de6bc842cddcb95-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 11,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-3172dd2fe670a9138622"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-tpha",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "tpha",
+      "providerServiceName": "TPHA",
+      "priceId": "reviewed-price-a73877b6561c7b5c00c1-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 45,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-219d53146be21f5a3ba6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-widal-test",
+      "branchId": "addin-moghbazar",
+      "serviceId": "widal-test",
+      "providerServiceName": "Widal Test",
+      "priceId": "reviewed-price-1b91e141ef8b4d84fbdb-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 12,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-827d17f974ee2ef9e3f3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-widal-test",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "widal-test",
+      "providerServiceName": "Widal Test",
+      "priceId": "reviewed-price-34e175cb07d88a6d5ca7-20261028",
+      "amountMinor": 50000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 48,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-160a816588cbac9066d2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-aso-titre",
+      "branchId": "addin-moghbazar",
+      "serviceId": "aso-titre",
+      "providerServiceName": "ASO Titre",
+      "priceId": "reviewed-price-866e50702109537f9e31-20261028",
+      "amountMinor": 61000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 5,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-6684ce2bad819f77ae02"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hbsag-screening",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hbsag-screening",
+      "providerServiceName": "HBsAg (Screening Test)",
+      "priceId": "reviewed-price-c443df5dadd84be673bb-20261028",
+      "amountMinor": 37000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-89dd1248a989bf39b8f0"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-hbsag-latex",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "hbsag-latex",
+      "providerServiceName": "HbsAg (Latex)",
+      "priceId": "reviewed-price-53f73c5aac9b52ec31c0-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 21,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-50ba681eccb5d0ee44c6"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-hbsag-confirmatory",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "hbsag-confirmatory",
+      "providerServiceName": "HbsAg Confirmatory",
+      "priceId": "reviewed-price-d84edc0f96c7bf335d89-20261028",
+      "amountMinor": 120000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 22,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d8875e998a6f5c5984b2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hbsag-elisa",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hbsag-elisa",
+      "providerServiceName": "HBsAg (ELISA)",
+      "priceId": "reviewed-price-a70c6028bce83fefb367-20261028",
+      "amountMinor": 66000,
+      "sourceId": "addin-virology-20261028",
+      "sourceRow": 25,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f9e28527b20e24f6f55a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-dengue-antibody",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "dengue-antibody",
+      "providerServiceName": "Dengue (IgG+IgM) Antibody (Govt Rate)",
+      "priceId": "reviewed-price-b746c0b65a11bacfce64-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 16,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f824533bf65ed763d551"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-dengue-antibody-ict",
+      "branchId": "addin-moghbazar",
+      "serviceId": "dengue-antibody-ict",
+      "providerServiceName": "Anti-Dengue IgM & IgG (ICT)",
+      "priceId": "reviewed-price-e7df9f294e29a2d8abf8-20261028",
+      "amountMinor": 56000,
+      "sourceId": "addin-serology-20261028",
+      "sourceRow": 21,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a698c222796b457d6748"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-dengue-igm-elisa",
+      "branchId": "addin-moghbazar",
+      "serviceId": "dengue-igm-elisa",
+      "providerServiceName": "Anti-Dengue IgM (ELISA)",
+      "priceId": "reviewed-price-33fbaff1cd5455d63945-20261028",
+      "amountMinor": 85000,
+      "sourceId": "addin-virology-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-58cbc331968efc545cf3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-dengue-igg-elisa",
+      "branchId": "addin-moghbazar",
+      "serviceId": "dengue-igg-elisa",
+      "providerServiceName": "Anti-Dengue IgG (ELISA)",
+      "priceId": "reviewed-price-ec747f35cdc2abbc1fd9-20261028",
+      "amountMinor": 85000,
+      "sourceId": "addin-virology-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-21cdc1ab9ea4708c0814"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-dengue-ns1-antigen",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "dengue-ns1-antigen",
+      "providerServiceName": "Dengue NS1 (Antigen) (Govt Rate)",
+      "priceId": "reviewed-price-bf0e5e103dac5b714d4e-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 17,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-f1faa874c02aafd8183c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-blood-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "blood-culture-sensitivity",
+      "providerServiceName": "C & S (Blood)",
+      "priceId": "reviewed-price-4335bfa44b984de0e128-20261028",
+      "amountMinor": 96000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b4007c867622a5b637b3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-blood-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "blood-culture-sensitivity",
+      "providerServiceName": "Blood for C/S",
+      "priceId": "reviewed-price-371e2975db353a207a77-20261028",
+      "amountMinor": 150000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 64,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-4ba02bce4ad2453bcbf0"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-blood-culture-anaerobic",
+      "branchId": "addin-moghbazar",
+      "serviceId": "blood-culture-anaerobic",
+      "providerServiceName": "C & S Blood (Anaerobic)",
+      "priceId": "reviewed-price-617547fc1bd3dee139bd-20261028",
+      "amountMinor": 96000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ff92fc65683c0fb3691a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-urine-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "urine-culture-sensitivity",
+      "providerServiceName": "C & S (Urine)",
+      "priceId": "reviewed-price-b7805db30f731d36b44b-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 10,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8131083f9ddefa79a37e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-urine-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "urine-culture-sensitivity",
+      "providerServiceName": "Urine C/S",
+      "priceId": "reviewed-price-ac292a59f30a413ba69b-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 93,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-7c96d0ba5ebe29d056a7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-stool-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "stool-culture-sensitivity",
+      "providerServiceName": "C & S (Stool)",
+      "priceId": "reviewed-price-84762010e519edcf113a-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 11,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-40f3c406245790b4d149"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-stool-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "stool-culture-sensitivity",
+      "providerServiceName": "Stool C/S",
+      "priceId": "reviewed-price-212e68a329b600d8ac1b-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 80,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-380882180ea89d71b0cc"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-pus-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "pus-culture-sensitivity",
+      "providerServiceName": "C & S (Pus)",
+      "priceId": "reviewed-price-9953fcc69e6177486a24-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 22,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-33245391929d6d31c703"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-pus-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "pus-culture-sensitivity",
+      "providerServiceName": "PUS for C/S",
+      "priceId": "reviewed-price-4f984f329b8d1d6e9182-20261028",
+      "amountMinor": 80000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 67,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-cd0b41f3910db919ddf1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-throat-swab-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "throat-swab-culture-sensitivity",
+      "providerServiceName": "C & S (Throat Swab) (T/S)",
+      "priceId": "reviewed-price-1dd785e916c79288c35b-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 19,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8fadb70154929fc79d49"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-throat-swab-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "throat-swab-culture-sensitivity",
+      "providerServiceName": "Throat Swab: C/S",
+      "priceId": "reviewed-price-dc2bbe37a973bfc11ace-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 70,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-353c7ea800919a5e458a"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-hvs-culture-sensitivity",
+      "branchId": "addin-moghbazar",
+      "serviceId": "hvs-culture-sensitivity",
+      "providerServiceName": "C/S (HVS)",
+      "priceId": "reviewed-price-6c8a9ba344eb7869714c-20261028",
+      "amountMinor": 51000,
+      "sourceId": "addin-microbiology-20261028",
+      "sourceRow": 6,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-3094f2157fbb54acae26"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-hvs-culture-sensitivity",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "hvs-culture-sensitivity",
+      "providerServiceName": "HVS: C/S",
+      "priceId": "reviewed-price-45401c1d1a992c89bc6c-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 65,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2d9c8ce51e98393fa2d2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-electrocardiogram",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "electrocardiogram",
+      "providerServiceName": "ECG",
+      "priceId": "reviewed-price-7dcc8230d89fb8d86993-20261028",
+      "amountMinor": 30000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 71,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-422a40ee3c9a3b0a3aca"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-usg-whole-abdomen",
+      "branchId": "addin-moghbazar",
+      "serviceId": "usg-whole-abdomen",
+      "providerServiceName": "Whole Abdomen (W/A)",
+      "priceId": "reviewed-price-de751d76cdddbfa5ff22-20261028",
+      "amountMinor": 150000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 5,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-ca51bdc223d8ec7c0c55"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-usg-whole-abdomen",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "usg-whole-abdomen",
+      "providerServiceName": "Whole Abdomen",
+      "priceId": "reviewed-price-b2b32c517067456cf24e-20261028",
+      "amountMinor": 180000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 92,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-9e566c99c7d0fa037354"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-usg-whole-abdomen-pvr",
+      "branchId": "addin-moghbazar",
+      "serviceId": "usg-whole-abdomen-pvr",
+      "providerServiceName": "W/A + PVR",
+      "priceId": "reviewed-price-e3054938d0c61404ce88-20261028",
+      "amountMinor": 155000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 6,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-d58115f1e5bbe1081023"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-usg-lower-abdomen",
+      "branchId": "addin-moghbazar",
+      "serviceId": "usg-lower-abdomen",
+      "providerServiceName": "Lower Abdomen",
+      "priceId": "reviewed-price-e70b2ef5ce230838da45-20261028",
+      "amountMinor": 155000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 8,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e6982c5c9b2bc1328a0f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-usg-lower-abdomen",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "usg-lower-abdomen",
+      "providerServiceName": "Lower Abdomen",
+      "priceId": "reviewed-price-650c2b6baf1dc172c4e6-20261028",
+      "amountMinor": 150000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 89,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a8cc3ab0c27243829669"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-usg-thyroid",
+      "branchId": "addin-moghbazar",
+      "serviceId": "usg-thyroid",
+      "providerServiceName": "Thyroid",
+      "priceId": "reviewed-price-0a071477dc3d47b7787f-20261028",
+      "amountMinor": 150000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 7,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-478b2a06e867b919b7bf"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-usg-thyroid",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "usg-thyroid",
+      "providerServiceName": "Thyroid",
+      "priceId": "reviewed-price-0f4e56a96918a1577458-20261028",
+      "amountMinor": 180000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 90,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-da1d68b07fe03baec0b3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-usg-kub",
+      "branchId": "addin-moghbazar",
+      "serviceId": "usg-kub",
+      "providerServiceName": "KUB",
+      "priceId": "reviewed-price-b1e11192a5bc3a81bef4-20261028",
+      "amountMinor": 150000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 12,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-9f5086ca834bc9eb48fe"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-usg-kub",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "usg-kub",
+      "providerServiceName": "KUB",
+      "priceId": "reviewed-price-f37d78366ee60c03fb9d-20261028",
+      "amountMinor": 150000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 87,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-8e949506b12253dd290c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-transvaginal-ultrasound",
+      "branchId": "addin-moghbazar",
+      "serviceId": "transvaginal-ultrasound",
+      "providerServiceName": "TVS",
+      "priceId": "reviewed-price-9c4650d1b2ff4dffab27-20261028",
+      "amountMinor": 155000,
+      "sourceId": "addin-ultrasonography-20261028",
+      "sourceRow": 9,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-564ea87f94685ed80e76"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-transvaginal-ultrasound",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "transvaginal-ultrasound",
+      "providerServiceName": "TVS",
+      "priceId": "reviewed-price-b616e0d9a0716a88e1c3-20261028",
+      "amountMinor": 200000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 91,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-be125314c20dbce3c851"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-xray-chest",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "xray-chest",
+      "providerServiceName": "Chest P/A View",
+      "priceId": "reviewed-price-8c3fe280ed61f12521ed-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 98,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-b7e0223437f30ce7e941"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-right-knee-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-right-knee-bv",
+      "providerServiceName": "Rt. Knee joint B/V",
+      "priceId": "reviewed-price-e0073c3a51e0fa14d53a-20261028",
+      "amountMinor": 42000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 49,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a4c47f69ead8e9e244b1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-left-knee-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-left-knee-bv",
+      "providerServiceName": "Lt. Knee joint B/V",
+      "priceId": "reviewed-price-c2ea331de32b974e171f-20261028",
+      "amountMinor": 42000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 50,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-0432a3ca761ceaa4015c"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-xray-left-knee-bv",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "xray-left-knee-bv",
+      "providerServiceName": "Left Knee Joint B/V",
+      "priceId": "reviewed-price-c0e52f8eec6a22ccbfb2-20261028",
+      "amountMinor": 60000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 103,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-e76d5ef9a83d6468bc9b"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-both-knees-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-both-knees-bv",
+      "providerServiceName": "Both Knee joint B/V",
+      "priceId": "reviewed-price-335357bef17c01befa26-20261028",
+      "amountMinor": 77000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 52,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-593b5e6053af10627112"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-xray-both-knees-bv",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "xray-both-knees-bv",
+      "providerServiceName": "Both Knee Joint B/V",
+      "priceId": "reviewed-price-9a8755a4e55d71e56421-20261028",
+      "amountMinor": 100000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 96,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-a0ca06ae7784484f41dc"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-cervical-spine-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-cervical-spine-bv",
+      "providerServiceName": "Cervical spine B/V view",
+      "priceId": "reviewed-price-e01e6bcd0f323ab8b787-20261028",
+      "amountMinor": 47000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 16,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-88751c11131eba024d02"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "mogh-kamalapur-xray-cervical-spine-bv",
+      "branchId": "mogh-kamalapur",
+      "serviceId": "xray-cervical-spine-bv",
+      "providerServiceName": "Cervical Spine B/V",
+      "priceId": "reviewed-price-8947743fd6e3102c9efe-20261028",
+      "amountMinor": 100000,
+      "sourceId": "mogh-tests-20261028",
+      "sourceRow": 97,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-97826013c857762c985e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-cervical-spine-ap",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-cervical-spine-ap",
+      "providerServiceName": "Cervical spine A/P view",
+      "priceId": "reviewed-price-023c133e6a5e2321b63f-20261028",
+      "amountMinor": 37000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 17,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-7e80d0026f80fdbbd56b"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-cervical-spine-lateral",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-cervical-spine-lateral",
+      "providerServiceName": "Cervical spine Lateral view",
+      "priceId": "reviewed-price-5067031a0a95914996a0-20261028",
+      "amountMinor": 37000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 18,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-05de0f201df93aa96dc1"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-right-shoulder-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-right-shoulder-bv",
+      "providerServiceName": "Rt. Shoulder B/V",
+      "priceId": "reviewed-price-0c1671230308f6ef7c16-20261028",
+      "amountMinor": 45000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 74,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-90ad2e9a43da6e6ecdb7"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "addin-moghbazar-xray-left-shoulder-bv",
+      "branchId": "addin-moghbazar",
+      "serviceId": "xray-left-shoulder-bv",
+      "providerServiceName": "Lt. Shoulder B/V",
+      "priceId": "reviewed-price-4499c269d601a827b1da-20261028",
+      "amountMinor": 45000,
+      "sourceId": "addin-radiology-20261028",
+      "sourceRow": 75,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-acede24c4d7110147e8f"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "holy-family-eskatan-covid-19-rt-pcr",
+      "branchId": "holy-family-eskatan",
+      "serviceId": "covid-19-rt-pcr",
+      "providerServiceName": "RT-PCR TEST for Covid-19",
+      "priceId": "reviewed-price-eb7f79802938ab8eaab1-20261028",
+      "amountMinor": 300000,
+      "sourceId": "holy-family-covid-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-3da8b178f94687835bcc"
+      ],
+      "corroboration": [
+        {
+          "sourceId": "holy-family-pathology-20261028",
+          "row": 369
+        }
+      ]
+    },
+    {
+      "id": "addin-moghbazar-covid-19-rt-pcr",
+      "branchId": "addin-moghbazar",
+      "serviceId": "covid-19-rt-pcr",
+      "providerServiceName": "COVID-19-RT-PCR",
+      "priceId": "reviewed-price-717f74c19df34ee9c375-20261028",
+      "amountMinor": 250000,
+      "sourceId": "addin-virology-20261028",
+      "sourceRow": 27,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-2b67ad72e3a982c0f93e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "holy-family-eskatan-covid-19-antigen-rapid",
+      "branchId": "holy-family-eskatan",
+      "serviceId": "covid-19-antigen-rapid",
+      "providerServiceName": "Covid-19 Rapid Antigen Test",
+      "priceId": "reviewed-price-d813f576d51dc94bfacd-20261028",
+      "amountMinor": 70000,
+      "sourceId": "holy-family-covid-20261028",
+      "sourceRow": 2,
+      "verifiedAt": "2026-10-28T14:00:54Z",
+      "researchIds": [
+        "research-67cedb56ad8269a3709f"
+      ],
+      "corroboration": [
+        {
+          "sourceId": "holy-family-pathology-20261028",
+          "row": 370
+        }
+      ]
+    }
+  ]
+}

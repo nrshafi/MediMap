@@ -84,6 +84,7 @@ Check changed screens on mobile before considering a feature complete.
 - Select test tools after checking compatibility with the installed framework and Workers environment.
 
 Use Playwright Test with Chromium for discovery browser tests. Run the same flows at desktop and 375 px mobile widths.
+Run browser regressions against a fresh local D1 database and the built application through `vite preview`.
 Keep browser tests in `tests/browser` with `.browser.ts` filenames, separate from Bun test discovery.
 Use Happy DOM for component behavior only. It does not verify rendered layout, touch-target sizes, or browser navigation.
 Do not copy application handlers into test harnesses. Test harnesses can supply state and observe callbacks.
@@ -146,5 +147,8 @@ Checked on 8 October 2026:
 - Provider and branch writes also use explicit TypeScript validation and the shared bounded HTML form parser.
 - Catalog code uses `src/features/catalog/`; administration uses `src/features/administration/`. Keep SQL in `.server.ts` repository modules.
 - Real D1 integration tests use Miniflare/workerd through Node. Bun bundles the TypeScript test entry point and runs compatible unit tests.
+- Run database suites sequentially to limit peak Workers-runtime memory. Test source-backed datasets in isolation from browser demonstration fixtures.
+- Keep reviewed source-row mappings explicit. Freeze evidence and mapping inputs with review hashes before generating development data.
+- Keep Bun-specific CLI code separate from pure data modules that Node database checks import.
 - Migration review and production application rules.
 - UI conventions, accessibility targets, and performance thresholds.

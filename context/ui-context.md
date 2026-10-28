@@ -96,6 +96,17 @@ Require official contact evidence and confirmation before an active branch save.
 Show source links, inactive status, saved feedback, rejected values, and outdated-edit recovery.
 Keep native forms usable without JavaScript. Stack fields and schedule rows at 375 px.
 
+## Price and source administration
+
+Reuse administration form styles, native POST forms, fixed server feedback, and visible labels.
+Separate source snapshot creation, branch-service mapping, availability correction, new price revisions, and explicit price clearing.
+Explain that sources are retained snapshots and a source URL alone does not verify a price.
+Label collection timestamps as UTC. Keep collector references, website-update dates, review dates, and tariff-effective dates distinct.
+Require diagnostic-mapping confirmation and review confirmation for verified prices.
+Show BDT decimal input with at most two decimal places. Never display zero for an unknown price.
+Show retained price revisions, their source IDs, status, review dates, and creation dates.
+Use 44 px controls and stack forms at 375 px. Preserve current selection after rejected correction requests when possible.
+
 ## Future UI decisions
 
 Define remaining controls, interaction states, error and success colors, and component conventions when functional pages are in scope.

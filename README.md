@@ -44,6 +44,8 @@ Open `/admin/catalog/manage` for protected category, service, and English/Bangla
 See [catalog administration](docs/catalog-administration.md) for validation, correction, deactivation, and migration details.
 Open `/admin/providers` for provider and branch contacts, coordinates, and weekly opening hours.
 See [provider administration](docs/provider-administration.md) for source requirements and the updated branch read contract.
+Open `/admin/prices` for branch-service availability, standard BDT price revisions, and official source records.
+See [pricing administration](docs/pricing-administration.md) for evidence, retained history, and revision checks.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.
 The broader research export stays separate. Public discovery continues to use labeled sample records.

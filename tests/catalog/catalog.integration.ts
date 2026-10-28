@@ -278,6 +278,8 @@ test('catalog foundation against real local D1', async (t) => {
     await t.test(
       'corrupt stored evidence produces explicit unavailable response without fallback',
       async () => {
+        // Simulate storage corruption after bypassing the immutable-source guard in this isolated database.
+        await db.prepare('DROP TRIGGER source_snapshot_update').run();
         await db
           .prepare(
             "UPDATE sources SET retrieved_at = 'invalid' WHERE id = 'addin-hematology-20261027'",

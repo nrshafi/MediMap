@@ -103,7 +103,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Exact final delivery date in early December 2026.
 - Accessibility and performance acceptance targets.
 - Remaining optional P1 features.
-- Default sorting and the effect of reports on verification status and statistics eligibility.
+- Default sorting and price-report resolution rules. Pending price reports immediately mark prices disputed and exclude them from statistics.
 
 ## Delivery constraints
 

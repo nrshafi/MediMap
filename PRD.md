@@ -1051,6 +1051,11 @@ Users do not directly modify official MediMap data.
 
 ---
 
+## Price-report status decision
+
+Price-report policy confirmed on 28 October 2026: a pending price report immediately marks the current price disputed.
+Disputed prices are excluded from default statistics. Preserve source and verification history until administrator resolution.
+
 # 44. Opening hours
 
 Each branch should support structured opening hours.
@@ -2085,7 +2090,7 @@ These newer explicit decisions take priority where earlier sections conflict.
 - The configurable age-based freshness policy in sections 22, 23, and 26 is superseded by this report-based policy.
 - Default statistics use one current verified non-stale price per active branch-service listing in the selected area.
 - Show eligible branch and distinct provider counts. Require at least three eligible branches for aggregate statistics.
-- Do not apply an age cutoff to statistics. The effect of reports on verification status and eligibility remains open.
+- Do not apply an age cutoff to statistics. Pending price reports immediately mark prices disputed and exclude them from default statistics.
 - Present written comparison details in tables. Use statistics for numerical values only.
 - Generated narrative comparison summaries in sections 31 and 59 are excluded. Required comparison charts remain in scope.
 

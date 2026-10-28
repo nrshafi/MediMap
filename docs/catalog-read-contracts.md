@@ -73,6 +73,7 @@ Service reads include active aliases only. Deactivation preserves stored aliases
 The repository validates stored values before returning public contracts.
 Branch reads now include provider contacts, branch website, alternative telephone, and typed `WeeklyHours | null` schedules.
 See [provider administration](provider-administration.md) for the Dhaka-time, overnight, unknown-day, and deactivation contracts.
+See [pricing administration](pricing-administration.md) for current-price writes, retained evidence, unknown-price clearing, and statistics eligibility.
 
 `readCatalog` in `catalog.functions.ts` exposes GET reads using a validated `kind` request.
 Use `catalog`, `service`, `branch`, `listing`, or `listings` as `kind`.

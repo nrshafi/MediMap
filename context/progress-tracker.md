@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 14:59:06 +06:00`.
+Last updated: `2026-10-28 15:48:32 +06:00`.
 
 ## Current phase
 
@@ -15,6 +15,7 @@ Local D1 migrations, server reads, and a read-only catalog inspector are impleme
 Google account, session, and authorization code is implemented and locally verified. Real Google login verification awaits OAuth credentials.
 Protected category, canonical service, and English/Bangla alias administration is implemented and locally verified.
 Protected provider/branch administration and typed weekly-hours reads are implemented and locally verified.
+Protected branch-service, price revision, and official-source administration is implemented and locally verified.
 Provider selection, address search, and map-based location input remain unfinished.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 This research export remains separate from application fixtures and D1. The initial D1 import contains one individually reviewed CBC listing.
@@ -43,6 +44,22 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Price and source administration (2026-10-28 15:48:32 +06:00)
+
+- Committed provider/branch administration locally as `9386a1d`. No push occurred.
+- The owner confirmed that pending price reports must immediately mark the current price disputed and exclude it from default statistics.
+- Applied `0006_pricing_administration.sql` and the repeatable seed locally. Rehearsed the upgrade with existing reviewed prices and sources in isolation.
+- Added protected forms and repository operations for official source snapshots, availability, price revisions, and explicit unknown prices.
+- Preserved prior review timestamps for status-only corrections with unchanged amount and evidence. New verified revisions require current review confirmation.
+- Passed all 280 unit/component tests across 26 files and all 66 actual D1 integration tests, including parent tests.
+- Verified competing writes roll back without orphan price revisions, unknown prices return null, and a historical verified fixture does not expire by age.
+- Passed all 68 desktop/mobile browser checks, including native pricing forms without JavaScript and changed values in the public inspector.
+- Inspected the rendered desktop and 375 px price forms. Controls remain readable without horizontal page overflow.
+- Passed types, lint, formatting, frozen installation, and client/Workers production builds. Browser bundles contain no pricing SQL, repository, or secret variable names.
+- Added `docs/pricing-administration.md` and updated setup, public-contract, product, and architecture documents.
+- Automatic report submission/resolution remains later work. The confirmed immediate-dispute policy is recorded without claiming those operations exist.
+- Live Google acceptance still requires credentials. New pricing changes remain uncommitted.
 
 ### Provider and branch administration (2026-10-28 14:59:06 +06:00)
 
@@ -432,7 +449,7 @@ These are confirmed constraints for later feature implementation. Full details a
 - Google OAuth client credentials for live login verification, plus the later report-submission access policy.
 - Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
 - Free-tier workload fit for the selected services.
-- Effect of incorrect-price reports on verification status and statistics eligibility.
+- Price-report resolution and competing-report rules. Pending price reports immediately make current prices disputed and ineligible, as confirmed on 28 October 2026.
 - Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
 - Validation for later provider, price, and report writes. Catalog administration uses explicit TypeScript validation and real Miniflare/D1 tests.
 - Production migration application rules. Local numbered migrations and core catalog paths are now defined.
@@ -441,7 +458,7 @@ These are confirmed constraints for later feature implementation. Full details a
 ## Next steps
 
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
-2. Add branch-service, base-price, and source administration. Resolve report-related price-status decisions before dependent transitions.
+2. Define correction-report access and abuse controls, then implement standalone submission with the approved immediate-dispute price transition.
 3. Review canonical mappings and publication checks for collected tariff records. Add hospitals or branches when official evidence is available.
 4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

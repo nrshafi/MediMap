@@ -147,6 +147,25 @@ Return unknown opening status when an unknown current or previous day could affe
 These are usual weekly hours. Date-specific holidays and temporary-closure exceptions remain outside this unit.
 Keep opening-status calculation separate from persistence and accept an explicit instant for reproducible checks.
 
+### Price and source administration
+
+Use `/admin/prices` for branch-service availability, standard BDT prices, retained price history, and official source snapshots.
+Keep its contracts and repositories in `src/features/pricing/`. Require current administrator access and same-origin bounded POST forms.
+Migration `0006_pricing_administration.sql` adds listing revisions, immutable source metadata, price notes/actors, and a guarded listing-change log.
+Store source collection timestamps, actual collector references, hashes, and notes separately from website-update and price-effective dates.
+Source forms record reviewed snapshot metadata. They do not fetch URLs or infer missing evidence.
+Keep existing sources with unknown collectors unchanged. New writes record the authenticated actor and actual submission time separately.
+Use immutable source snapshots. Corrections create a new source record.
+Price corrections insert a new revision and update the current reference in one guarded D1 batch.
+The change-log guard rejects outdated listing revisions and rolls back competing writes without orphan price revisions.
+Keep branch/service ownership fixed. Availability corrections retain provider labels, price history, and source references.
+Clear an unknown current price by setting its reference to null. Retain previous revisions and log the change.
+Verified prices require their provider's official tariff, explicit currency evidence, a source row, and a fresh administrator review confirmation.
+Record a confirmed review at server time. A status-only correction can retain the previous review when amount, source, row, and effective date are unchanged.
+Unverified and disputed revisions cannot qualify for default statistics. Elapsed time alone never changes status.
+The owner decided on 28 October 2026 that pending price reports immediately select a disputed revision and exclude it from default statistics.
+Retain source and review history during that transition. Report submission and resolution operations remain later implementation units.
+
 ## Authentication and access
 
 - Browsing, service search, and comparison are public.
@@ -214,7 +233,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Live Google OAuth client configuration and report-submission access policy.
 - Mapping, geocoding, and routing provider selection.
-- Rating aggregation and report-related verification and statistics-eligibility transitions.
+- Rating aggregation, report-resolution restoration rules, and competing-report handling. Pending price reports immediately make prices disputed and ineligible.
 - Default sorting, comparison limits, and the definition of current records.
 
 
@@ -229,13 +248,13 @@ Checked on 8 October 2026. These sources establish available integration options
 ## Price verification and statistics
 
 - A price does not become stale because of elapsed time.
-- Reports trigger review of price information. The status transition on report submission remains open.
+- Pending price reports immediately mark the current price disputed, as confirmed on 28 October 2026.
 - Continue to display the actual last verification date. Do not describe an old verification date as recent.
 - Default statistics use one current, verified, non-stale price per active branch-service listing within the selected area.
 - Show the number of eligible branches and distinct providers.
 - Require at least three eligible branches for aggregate statistics.
 - Do not apply an age cutoff to statistics under the selected report-based freshness policy.
-- How disputed or reported prices affect statistics remains open until the report workflow is defined.
+- Disputed current prices are excluded from default statistics. Resolution and competing-report rules remain open for the report workflow.
 
 ## Comparison output
 

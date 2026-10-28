@@ -1,0 +1,42 @@
+.pricing-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  font: inherit;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  resize: vertical;
+}
+.pricing-list {
+  list-style: none;
+  padding: 0;
+}
+.pricing-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-default);
+}
+.pricing-list a,
+.pricing-source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.pricing-list p {
+  margin: 4px 0;
+  color: var(--text-muted);
+}
+.pricing-source {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-default);
+}
+.pricing-source h3 {
+  margin: 0;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.pricing-source p {
+  line-height: 1.6;
+}

@@ -5,6 +5,7 @@ const build = await Bun.build({
     'tests/auth/auth.integration.ts',
     'tests/catalog/administration.integration.ts',
     'tests/catalog/providers.integration.ts',
+    'tests/catalog/pricing.integration.ts',
   ],
   root: 'tests',
   outdir: '.bun-tmp/catalog-tests',
@@ -23,6 +24,7 @@ const child = Bun.spawn(
     '.bun-tmp/catalog-tests/auth/auth.integration.js',
     '.bun-tmp/catalog-tests/catalog/administration.integration.js',
     '.bun-tmp/catalog-tests/catalog/providers.integration.js',
+    '.bun-tmp/catalog-tests/catalog/pricing.integration.js',
   ],
   {
     stdout: 'inherit',

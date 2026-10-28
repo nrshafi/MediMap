@@ -40,7 +40,7 @@ Coordinate bounds do not establish the physical branch location. Use supported e
 An active branch save requires an official contact source belonging to its provider.
 The administrator must confirm that the selected source supports the submitted branch details.
 Tariff sources and another provider's contact sources are rejected.
-Keep unsupported branches inactive. Contact-source creation remains part of later source administration.
+Keep unsupported branches inactive. Create reviewed contact-source metadata through [source administration](pricing-administration.md).
 Source retrieval alone does not verify every contact field or opening period.
 
 ## Weekly hours

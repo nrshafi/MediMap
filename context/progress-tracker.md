@@ -50,6 +50,15 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Completed milestones
 
+### Public integration preparation (2026-10-28 22:04:14 +06:00)
+
+- Started source-backed public discovery and explicit geographic location selection under the owner's implementation request.
+- Selected Geoapify server-side address lookup and routing, with OpenStreetMap raster tiles and attribution.
+- Kept unknown branch coordinates separate from radius-eligible results. Added explicit missing-provider and lookup-failure feedback.
+- Created an ignored baseline snapshot for ordered contribution patches. No commits were created.
+- Build passed. Type checking exposed a narrowed provider-message union; its UI state now uses an explicit message type.
+- Remaining milestones and commit patches are still in progress.
+
 ### Release-preparation commit checks (2026-10-28 21:48:08 +06:00)
 
 - The owner requested the local release-preparation commit and a description of the next step.

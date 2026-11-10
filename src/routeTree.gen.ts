@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
+import { Route as FindRouteImport } from './routes/find'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
@@ -41,6 +42,11 @@ const AccountRoute = AccountRouteImport.update({
 const DiscoveryRoute = DiscoveryRouteImport.update({
   id: '/discovery',
   path: '/discovery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindRoute = FindRouteImport.update({
+  id: '/find',
+  path: '/find',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportRoute = ReportRouteImport.update({
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/find': typeof FindRoute
   '/report': typeof ReportRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/find': typeof FindRoute
   '/report': typeof ReportRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/discovery': typeof DiscoveryRoute
+  '/find': typeof FindRoute
   '/report': typeof ReportRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/discovery'
+    | '/find'
     | '/report'
     | '/sign-in'
     | '/admin/catalog'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/discovery'
+    | '/find'
     | '/report'
     | '/sign-in'
     | '/admin/catalog'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/discovery'
+    | '/find'
     | '/report'
     | '/sign-in'
     | '/admin/catalog'
@@ -247,6 +259,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
   DiscoveryRoute: typeof DiscoveryRoute
+  FindRoute: typeof FindRoute
   ReportRoute: typeof ReportRoute
   SignInRoute: typeof SignInRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
@@ -285,6 +298,13 @@ declare module '@tanstack/react-router' {
       path: '/discovery'
       fullPath: '/discovery'
       preLoaderRoute: typeof DiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find': {
+      id: '/find'
+      path: '/find'
+      fullPath: '/find'
+      preLoaderRoute: typeof FindRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/report': {
@@ -399,6 +419,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
   DiscoveryRoute: DiscoveryRoute,
+  FindRoute: FindRoute,
   ReportRoute: ReportRoute,
   SignInRoute: SignInRoute,
   AdminCatalogRoute: AdminCatalogRoute,

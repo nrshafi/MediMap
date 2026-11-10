@@ -2,6 +2,17 @@
 
 ## Decision status
 
+### Public integration decisions
+
+Public source-backed discovery uses `/find`, separate from the existing labelled `/discovery` demonstration.
+Use Geoapify's server-side geocoding and routing APIs, with `GEOAPIFY_API_KEY` supplied as a Worker secret.
+Use standard OpenStreetMap raster tiles with visible attribution, browser caching, and normal referrer headers. Do not prefetch or bulk-download tiles.
+Do not use the public Nominatim endpoint for autocomplete. Missing provider configuration must retain core catalog results.
+Unknown branch coordinates remain unknown and cannot qualify a branch for geographic statistics.
+Review ratings use six required integer dimensions from one to five, with their arithmetic mean as the service-review score.
+Public aggregates include visible reviews only. Keep one retained review per account and listing, with owner editing and immutable moderation history.
+Comparison permits up to four listings for one service. Unknown sort values appear last; ties use stable listing IDs.
+
 This document records confirmed constraints. Unanswered architecture questions remain open and do not authorize implementation choices.
 
 ### Release preparation

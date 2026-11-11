@@ -20,7 +20,9 @@ import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminProvidersRouteImport } from './routes/admin.providers'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
+import { Route as BranchesIdRouteImport } from './routes/branches.$id'
 import { Route as ReportSubmitRouteImport } from './routes/report_.submit'
+import { Route as ServicesIdRouteImport } from './routes/services.$id'
 import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
 import { Route as AdminCatalogWriteRouteImport } from './routes/admin.catalog_.write'
 import { Route as AdminPricesWriteRouteImport } from './routes/admin.prices_.write'
@@ -84,9 +86,19 @@ const AuthSignOutRoute = AuthSignOutRouteImport.update({
   path: '/auth/sign-out',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BranchesIdRoute = BranchesIdRouteImport.update({
+  id: '/branches/$id',
+  path: '/branches/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportSubmitRoute = ReportSubmitRouteImport.update({
   id: '/report_/submit',
   path: '/report/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIdRoute = ServicesIdRouteImport.update({
+  id: '/services/$id',
+  path: '/services/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCatalogManageRoute = AdminCatalogManageRouteImport.update({
@@ -137,7 +149,9 @@ export interface FileRoutesByFullPath {
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
@@ -158,7 +172,9 @@ export interface FileRoutesByTo {
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
@@ -180,7 +196,9 @@ export interface FileRoutesById {
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
+  '/branches/$id': typeof BranchesIdRoute
   '/report_/submit': typeof ReportSubmitRoute
+  '/services/$id': typeof ServicesIdRoute
   '/admin/catalog_/manage': typeof AdminCatalogManageRoute
   '/admin/catalog_/write': typeof AdminCatalogWriteRoute
   '/admin/prices_/write': typeof AdminPricesWriteRoute
@@ -203,7 +221,9 @@ export interface FileRouteTypes {
     | '/admin/providers'
     | '/admin/reports'
     | '/auth/sign-out'
+    | '/branches/$id'
     | '/report/submit'
+    | '/services/$id'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
@@ -224,7 +244,9 @@ export interface FileRouteTypes {
     | '/admin/providers'
     | '/admin/reports'
     | '/auth/sign-out'
+    | '/branches/$id'
     | '/report/submit'
+    | '/services/$id'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
@@ -245,7 +267,9 @@ export interface FileRouteTypes {
     | '/admin/providers'
     | '/admin/reports'
     | '/auth/sign-out'
+    | '/branches/$id'
     | '/report_/submit'
+    | '/services/$id'
     | '/admin/catalog_/manage'
     | '/admin/catalog_/write'
     | '/admin/prices_/write'
@@ -267,7 +291,9 @@ export interface RootRouteChildren {
   AdminProvidersRoute: typeof AdminProvidersRoute
   AdminReportsRoute: typeof AdminReportsRoute
   AuthSignOutRoute: typeof AuthSignOutRoute
+  BranchesIdRoute: typeof BranchesIdRoute
   ReportSubmitRoute: typeof ReportSubmitRoute
+  ServicesIdRoute: typeof ServicesIdRoute
   AdminCatalogManageRoute: typeof AdminCatalogManageRoute
   AdminCatalogWriteRoute: typeof AdminCatalogWriteRoute
   AdminPricesWriteRoute: typeof AdminPricesWriteRoute
@@ -356,11 +382,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignOutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/branches/$id': {
+      id: '/branches/$id'
+      path: '/branches/$id'
+      fullPath: '/branches/$id'
+      preLoaderRoute: typeof BranchesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/report_/submit': {
       id: '/report_/submit'
       path: '/report/submit'
       fullPath: '/report/submit'
       preLoaderRoute: typeof ReportSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$id': {
+      id: '/services/$id'
+      path: '/services/$id'
+      fullPath: '/services/$id'
+      preLoaderRoute: typeof ServicesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/catalog_/manage': {
@@ -427,7 +467,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProvidersRoute: AdminProvidersRoute,
   AdminReportsRoute: AdminReportsRoute,
   AuthSignOutRoute: AuthSignOutRoute,
+  BranchesIdRoute: BranchesIdRoute,
   ReportSubmitRoute: ReportSubmitRoute,
+  ServicesIdRoute: ServicesIdRoute,
   AdminCatalogManageRoute: AdminCatalogManageRoute,
   AdminCatalogWriteRoute: AdminCatalogWriteRoute,
   AdminPricesWriteRoute: AdminPricesWriteRoute,

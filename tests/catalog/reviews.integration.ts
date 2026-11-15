@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { Miniflare } from 'miniflare';
 import { ReviewRepository } from '../../src/features/reviews/repository.server';
+import { reportReview, moderateReview } from '../../src/features/reviews/moderation.server';
 test('service reviews retain ownership, history and public visibility in D1', async () => {
   const mf = new Miniflare({
     modules: true,
@@ -68,6 +69,71 @@ test('service reviews retain ownership, history and public visibility in D1', as
       2,
     );
     await assert.rejects(db.prepare('DELETE FROM service_review_changes').run());
+    await db
+      .prepare("UPDATE service_reviews SET visibility='visible' WHERE id=?")
+      .bind(own.id)
+      .run();
+    await reportReview(db, 'reviewer-b', {
+      review: own.id,
+      reason: 'This review includes inappropriate personal information.',
+    });
+    await assert.rejects(
+      reportReview(db, 'reviewer-b', {
+        review: own.id,
+        reason: 'This review includes inappropriate personal information.',
+      }),
+    );
+    await assert.rejects(
+      moderateReview(db, 'reviewer-b', {
+        review: own.id,
+        revision: 2,
+        action: 'hide',
+        reason: 'Reviewed report and confirmed personal information.',
+      }),
+    );
+    await db
+      .prepare(
+        "INSERT INTO administrator_grants(account_id,granted_at,granted_by) VALUES('reviewer-b',?,'test-owner')",
+      )
+      .bind(Date.now())
+      .run();
+    await moderateReview(db, 'reviewer-b', {
+      review: own.id,
+      revision: 2,
+      action: 'hide',
+      reason: 'Reviewed report and confirmed personal information.',
+    });
+    assert.equal((await repository.summary(input.listing))?.count, 0);
+    assert.equal(
+      await db
+        .prepare("SELECT COUNT(*) AS n FROM review_abuse_reports WHERE status='pending'")
+        .first('n'),
+      0,
+    );
+    await assert.rejects(
+      moderateReview(db, 'reviewer-b', {
+        review: own.id,
+        revision: 2,
+        action: 'restore',
+        reason: 'Stale form must not change the accepted decision.',
+      }),
+    );
+    await moderateReview(db, 'reviewer-b', {
+      review: own.id,
+      revision: 3,
+      action: 'restore',
+      reason: 'Review checked again and approved for public display.',
+    });
+    assert.equal((await repository.summary(input.listing))?.count, 1);
+    await moderateReview(db, 'reviewer-b', {
+      review: own.id,
+      revision: 4,
+      action: 'remove',
+      reason: 'Confirmed repeated abuse warrants retained removal.',
+    });
+    await assert.rejects(repository.save('reviewer-a', { ...input, revision: 5 }));
+    assert.equal((await repository.summary(input.listing))?.count, 0);
+    await assert.rejects(db.prepare('DELETE FROM review_moderation').run());
   } finally {
     await mf.dispose();
   }

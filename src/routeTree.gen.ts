@@ -20,9 +20,12 @@ import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminProvidersRouteImport } from './routes/admin.providers'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
 import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
 import { Route as BranchesIdRouteImport } from './routes/branches.$id'
 import { Route as ReportSubmitRouteImport } from './routes/report_.submit'
+import { Route as ReviewsModerateRouteImport } from './routes/reviews_.moderate'
+import { Route as ReviewsReportRouteImport } from './routes/reviews_.report'
 import { Route as ReviewsWriteRouteImport } from './routes/reviews_.write'
 import { Route as ServicesIdRouteImport } from './routes/services.$id'
 import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
@@ -88,6 +91,11 @@ const AdminReportsRoute = AdminReportsRouteImport.update({
   path: '/admin/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminReviewsRoute = AdminReviewsRouteImport.update({
+  id: '/admin/reviews',
+  path: '/admin/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignOutRoute = AuthSignOutRouteImport.update({
   id: '/auth/sign-out',
   path: '/auth/sign-out',
@@ -101,6 +109,16 @@ const BranchesIdRoute = BranchesIdRouteImport.update({
 const ReportSubmitRoute = ReportSubmitRouteImport.update({
   id: '/report_/submit',
   path: '/report/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsModerateRoute = ReviewsModerateRouteImport.update({
+  id: '/reviews_/moderate',
+  path: '/reviews/moderate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsReportRoute = ReviewsReportRouteImport.update({
+  id: '/reviews_/report',
+  path: '/reviews/report',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReviewsWriteRoute = ReviewsWriteRouteImport.update({
@@ -161,9 +179,12 @@ export interface FileRoutesByFullPath {
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/reviews/moderate': typeof ReviewsModerateRoute
+  '/reviews/report': typeof ReviewsReportRoute
   '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
@@ -186,9 +207,12 @@ export interface FileRoutesByTo {
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/reviews/moderate': typeof ReviewsModerateRoute
+  '/reviews/report': typeof ReviewsReportRoute
   '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
@@ -212,9 +236,12 @@ export interface FileRoutesById {
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
   '/admin/reports': typeof AdminReportsRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report_/submit': typeof ReportSubmitRoute
+  '/reviews_/moderate': typeof ReviewsModerateRoute
+  '/reviews_/report': typeof ReviewsReportRoute
   '/reviews_/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog_/manage': typeof AdminCatalogManageRoute
@@ -239,9 +266,12 @@ export interface FileRouteTypes {
     | '/admin/prices'
     | '/admin/providers'
     | '/admin/reports'
+    | '/admin/reviews'
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report/submit'
+    | '/reviews/moderate'
+    | '/reviews/report'
     | '/reviews/write'
     | '/services/$id'
     | '/admin/catalog/manage'
@@ -264,9 +294,12 @@ export interface FileRouteTypes {
     | '/admin/prices'
     | '/admin/providers'
     | '/admin/reports'
+    | '/admin/reviews'
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report/submit'
+    | '/reviews/moderate'
+    | '/reviews/report'
     | '/reviews/write'
     | '/services/$id'
     | '/admin/catalog/manage'
@@ -289,9 +322,12 @@ export interface FileRouteTypes {
     | '/admin/prices'
     | '/admin/providers'
     | '/admin/reports'
+    | '/admin/reviews'
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report_/submit'
+    | '/reviews_/moderate'
+    | '/reviews_/report'
     | '/reviews_/write'
     | '/services/$id'
     | '/admin/catalog_/manage'
@@ -315,9 +351,12 @@ export interface RootRouteChildren {
   AdminPricesRoute: typeof AdminPricesRoute
   AdminProvidersRoute: typeof AdminProvidersRoute
   AdminReportsRoute: typeof AdminReportsRoute
+  AdminReviewsRoute: typeof AdminReviewsRoute
   AuthSignOutRoute: typeof AuthSignOutRoute
   BranchesIdRoute: typeof BranchesIdRoute
   ReportSubmitRoute: typeof ReportSubmitRoute
+  ReviewsModerateRoute: typeof ReviewsModerateRoute
+  ReviewsReportRoute: typeof ReviewsReportRoute
   ReviewsWriteRoute: typeof ReviewsWriteRoute
   ServicesIdRoute: typeof ServicesIdRoute
   AdminCatalogManageRoute: typeof AdminCatalogManageRoute
@@ -408,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/reviews': {
+      id: '/admin/reviews'
+      path: '/admin/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AdminReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/sign-out': {
       id: '/auth/sign-out'
       path: '/auth/sign-out'
@@ -427,6 +473,20 @@ declare module '@tanstack/react-router' {
       path: '/report/submit'
       fullPath: '/report/submit'
       preLoaderRoute: typeof ReportSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews_/moderate': {
+      id: '/reviews_/moderate'
+      path: '/reviews/moderate'
+      fullPath: '/reviews/moderate'
+      preLoaderRoute: typeof ReviewsModerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews_/report': {
+      id: '/reviews_/report'
+      path: '/reviews/report'
+      fullPath: '/reviews/report'
+      preLoaderRoute: typeof ReviewsReportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reviews_/write': {
@@ -507,9 +567,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPricesRoute: AdminPricesRoute,
   AdminProvidersRoute: AdminProvidersRoute,
   AdminReportsRoute: AdminReportsRoute,
+  AdminReviewsRoute: AdminReviewsRoute,
   AuthSignOutRoute: AuthSignOutRoute,
   BranchesIdRoute: BranchesIdRoute,
   ReportSubmitRoute: ReportSubmitRoute,
+  ReviewsModerateRoute: ReviewsModerateRoute,
+  ReviewsReportRoute: ReviewsReportRoute,
   ReviewsWriteRoute: ReviewsWriteRoute,
   ServicesIdRoute: ServicesIdRoute,
   AdminCatalogManageRoute: AdminCatalogManageRoute,

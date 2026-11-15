@@ -25,6 +25,19 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
       {data.items.map((r) => (
         <article key={r.id}>
           <h2>Service experience</h2>
+          {data.signedIn && (
+            <details>
+              <summary>Report this review</summary>
+              <form method="post" action="/reviews/report">
+                <input type="hidden" name="review" value={r.id} />
+                <label>
+                  Reason
+                  <textarea name="reason" minLength={20} maxLength={1000} required />
+                </label>
+                <button>Report review</button>
+              </form>
+            </details>
+          )}
           <p>{r.body || 'No written review.'}</p>
           <p>Ratings in order: {r.scores}</p>
           <p>Updated {new Date(r.updated_at).toISOString()}</p>

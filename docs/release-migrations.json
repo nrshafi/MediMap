@@ -37,6 +37,10 @@
     {
       "name": "0009_service_reviews.sql",
       "sha256": "5b08c07eaac5170725df63b7a639c03dde5d0bd82afd02f1f74b1289d677480c"
+    },
+    {
+      "name": "0010_review_moderation.sql",
+      "sha256": "529dc69b3d3d14d3647220147c3aa6a0b0760a2738b6e63ed3acd0f48739d186"
     }
   ]
 }

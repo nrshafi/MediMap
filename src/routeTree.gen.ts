@@ -14,6 +14,7 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as FindRouteImport } from './routes/find'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
@@ -22,6 +23,7 @@ import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AuthSignOutRouteImport } from './routes/auth.sign-out'
 import { Route as BranchesIdRouteImport } from './routes/branches.$id'
 import { Route as ReportSubmitRouteImport } from './routes/report_.submit'
+import { Route as ReviewsWriteRouteImport } from './routes/reviews_.write'
 import { Route as ServicesIdRouteImport } from './routes/services.$id'
 import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
 import { Route as AdminCatalogWriteRouteImport } from './routes/admin.catalog_.write'
@@ -54,6 +56,11 @@ const FindRoute = FindRouteImport.update({
 const ReportRoute = ReportRouteImport.update({
   id: '/report',
   path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -94,6 +101,11 @@ const BranchesIdRoute = BranchesIdRouteImport.update({
 const ReportSubmitRoute = ReportSubmitRouteImport.update({
   id: '/report_/submit',
   path: '/report/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsWriteRoute = ReviewsWriteRouteImport.update({
+  id: '/reviews_/write',
+  path: '/reviews/write',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIdRoute = ServicesIdRouteImport.update({
@@ -143,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
+  '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
@@ -151,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
@@ -166,6 +180,7 @@ export interface FileRoutesByTo {
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
+  '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
@@ -174,6 +189,7 @@ export interface FileRoutesByTo {
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report/submit': typeof ReportSubmitRoute
+  '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
@@ -190,6 +206,7 @@ export interface FileRoutesById {
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
+  '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
@@ -198,6 +215,7 @@ export interface FileRoutesById {
   '/auth/sign-out': typeof AuthSignOutRoute
   '/branches/$id': typeof BranchesIdRoute
   '/report_/submit': typeof ReportSubmitRoute
+  '/reviews_/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
   '/admin/catalog_/manage': typeof AdminCatalogManageRoute
   '/admin/catalog_/write': typeof AdminCatalogWriteRoute
@@ -215,6 +233,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/find'
     | '/report'
+    | '/reviews'
     | '/sign-in'
     | '/admin/catalog'
     | '/admin/prices'
@@ -223,6 +242,7 @@ export interface FileRouteTypes {
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report/submit'
+    | '/reviews/write'
     | '/services/$id'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
@@ -238,6 +258,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/find'
     | '/report'
+    | '/reviews'
     | '/sign-in'
     | '/admin/catalog'
     | '/admin/prices'
@@ -246,6 +267,7 @@ export interface FileRouteTypes {
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report/submit'
+    | '/reviews/write'
     | '/services/$id'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
@@ -261,6 +283,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/find'
     | '/report'
+    | '/reviews'
     | '/sign-in'
     | '/admin/catalog'
     | '/admin/prices'
@@ -269,6 +292,7 @@ export interface FileRouteTypes {
     | '/auth/sign-out'
     | '/branches/$id'
     | '/report_/submit'
+    | '/reviews_/write'
     | '/services/$id'
     | '/admin/catalog_/manage'
     | '/admin/catalog_/write'
@@ -285,6 +309,7 @@ export interface RootRouteChildren {
   DiscoveryRoute: typeof DiscoveryRoute
   FindRoute: typeof FindRoute
   ReportRoute: typeof ReportRoute
+  ReviewsRoute: typeof ReviewsRoute
   SignInRoute: typeof SignInRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
   AdminPricesRoute: typeof AdminPricesRoute
@@ -293,6 +318,7 @@ export interface RootRouteChildren {
   AuthSignOutRoute: typeof AuthSignOutRoute
   BranchesIdRoute: typeof BranchesIdRoute
   ReportSubmitRoute: typeof ReportSubmitRoute
+  ReviewsWriteRoute: typeof ReviewsWriteRoute
   ServicesIdRoute: typeof ServicesIdRoute
   AdminCatalogManageRoute: typeof AdminCatalogManageRoute
   AdminCatalogWriteRoute: typeof AdminCatalogWriteRoute
@@ -338,6 +364,13 @@ declare module '@tanstack/react-router' {
       path: '/report'
       fullPath: '/report'
       preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-in': {
@@ -394,6 +427,13 @@ declare module '@tanstack/react-router' {
       path: '/report/submit'
       fullPath: '/report/submit'
       preLoaderRoute: typeof ReportSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews_/write': {
+      id: '/reviews_/write'
+      path: '/reviews/write'
+      fullPath: '/reviews/write'
+      preLoaderRoute: typeof ReviewsWriteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/$id': {
@@ -461,6 +501,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiscoveryRoute: DiscoveryRoute,
   FindRoute: FindRoute,
   ReportRoute: ReportRoute,
+  ReviewsRoute: ReviewsRoute,
   SignInRoute: SignInRoute,
   AdminCatalogRoute: AdminCatalogRoute,
   AdminPricesRoute: AdminPricesRoute,
@@ -469,6 +510,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSignOutRoute: AuthSignOutRoute,
   BranchesIdRoute: BranchesIdRoute,
   ReportSubmitRoute: ReportSubmitRoute,
+  ReviewsWriteRoute: ReviewsWriteRoute,
   ServicesIdRoute: ServicesIdRoute,
   AdminCatalogManageRoute: AdminCatalogManageRoute,
   AdminCatalogWriteRoute: AdminCatalogWriteRoute,

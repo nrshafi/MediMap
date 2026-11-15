@@ -33,6 +33,10 @@
     {
       "name": "0008_report_resolution.sql",
       "sha256": "497d0ade46f339428e44e2459337b40539ad38ea3fb2f55cac465a8595aeb567"
+    },
+    {
+      "name": "0009_service_reviews.sql",
+      "sha256": "5b08c07eaac5170725df63b7a639c03dde5d0bd82afd02f1f74b1289d677480c"
     }
   ]
 }

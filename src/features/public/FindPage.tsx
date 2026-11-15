@@ -184,6 +184,7 @@ export function ListingCard({ listing: l }: { listing: BranchService }) {
         <a href={`/services/${l.service.id}`}>{l.service.name}</a> ·{' '}
         <a href={`/branches/${l.branch.id}`}>Branch details</a>
       </p>
+      <a href={`/reviews?listing=${l.id}`}>Service reviews</a>
       <p>{l.branch.address}</p>
       <p>{l.price ? `BDT ${l.price.amountBdt.toFixed(2)} · ${l.price.status}` : 'Price unknown'}</p>
       <p>Website review: {l.price?.verifiedAt ?? 'Unknown'}</p>

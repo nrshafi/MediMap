@@ -1,6 +1,7 @@
 import { ListingCard } from './FindPage';
 import type { publicDetail } from './details.functions';
 import './public.css';
+import { AreaStatistics } from './AreaStatistics';
 export function DetailPage({ data }: { data: Awaited<ReturnType<typeof publicDetail>> }) {
   const entity = data.entity;
   if (!entity)
@@ -57,6 +58,19 @@ export function DetailPage({ data }: { data: Awaited<ReturnType<typeof publicDet
         <a href={`/find?service=${entity.id}`}>Find this service near a location</a>
       )}
       <h2>Published services and prices</h2>
+      {data.kind === 'service' && (
+        <>
+          <p>
+            Reference area: 3 km from central Dhaka. Choose another location through service
+            discovery.
+          </p>
+          <AreaStatistics
+            listings={data.listings}
+            center={{ latitude: 23.8103, longitude: 90.4125 }}
+            radius={3}
+          />
+        </>
+      )}
       {data.listings.length ? (
         data.listings.map((l) => <ListingCard key={l.id} listing={l} />)
       ) : (

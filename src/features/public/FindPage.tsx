@@ -6,6 +6,7 @@ import { GeographicMap } from './GeographicMap';
 import { findLocation, publicRoute } from './catalog.functions';
 import { calculateHaversineDistanceKm } from '../map/haversine';
 import './public.css';
+import { AreaStatistics } from './AreaStatistics';
 
 export function FindPage({
   services,
@@ -154,6 +155,7 @@ export function FindPage({
         />
       </label>
       <h2>{selected?.name ?? 'Select a service to see prices'}</h2>
+      {selected && <AreaStatistics listings={listings} center={center} radius={radius} />}
       <p>
         Branches without recorded coordinates appear separately and are not counted as inside your
         radius.

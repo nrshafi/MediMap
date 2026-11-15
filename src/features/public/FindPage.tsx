@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import type { Service, BranchService } from '../catalog/contracts';
 import { resolveDiagnosticQuery } from '../search/resolutionEngine';
 import { LocationSelector } from '../search/ui/LocationSelector';
@@ -18,8 +18,10 @@ export function FindPage({
   service?: string;
 }) {
   const [query, setQuery] = useState('');
+  const [comparison, setComparison] = useState<string[]>([]);
   const [center, setCenter] = useState({ latitude: 23.8103, longitude: 90.4125 });
   const [radius, setRadius] = useState(3);
+  useEffect(() => setComparison([]), [service, center.latitude, center.longitude, radius]);
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState<{
     places: { label: string; latitude: number; longitude: number }[];
@@ -162,8 +164,29 @@ export function FindPage({
       </p>
       {selected && !visible.length && <p>No published listings match this service and area.</p>}
       <section aria-label="Published listings">
+        <p>
+          {comparison.length} of 4 selected for comparison. Selection clears when the service, area,
+          or page changes.
+        </p>
+        <button onClick={() => setComparison([])}>Clear comparison</button>
+        {comparison.length >= 2 && (
+          <a href={`/compare?ids=${comparison.join(',')}`}>Compare selected branches</a>
+        )}
         {visible.map((l) => (
           <div key={l.id}>
+            <button
+              aria-pressed={comparison.includes(l.id)}
+              disabled={comparison.length === 4 && !comparison.includes(l.id)}
+              onClick={() =>
+                setComparison((previous) =>
+                  previous.includes(l.id)
+                    ? previous.filter((id) => id !== l.id)
+                    : [...previous, l.id],
+                )
+              }
+            >
+              {comparison.includes(l.id) ? 'Remove from comparison' : 'Select for comparison'}
+            </button>
             <ListingCard listing={l} />
             <RouteEstimate
               key={`${l.id}-${center.latitude}-${center.longitude}`}

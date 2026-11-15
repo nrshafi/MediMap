@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountRouteImport } from './routes/account'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as FindRouteImport } from './routes/find'
 import { Route as ReportRouteImport } from './routes/report'
@@ -44,6 +45,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiscoveryRoute = DiscoveryRouteImport.update({
@@ -170,6 +176,7 @@ const AuthGoogleStartRoute = AuthGoogleStartRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/compare': typeof CompareRoute
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/compare': typeof CompareRoute
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/compare': typeof CompareRoute
   '/discovery': typeof DiscoveryRoute
   '/find': typeof FindRoute
   '/report': typeof ReportRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/compare'
     | '/discovery'
     | '/find'
     | '/report'
@@ -285,6 +295,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account'
+    | '/compare'
     | '/discovery'
     | '/find'
     | '/report'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account'
+    | '/compare'
     | '/discovery'
     | '/find'
     | '/report'
@@ -342,6 +354,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRoute
+  CompareRoute: typeof CompareRoute
   DiscoveryRoute: typeof DiscoveryRoute
   FindRoute: typeof FindRoute
   ReportRoute: typeof ReportRoute
@@ -382,6 +395,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/discovery': {
@@ -558,6 +578,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRoute,
+  CompareRoute: CompareRoute,
   DiscoveryRoute: DiscoveryRoute,
   FindRoute: FindRoute,
   ReportRoute: ReportRoute,

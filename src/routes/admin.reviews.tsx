@@ -8,6 +8,13 @@ export const Route = createFileRoute('/admin/reviews')({
   loaderDeps: ({ search }) => search,
   loader: ({ deps }) => readModeration({ data: deps }),
   component: Page,
+  errorComponent: () => (
+    <main className="public-page">
+      <h1>Review moderation unavailable</h1>
+      <p>Sign in with administrator access, or try again later.</p>
+      <a href="/sign-in">Sign in</a>
+    </main>
+  ),
 });
 function Page() {
   const data = Route.useLoaderData();

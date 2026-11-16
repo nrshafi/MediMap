@@ -32,7 +32,7 @@ They do not use the development database or real Google credentials.
 | `GOOGLE_CLIENT_ID` | Ignored `.dev.vars` | Google OAuth web-client identifier for that origin. Keep runtime configuration outside browser modules. |
 | `GOOGLE_CLIENT_SECRET` | Ignored `.dev.vars` | Worker secret. Never put the value in source, command arguments, logs, or this runbook. |
 | `MEDIMAP_D1_STATE` | Optional local process variable | Local development/test state only. It is not a deployed binding. |
-| Mapping/routing credentials | None | Provider selection remains open. Add only the bindings required by the selected provider. |
+| `GEOAPIFY_API_KEY` | Ignored `.dev.vars` | Worker secret for server-side geocoding and driving estimates. Never expose it in browser code. |
 
 Copy `.dev.vars.example` for local authentication setup.
 The exact callback is `<AUTH_ORIGIN>/auth/google/callback`.
@@ -59,6 +59,9 @@ Those local secret files are not deployed as Worker secrets automatically.
 | `0006_pricing_administration.sql` | Source snapshots and listing-change history |
 | `0007_correction_reports.sql` | Signed-in reports, quotas, immediate price disputes |
 | `0008_report_resolution.sql` | Immutable administrator decisions and guarded resolution transitions |
+| `0009_service_reviews.sql` | Service-specific reviews, versioned owner edits, and retained history |
+| `0010_review_moderation.sql` | Review-abuse reports and immutable administrator decisions |
+| `0011_mapping_budget.sql` | Shared provider-request reservations |
 
 `release-migrations.json` records SHA-256 hashes of the reviewed migration text, normalized to LF.
 Both release commands reject a changed migration or an unexplained migration-file set.
@@ -74,10 +77,10 @@ It never opens `.wrangler/state` or the browser-test database.
 
 The rehearsal performs these checks:
 
-1. Verify the eight migration hashes.
+1. Verify the reviewed migration hashes.
 2. Apply migrations `0001` through `0005` to an empty local database.
 3. Apply the current foundation seed, which requires the normalized keys added by `0004` and `0005`.
-4. Upgrade through `0008`, then repeat migration application to check the ledger.
+4. Apply all remaining reviewed migrations, then repeat migration application to check the ledger.
 5. Enter the reviewed subset and reconcile all 196 listings.
 6. Reject an intentionally invalid temporary migration and confirm its table and ledger entry were rolled back.
 7. Export the complete database and a separate data-only SQL backup.
@@ -149,7 +152,8 @@ Cloudflare documentation checked on 28 October 2026 gives these Free plan limits
 | D1 recovery | Seven days on Free | Capture a fresh recovery bookmark before an approved remote migration. |
 
 These are capacity assumptions, not a guarantee of free operation.
-Mapping, geocoding, road distance, and travel-time quotas remain unassessed because no provider is selected.
+Geoapify requests have a shared ceiling of two per second and 600 per UTC day. Live coverage and account usage require acceptance.
+See [public integration](public-integration.md) for provider contracts and attribution.
 No paid service is enabled by these checks.
 
 ## Production migration and recovery procedure
@@ -181,31 +185,32 @@ The [reviewed dataset](reviewed-hospital-dataset.md) has 196 listings, three bra
 Unknown coordinates, hours, contacts, and effective dates remain null. This subset does not establish three eligible branches for every service.
 Inject `env.DB` into server repositories per request. Keep `.server.ts` modules and account records out of browser imports.
 Extend `AdminLayout.navigation` for later moderation pages. Keep the current core navigation and server authorization checks.
-Public reviews, review moderation, maps, statistics, and comparison remain later integration work.
+The public integration and its current acceptance evidence are documented in [public application integration](public-integration.md).
 
 Before production acceptance, resolve these requirements:
 
 - Authorized real D1/account configuration, HTTPS origin, and deployed secret setup.
 - Live Google consent, callback, account creation, sign-out, and owner-granted administrator verification.
 - Production CPU/startup measurements and observed workload, including later public queries.
-- Mapping/routing provider selection, Dhaka coverage, and usage-budget verification.
+- Live Geoapify configuration, Dhaka coverage, and account usage-budget verification.
 - Query-string redaction for automatic observability. OAuth callback codes and user locations occur in URLs.
-- Public integration and full-flow acceptance. Existing sample discovery regressions do not establish release readiness.
+- Live public-flow acceptance with verified branch coordinates. Local public regression results are recorded in the [public release checklist](public-release-checklist.md).
 
 Application logs remain enabled. Automatic invocation logs are disabled, and enabled traces have zero sampling until URL redaction is verified.
 The pinned Wrangler schema does not provide the newer query-redaction field.
 Review a stable tooling upgrade or another verified redaction method before collecting automatic request traces.
 Recheck observability pricing near the December release, because the current documentation announces a change on 1 December 2026.
 
-## Local verification result
+## Foundation verification before public integration
 
 On 28 October 2026, all 295 unit/component tests and all 82 final desktop/mobile browser checks passed.
-The complete D1 regression run passed 107 tests before this tooling unit. No application SQL or migration changed afterward.
+The foundation D1 regression run passed 107 tests before public integration. Later review and mapping migrations have separate verification.
 The additional local migration-failure and SQL-restore rehearsal passed, including the final source/restored audit comparison.
 Types, lint, formatting, deterministic catalog artifacts, local catalog reconciliation, production builds, and the fixed packaging check passed.
 The development audit still reports 196 verified current listings with no issues or administrator overrides.
 Remote-argument rejection checks passed. No remote resource, production migration, real administrator grant, push, or deployment occurred.
 Production and live-provider requirements listed above remain open.
+The [public release checklist](public-release-checklist.md) records current integrated verification, including all eleven migrations.
 
 ## Official references
 

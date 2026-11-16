@@ -39,7 +39,7 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
             </details>
           )}
           <p>{r.body || 'No written review.'}</p>
-          <p>Ratings in order: {r.scores}</p>
+          <ReviewScores encoded={r.scores} />
           <p>Updated {new Date(r.updated_at).toISOString()}</p>
         </article>
       ))}
@@ -89,5 +89,28 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
         </p>
       )}
     </main>
+  );
+}
+
+function ReviewScores({ encoded }: { encoded: string }) {
+  const scores: unknown = JSON.parse(encoded);
+  if (
+    !Array.isArray(scores) ||
+    scores.length !== 6 ||
+    scores.some(
+      (score: unknown) =>
+        typeof score !== 'number' || !Number.isInteger(score) || score < 1 || score > 5,
+    )
+  )
+    throw new Error('Invalid stored review ratings');
+  return (
+    <dl>
+      {scores.map((score: number, index: number) => (
+        <div key={ratingDimensions[index]}>
+          <dt>{ratingDimensions[index]}</dt>
+          <dd>{score} / 5</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

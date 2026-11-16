@@ -109,3 +109,12 @@ Coverage remains optional and has no percentage threshold. The coverage command 
 New dependency resolution requires a minimum release age of three days through `bunfig.toml`.
 Existing versions in `bun.lock` remain unchanged. Use exact-version exceptions only for reviewed urgent updates.
 Keep `bun install --frozen-lockfile` for reproducible installs. Bun's default request retries need no additional configuration.
+
+## Public application
+
+Open `/find` for the source-backed catalog. Select two to four listings for one service to compare them.
+Public service and branch pages retain source links and explicit unknown values.
+Signed-in users can submit and edit service reviews. Administrators can review abuse reports at `/admin/reviews`.
+
+Apply local migrations with `bun run db:setup`. Configure `GEOAPIFY_API_KEY` in ignored `.dev.vars` for address and route requests.
+See [public integration](docs/public-integration.md) for contracts and [the verification checklist](docs/public-release-checklist.md) for results and remaining acceptance.

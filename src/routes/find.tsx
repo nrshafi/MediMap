@@ -1,16 +1,14 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { sortChoices, type PublicSort } from '../features/public/sorting';
+import { sortChoices } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
 import { FindPage } from '../features/public/FindPage';
 export const Route = createFileRoute('/find')({
   validateSearch: (s: Record<string, unknown>) => ({
     service: typeof s.service === 'string' ? s.service : undefined,
-    lat: Number.isFinite(Number(s.lat)) && Math.abs(Number(s.lat)) <= 85 ? Number(s.lat) : 23.8103,
+    lat: Number.isFinite(Number(s.lat)) && Math.abs(Number(s.lat)) <= 90 ? Number(s.lat) : 23.8103,
     lng: Number.isFinite(Number(s.lng)) && Math.abs(Number(s.lng)) <= 180 ? Number(s.lng) : 90.4125,
     radius: Number(s.radius) >= 0.1 && Number(s.radius) <= 100 ? Number(s.radius) : 3,
-    sort: sortChoices.includes(s.sort as PublicSort)
-      ? (s.sort as PublicSort)
-      : ('price-asc' as PublicSort),
+    sort: sortChoices.find((value) => value === s.sort) ?? 'price-asc',
     verified: s.verified === 'yes' ? 'yes' : 'all',
   }),
   loaderDeps: ({ search }) => search,

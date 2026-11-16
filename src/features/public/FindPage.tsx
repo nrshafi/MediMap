@@ -32,6 +32,7 @@ export function FindPage({
 }) {
   const [query, setQuery] = useState('');
   const [comparison, setComparison] = useState<string[]>([]);
+  const [highlight, setHighlight] = useState<string>();
   const [center, setCenter] = useState({
     latitude: initial?.lat ?? 23.8103,
     longitude: initial?.lng ?? 90.4125,
@@ -40,10 +41,38 @@ export function FindPage({
   const [sort, setSort] = useState<PublicSort>(initial?.sort ?? 'price-asc');
   const [verified, setVerified] = useState(initial?.verified ?? 'all');
   const [travel, setTravel] = useState<Record<string, number | null>>({});
+  const previousUrl = useRef('');
   useEffect(() => {
+    const url = JSON.stringify(initial);
+    if (initial && previousUrl.current !== url) {
+      previousUrl.current = url;
+      setCenter({ latitude: initial.lat, longitude: initial.lng });
+      setRadius(initial.radius);
+      setSort(initial.sort);
+      setVerified(initial.verified);
+      return;
+    }
     onContextChange?.({ lat: center.latitude, lng: center.longitude, radius, sort, verified });
-  }, [center.latitude, center.longitude, radius, sort, verified]);
-  useEffect(() => setComparison([]), [service, center.latitude, center.longitude, radius]);
+  }, [
+    initial?.lat,
+    initial?.lng,
+    initial?.radius,
+    initial?.sort,
+    initial?.verified,
+    center.latitude,
+    center.longitude,
+    radius,
+    sort,
+    verified,
+  ]);
+  useEffect(() => {
+    setComparison([]);
+    setHighlight(undefined);
+    setTravel({});
+  }, [service, query, center.latitude, center.longitude, radius]);
+  function serviceHref(id: string) {
+    return `/find?${new URLSearchParams({ service: id, lat: String(center.latitude), lng: String(center.longitude), radius: String(radius), sort, verified })}`;
+  }
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState<{
     places: { label: string; latitude: number; longitude: number }[];
@@ -96,13 +125,13 @@ export function FindPage({
         <section aria-label="Service suggestions">
           {matches.matches.map((m) => (
             <p key={m.canonicalService.id}>
-              <a href={`/find?service=${m.canonicalService.id}`}>{m.canonicalService.name}</a>
+              <a href={serviceHref(m.canonicalService.id)}>{m.canonicalService.name}</a>
             </p>
           ))}
           {matches.typoSuggestions?.map((m) => (
             <p key={m.canonicalService.id}>
               Did you mean{' '}
-              <a href={`/find?service=${m.canonicalService.id}`}>{m.canonicalService.name}</a>?
+              <a href={serviceHref(m.canonicalService.id)}>{m.canonicalService.name}</a>?
             </p>
           ))}
           {!matches.matches.length && !matches.typoSuggestions?.length && (
@@ -114,11 +143,16 @@ export function FindPage({
         <summary>Browse all {services.length} services</summary>
         {services.map((s) => (
           <p key={s.id}>
-            <a href={`/find?service=${s.id}`}>{s.name}</a>
+            <a href={serviceHref(s.id)}>{s.name}</a>
           </p>
         ))}
       </details>
       <h2>Choose your location</h2>
+      <p>
+        Address lookup and driving estimates are{' '}
+        <a href="https://www.geoapify.com/">powered by Geoapify</a>. Requests share a daily
+        application budget.
+      </p>
       <LocationSelector
         center={center}
         onSelect={(c) => {
@@ -170,6 +204,18 @@ export function FindPage({
       ))}
       <GeographicMap
         center={center}
+        branches={visible.map((l) => ({
+          id: l.id,
+          name: l.branch.name,
+          coordinates: l.branch.coordinates,
+        }))}
+        selected={highlight}
+        onBranchSelect={(id) => {
+          setHighlight(id);
+          document
+            .getElementById(`listing-${id}`)
+            ?.scrollIntoView({ block: 'center', behavior: 'auto' });
+        }}
         onSelect={(c) => {
           generation.current++;
           setCenter(c);
@@ -223,7 +269,14 @@ export function FindPage({
           <a href={`/compare?ids=${comparison.join(',')}`}>Compare selected branches</a>
         )}
         {visible.map((l) => (
-          <div key={l.id}>
+          <div key={l.id} id={`listing-${l.id}`} data-selected={highlight === l.id}>
+            <button
+              disabled={!l.branch.coordinates}
+              aria-pressed={highlight === l.id}
+              onClick={() => setHighlight(l.id)}
+            >
+              Highlight branch on map
+            </button>
             <button
               aria-pressed={comparison.includes(l.id)}
               disabled={comparison.length === 4 && !comparison.includes(l.id)}
@@ -237,7 +290,10 @@ export function FindPage({
             >
               {comparison.includes(l.id) ? 'Remove from comparison' : 'Select for comparison'}
             </button>
-            <ListingCard listing={l} />
+            <ListingCard
+              listing={l}
+              area={{ lat: center.latitude, lng: center.longitude, radius }}
+            />
             <RouteEstimate
               key={`${l.id}-${center.latitude}-${center.longitude}`}
               id={l.id}
@@ -250,15 +306,25 @@ export function FindPage({
     </main>
   );
 }
-export function ListingCard({ listing: l }: { listing: BranchService }) {
+export function ListingCard({
+  listing: l,
+  area,
+}: {
+  listing: BranchService;
+  area?: { lat: number; lng: number; radius: number };
+}) {
   return (
     <article>
       <h3>
         {l.branch.provider.name}, {l.branch.name}
       </h3>
       <p>
-        <a href={`/services/${l.service.id}`}>{l.service.name}</a> ·{' '}
-        <a href={`/branches/${l.branch.id}`}>Branch details</a>
+        <a
+          href={`/services/${l.service.id}${area ? `?${new URLSearchParams({ lat: String(area.lat), lng: String(area.lng), radius: String(area.radius) })}` : ''}`}
+        >
+          {l.service.name}
+        </a>{' '}
+        · <a href={`/branches/${l.branch.id}`}>Branch details</a>
       </p>
       <a href={`/reviews?listing=${l.id}`}>Service reviews</a>
       <p>{l.branch.address}</p>
@@ -290,6 +356,13 @@ function RouteEstimate({
 }) {
   const [result, setResult] = useState<Awaited<ReturnType<typeof publicRoute>> | null>(null);
   const [pending, setPending] = useState(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   return (
     <section aria-label="Road travel estimate">
       <button
@@ -298,15 +371,17 @@ function RouteEstimate({
           setPending(true);
           try {
             const estimate = await publicRoute({ data: { listing: id, from: center } });
+            if (!mounted.current) return;
             setResult(estimate);
             onEstimate(estimate.available ? estimate.minutes : null);
           } catch {
+            if (!mounted.current) return;
             setResult({
               available: false,
               message: 'Road distance and travel time are unavailable.',
             });
           } finally {
-            setPending(false);
+            if (mounted.current) setPending(false);
           }
         }}
       >

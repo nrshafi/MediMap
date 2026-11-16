@@ -4,6 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { Miniflare } from 'miniflare';
 import { ReviewRepository } from '../../src/features/reviews/repository.server';
 import { reportReview, moderateReview } from '../../src/features/reviews/moderation.server';
+import { reserveMappingRequest } from '../../src/features/public/provider.server';
 test('service reviews retain ownership, history and public visibility in D1', async () => {
   const mf = new Miniflare({
     modules: true,
@@ -134,6 +135,26 @@ test('service reviews retain ownership, history and public visibility in D1', as
     await assert.rejects(repository.save('reviewer-a', { ...input, revision: 5 }));
     assert.equal((await repository.summary(input.listing))?.count, 0);
     await assert.rejects(db.prepare('DELETE FROM review_moderation').run());
+    const now = Date.now();
+    assert.equal(await reserveMappingRequest(db, now), true);
+    assert.equal(await reserveMappingRequest(db, now), true);
+    assert.equal(await reserveMappingRequest(db, now), false);
+    const nextSecond = now + 1000;
+    assert.equal(await reserveMappingRequest(db, nextSecond), true);
+    await db
+      .prepare(
+        'INSERT INTO accounts(id,google_subject,email,created_at,last_signed_in_at) VALUES(?,?,?,?,?)',
+      )
+      .bind('reviewer-c', 'reviewer-c', 'c@example.test', now, now)
+      .run();
+    for (let revision = 0; revision < 5; revision++)
+      await repository.save('reviewer-c', { ...input, revision });
+    await assert.rejects(repository.save('reviewer-c', { ...input, revision: 5 }));
+    assert.equal((await repository.aggregate('branch', 'addin-moghbazar'))?.count, 1);
+    assert.equal(
+      (await repository.aggregate('provider', 'addin-medical-college-hospital'))?.count,
+      1,
+    );
   } finally {
     await mf.dispose();
   }

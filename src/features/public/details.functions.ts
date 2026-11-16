@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { env } from 'cloudflare:workers';
 import { CatalogRepository } from '../catalog/server/repository.server';
+import { ReviewRepository } from '../reviews/repository.server';
 import { catalogId, record, type BranchService } from '../catalog/contracts';
 export const publicDetail = createServerFn({ method: 'GET' })
   .validator((value: unknown) => {
@@ -14,7 +15,14 @@ export const publicDetail = createServerFn({ method: 'GET' })
       data.kind === 'service'
         ? await repository.getService(data.id)
         : await repository.getBranch(data.id);
-    if (!entity) return { entity: null, listings: [] as BranchService[], kind: data.kind };
+    if (!entity)
+      return {
+        entity: null,
+        listings: [] as BranchService[],
+        kind: data.kind,
+        branchRating: null,
+        providerRating: null,
+      };
     const listings: BranchService[] = [];
     let after: string | undefined;
     do {
@@ -26,5 +34,13 @@ export const publicDetail = createServerFn({ method: 'GET' })
       listings.push(...page.items);
       after = page.nextCursor ?? undefined;
     } while (after);
-    return { entity, listings, kind: data.kind };
+    const reviews = new ReviewRepository(env.DB);
+    return {
+      entity,
+      listings,
+      kind: data.kind,
+      branchRating: data.kind === 'branch' ? await reviews.aggregate('branch', entity.id) : null,
+      providerRating:
+        'provider' in entity ? await reviews.aggregate('provider', entity.provider.id) : null,
+    };
   });

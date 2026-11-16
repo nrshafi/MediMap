@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 21:48:08 +06:00`.
+Last updated: `2026-10-28 22:45:44 +06:00`.
 
 ## Current phase
 
@@ -20,8 +20,9 @@ Incorrect-information submission is implemented and locally verified. Sign-in, r
 Administrator correction resolution is implemented and locally verified. Fresh source review is required, and other pending price reports keep known prices disputed.
 The reviewed publication subset is implemented and reconciled locally with 196 listings, 136 canonical services, and three hospital branches.
 Local release preparation is verified, with migration hashes, a successful failure/restore rehearsal, dry-run packaging, and the release runbook.
-Production acceptance still requires real credentials, target bindings, CPU/workload checks, mapping selection, query redaction, and public integration.
-Provider selection, address search, and map-based location input remain unfinished.
+Production acceptance still requires real credentials, target bindings, CPU/workload checks, live mapping acceptance, and query redaction.
+Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Geoapify adapters, service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
+The original `/discovery` route remains a labelled demonstration. Live provider acceptance requires configured credentials and branch coordinates.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 The research export remains separate from application fixtures and reviewed D1 data. The original CBC listing and review history remain intact.
 The inventory holds 1,894 research listings for unresolved currency, mapping, or specific source concerns.
@@ -49,6 +50,16 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Public application implementation (2026-10-28 22:24:18 +06:00)
+
+- Added source-backed public discovery, server-rendered details, explicit unknown-location states, and geographic map selection.
+- Added six-dimensional service reviews with owner editing, rolling write limits, immutable history, abuse reports, and guarded administrator moderation.
+- Added area price statistics, four-branch comparison tables/charts, sorting, verification filtering, functional home navigation, and URL context.
+- Added migrations `0009` through `0011` for reviews, moderation, and shared mapping-request budgets. Updated the reviewed migration manifest without changing earlier migrations.
+- Passed 299 unit/component tests and the complete 108-test local D1 suite. Focused review/moderation/budget verification also passed after the final provider guard changes.
+- Captured draft milestone patches through the seventh public implementation unit. No Git commits or staging changes were made.
+- Browser checks and independent patch replay are in progress. No production, live credential, or release-candidate acceptance is claimed.
 
 ### Public integration preparation (2026-10-28 22:04:14 +06:00)
 
@@ -590,9 +601,9 @@ These are confirmed constraints for later feature implementation. Full details a
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
 - Google OAuth client credentials for live login verification.
-- Mapping, geocoding, and routing provider with suitable Dhaka coverage and free usage.
-- Production CPU and actual workload fit. The local pilot capacity model is in `docs/workers-release-runbook.md`; mapping-provider usage remains unresolved.
-- Default sorting, comparison limits, and rating aggregation. The catalog now retains immutable price revisions with a nullable current reference.
+- Live Geoapify Dhaka coverage and account usage acceptance. Provider selection and conservative local request budgets are implemented.
+- Production CPU and actual workload fit. The local pilot capacity model is in `docs/workers-release-runbook.md`; live mapping-provider usage remains unverified.
+- Production acceptance of the implemented defaults: ascending price, two-to-four listing comparison, and six-dimension service review means.
 - Authorized production account/database/origin, protected backup storage, and migration execution approval. The reviewed local procedure is now documented.
 - Remaining optional P1 features.
 

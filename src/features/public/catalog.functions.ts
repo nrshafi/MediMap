@@ -1,5 +1,8 @@
 import { createServerFn } from '@tanstack/react-start';
 import { env } from 'cloudflare:workers';
+import { getRequest } from '@tanstack/react-start/server';
+import { requireSameOriginPost } from '../authentication/server/config.server';
+import { reserveMappingRequest, providerJson } from './provider.server';
 import { CatalogRepository } from '../catalog/server/repository.server';
 import { isValidCoordinate } from '../map/coordinates';
 import type { Coordinates } from '../map/types';
@@ -29,6 +32,8 @@ export const publicRoute = createServerFn({ method: 'POST' })
         message: 'Road distance and travel time are unavailable.',
       };
     try {
+      requireSameOriginPost(getRequest(), env);
+      if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
       const to = listing.branch.coordinates;
       const url = new URL('https://api.geoapify.com/v1/routing');
       url.search = new URLSearchParams({
@@ -38,7 +43,7 @@ export const publicRoute = createServerFn({ method: 'POST' })
       }).toString();
       const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
       if (!response.ok) throw new Error('Routing unavailable');
-      const payload = record(await response.json());
+      const payload = record(await providerJson(response));
       if (!Array.isArray(payload.features) || !payload.features.length) throw new Error('No route');
       const properties = record(record(payload.features[0]).properties);
       if (
@@ -116,6 +121,8 @@ export const findLocation = createServerFn({ method: 'POST' })
       };
     try {
       const url = new URL('https://api.geoapify.com/v1/geocode/search');
+      requireSameOriginPost(getRequest(), env);
+      if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
       url.search = new URLSearchParams({
         text: data,
         filter: 'rect:90.2,23.6,90.6,24.0',
@@ -125,7 +132,7 @@ export const findLocation = createServerFn({ method: 'POST' })
       }).toString();
       const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
       if (!response.ok) throw new Error('Provider unavailable');
-      const payload = record(await response.json());
+      const payload = record(await providerJson(response));
       if (!Array.isArray(payload.results)) throw new Error('Invalid provider result');
       const places = payload.results.map((value: unknown) => {
         const p = record(value);

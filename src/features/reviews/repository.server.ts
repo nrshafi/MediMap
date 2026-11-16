@@ -2,6 +2,15 @@ import { catalogId } from '../catalog/contracts';
 import { reviewInput } from './contracts';
 export class ReviewRepository {
   constructor(private db: D1Database) {}
+  async aggregate(kind: 'branch' | 'provider', id: string) {
+    const clause = kind === 'branch' ? 'b.id=?' : 'p.id=?';
+    return this.db
+      .prepare(
+        `SELECT COUNT(*) AS count,AVG((json_extract(r.scores,'$[0]')+json_extract(r.scores,'$[1]')+json_extract(r.scores,'$[2]')+json_extract(r.scores,'$[3]')+json_extract(r.scores,'$[4]')+json_extract(r.scores,'$[5]'))/6.0) AS mean FROM service_reviews r JOIN branch_services bs ON bs.id=r.listing_id JOIN branches b ON b.id=bs.branch_id JOIN providers p ON p.id=b.provider_id JOIN services s ON s.id=bs.service_id JOIN categories c ON c.id=s.category_id WHERE r.visibility='visible' AND bs.active=1 AND b.active=1 AND p.active=1 AND s.active=1 AND c.active=1 AND ${clause}`,
+      )
+      .bind(catalogId(id))
+      .first<{ count: number; mean: number | null }>();
+  }
   async list(listing: string, after?: string) {
     catalogId(listing);
     if (after) catalogId(after);

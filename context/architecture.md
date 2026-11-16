@@ -33,7 +33,7 @@ Record provider dependencies and unresolved release requirements in a runbook ou
 | Database | Cloudflare D1 | Direct prepared SQL queries and versioned SQL migrations. No ORM selected. |
 | HTTP routing | Hono if required | Optional. Decide after the application structure is selected. |
 | Authentication | Google OpenID Connect through oauth4webapi | D1 accounts and hashed seven-day sessions. Owner-controlled administrator grants. |
-| Mapping and routing | Pending provider research | Check Dhaka coverage, maps, geocoding, road distance, travel time, and free usage before selecting a provider. |
+| Mapping and routing | Geoapify geocoding/routing and OpenStreetMap raster tiles | Server-side key, explicit user-triggered lookup, shared request budgets, validated responses, and visible attribution. |
 
 The package versions are recorded in `package.json` and `bun.lock`.
 Verify current official documentation and installed versions before later implementation.
@@ -291,9 +291,9 @@ Checked on 8 October 2026. These sources establish available integration options
 - Need for Hono within the single application deployment.
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Live Google OAuth client configuration.
-- Mapping, geocoding, and routing provider selection.
-- Rating aggregation. Price resolution now requires fresh source review, with disputed status while other price reports remain pending.
-- Default sorting, comparison limits, and the definition of current records.
+- Live Geoapify coverage and account usage acceptance. The implementation uses Geoapify and OpenStreetMap raster tiles.
+- Live review-volume acceptance. Service ratings use the mean of six required dimensions; branch/provider summaries include visible reviews at active records.
+- Production workload verification. Default sorting is ascending price; comparison allows two to four active listings for one service.
 
 
 ## Location and search rules

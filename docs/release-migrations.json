@@ -41,6 +41,10 @@
     {
       "name": "0010_review_moderation.sql",
       "sha256": "529dc69b3d3d14d3647220147c3aa6a0b0760a2738b6e63ed3acd0f48739d186"
+    },
+    {
+      "name": "0011_mapping_budget.sql",
+      "sha256": "ee380ddf16fae827c27462ebfd42341bdd360dd837f9a13ef060416ec3723d5e"
     }
   ]
 }

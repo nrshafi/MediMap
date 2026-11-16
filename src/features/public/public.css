@@ -86,10 +86,45 @@
 .table-scroll {
   overflow-x: auto;
 }
+.table-scroll table {
+  min-width: 960px;
+}
+.table-scroll th:first-child {
+  min-width: 180px;
+}
+.public-page article > label {
+  display: block;
+  margin-block: 12px;
+}
+.public-page button {
+  background: var(--accent-primary);
+  color: #fff;
+  border: 1px solid var(--accent-primary);
+  border-radius: 6px;
+}
+.public-page button:disabled {
+  opacity: 0.6;
+}
 .public-page fieldset {
   margin: 16px 0;
 }
 .public-page progress {
   width: 100%;
   height: 24px;
+}
+.geographic-map .branch-map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-height: 44px;
+  background: #fff;
+  color: #143d3c;
+  border: 2px solid #117c73;
+  z-index: 2;
+  max-width: 130px;
+  font-size: 12px;
+}
+.branch-map-pin[aria-pressed='true'],
+[data-selected='true'] {
+  outline: 3px solid #117c73;
+  outline-offset: 3px;
 }

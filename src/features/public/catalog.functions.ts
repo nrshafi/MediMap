@@ -84,7 +84,16 @@ export const publicCatalog = createServerFn({ method: 'GET' })
         after = page.nextCursor ?? undefined;
       } while (after);
     }
-    return { services, listings };
+    const ratings: Record<string, number | null> = {};
+    if (serviceId) {
+      const summaries = await env.DB.prepare(
+        "SELECT r.listing_id,AVG((json_extract(r.scores,'$[0]')+json_extract(r.scores,'$[1]')+json_extract(r.scores,'$[2]')+json_extract(r.scores,'$[3]')+json_extract(r.scores,'$[4]')+json_extract(r.scores,'$[5]'))/6.0) AS mean FROM service_reviews r JOIN branch_services bs ON bs.id=r.listing_id WHERE bs.service_id=? AND r.visibility='visible' GROUP BY r.listing_id",
+      )
+        .bind(serviceId)
+        .all<{ listing_id: string; mean: number | null }>();
+      for (const row of summaries.results) ratings[row.listing_id] = row.mean;
+    }
+    return { services, listings, ratings };
   });
 
 export const findLocation = createServerFn({ method: 'POST' })

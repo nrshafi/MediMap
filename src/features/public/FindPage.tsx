@@ -7,20 +7,42 @@ import { findLocation, publicRoute } from './catalog.functions';
 import { calculateHaversineDistanceKm } from '../map/haversine';
 import './public.css';
 import { AreaStatistics } from './AreaStatistics';
+import { sortListings, sortChoices, type PublicSort } from './sorting';
 
 export function FindPage({
   services,
   listings,
   service,
+  ratings = {},
+  initial,
+  onContextChange,
 }: {
   services: Service[];
   listings: BranchService[];
   service?: string;
+  ratings?: Record<string, number | null>;
+  initial?: { lat: number; lng: number; radius: number; sort: PublicSort; verified: string };
+  onContextChange?: (value: {
+    lat: number;
+    lng: number;
+    radius: number;
+    sort: PublicSort;
+    verified: string;
+  }) => void;
 }) {
   const [query, setQuery] = useState('');
   const [comparison, setComparison] = useState<string[]>([]);
-  const [center, setCenter] = useState({ latitude: 23.8103, longitude: 90.4125 });
-  const [radius, setRadius] = useState(3);
+  const [center, setCenter] = useState({
+    latitude: initial?.lat ?? 23.8103,
+    longitude: initial?.lng ?? 90.4125,
+  });
+  const [radius, setRadius] = useState(initial?.radius ?? 3);
+  const [sort, setSort] = useState<PublicSort>(initial?.sort ?? 'price-asc');
+  const [verified, setVerified] = useState(initial?.verified ?? 'all');
+  const [travel, setTravel] = useState<Record<string, number | null>>({});
+  useEffect(() => {
+    onContextChange?.({ lat: center.latitude, lng: center.longitude, radius, sort, verified });
+  }, [center.latitude, center.longitude, radius, sort, verified]);
   useEffect(() => setComparison([]), [service, center.latitude, center.longitude, radius]);
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState<{
@@ -43,10 +65,21 @@ export function FindPage({
       )
     : null;
   const selected = services.find((s) => s.id === service);
-  const visible = listings.filter(
-    (l) =>
-      !l.branch.coordinates || calculateHaversineDistanceKm(center, l.branch.coordinates) <= radius,
-  );
+  const visible = query.trim()
+    ? []
+    : sortListings(
+        listings
+          .filter(
+            (l) =>
+              !l.branch.coordinates ||
+              calculateHaversineDistanceKm(center, l.branch.coordinates) <= radius,
+          )
+          .filter((l) => verified !== 'yes' || l.price?.status === 'verified'),
+        sort,
+        center,
+        ratings,
+        travel,
+      );
   return (
     <main className="public-page">
       <nav>
@@ -164,6 +197,23 @@ export function FindPage({
       </p>
       {selected && !visible.length && <p>No published listings match this service and area.</p>}
       <section aria-label="Published listings">
+        <label>
+          Sort listings
+          <select value={sort} onChange={(e) => setSort(e.target.value as PublicSort)}>
+            {sortChoices.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Price verification
+          <select value={verified} onChange={(e) => setVerified(e.target.value)}>
+            <option value="all">All published listings</option>
+            <option value="yes">Verified prices only</option>
+          </select>
+        </label>
         <p>
           {comparison.length} of 4 selected for comparison. Selection clears when the service, area,
           or page changes.
@@ -192,6 +242,7 @@ export function FindPage({
               key={`${l.id}-${center.latitude}-${center.longitude}`}
               id={l.id}
               center={center}
+              onEstimate={(minutes) => setTravel((previous) => ({ ...previous, [l.id]: minutes }))}
             />
           </div>
         ))}
@@ -231,9 +282,11 @@ export function ListingCard({ listing: l }: { listing: BranchService }) {
 function RouteEstimate({
   id,
   center,
+  onEstimate,
 }: {
   id: string;
   center: { latitude: number; longitude: number };
+  onEstimate: (minutes: number | null) => void;
 }) {
   const [result, setResult] = useState<Awaited<ReturnType<typeof publicRoute>> | null>(null);
   const [pending, setPending] = useState(false);
@@ -244,7 +297,9 @@ function RouteEstimate({
         onClick={async () => {
           setPending(true);
           try {
-            setResult(await publicRoute({ data: { listing: id, from: center } }));
+            const estimate = await publicRoute({ data: { listing: id, from: center } });
+            setResult(estimate);
+            onEstimate(estimate.available ? estimate.minutes : null);
           } catch {
             setResult({
               available: false,

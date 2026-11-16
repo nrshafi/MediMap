@@ -1,9 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { sortChoices, type PublicSort } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
 import { FindPage } from '../features/public/FindPage';
 export const Route = createFileRoute('/find')({
   validateSearch: (s: Record<string, unknown>) => ({
     service: typeof s.service === 'string' ? s.service : undefined,
+    lat: Number.isFinite(Number(s.lat)) && Math.abs(Number(s.lat)) <= 85 ? Number(s.lat) : 23.8103,
+    lng: Number.isFinite(Number(s.lng)) && Math.abs(Number(s.lng)) <= 180 ? Number(s.lng) : 90.4125,
+    radius: Number(s.radius) >= 0.1 && Number(s.radius) <= 100 ? Number(s.radius) : 3,
+    sort: sortChoices.includes(s.sort as PublicSort)
+      ? (s.sort as PublicSort)
+      : ('price-asc' as PublicSort),
+    verified: s.verified === 'yes' ? 'yes' : 'all',
   }),
   loaderDeps: ({ search }) => search,
   loader: ({ deps }) => publicCatalog({ data: deps }),
@@ -17,5 +25,22 @@ export const Route = createFileRoute('/find')({
   ),
 });
 function Page() {
-  return <FindPage {...Route.useLoaderData()} service={Route.useSearch().service} />;
+  const search = Route.useSearch();
+  const navigate = useNavigate();
+  return (
+    <FindPage
+      key={search.service}
+      {...Route.useLoaderData()}
+      service={search.service}
+      initial={search}
+      onContextChange={(context) => {
+        void navigate({
+          to: '/find',
+          search: { ...search, ...context },
+          replace: true,
+          resetScroll: false,
+        });
+      }}
+    />
+  );
 }

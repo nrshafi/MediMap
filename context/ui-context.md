@@ -2,10 +2,10 @@
 
 ## Current page
 
-The initial page is a static "Coming soon" hero for MediMap.
+The home page is a functional entry to source-backed service discovery, account access, and public detail pages.
 Use a light clinical palette, dark teal text, and a simple location mark.
 Show the product name and a short description of its planned purpose.
-Do not add forms, buttons, navigation, or product functionality to this page.
+Use clear service-search navigation and explicit source coverage. Retain the clinical color tokens and touch-target conventions.
 
 ## Color tokens
 

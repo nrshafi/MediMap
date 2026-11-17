@@ -45,7 +45,7 @@ The collector makes public GET requests only, without login, calls, messages, or
 Its hashes cover the captured evidence, original research, explicit mappings, and specific holds.
 A changed input cannot inherit the previous review.
 Source retrieval, website update, actual review, and provider effective dates remain distinct.
-The seed preserves null effective dates, coordinates, telephone fields, and opening hours.
+The seed keeps effective dates, telephone fields, and opening hours null. It stores the branch coordinates entered on 18 November 2026.
 Website-publication verification does not imply telephone or physical confirmation.
 
 ## Canonical mapping and holds

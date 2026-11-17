@@ -15,9 +15,15 @@ INSERT INTO sources(id, provider_id, url, kind, retrieved_at, sha256)
   VALUES ('addin-contact-20261027', 'addin-medical-college-hospital',
     'https://awmch.addinhospital.org/contact/', 'official_contact', '2026-10-27T10:28:23.315Z',
     'f4d487b1e750ef07fc12fcae91ea2222cb030b951901ec540c8b42bf3472be87') ON CONFLICT(id) DO NOTHING;
-INSERT INTO branches(id, provider_id, name, address, contact_source_id, search_key)
+-- Coordinates entered 2026-11-18 from the application Places lookup of the published address.
+-- Selected result: "Bara Maghbazar, 2 Outer Circular Road, Dhaka 1217, Bangladesh".
+-- The row stores latitude and longitude only. A saved coordinate is not replaced.
+INSERT INTO branches(id, provider_id, name, address, contact_source_id, search_key, latitude, longitude)
   VALUES ('addin-moghbazar', 'addin-medical-college-hospital', 'Moghbazar',
-    '2 Bara Maghbazar, Dhaka 1217', 'addin-contact-20261027', 'moghbazar') ON CONFLICT(id) DO NOTHING;
+    '2 Bara Maghbazar, Dhaka 1217', 'addin-contact-20261027', 'moghbazar',
+    23.7483439, 90.4053762) ON CONFLICT(id) DO NOTHING;
+UPDATE branches SET latitude = 23.7483439, longitude = 90.4053762
+  WHERE id = 'addin-moghbazar' AND latitude IS NULL AND longitude IS NULL;
 INSERT INTO branch_services(id, branch_id, service_id, provider_service_name)
   VALUES ('addin-moghbazar-complete-blood-count', 'addin-moghbazar', 'complete-blood-count', 'CBC')
   ON CONFLICT(id) DO NOTHING;

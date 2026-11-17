@@ -25,7 +25,9 @@
       "name": "Eskatan Garden Road",
       "address": "1, Eskatan Garden Road, Dhaka-1000, Bangladesh.",
       "contactSourceId": "holy-family-contact-20261028",
-      "phone": null
+      "phone": null,
+      "latitude": 23.7459184,
+      "longitude": 90.3996158
     },
     {
       "id": "mogh-kamalapur",
@@ -33,7 +35,9 @@
       "name": "Kamalapur Road",
       "address": "35/7, 1 Kamalapur Rd, Dhaka 1203",
       "contactSourceId": "mogh-contact-20261028",
-      "phone": null
+      "phone": null,
+      "latitude": 23.7321377,
+      "longitude": 90.4241833
     },
     {
       "id": "addin-moghbazar",
@@ -41,7 +45,9 @@
       "name": "Moghbazar",
       "address": "2 Bara Maghbazar, Dhaka 1217",
       "contactSourceId": "addin-contact-20261027",
-      "phone": null
+      "phone": null,
+      "latitude": 23.7483439,
+      "longitude": 90.4053762
     }
   ],
   "services": [

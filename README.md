@@ -37,7 +37,7 @@ Open [localhost:3000](http://localhost:3000) after starting the development serv
 
 1. Run `bun install --frozen-lockfile`.
 2. Run `bun run cf:types` to regenerate bindings after configuration changes.
-3. Run `bun run db:setup` to apply migrations and import the reviewed listing.
+3. Run `bun run db:setup` to apply migrations, import the initial listing and apply the reviewed 196-listing dataset with branch coordinates.
 4. Run `bun run dev`.
 5. Open [the catalog inspector](http://localhost:3000/admin/catalog).
 
@@ -54,7 +54,7 @@ Price reports immediately mark the current price disputed. See [report submissio
 Open `/admin/reports` for the protected report queue and evidence-based decisions.
 See [report resolution](docs/correction-report-resolution.md) for price restoration, competing reports, retained history, and native form behavior.
 The initial import contains Ad-din Moghbazar's CBC listing at BDT 400, supported by official tariff and contact pages.
-Run `bun run catalog:check`, then `bun run db:catalog:apply` to add the separately reviewed 196-listing dataset.
+`bun run db:setup` also adds the separately reviewed 196-listing dataset. To apply it again, run `bun run catalog:check`, then `bun run db:catalog:apply`.
 Run `bun run db:catalog:check` to reconcile its three hospital branches and retained source evidence.
 See [reviewed hospital data](docs/reviewed-hospital-dataset.md) for mappings, held records, local entry, and regeneration.
 See [the catalog contracts](docs/catalog-read-contracts.md) for evidence, stable IDs, price rules, and read operations.

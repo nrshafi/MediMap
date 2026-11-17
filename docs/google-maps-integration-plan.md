@@ -40,8 +40,8 @@ These constraints come from the Google Maps Platform terms and documentation, ch
 1. **No High Risk Activities.** The terms prohibit use "for High Risk Activities". The definition is use "where the use or failure of the Services would reasonably be expected to result in death, serious personal injury". MediMap must not present itself as an emergency or ambulance tool. Keep the existing scope exclusion for emergency care. Bangladesh is not on the prohibited-territories list.
 2. **No use with non-Google maps.** The terms say "Customer will not use the Google Maps Core Services with or near a non-Google Map". Remove the OpenStreetMap tiles from every page that shows Google content. Keep Google content off the `/discovery` schematic preview.
 3. **Caching limits.** The terms permit temporary caching of latitude and longitude from the Routes API and Places API "for up to 30 consecutive calendar days". The terms permit caching of `place_id`. Therefore:
-   - Do not write Google coordinates, addresses, or route values to D1.
-   - Branch coordinates in D1 must come from official provider evidence and administrator entry. Never fill them from Google geocoding.
+   - Do not store a Places response, a Routes response, a place ID, a Google address, or a route value in D1.
+   - Branch coordinates in D1 come from official provider evidence or administrator entry. On 18 November 2026, the three reviewed branches stored the latitude and longitude from one Places lookup of each published official address. A later lookup does not replace a saved coordinate.
    - Do not add a server cache for route or place results.
 4. **Attribution.** A Google map shows its own attribution. The Places policy says autocomplete suggestion lists remain Google Maps Content. When suggestions show without a visible Google map, show "Google Maps" attribution beside the list. Never cover the attribution row at the bottom of the map.
 5. **End-user terms.** Google's compliance guidance asks applications to say that they use Google Maps features. Add footer links to the [Google Maps End User Additional Terms](https://maps.google.com/help/terms_maps/) and the [Google Privacy Policy](https://policies.google.com/privacy).
@@ -201,7 +201,7 @@ Acceptance: no horizontal page scroll at 375px. All controls are at least 44px h
 
 ## Risks and open items
 
-- **No branch pins yet.** All reviewed branch coordinates are unknown, according to `docs/public-integration.md`. Until administrators enter verified coordinates, the map shows only the user location, and road estimates stay unavailable.
+- **Branch pins use the 18 November 2026 coordinates.** Those values come from one Places lookup of each published official address. They are not a separate survey. A missing coordinate still leaves that branch off the map, and a failed route still leaves the price visible.
 - **No production map.** The Demo Key is for testing only. Before the 29 November release candidate, the owner must choose between approved billing and a release without a live map.
 - **Unknown daily limit.** Google does not publish the Demo Key limit. Phase 0 and the manual checks give the only evidence.
 - **`/discovery` page.** The demonstration route keeps its schematic map. The owner can retire it later to remove any question about non-Google maps in the same application.

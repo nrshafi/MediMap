@@ -9,9 +9,8 @@ import { formatBdt, formatKm, formatReviewDate } from './format';
 import { StatusBadge } from './ListingCard';
 
 function routeLabel(result: Awaited<ReturnType<typeof publicRoute>> | undefined) {
-  return result?.available &&
-    typeof result.roadKm === 'number' &&
-    typeof result.minutes === 'number'
+  if (!result) return 'Not requested yet';
+  return result.available && typeof result.roadKm === 'number' && typeof result.minutes === 'number'
     ? `${formatKm(result.roadKm)} · ${Math.round(result.minutes)} minutes`
     : 'Driving estimate unavailable';
 }
@@ -144,7 +143,17 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
                     );
                     setRoutes(Object.fromEntries(entries));
                   } catch {
-                    setRoutes({});
+                    setRoutes(
+                      Object.fromEntries(
+                        items.map(({ listing }) => [
+                          listing.id,
+                          {
+                            available: false as const,
+                            message: 'Route lookup failed. Published prices remain available.',
+                          },
+                        ]),
+                      ),
+                    );
                   } finally {
                     setBusy(false);
                   }

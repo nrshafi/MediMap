@@ -12,12 +12,13 @@ test('public catalog, details, unknown locations and URL filters use persisted d
     .getByRole('region', { name: 'Service suggestions' })
     .getByRole('link', { name: 'Complete Blood Count', exact: true })
     .click();
+  await page.getByRole('button', { name: 'Custom' }).click();
+  await page.getByLabel('Straight-line radius in km').fill('10');
+  await expect(page).toHaveURL(/radius=10/);
   await expect(page.getByRole('region', { name: 'Published listings' })).toContainText(
     'BDT 400.00',
   );
-  await expect(page.getByRole('region', { name: 'Published listings' })).toContainText(
-    'Location not recorded',
-  );
+  await expect(page.getByRole('region', { name: 'Published listings' })).toContainText('km');
   await expect(page.getByRole('region', { name: 'Area price statistics' })).toContainText(
     'At least three eligible branches',
   );
@@ -33,7 +34,7 @@ test('public catalog, details, unknown locations and URL filters use persisted d
   await page.getByRole('link', { name: 'Branch details', exact: true }).first().click();
   await expect(page.getByRole('heading', { name: 'Moghbazar', exact: true })).toBeVisible();
   await expect(page.getByText('Opening hours:', { exact: false })).toContainText('Unknown');
-  await expect(page.getByText('Map location unavailable')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Show on map' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Get directions to this address' })).toHaveAttribute(
     'href',
     /destination=/,
@@ -59,7 +60,7 @@ test('find page shows listing details, controls meet touch size and the map fall
   page,
 }) => {
   const mobile = test.info().project.name === 'mobile';
-  await page.goto('/find?service=complete-blood-count');
+  await page.goto('/find?service=complete-blood-count&radius=10');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   for (const control of [
     page.getByRole('button', { name: 'Find address' }),
@@ -105,7 +106,7 @@ test('find page shows listing details, controls meet touch size and the map fall
 
 test('a blocked Google Maps script shows the map unavailable notice', async ({ page }) => {
   await page.route('https://maps.googleapis.com/**', (route) => route.abort());
-  await page.goto('/find?service=complete-blood-count');
+  await page.goto('/find?service=complete-blood-count&radius=10');
   if (test.info().project.name === 'mobile')
     await page.getByRole('button', { name: 'Map', exact: true }).click();
   // Without a key the notice shows at once. With a key the aborted script triggers it.

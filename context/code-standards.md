@@ -44,7 +44,7 @@
 - Store schema changes in versioned SQL migrations.
 - Check reviewed migration hashes before release rehearsals. Never rewrite an applied migration to repair an upgrade.
 - Preserve price sources and verification metadata.
-- Do not store Google coordinates, addresses, or route values in D1. Do not add a server cache for Google results.
+- Do not store a Places response, a Routes response, a place ID, a Google address, or a route value in D1. Do not add a server cache for Google results. A branch row can store latitude and longitude after administrator entry. The 18 November 2026 entry for the three reviewed branches is that kind of entry.
 - Apply the report-based freshness policy. Do not add an age-based expiry rule.
 - Require server-confirmed sign-in for correction reports. Derive reporter identity from the session.
 - Enforce report quotas, pending duplicates, target revisions, and price-dispute effects atomically in D1.

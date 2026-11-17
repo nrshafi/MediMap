@@ -23,7 +23,7 @@ The browser suite tests selected keyboard and layout behavior. It does not estab
 
 - Configure the Google OAuth client and verify live consent, callback, sign-out, and owner-granted administrator access.
 - Configure `GEOAPIFY_API_KEY`. Check Dhaka address accuracy, driving estimates, attribution, account quotas, and failure behavior.
-- Add independently verified branch coordinates. The reviewed dataset currently has no coordinates for its three branches.
+- Confirm the 18 November 2026 branch coordinates. They come from one Places lookup of each published official address, not from a separate survey.
 - Verify map pins, radius membership, and routing against those coordinates. Unknown locations must remain excluded from geographic statistics.
 - Confirm authorized account, D1 binding, HTTPS origin, secret storage, backup storage, and deployment approval.
 - Measure production CPU, startup, database usage, and provider usage against the selected workload.

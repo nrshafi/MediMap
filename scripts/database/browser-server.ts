@@ -24,7 +24,7 @@ const browserEnvironment = {
   MEDIMAP_D1_STATE: resolve('.bun-tmp/browser-d1-state', crypto.randomUUID()),
   CLOUDFLARE_VITE_WRANGLER_CONFIG_PATH: browserConfig,
 };
-const setup = Bun.spawn([process.execPath, 'run', 'scripts/database/setup.ts'], {
+const setup = Bun.spawn([process.execPath, 'run', 'scripts/database/setup.ts', '--seed-only'], {
   stdin: 'ignore',
   stdout: 'inherit',
   stderr: 'inherit',

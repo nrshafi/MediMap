@@ -22,8 +22,9 @@ This document records confirmed constraints. Unanswered architecture questions r
 
 Google's terms prohibit High Risk Activities. These are uses where failure of the services could reasonably cause death or serious personal injury. MediMap is not an emergency or ambulance tool. Keep the emergency care exclusion.
 Do not show Google content with or near a non-Google map. The `/discovery` schematic preview has no Google content.
-Do not write Google coordinates, addresses, or route values to D1. Do not add a server cache for route or place results.
-Branch coordinates come only from official provider evidence and administrator entry. Google geocoding never fills them.
+Do not store a Places response, a Routes response, a place ID, a Google address, or a route value in D1. Do not add a server cache for route or place results.
+Branch coordinates come from official provider evidence or from administrator entry.
+On 18 November 2026, each of the three reviewed branches received one coordinate pair from the application's Places lookup of its published official address. The branch row stores only that latitude and longitude. A later lookup does not replace a saved coordinate. An empty coordinate stays empty until an administrator enters a value.
 Keep Google attribution visible. Do not cover the map attribution row.
 Link the Google Maps End User Additional Terms and the Google Privacy Policy in the footer.
 

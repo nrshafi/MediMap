@@ -24,7 +24,8 @@ test('catalog inspector reads reviewed D1 data and preserves unknown metadata', 
   await expect(page.getByText('Verified on official website', { exact: true })).toBeVisible();
   await expect(page.getByText('27 October 2026', { exact: true })).toBeVisible();
   await expect(page.getByText('23 February 2026', { exact: true })).toBeVisible();
-  await expect(page.locator('dd').filter({ hasText: /^Unknown$/ })).toHaveCount(4);
+  await expect(page.locator('dd').filter({ hasText: /^Unknown$/ })).toHaveCount(3);
+  await expect(page.getByText('23.7483439, 90.4053762', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Official tariff · row 1' })).toHaveAttribute(
     'href',
     'https://awmch.addinhospital.org/hematology-service-charge',

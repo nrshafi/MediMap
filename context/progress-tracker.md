@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-17 20:51:59 +06:00`.
+Last updated: `2026-11-18 00:30:46 +06:00`.
 
 ## Current phase
 
@@ -22,7 +22,8 @@ The reviewed publication subset is implemented and reconciled locally with 196 l
 Local release preparation is verified, with migration hashes, a successful failure/restore rehearsal, dry-run packaging, and the release runbook.
 Production acceptance still requires real credentials, target bindings, CPU/workload checks, live mapping acceptance, and query redaction.
 Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Google Maps adapters (replaced Geoapify on 2026-11-17), service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
-The original `/discovery` route remains a labelled demonstration. Live provider acceptance requires configured credentials and branch coordinates.
+The original `/discovery` route remains a labelled demonstration. Live provider acceptance requires configured credentials.
+The three reviewed branches now store coordinates entered on 18 November 2026.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 The research export remains separate from application fixtures and reviewed D1 data. The original CBC listing and review history remain intact.
 The inventory holds 1,894 research listings for unresolved currency, mapping, or specific source concerns.
@@ -50,6 +51,22 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Reviewed branch coordinates and compare travel label (2026-11-18 00:30:46 +06:00)
+
+- Resolved each published branch address through the running application's address search (`findLocation`, then `selectLocation`).
+- Stored only the latitude and longitude. The Places response, place ID, and route values are not stored. A later lookup does not replace a saved coordinate.
+- Moghbazar, `addin-moghbazar`: 23.7483439, 90.4053762. Selected result: "Bara Maghbazar, 2 Outer Circular Road, Dhaka 1217, Bangladesh". Query: "2 Bara Maghbazar, Dhaka 1217".
+- Eskatan Garden Road, `holy-family-eskatan`: 23.7459184, 90.3996158. Selected result: "1 Eskaton Garden Rd, Dhaka 1000, Bangladesh".
+- Kamalapur Road, `mogh-kamalapur`: 23.7321377, 90.4241833. Selected result: "35 Kamalapur Rd, Dhaka, Bangladesh", from the suggestion "35/7 Kamalapur Rd, Dhaka, Bangladesh".
+- All three results are inside Dhaka. The schema has no coordinate provenance column. The selected labels are recorded in `scripts/data/reviewedCatalog.ts` and in the `seeds/catalog.sql` comment.
+- `bun run db:setup` applies migrations, `seeds/catalog.sql` and the reviewed catalog, so one command gives all three branch coordinate pairs. Browser tests call the setup script with `--seed-only` to keep the one-listing database. `bun run db:catalog:apply` alone writes all three pairs in `seeds/reviewed-catalog.sql` and fills a null pair without replacing a saved pair. The current local D1 database has all three pairs.
+- `/compare` shows "Not requested yet" before a driving request and "Driving estimate unavailable" after a failed request. The `/find` listing panel already used "Not requested" and "Travel estimates have not been requested."
+- No reviewed service is published at all three branches. A 5 km radius that covers the three coordinates still reports two eligible Complete Blood Count branches, so the area price aggregate stays unavailable.
+- The default search center and 3 km radius do not include these branches. A wider radius or a closer location is required before their listings appear.
+- Verification: typecheck passed. Lint passed. Format check passed. `bun test`: 309 passed. `bun run test:database`: 108 passed. Playwright: 96 passed (desktop and mobile).
+- Browser check on the dev server at 1280 px and 375 px: Moghbazar address search selected a place. The listing panel returned 1.6 km and 8 minutes. Compare from a mocked Dhaka location returned 1.2 km / 5 minutes and 2.9 km / 9 minutes. The Complete Blood Count map showed the Ad-din and Monowara pins. The Holy Family branch page loaded its map. Screenshots are in `C:/Users/Admin/ego/medimap-demo/`.
+- No commit or push.
 
 ### Google Maps integration and full UI redesign (2026-11-17 20:51:59 +06:00)
 

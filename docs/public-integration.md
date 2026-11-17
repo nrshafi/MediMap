@@ -34,10 +34,11 @@ They do not trust account IDs or role fields supplied by clients.
 - Keep comparison to one service and at most four listings. Clear selection on service, query, location, radius, or page changes.
 - Preserve unknown prices, ratings, coordinates, hours, and travel estimates. Do not count location-unknown branches inside a radius.
 
-The reviewed import still has 196 listings and three branches. Its coordinate fields remain unknown.
-Those listings remain available to browse, but they cannot establish geographic membership, map pins, routing endpoints, or three-branch area statistics.
-Administrators can enter separately verified coordinates through the existing branch editor.
-No coordinates or review data were invented for the release dataset.
+The reviewed import still has 196 listings and three branches.
+On 18 November 2026, each branch received a coordinate pair from one Places lookup of its published official address. The branch row stores latitude and longitude only.
+No canonical service is published at all three branches, so the three-branch area statistic still has no eligible set.
+Administrators can replace a coordinate through the existing branch editor. A later lookup does not replace a saved coordinate.
+No review data was invented for the release dataset.
 
 ## Mapping provider
 
@@ -59,8 +60,8 @@ Provider failures leave catalog prices available and preserve the selected searc
 
 - MediMap is not an emergency or ambulance tool. Google's terms prohibit High Risk Activities, which are uses where failure of the services could reasonably cause death or serious personal injury.
 - Google content never appears with or near a non-Google map. The `/discovery` schematic preview has no Google content.
-- Do not write Google coordinates, addresses, or route values to D1. Do not add a server cache for route or place results.
-- Branch coordinates come only from official provider evidence and administrator entry. Google geocoding never fills them.
+- Do not store a Places response, a Routes response, a place ID, a Google address, or a route value in D1. Do not add a server cache for route or place results.
+- Branch coordinates come from official provider evidence or administrator entry. The 18 November 2026 pairs for the three reviewed branches are stored latitude and longitude only. A later lookup does not replace a saved coordinate.
 - Keep Google attribution visible. The map attribution row stays uncovered.
 - Show "Google Maps" attribution beside suggestion lists when no Google map is visible.
 - Footer links go to the [Google Maps End User Additional Terms](https://maps.google.com/help/terms_maps/) and the [Google Privacy Policy](https://policies.google.com/privacy).
@@ -90,7 +91,7 @@ Apply the existing migrations in order, followed by:
 2. `0010_review_moderation.sql` for abuse reports, retained decisions, and guarded visibility changes.
 3. `0011_mapping_budget.sql` for shared provider-request reservations.
 
-Use `bun run db:setup`, then `bun run db:catalog:apply` for the separately reviewed dataset.
+Use `bun run db:setup`. It also applies the separately reviewed dataset.
 The reviewed migration manifest includes the new files. No previously applied migration was changed.
 Use `bun run typecheck`, `bun run lint`, `bun run format:check`, `bun test`, `bun run test:database`, and `bun run test:browser`.
 Run heavy Workers/browser suites separately on Windows.

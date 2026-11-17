@@ -100,7 +100,10 @@ test('reviewed hospital dataset against actual local D1', async (t) => {
         for (const branch of catalog.branches) {
           const actual = await repository.getBranch(branch.id);
           assert.equal(actual?.address, branch.address);
-          assert.equal(actual?.coordinates, null);
+          assert.deepEqual(actual?.coordinates, {
+            latitude: branch.latitude,
+            longitude: branch.longitude,
+          });
           assert.equal(actual?.openingHours, null);
         }
       },

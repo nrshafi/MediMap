@@ -59,6 +59,8 @@ export type ReviewedCatalog = {
     address: string;
     contactSourceId: string;
     phone: string | null;
+    latitude: number;
+    longitude: number;
   }[];
   services: ReviewedService[];
   sources: ReviewedSource[];
@@ -163,6 +165,18 @@ export function decodeEvidence(value: unknown): EvidenceFile {
     }),
   };
 }
+// Entered on 18 November 2026 from one Places lookup of each published official address.
+// The selected results were:
+// addin-moghbazar: "Bara Maghbazar, 2 Outer Circular Road, Dhaka 1217, Bangladesh"
+// holy-family-eskatan: "1 Eskaton Garden Rd, Dhaka 1000, Bangladesh"
+// mogh-kamalapur: "35 Kamalapur Rd, Dhaka, Bangladesh" from "35/7 Kamalapur Rd, Dhaka, Bangladesh"
+// The branch row stores latitude and longitude only.
+const enteredCoordinates: Record<string, { latitude: number; longitude: number }> = {
+  'addin-moghbazar': { latitude: 23.7483439, longitude: 90.4053762 },
+  'holy-family-eskatan': { latitude: 23.7459184, longitude: 90.3996158 },
+  'mogh-kamalapur': { latitude: 23.7321377, longitude: 90.4241833 },
+};
+
 export function buildReviewedCatalog(
   evidenceValue: unknown,
   researchValue: unknown,
@@ -323,6 +337,8 @@ export function buildReviewedCatalog(
       throw new Error(`Missing verified branch location: ${branch.id}`);
     usedSources.add(branch.contactSourceId);
     catalog.providers.push({ id: providerId, name: branch.providerName });
+    const coordinates = enteredCoordinates[branch.id];
+    if (!coordinates) throw new Error(`Missing entered coordinates: ${branch.id}`);
     catalog.branches.push({
       id: branch.id,
       providerId,
@@ -331,6 +347,8 @@ export function buildReviewedCatalog(
       contactSourceId:
         branch.id === 'addin-moghbazar' ? 'addin-contact-20261027' : `${contact.id}-20261028`,
       phone: null,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
     });
   }
   for (const id of [...usedSources].sort()) {
@@ -520,11 +538,21 @@ export function seedStatements(catalog: ReviewedCatalog): string[] {
         ],
       ),
     );
-  for (const branch of catalog.branches)
+  for (const branch of catalog.branches) {
     statements.push(
       insert(
         'branches',
-        ['id', 'provider_id', 'name', 'address', 'contact_source_id', 'phone', 'search_key'],
+        [
+          'id',
+          'provider_id',
+          'name',
+          'address',
+          'contact_source_id',
+          'phone',
+          'search_key',
+          'latitude',
+          'longitude',
+        ],
         [
           branch.id,
           branch.providerId,
@@ -533,9 +561,15 @@ export function seedStatements(catalog: ReviewedCatalog): string[] {
           branch.contactSourceId,
           branch.phone,
           normalizeText(branch.name),
+          branch.latitude,
+          branch.longitude,
         ],
       ),
     );
+    statements.push(
+      `UPDATE branches SET latitude = ${sql(branch.latitude)}, longitude = ${sql(branch.longitude)} WHERE id = ${sql(branch.id)} AND latitude IS NULL AND longitude IS NULL;`,
+    );
+  }
   for (const listing of catalog.listings) {
     statements.push(
       insert(

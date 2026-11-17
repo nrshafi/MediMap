@@ -61,7 +61,10 @@ test('catalog foundation against real local D1', async (t) => {
         assert.equal(listing.price.verifiedAt, '2026-10-27T11:20:41Z');
         assert.equal(listing.price.verificationMethod, 'official_website_review');
         assert.equal(listing.price.effectiveDate, null);
-        assert.equal(listing.branch.coordinates, null);
+        assert.deepEqual(listing.branch.coordinates, {
+          latitude: 23.7483439,
+          longitude: 90.4053762,
+        });
         assert.equal(listing.branch.phone, null);
         assert.equal(listing.branch.openingHours, null);
         assert.equal(listing.branch.contactSource?.kind, 'official_contact');
@@ -87,7 +90,7 @@ test('catalog foundation against real local D1', async (t) => {
             .run(),
         );
         await assert.rejects(db.prepare('UPDATE branches SET latitude = 91, longitude = 0').run());
-        await assert.rejects(db.prepare('UPDATE branches SET latitude = 23').run());
+        await assert.rejects(db.prepare('UPDATE branches SET longitude = NULL').run());
         for (const amount of [0, -10, 1.5]) {
           await assert.rejects(
             db

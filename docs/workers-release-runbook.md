@@ -182,7 +182,7 @@ An SQL export is a separate recovery artifact; do not assume that a Worker versi
 Use [catalog reads](catalog-read-contracts.md), [authentication](authentication.md), [provider administration](provider-administration.md), and [pricing administration](pricing-administration.md).
 Use the [report route](correction-report-submission.md) and [administrator resolution transitions](correction-report-resolution.md) when adding public links and trust indicators.
 The [reviewed dataset](reviewed-hospital-dataset.md) has 196 listings, three branches, and 136 canonical services. Another 1,894 research listings remain held.
-Unknown coordinates, hours, contacts, and effective dates remain null. This subset does not establish three eligible branches for every service.
+Hours, contacts, and effective dates remain null. The three branch coordinate pairs entered on 18 November 2026 are stored. This subset does not establish three eligible branches for every service.
 Inject `env.DB` into server repositories per request. Keep `.server.ts` modules and account records out of browser imports.
 Extend `AdminLayout.navigation` for later moderation pages. Keep the current core navigation and server authorization checks.
 The public integration and its current acceptance evidence are documented in [public application integration](public-integration.md).

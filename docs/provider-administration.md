@@ -94,7 +94,7 @@ These are usual weekly hours. Holiday schedules and temporary-closure exceptions
 - `openingHours` as `WeeklyHours | null`.
 
 This replaces the earlier free-text `openingHours` type.
-The initial reviewed CBC branch retains null contacts, coordinates, and hours. No additional hospital data was invented for this change.
+The initial reviewed CBC branch keeps null contacts and hours. Its coordinates are the pair entered on 18 November 2026. No additional hospital data was invented for the provider-administration change.
 The administration inspector displays known branch contacts and structured hours from the same public read contract.
 Public discovery, map rendering, and public detail routes remain separate integration work.
 

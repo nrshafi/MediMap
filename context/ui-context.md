@@ -7,18 +7,11 @@ Use a light clinical palette, dark teal text, and a simple location mark.
 Show the product name and a short description of its planned purpose.
 Use clear service-search navigation and explicit source coverage. Retain the clinical color tokens and touch-target conventions.
 
-## Color tokens
+## Visual tokens
 
-Define colors as CSS custom properties. Use the tokens in component styles.
-
-| Role | CSS variable | Value |
-| --- | --- | --- |
-| Page background | `--bg-base` | `#f2f8f7` |
-| Surface | `--bg-surface` | `#ffffff` |
-| Primary text | `--text-primary` | `#143d3c` |
-| Muted text | `--text-muted` | `#506b69` |
-| Primary accent | `--accent-primary` | `#117c73` |
-| Border | `--border-default` | `#cddedb` |
+`DESIGN.md` at the repository root is the visual source of truth. It defines colors, typography, layout, elevation, shapes, components, and icons. Do not copy its token values into this file.
+The Tailwind theme in `src/styles.css` mirrors these tokens. Legacy properties such as `--bg-base` remain as aliases until each stylesheet is migrated.
+The `/discovery` demonstration keeps its own CSS.
 
 ## Typography and layout
 
@@ -28,12 +21,12 @@ Define colors as CSS custom properties. Use the tokens in component styles.
 - Center the hero in the available page height. Keep the header and footer visually quiet.
 - Use fluid heading sizes and responsive padding. Check the page at mobile widths.
 - Use an inline SVG for the decorative location mark. Hide decorative graphics from assistive technology.
-- Use plain CSS and semantic React components. No component or icon library is required for this page.
+- Use Tailwind utilities and the shared class strings in `src/ui/styles.ts`. Use semantic React components. Use `lucide-react` icons beside text labels, and hide decorative icons from assistive technology.
 - Keep the page static, without animation.
 
 ## Discovery demonstration
 
-Use the existing color and font tokens for `/discovery`.
+Use the existing color and font tokens for `/discovery`. This page keeps its own CSS.
 Identify sample data before the search controls and on each sample price card.
 Show explicit empty states for ambiguous queries, missing matches, and missing branch listings.
 Require selection before showing results for ambiguous queries or typo suggestions.
@@ -124,6 +117,20 @@ Administrator report review uses the existing administration layout, stacked nat
 Show pending, accepted, rejected, and all-report filters. Keep report selection when paging through the queue or its official sources.
 Show the original submission beside current target details. Link existing editors for non-price corrections, then require a reviewed resolution.
 Retain typed resolution reasons on recoverable errors. Show completed decisions as history with no repeat-resolution form.
+
+## Public discovery map
+
+The `/find` layout follows `DESIGN.md`. On desktop, the sidebar lists results with filter chips, the map fills the page, and a floating panel shows the selected branch.
+On mobile, a List and Map switch changes the view. The selected branch appears in a bottom sheet that the user can dismiss.
+Enter a location by address search, browser location, or map click. Put Dhaka presets and manual coordinates under "More location options".
+The address search runs only after the user submits the address form. Selecting a suggestion sets the location.
+Keep the list and the map on the same filtered result set. Selecting a card or a marker selects the same branch.
+Keep presets and manual coordinates as the keyboard alternative to map clicks. Show visible latitude and longitude labels with validation feedback.
+Show the "map unavailable" notice when the browser key is missing, Google rejects the key, or the map fails to load. Say that prices and branch details remain available. Do not show raw provider errors.
+Show unknown road distances and travel times as unknown. Label straight-line distance and road distance separately.
+Show "Google Maps" attribution beside suggestion lists when no Google map is visible. The panel and bottom sheet never cover the map attribution row.
+Link the Google Maps End User Additional Terms and the Google Privacy Policy in the footer.
+Keep 44 px controls, visible focus, and no horizontal scroll at 375 px.
 
 ## Future UI decisions
 

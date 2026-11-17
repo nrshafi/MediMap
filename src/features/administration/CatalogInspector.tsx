@@ -1,7 +1,10 @@
+import type { ReactNode } from 'react';
 import type { BranchService, CatalogResult, Page, Service } from '../catalog/contracts';
 import { AdminLayout } from './AdminLayout';
+import { admin, Notice, PageTitle, StateCard } from './adminUi';
 import type { authFailure } from '../authentication/server/access.server';
 import { dayHoursLabel, weekDays } from '../providers/hours';
+import { statusBadge, ui } from '../../ui/styles';
 
 export type InspectorData = {
   catalog: Page<Service>;
@@ -17,17 +20,28 @@ function dateLabel(value: string | null) {
       );
 }
 
+function Fact({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="min-w-0">
+      <dt className={admin.dt}>{label}</dt>
+      <dd className={admin.dd}>{children}</dd>
+    </div>
+  );
+}
+
 function Listing({ listing }: { listing: BranchService }) {
   const { branch, price, service } = listing;
   return (
-    <article className="catalog-record" aria-label={`${service.name} at ${branch.provider.name}`}>
-      <div className="catalog-record-heading">
-        <div>
-          <p className="admin-eyebrow">{service.category.name}</p>
-          <h2>{service.name}</h2>
-          <p className="admin-muted">Provider label: {listing.providerServiceName}</p>
+    <article className={admin.record} aria-label={`${service.name} at ${branch.provider.name}`}>
+      <div className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            {service.category.name}
+          </p>
+          <h2 className={`${ui.heading2} mt-1`}>{service.name}</h2>
+          <p className={`${ui.muted} mt-1`}>Provider label: {listing.providerServiceName}</p>
         </div>
-        <div className="catalog-price">
+        <div className="catalog-price shrink-0 text-xl font-bold tabular-nums text-ink sm:text-right">
           {price
             ? new Intl.NumberFormat('en-BD', {
                 style: 'currency',
@@ -35,127 +49,88 @@ function Listing({ listing }: { listing: BranchService }) {
                 maximumFractionDigits: 2,
               }).format(price.amountBdt)
             : 'Price unknown'}
-          <span>Standard price</span>
+          <span className="block text-xs font-normal text-muted">Standard price</span>
         </div>
       </div>
-      <dl className="catalog-fields">
-        <div>
-          <dt>Hospital and branch</dt>
-          <dd>
-            {branch.provider.name}
-            <br />
-            {branch.name}
-          </dd>
-        </div>
-        <div>
-          <dt>Address</dt>
-          <dd>{branch.address}</dd>
-        </div>
-        <div>
-          <dt>Price status</dt>
-          <dd>
+      <dl className="grid gap-x-8 gap-y-4 p-5 sm:grid-cols-2">
+        <Fact label="Hospital and branch">
+          {branch.provider.name}
+          <br />
+          {branch.name}
+        </Fact>
+        <Fact label="Address">{branch.address}</Fact>
+        <Fact label="Price status">
+          <span className={statusBadge[price?.status ?? 'unknown'] ?? statusBadge.unknown}>
             {price?.status === 'verified'
               ? 'Verified on official website'
               : (price?.status ?? 'Unknown')}
-          </dd>
-        </div>
-        <div>
-          <dt>Last website review</dt>
-          <dd>{dateLabel(price?.verifiedAt ?? null)}</dd>
-        </div>
-        <div>
-          <dt>Tariff effective date</dt>
-          <dd>{dateLabel(price?.effectiveDate ?? null)}</dd>
-        </div>
-        <div>
-          <dt>Source updated</dt>
-          <dd>{dateLabel(price?.source?.sourceUpdatedDate ?? null)}</dd>
-        </div>
-        <div>
-          <dt>Opening hours</dt>
-          <dd>
-            {branch.openingHours ? (
-              <>
-                <p>Usual weekly hours · Asia/Dhaka</p>
-                <ul>
-                  {weekDays.map((day) => (
-                    <li key={day}>
-                      {day}: {dayHoursLabel(branch.openingHours?.days[day] ?? null)}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              'Unknown'
-            )}
-          </dd>
-        </div>
-        <div>
-          <dt>Coordinates</dt>
-          <dd>
-            {branch.coordinates
-              ? `${branch.coordinates.latitude}, ${branch.coordinates.longitude}`
-              : 'Unknown'}
-          </dd>
-        </div>
-        <div>
-          <dt>Telephone</dt>
-          <dd>{branch.phone ?? 'Unknown'}</dd>
-        </div>
+          </span>
+        </Fact>
+        <Fact label="Last website review">{dateLabel(price?.verifiedAt ?? null)}</Fact>
+        <Fact label="Tariff effective date">{dateLabel(price?.effectiveDate ?? null)}</Fact>
+        <Fact label="Source updated">{dateLabel(price?.source?.sourceUpdatedDate ?? null)}</Fact>
+        <Fact label="Opening hours">
+          {branch.openingHours ? (
+            <>
+              <p>Usual weekly hours · Asia/Dhaka</p>
+              <ul className="mt-1">
+                {weekDays.map((day) => (
+                  <li key={day}>
+                    {day}: {dayHoursLabel(branch.openingHours?.days[day] ?? null)}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            'Unknown'
+          )}
+        </Fact>
+        <Fact label="Coordinates">
+          {branch.coordinates
+            ? `${branch.coordinates.latitude}, ${branch.coordinates.longitude}`
+            : 'Unknown'}
+        </Fact>
+        <Fact label="Telephone">{branch.phone ?? 'Unknown'}</Fact>
         {branch.alternativePhone && (
-          <div>
-            <dt>Alternative telephone</dt>
-            <dd>{branch.alternativePhone}</dd>
-          </div>
+          <Fact label="Alternative telephone">{branch.alternativePhone}</Fact>
         )}
         {branch.website && (
-          <div>
-            <dt>Branch website</dt>
-            <dd>
-              <a href={branch.website} rel="noreferrer" target="_blank">
-                Open branch website
-              </a>
-            </dd>
-          </div>
+          <Fact label="Branch website">
+            <a className={ui.link} href={branch.website} rel="noreferrer" target="_blank">
+              Open branch website
+            </a>
+          </Fact>
         )}
         {branch.provider.website && (
-          <div>
-            <dt>Provider website</dt>
-            <dd>
-              <a href={branch.provider.website} rel="noreferrer" target="_blank">
-                Open provider website
-              </a>
-            </dd>
-          </div>
+          <Fact label="Provider website">
+            <a className={ui.link} href={branch.provider.website} rel="noreferrer" target="_blank">
+              Open provider website
+            </a>
+          </Fact>
         )}
-        {branch.provider.phone && (
-          <div>
-            <dt>Provider telephone</dt>
-            <dd>{branch.provider.phone}</dd>
-          </div>
-        )}
+        {branch.provider.phone && <Fact label="Provider telephone">{branch.provider.phone}</Fact>}
       </dl>
-      <div className="catalog-evidence">
-        <h3>Source evidence</h3>
-        <p>
+      <div className="grid gap-1 border-t border-border bg-surface-sunken p-5">
+        <h3 className="text-sm font-bold text-ink">Source evidence</h3>
+        <p className="text-sm">
           {price?.source ? (
-            <a href={price.source.url} target="_blank" rel="noreferrer">
+            <a className={ui.link} href={price.source.url} target="_blank" rel="noreferrer">
               Official tariff · row {price.sourceRow ?? 'unknown'}
             </a>
           ) : (
             'Price source unknown'
           )}
         </p>
-        <p>
+        <p className="text-sm">
           {branch.contactSource ? (
-            <a href={branch.contactSource.url} target="_blank" rel="noreferrer">
+            <a className={ui.link} href={branch.contactSource.url} target="_blank" rel="noreferrer">
               Official branch contact page
             </a>
           ) : (
             'Location source unknown'
           )}
         </p>
-        <p className="admin-muted">
+        <p className={ui.muted}>
           Website review checks the published tariff. Contact the hospital to confirm the price and
           availability.
         </p>
@@ -177,27 +152,23 @@ export function CatalogInspector({
 }) {
   return (
     <AdminLayout activeHref="/admin/catalog">
-      <div className="admin-title">
-        <p className="admin-eyebrow">Source-backed records</p>
-        <h1>Catalog inspector</h1>
-        <p>
-          Inspect published services, branch details, and the evidence behind each current price.
-        </p>
-      </div>
-      <p className="admin-notice">
-        Read-only catalog. Use the source links to check the published details.
-      </p>
+      <PageTitle eyebrow="Source-backed records" title="Catalog inspector">
+        Inspect published services, branch details, and the evidence behind each current price.
+      </PageTitle>
+      <Notice>Read-only catalog. Use the source links to check the published details.</Notice>
       {!result.ok && ['unauthenticated', 'expired', 'forbidden'].includes(result.code) ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'forbidden'
+        <StateCard
+          title={
+            result.code === 'forbidden'
               ? 'Administrator access required'
               : result.code === 'expired'
                 ? 'Session expired'
-                : 'Sign in to continue'}
-          </h2>
+                : 'Sign in to continue'
+          }
+        >
           <p>{result.message}</p>
           <a
+            className={admin.link}
             href={
               result.code === 'forbidden'
                 ? '/account'
@@ -206,21 +177,31 @@ export function CatalogInspector({
           >
             {result.code === 'forbidden' ? 'Open your account' : 'Sign in with Google'}
           </a>
-        </section>
+        </StateCard>
       ) : !result.ok ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'invalid_request' ? 'Invalid catalog request' : 'Catalog unavailable'}
-          </h2>
+        <StateCard
+          title={
+            result.code === 'invalid_request' ? 'Invalid catalog request' : 'Catalog unavailable'
+          }
+        >
           <p>{result.message}</p>
-          <a href="/admin/catalog">Reload catalog</a>
-        </section>
+          <a className={admin.link} href="/admin/catalog">
+            Reload catalog
+          </a>
+        </StateCard>
       ) : (
         <>
-          <form className="catalog-filter" method="get" action="/admin/catalog">
-            <div>
-              <label htmlFor="catalog-service">Canonical service</label>
-              <select id="catalog-service" name="service" defaultValue={serviceId}>
+          <form className={admin.filter} method="get" action="/admin/catalog">
+            <div className="grid min-w-0 flex-1 gap-1 sm:max-w-md">
+              <label className="text-sm font-semibold text-ink" htmlFor="catalog-service">
+                Canonical service
+              </label>
+              <select
+                className={admin.input}
+                id="catalog-service"
+                name="service"
+                defaultValue={serviceId}
+              >
                 <option value="">All services</option>
                 {result.data.selectedService &&
                   !result.data.catalog.items.some(
@@ -240,19 +221,22 @@ export function CatalogInspector({
                 ))}
               </select>
             </div>
-            <button type="submit">Apply service</button>
+            <button className={ui.buttonPrimary} type="submit">
+              Apply service
+            </button>
           </form>
           {catalogMoreHref && (
             <p>
-              <a href={catalogMoreHref}>More services</a>
+              <a className={admin.link} href={catalogMoreHref}>
+                More services
+              </a>
             </p>
           )}
           {result.data.selectedService && (
-            <section className="catalog-state" aria-label="Selected catalog record">
-              <h2>Selected canonical service</h2>
+            <StateCard title="Selected canonical service" label="Selected catalog record">
               <p>{result.data.selectedService.name}</p>
-              <p className="admin-muted">Stable ID: {result.data.selectedService.id}</p>
-              <ul>
+              <p className={ui.muted}>Stable ID: {result.data.selectedService.id}</p>
+              <ul className="list-inside list-disc text-sm">
                 {result.data.selectedService.aliases.map((alias) => (
                   <li key={`${alias.language}-${alias.name}`} lang={alias.language}>
                     {alias.name} · {alias.language === 'bn' ? 'Bangla' : 'English'}
@@ -260,9 +244,9 @@ export function CatalogInspector({
                 ))}
               </ul>
               {!result.data.selectedService.aliases.length && <p>No active aliases.</p>}
-            </section>
+            </StateCard>
           )}
-          <p className="admin-muted" role="status">
+          <p className={ui.muted} role="status">
             {result.data.listings.items.length}{' '}
             {result.data.listings.items.length === 1 ? 'listing' : 'listings'} on this page
           </p>
@@ -271,15 +255,18 @@ export function CatalogInspector({
               <Listing key={listing.id} listing={listing} />
             ))
           ) : (
-            <section className="catalog-state">
-              <h2>No published listings</h2>
+            <StateCard title="No published listings" plain>
               <p>No active branch listings match this service.</p>
-              <a href="/admin/catalog">Show all services</a>
-            </section>
+              <a className={admin.link} href="/admin/catalog">
+                Show all services
+              </a>
+            </StateCard>
           )}
           {moreHref && (
             <p>
-              <a href={moreHref}>More listings</a>
+              <a className={admin.link} href={moreHref}>
+                More listings
+              </a>
             </p>
           )}
         </>

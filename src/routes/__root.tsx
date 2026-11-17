@@ -7,11 +7,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'MediMap | Coming soon' },
+      { title: 'MediMap | Diagnostic prices in Dhaka' },
       {
         name: 'description',
         content:
-          'MediMap is coming soon. Discover and compare diagnostic services in Dhaka, Bangladesh.',
+          'Compare published prices for diagnostic services at hospital branches in Dhaka, with official sources and review dates.',
       },
     ],
     links: [{ rel: 'stylesheet', href: stylesheet }],

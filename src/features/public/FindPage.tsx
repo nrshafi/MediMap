@@ -1,19 +1,40 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ClientOnly } from '@tanstack/react-router';
+import { BadgeCheck, List, Map as MapIcon, Search } from 'lucide-react';
 import type { Service, BranchService } from '../catalog/contracts';
 import { resolveDiagnosticQuery } from '../search/resolutionEngine';
-import { LocationSelector } from '../search/ui/LocationSelector';
-import { GeographicMap } from './GeographicMap';
-import { findLocation, publicRoute } from './catalog.functions';
 import { calculateHaversineDistanceKm } from '../map/haversine';
-import './public.css';
+import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
+import { FindNavLink } from '../../ui/PageShell';
+import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
+import { formatBdt, type RouteResult } from './format';
+import { GoogleMapView, MapPlaceholder, MapUnavailable, type MapPinData } from './GoogleMapView';
+import { ListingCard } from './ListingCard';
+import { ListingPanel } from './ListingPanel';
+import { LocationPanel } from './LocationPanel';
 import { sortListings, sortChoices, type PublicSort } from './sorting';
+
+const sortLabels: Record<PublicSort, string> = {
+  'price-asc': 'Price, lowest first',
+  'price-desc': 'Price, highest first',
+  nearest: 'Nearest straight-line distance',
+  'travel-time': 'Shortest road time',
+  rating: 'Highest rated',
+  'verification-date': 'Most recently reviewed',
+};
+const radiusPresets = [1, 3, 5] as const;
+const isPreset = (value: number) => radiusPresets.some((preset) => preset === value);
+
+type Context = { lat: number; lng: number; radius: number; sort: PublicSort; verified: string };
 
 export function FindPage({
   services,
   listings,
   service,
   ratings = {},
+  browserKey = null,
+  initialQuery = '',
   initial,
   onContextChange,
 }: {
@@ -21,27 +42,37 @@ export function FindPage({
   listings: BranchService[];
   service?: string;
   ratings?: Record<string, number | null>;
-  initial?: { lat: number; lng: number; radius: number; sort: PublicSort; verified: string };
-  onContextChange?: (value: {
-    lat: number;
-    lng: number;
-    radius: number;
-    sort: PublicSort;
-    verified: string;
-  }) => void;
+  browserKey?: string | null;
+  initialQuery?: string;
+  initial?: Context;
+  onContextChange?: (value: Context) => void;
 }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
   const [comparison, setComparison] = useState<string[]>([]);
   const [highlight, setHighlight] = useState<string>();
   const [center, setCenter] = useState({
     latitude: initial?.lat ?? 23.8103,
     longitude: initial?.lng ?? 90.4125,
   });
+  const [centerLabel, setCenterLabel] = useState<string>();
   const [radius, setRadius] = useState(initial?.radius ?? 3);
+  const [customRadius, setCustomRadius] = useState(!isPreset(initial?.radius ?? 3));
   const [sort, setSort] = useState<PublicSort>(initial?.sort ?? 'price-asc');
   const [verified, setVerified] = useState(initial?.verified ?? 'all');
-  const [travel, setTravel] = useState<Record<string, number | null>>({});
+  const [routes, setRoutes] = useState<Record<string, RouteResult>>({});
+  const [view, setView] = useState<'list' | 'map'>('list');
+  const [desktop, setDesktop] = useState<boolean | null>(null);
+  const [mapFailed, setMapFailed] = useState(false);
   const previousUrl = useRef('');
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)');
+    const update = () => setDesktop(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
   useEffect(() => {
     const url = JSON.stringify(initial);
     if (initial && previousUrl.current !== url) {
@@ -68,20 +99,17 @@ export function FindPage({
   useEffect(() => {
     setComparison([]);
     setHighlight(undefined);
-    setTravel({});
+    setRoutes({});
   }, [service, query, center.latitude, center.longitude, radius]);
+
   function serviceHref(id: string) {
     return `/find?${new URLSearchParams({ service: id, lat: String(center.latitude), lng: String(center.longitude), radius: String(radius), sort, verified })}`;
   }
-  const [address, setAddress] = useState('');
-  const [location, setLocation] = useState<{
-    places: { label: string; latitude: number; longitude: number }[];
-    message: string;
-  }>({
-    places: [],
-    message: '',
-  });
-  const generation = useRef(0);
+  function chooseLocation(coordinates: { latitude: number; longitude: number }, label?: string) {
+    setCenter(coordinates);
+    setCenterLabel(label);
+  }
+
   const matches = query.trim()
     ? resolveDiagnosticQuery(
         query,
@@ -94,6 +122,13 @@ export function FindPage({
       )
     : null;
   const selected = services.find((s) => s.id === service);
+  const travel = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(routes).map(([id, route]) => [id, route.available ? route.minutes : null]),
+      ),
+    [routes],
+  );
   const visible = query.trim()
     ? []
     : sortListings(
@@ -109,289 +144,322 @@ export function FindPage({
         ratings,
         travel,
       );
+  const distanceOf = (l: BranchService) =>
+    l.branch.coordinates ? calculateHaversineDistanceKm(center, l.branch.coordinates) : null;
+  const pins: MapPinData[] = visible.flatMap((l) =>
+    l.branch.coordinates
+      ? [
+          {
+            id: l.id,
+            name: `${l.branch.provider.name}, ${l.branch.name}`,
+            label: l.price ? formatBdt(l.price.amountBdt) : l.branch.name,
+            coordinates: l.branch.coordinates,
+          },
+        ]
+      : [],
+  );
+  const open = visible.find((l) => l.id === highlight);
+  const mapWanted = desktop === true || view === 'map';
+  const mapVisible = mapWanted && browserKey !== null && !mapFailed;
+
+  function toggleCompare(id: string) {
+    setComparison((previous) =>
+      previous.includes(id) ? previous.filter((item) => item !== id) : [...previous, id],
+    );
+  }
+  function closePanel() {
+    const id = highlight;
+    setHighlight(undefined);
+    if (id)
+      requestAnimationFrame(() =>
+        Array.from(document.querySelectorAll<HTMLElement>('[data-select-listing]'))
+          .find((element) => element.dataset.selectListing === id)
+          ?.focus(),
+      );
+  }
+
+  const panelClass = `${ui.floating} z-30 ${
+    view === 'map'
+      ? 'm-4 lg:m-0'
+      : 'fixed inset-x-0 bottom-0 max-h-[60svh] overflow-y-auto rounded-b-none'
+  } lg:absolute lg:inset-auto lg:right-4 lg:top-4 lg:max-h-[calc(100%-1rem-var(--spacing-attribution))] lg:w-panel lg:overflow-y-auto lg:rounded-b-lg`;
+  const hideOnMobile = (hidden: boolean) => (hidden ? 'hidden lg:block' : '');
+
   return (
-    <main className="public-page">
-      <nav>
-        <a href="/">MediMap</a>
-        <a href="/account">Your account</a>
-      </nav>
-      <h1>Find a diagnostic service</h1>
-      <p>Compare published branch prices and inspect their sources.</p>
-      <label>
-        Service name or abbreviation
-        <input value={query} onChange={(e) => setQuery(e.target.value)} maxLength={256} />
-      </label>
-      {matches && (
-        <section aria-label="Service suggestions">
-          {matches.matches.map((m) => (
-            <p key={m.canonicalService.id}>
-              <a href={serviceHref(m.canonicalService.id)}>{m.canonicalService.name}</a>
+    <div className="flex min-h-svh flex-col lg:h-svh">
+      <SiteHeader>
+        <FindNavLink />
+      </SiteHeader>
+      <main className="flex flex-1 flex-col lg:min-h-0 lg:flex-row">
+        <div
+          className={`flex flex-col gap-4 p-4 lg:w-sidebar lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-border ${open && view === 'list' ? 'pb-[55svh] lg:pb-4' : ''}`}
+        >
+          <div>
+            <h1 className={ui.heading1}>Find a diagnostic service</h1>
+            <p className={ui.muted}>Compare published branch prices and inspect their sources.</p>
+          </div>
+
+          <section aria-label="Choose a service" className="flex flex-col gap-2">
+            <label className={ui.label}>
+              Service name or abbreviation
+              <span className="relative">
+                <Search
+                  aria-hidden
+                  size={18}
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+                />
+                <input
+                  className={`${ui.input} pl-10`}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  maxLength={256}
+                />
+              </span>
+            </label>
+            {matches && (
+              <section aria-label="Service suggestions" className="flex flex-col">
+                {matches.matches.map((m) => (
+                  <a
+                    key={m.canonicalService.id}
+                    className={`${ui.link} flex min-h-touch items-center`}
+                    href={serviceHref(m.canonicalService.id)}
+                  >
+                    {m.canonicalService.name}
+                  </a>
+                ))}
+                {matches.typoSuggestions?.map((m) => (
+                  <p key={m.canonicalService.id} className="flex min-h-touch items-center gap-1">
+                    Did you mean{' '}
+                    <a className={ui.link} href={serviceHref(m.canonicalService.id)}>
+                      {m.canonicalService.name}
+                    </a>
+                    ?
+                  </p>
+                ))}
+                {!matches.matches.length && !matches.typoSuggestions?.length && (
+                  <p className={ui.muted}>No matching service.</p>
+                )}
+              </section>
+            )}
+            <details>
+              <summary className="flex min-h-touch cursor-pointer items-center text-sm font-semibold text-primary">
+                Browse all {services.length} services
+              </summary>
+              <ul className="flex flex-col">
+                {services.map((s) => (
+                  <li key={s.id}>
+                    <a
+                      className={`${ui.link} flex min-h-touch items-center`}
+                      href={serviceHref(s.id)}
+                    >
+                      {s.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </section>
+
+          <LocationPanel
+            center={center}
+            label={centerLabel}
+            onSelect={chooseLocation}
+            showAttribution={!mapVisible}
+          />
+
+          <section aria-label="Filters" className="flex flex-col gap-3">
+            <h2 className={ui.heading2}>Filters</h2>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className={ui.chip}
+                aria-pressed={verified === 'yes'}
+                onClick={() => setVerified(verified === 'yes' ? 'all' : 'yes')}
+              >
+                <BadgeCheck aria-hidden size={16} />
+                Verified prices only
+              </button>
+            </div>
+            <div role="group" aria-label="Straight-line radius" className="flex flex-wrap gap-2">
+              {radiusPresets.map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  className={ui.chip}
+                  aria-pressed={!customRadius && radius === preset}
+                  onClick={() => {
+                    setCustomRadius(false);
+                    setRadius(preset);
+                  }}
+                >
+                  {preset} km
+                </button>
+              ))}
+              <button
+                type="button"
+                className={ui.chip}
+                aria-pressed={customRadius}
+                onClick={() => setCustomRadius(true)}
+              >
+                Custom
+              </button>
+            </div>
+            {customRadius && (
+              <label className={ui.label}>
+                Straight-line radius in km
+                <input
+                  className={ui.input}
+                  type="number"
+                  min="0.1"
+                  max="100"
+                  step="0.1"
+                  value={radius}
+                  onChange={(e) => {
+                    const n = Number(e.target.value);
+                    if (n >= 0.1 && n <= 100) setRadius(n);
+                  }}
+                />
+              </label>
+            )}
+            <label className={ui.label}>
+              Sort listings
+              <select
+                className={ui.select}
+                value={sort}
+                onChange={(e) => setSort(e.target.value as PublicSort)}
+              >
+                {sortChoices.map((value) => (
+                  <option value={value} key={value}>
+                    {sortLabels[value]}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </section>
+
+          {selected && <AreaStatistics listings={listings} center={center} radius={radius} />}
+
+          <div role="group" aria-label="Results view" className="grid grid-cols-2 gap-2 lg:hidden">
+            <button
+              type="button"
+              className={`${ui.chip} justify-center`}
+              aria-pressed={view === 'list'}
+              onClick={() => setView('list')}
+            >
+              <List aria-hidden size={16} />
+              List
+            </button>
+            <button
+              type="button"
+              className={`${ui.chip} justify-center`}
+              aria-pressed={view === 'map'}
+              onClick={() => setView('map')}
+            >
+              <MapIcon aria-hidden size={16} />
+              Map
+            </button>
+          </div>
+
+          <div className={`flex flex-col gap-3 ${hideOnMobile(view === 'map')}`}>
+            <h2 className={ui.heading2}>{selected?.name ?? 'Select a service to see prices'}</h2>
+            <p className={ui.muted}>
+              Branches without recorded coordinates appear in the list with “Location not recorded”.
+              They are not counted as inside your radius.
             </p>
-          ))}
-          {matches.typoSuggestions?.map((m) => (
-            <p key={m.canonicalService.id}>
-              Did you mean{' '}
-              <a href={serviceHref(m.canonicalService.id)}>{m.canonicalService.name}</a>?
-            </p>
-          ))}
-          {!matches.matches.length && !matches.typoSuggestions?.length && (
-            <p>No matching service.</p>
+            {selected && !visible.length && (
+              <p className={ui.notice}>No published listings match this service and area.</p>
+            )}
+            <section aria-label="Published listings" className="flex flex-col gap-3">
+              {visible.map((l) => (
+                <ListingCard
+                  key={l.id}
+                  listing={l}
+                  area={{ lat: center.latitude, lng: center.longitude, radius }}
+                  distanceKm={distanceOf(l)}
+                  route={routes[l.id]}
+                  selected={highlight === l.id}
+                  compared={comparison.includes(l.id)}
+                  compareDisabled={comparison.length >= 4}
+                  onSelect={() => setHighlight(highlight === l.id ? undefined : l.id)}
+                  onToggleCompare={() => toggleCompare(l.id)}
+                />
+              ))}
+            </section>
+          </div>
+
+          {comparison.length === 1 && (
+            <p className={ui.muted}>1 of 4 selected for comparison. Select one more to compare.</p>
+          )}
+          {comparison.length >= 2 && (
+            <section
+              aria-label="Comparison"
+              className={`${ui.floating} sticky bottom-0 z-20 flex flex-wrap items-center justify-between gap-2 p-3`}
+            >
+              <p className="text-sm font-semibold">{comparison.length} of 4 selected</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className={ui.buttonSecondary}
+                  onClick={() => setComparison([])}
+                >
+                  Clear comparison
+                </button>
+                <a className={ui.buttonPrimary} href={`/compare?ids=${comparison.join(',')}`}>
+                  Compare selected branches
+                </a>
+              </div>
+            </section>
+          )}
+          <div className="hidden lg:block">
+            <SiteFooter maps />
+          </div>
+        </div>
+
+        <section aria-label="Map" className="relative lg:min-w-0 lg:flex-1">
+          <div className={`h-[60svh] bg-surface-sunken lg:h-full ${hideOnMobile(view === 'list')}`}>
+            {browserKey === null ? (
+              <MapUnavailable />
+            ) : mapWanted ? (
+              <ClientOnly fallback={<MapPlaceholder />}>
+                <GoogleMapView
+                  apiKey={browserKey}
+                  center={center}
+                  pins={pins}
+                  selectedId={highlight}
+                  onSelect={(id) => {
+                    setHighlight(id);
+                    document
+                      .getElementById(`listing-${id}`)
+                      ?.scrollIntoView({ block: 'center', behavior: 'auto' });
+                  }}
+                  onPickLocation={desktop ? (c) => chooseLocation(c) : undefined}
+                  onUnavailable={() => setMapFailed(true)}
+                />
+              </ClientOnly>
+            ) : (
+              <MapPlaceholder />
+            )}
+          </div>
+          {open && (
+            <div className={panelClass}>
+              <ListingPanel
+                listing={open}
+                center={center}
+                distanceKm={distanceOf(open)}
+                route={routes[open.id]}
+                onRoute={(result) => setRoutes((previous) => ({ ...previous, [open.id]: result }))}
+                compared={comparison.includes(open.id)}
+                compareDisabled={comparison.length >= 4}
+                onToggleCompare={() => toggleCompare(open.id)}
+                onClose={closePanel}
+              />
+            </div>
           )}
         </section>
-      )}
-      <details>
-        <summary>Browse all {services.length} services</summary>
-        {services.map((s) => (
-          <p key={s.id}>
-            <a href={serviceHref(s.id)}>{s.name}</a>
-          </p>
-        ))}
-      </details>
-      <h2>Choose your location</h2>
-      <p>
-        Address lookup and driving estimates are{' '}
-        <a href="https://www.geoapify.com/">powered by Geoapify</a>. Requests share a daily
-        application budget.
-      </p>
-      <LocationSelector
-        center={center}
-        onSelect={(c) => {
-          generation.current++;
-          setCenter(c);
-          setLocation({ places: [], message: '' });
-        }}
-      />
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const current = ++generation.current;
-          try {
-            const result = await findLocation({ data: { query: address } });
-            if (current === generation.current) setLocation(result);
-          } catch {
-            if (current === generation.current)
-              setLocation({ places: [], message: 'Location lookup is unavailable.' });
-          }
-        }}
-      >
-        <label>
-          Dhaka address
-          <input
-            value={address}
-            onChange={(e) => {
-              generation.current++;
-              setAddress(e.target.value);
-              setLocation({ places: [], message: '' });
-            }}
-            minLength={3}
-            maxLength={160}
-          />
-        </label>
-        <button>Find address</button>
-      </form>
-      <p role="status">{location.message}</p>
-      {location.places.map((p) => (
-        <button
-          key={p.label}
-          onClick={() => {
-            generation.current++;
-            setCenter(p);
-            setLocation({ places: [], message: `Selected ${p.label}` });
-          }}
-        >
-          {p.label}
-        </button>
-      ))}
-      <GeographicMap
-        center={center}
-        branches={visible.map((l) => ({
-          id: l.id,
-          name: l.branch.name,
-          coordinates: l.branch.coordinates,
-        }))}
-        selected={highlight}
-        onBranchSelect={(id) => {
-          setHighlight(id);
-          document
-            .getElementById(`listing-${id}`)
-            ?.scrollIntoView({ block: 'center', behavior: 'auto' });
-        }}
-        onSelect={(c) => {
-          generation.current++;
-          setCenter(c);
-        }}
-      />
-      <label>
-        Straight-line radius in km
-        <input
-          type="number"
-          min="0.1"
-          max="100"
-          step="0.1"
-          value={radius}
-          onChange={(e) => {
-            const n = Number(e.target.value);
-            if (n >= 0.1 && n <= 100) setRadius(n);
-          }}
-        />
-      </label>
-      <h2>{selected?.name ?? 'Select a service to see prices'}</h2>
-      {selected && <AreaStatistics listings={listings} center={center} radius={radius} />}
-      <p>
-        Branches without recorded coordinates appear separately and are not counted as inside your
-        radius.
-      </p>
-      {selected && !visible.length && <p>No published listings match this service and area.</p>}
-      <section aria-label="Published listings">
-        <label>
-          Sort listings
-          <select value={sort} onChange={(e) => setSort(e.target.value as PublicSort)}>
-            {sortChoices.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Price verification
-          <select value={verified} onChange={(e) => setVerified(e.target.value)}>
-            <option value="all">All published listings</option>
-            <option value="yes">Verified prices only</option>
-          </select>
-        </label>
-        <p>
-          {comparison.length} of 4 selected for comparison. Selection clears when the service, area,
-          or page changes.
-        </p>
-        <button onClick={() => setComparison([])}>Clear comparison</button>
-        {comparison.length >= 2 && (
-          <a href={`/compare?ids=${comparison.join(',')}`}>Compare selected branches</a>
-        )}
-        {visible.map((l) => (
-          <div key={l.id} id={`listing-${l.id}`} data-selected={highlight === l.id}>
-            <button
-              disabled={!l.branch.coordinates}
-              aria-pressed={highlight === l.id}
-              onClick={() => setHighlight(l.id)}
-            >
-              Highlight branch on map
-            </button>
-            <button
-              aria-pressed={comparison.includes(l.id)}
-              disabled={comparison.length === 4 && !comparison.includes(l.id)}
-              onClick={() =>
-                setComparison((previous) =>
-                  previous.includes(l.id)
-                    ? previous.filter((id) => id !== l.id)
-                    : [...previous, l.id],
-                )
-              }
-            >
-              {comparison.includes(l.id) ? 'Remove from comparison' : 'Select for comparison'}
-            </button>
-            <ListingCard
-              listing={l}
-              area={{ lat: center.latitude, lng: center.longitude, radius }}
-            />
-            <RouteEstimate
-              key={`${l.id}-${center.latitude}-${center.longitude}`}
-              id={l.id}
-              center={center}
-              onEstimate={(minutes) => setTravel((previous) => ({ ...previous, [l.id]: minutes }))}
-            />
-          </div>
-        ))}
-      </section>
-    </main>
-  );
-}
-export function ListingCard({
-  listing: l,
-  area,
-}: {
-  listing: BranchService;
-  area?: { lat: number; lng: number; radius: number };
-}) {
-  return (
-    <article>
-      <h3>
-        {l.branch.provider.name}, {l.branch.name}
-      </h3>
-      <p>
-        <a
-          href={`/services/${l.service.id}${area ? `?${new URLSearchParams({ lat: String(area.lat), lng: String(area.lng), radius: String(area.radius) })}` : ''}`}
-        >
-          {l.service.name}
-        </a>{' '}
-        · <a href={`/branches/${l.branch.id}`}>Branch details</a>
-      </p>
-      <a href={`/reviews?listing=${l.id}`}>Service reviews</a>
-      <p>{l.branch.address}</p>
-      <p>{l.price ? `BDT ${l.price.amountBdt.toFixed(2)} · ${l.price.status}` : 'Price unknown'}</p>
-      <p>Website review: {l.price?.verifiedAt ?? 'Unknown'}</p>
-      {l.price?.source && (
-        <a href={l.price.source.url} target="_blank" rel="noreferrer">
-          Official price source
-        </a>
-      )}
-      <p>
-        {l.branch.coordinates
-          ? 'Recorded branch coordinates'
-          : 'Location coordinates unknown; radius eligibility unavailable.'}
-      </p>
-      <a href={`/report?target=listing&id=${l.id}`}>Report incorrect information</a>
-    </article>
-  );
-}
-
-function RouteEstimate({
-  id,
-  center,
-  onEstimate,
-}: {
-  id: string;
-  center: { latitude: number; longitude: number };
-  onEstimate: (minutes: number | null) => void;
-}) {
-  const [result, setResult] = useState<Awaited<ReturnType<typeof publicRoute>> | null>(null);
-  const [pending, setPending] = useState(false);
-  const mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-  return (
-    <section aria-label="Road travel estimate">
-      <button
-        disabled={pending}
-        onClick={async () => {
-          setPending(true);
-          try {
-            const estimate = await publicRoute({ data: { listing: id, from: center } });
-            if (!mounted.current) return;
-            setResult(estimate);
-            onEstimate(estimate.available ? estimate.minutes : null);
-          } catch {
-            if (!mounted.current) return;
-            setResult({
-              available: false,
-              message: 'Road distance and travel time are unavailable.',
-            });
-          } finally {
-            if (mounted.current) setPending(false);
-          }
-        }}
-      >
-        {pending ? 'Finding route…' : 'Get driving estimate'}
-      </button>
-      <p role="status">
-        {result?.available
-          ? `Road distance ${result.roadKm.toFixed(1)} km · Estimated travel time ${Math.round(result.minutes)} minutes`
-          : (result?.message ?? 'Travel estimates have not been requested.')}
-      </p>
-    </section>
+      </main>
+      <div className="lg:hidden">
+        <SiteFooter maps />
+      </div>
+    </div>
   );
 }

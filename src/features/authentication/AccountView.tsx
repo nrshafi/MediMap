@@ -1,6 +1,8 @@
 import type { readAccount } from './auth.functions';
 import { safeReturnTo } from './contracts';
-import './account.css';
+import { LogIn, LogOut, ShieldCheck } from 'lucide-react';
+import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
+import { ui } from '../../ui/styles';
 
 export type AccountData = Awaited<ReturnType<typeof readAccount>>;
 const reasons: Record<string, string> = {
@@ -30,82 +32,111 @@ export function AccountView({
         ? reasons[reason]
         : undefined;
   return (
-    <div className="account-page">
-      <header>
-        <a href="/" className="account-brand">
-          MediMap
+    <div className="flex min-h-svh flex-col">
+      <SiteHeader>
+        <a
+          href="/find"
+          className="inline-flex min-h-touch items-center rounded-sm px-3 hover:bg-white/10"
+        >
+          Find services
         </a>
-        <a href="/discovery">Browse services</a>
-      </header>
-      <main className="account-panel">
-        <p className="account-eyebrow">Your MediMap account</p>
-        <h1>{signedIn ? 'Your account' : 'Sign in'}</h1>
-        <p className="account-description">
-          Browse services without an account. Use Google to sign in for account features.
-        </p>
-        {message && (
-          <p className="account-message" role="status">
-            {message}
-          </p>
-        )}
-        {signedIn ? (
-          <>
-            <dl>
-              <div>
-                <dt>Signed in as</dt>
-                <dd>{signedIn.user.email}</dd>
-              </div>
-              <div>
-                <dt>Account access</dt>
-                <dd>{signedIn.user.isAdministrator ? 'Administrator' : 'Member'}</dd>
-              </div>
-              <div>
-                <dt>Session ends</dt>
-                <dd>
-                  {new Intl.DateTimeFormat('en-GB', {
-                    dateStyle: 'long',
-                    timeStyle: 'short',
-                    timeZone: 'Asia/Dhaka',
-                  }).format(new Date(signedIn.expiresAt))}{' '}
-                  · Dhaka time
-                </dd>
-              </div>
-            </dl>
-            <p>Sessions last seven days. Sign in again after this session ends.</p>
-            {signedIn.user.isAdministrator && (
-              <a
-                className="account-action"
-                href={
-                  safeReturnTo(returnTo) === '/account' ? '/admin/catalog' : safeReturnTo(returnTo)
-                }
-              >
-                Open administration
-              </a>
-            )}
-            <form method="post" action="/auth/sign-out">
-              <button type="submit">Sign out</button>
-            </form>
-          </>
-        ) : (
-          <>
-            {result.ok && !result.signInAvailable && (
-              <p className="account-message" role="status">
-                Google sign-in is not configured yet. Public browsing is available.
-              </p>
-            )}
-            <form method="post" action="/auth/google/start">
-              <input type="hidden" name="returnTo" value={safeReturnTo(returnTo)} />
-              <button type="submit" disabled={!result.ok || !result.signInAvailable}>
-                Sign in with Google
-              </button>
-            </form>
-            <p className="account-note">
-              MediMap requests your Google account identity and verified email address. Signing in
-              does not grant administrator access.
+      </SiteHeader>
+      <main
+        id="main-content"
+        className="mx-auto grid w-full max-w-md flex-1 content-start gap-5 px-4 py-8 sm:py-12"
+      >
+        <section className={`${ui.card} grid gap-4 p-6`}>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+              Your MediMap account
             </p>
-          </>
-        )}
+            <h1 className={`${ui.heading1} mt-1`}>{signedIn ? 'Your account' : 'Sign in'}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Browse services without an account. Use Google to sign in for account features.
+            </p>
+          </div>
+          {message && (
+            <p className={ui.notice} role="status">
+              {message}
+            </p>
+          )}
+          {signedIn ? (
+            <>
+              <dl className="grid gap-3 rounded-sm bg-surface-sunken p-3">
+                <div>
+                  <dt className="text-xs font-semibold text-muted">Signed in as</dt>
+                  <dd className="mt-0.5 text-sm font-semibold [overflow-wrap:anywhere]">
+                    {signedIn.user.email}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold text-muted">Account access</dt>
+                  <dd className="mt-0.5 text-sm font-semibold">
+                    {signedIn.user.isAdministrator ? 'Administrator' : 'Member'}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold text-muted">Session ends</dt>
+                  <dd className="mt-0.5 text-sm font-semibold">
+                    {new Intl.DateTimeFormat('en-GB', {
+                      dateStyle: 'long',
+                      timeStyle: 'short',
+                      timeZone: 'Asia/Dhaka',
+                    }).format(new Date(signedIn.expiresAt))}{' '}
+                    · Dhaka time
+                  </dd>
+                </div>
+              </dl>
+              <p className="text-sm text-muted">
+                Sessions last seven days. Sign in again after this session ends.
+              </p>
+              {signedIn.user.isAdministrator && (
+                <a
+                  className={ui.buttonPrimary}
+                  href={
+                    safeReturnTo(returnTo) === '/account'
+                      ? '/admin/catalog'
+                      : safeReturnTo(returnTo)
+                  }
+                >
+                  <ShieldCheck aria-hidden size={18} />
+                  Open administration
+                </a>
+              )}
+              <form method="post" action="/auth/sign-out" className="grid">
+                <button className={ui.buttonSecondary} type="submit">
+                  <LogOut aria-hidden size={18} />
+                  Sign out
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              {result.ok && !result.signInAvailable && (
+                <p className={ui.notice} role="status">
+                  Google sign-in is not configured yet. Public browsing is available.
+                </p>
+              )}
+              <form method="post" action="/auth/google/start" className="grid">
+                <input type="hidden" name="returnTo" value={safeReturnTo(returnTo)} />
+                <button
+                  className={ui.buttonPrimary}
+                  type="submit"
+                  disabled={!result.ok || !result.signInAvailable}
+                >
+                  <LogIn aria-hidden size={18} />
+                  Sign in with Google
+                </button>
+              </form>
+              <p className="text-sm text-muted">
+                MediMap requests your Google account identity and verified email address. Signing in
+                does not grant administrator access.
+              </p>
+            </>
+          )}
+        </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

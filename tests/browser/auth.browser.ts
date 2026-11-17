@@ -16,9 +16,9 @@ test('anonymous account pages explain Google setup and public discovery remains 
     path: `.bun-tmp/sign-in-${test.info().project.name}.png`,
     fullPage: true,
   });
-  await page.getByRole('link', { name: 'Browse services' }).click();
-  await expect(page).toHaveURL(/\/discovery/);
-  await expect(page.getByRole('combobox', { name: 'Search diagnostic tests' })).toBeVisible();
+  await page.getByRole('link', { name: 'Find services' }).click();
+  await expect(page).toHaveURL(/\/find/);
+  await expect(page.getByLabel('Service name or abbreviation')).toBeVisible();
 });
 
 test('anonymous and forged-role requests cannot see the administration catalog', async ({

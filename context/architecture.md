@@ -5,15 +5,53 @@
 ### Public integration decisions
 
 Public source-backed discovery uses `/find`, separate from the existing labelled `/discovery` demonstration.
-Use Geoapify's server-side geocoding and routing APIs, with `GEOAPIFY_API_KEY` supplied as a Worker secret.
-Use standard OpenStreetMap raster tiles with visible attribution, browser caching, and normal referrer headers. Do not prefetch or bulk-download tiles.
-Do not use the public Nominatim endpoint for autocomplete. Missing provider configuration must retain core catalog results.
+Google Maps Platform is the mapping provider. The owner decided on 11 November 2026 that it replaces Geoapify and OpenStreetMap tiles.
+Render the map with the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2. Render it only in the browser, with `DEMO_MAP_ID`.
+Use Routes API Compute Routes for driving estimates. Use Places API (New) Autocomplete and Place Details for address search.
+Run every Google web-service call on the server. Place the adapters in `src/integrations/mapping/google/` and the request handling in `src/features/public/catalog.functions.ts`.
+Use `GOOGLE_MAPS_BROWSER_KEY` as a public Worker variable. Use `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.
+Missing provider configuration must retain core catalog results. A missing browser key, a rejected key, or a failed map load shows a "map unavailable" notice.
 Unknown branch coordinates remain unknown and cannot qualify a branch for geographic statistics.
 Review ratings use six required integer dimensions from one to five, with their arithmetic mean as the service-review score.
 Public aggregates include visible reviews only. Keep one retained review per account and listing, with owner editing and immutable moderation history.
 Comparison permits up to four listings for one service. Unknown sort values appear last; ties use stable listing IDs.
 
 This document records confirmed constraints. Unanswered architecture questions remain open and do not authorize implementation choices.
+
+### Google Maps constraints
+
+Google's terms prohibit High Risk Activities. These are uses where failure of the services could reasonably cause death or serious personal injury. MediMap is not an emergency or ambulance tool. Keep the emergency care exclusion.
+Do not show Google content with or near a non-Google map. The `/discovery` schematic preview has no Google content.
+Do not write Google coordinates, addresses, or route values to D1. Do not add a server cache for route or place results.
+Branch coordinates come only from official provider evidence and administrator entry. Google geocoding never fills them.
+Keep Google attribution visible. Do not cover the map attribution row.
+Link the Google Maps End User Additional Terms and the Google Privacy Policy in the footer.
+
+### Maps Demo Key
+
+The owner selected the Maps Demo Key only. No billing account exists. Google states that the Demo Key is "intended for testing and prototyping purposes only" and "is not designed for production use".
+Google publishes no numeric daily limit. At the limit, usage pauses until the next day with no risk of charges.
+The browser key is visible to every visitor. A third party that uses it can exhaust the limit and pause the map for all users.
+On 11 November 2026, server requests to Compute Routes, Places Autocomplete, and Place Details accepted the Demo Key. This result is recorded as Phase 0 in `docs/google-maps-integration-plan.md`. The server design is selected. The browser-side fallback is not used.
+A production map requires a billing account on the key or a new billing-enabled key. A later owner decision covers billing. The release must work with the map unavailable.
+
+### Google Maps request rules
+
+- Send keys in the `X-Goog-Api-Key` header. Never place them in a URL.
+- Keep same-origin POST requests, the D1 request budget (`reserveMappingRequest`), a six-second timeout, a 65,536-byte response limit, and field validation.
+- Keep the budget at two requests per second and 600 per UTC day across address and route requests. Google publishes no Demo Key limit, so these values are local ceilings.
+- Do not request traffic-aware routing, intermediate waypoints, two-wheeler mode, or the Place Details `displayName` field. These options move requests to higher billing tiers.
+- Start address lookup only after the user submits the address form. Do not send a request for each keystroke.
+- Generate the Places session token in the browser with `crypto.randomUUID()`. The server validates its format.
+- Parse the route `duration` value. Reject values that are not finite and non-negative.
+- On failure, return the unavailable result. Prices, the selected location, and the list stay unchanged.
+
+### Map loading
+
+- On `/find`, load the map on page load at desktop widths. On mobile, load it when the user opens the Map view.
+- On `/branches/<id>`, load the map only after the user selects "Show on map".
+- Server rendering produces the list, the location form, and a map placeholder. The map is a progressive enhancement inside TanStack Router `ClientOnly`.
+- Set `window.gm_authFailure` in the map component so that the notice appears when Google rejects the key. Verify this callback against current Maps JavaScript API documentation before use.
 
 ### Release preparation
 
@@ -33,7 +71,8 @@ Record provider dependencies and unresolved release requirements in a runbook ou
 | Database | Cloudflare D1 | Direct prepared SQL queries and versioned SQL migrations. No ORM selected. |
 | HTTP routing | Hono if required | Optional. Decide after the application structure is selected. |
 | Authentication | Google OpenID Connect through oauth4webapi | D1 accounts and hashed seven-day sessions. Owner-controlled administrator grants. |
-| Mapping and routing | Geoapify geocoding/routing and OpenStreetMap raster tiles | Server-side key, explicit user-triggered lookup, shared request budgets, validated responses, and visible attribution. |
+| Mapping and routing | Google Maps Platform: Maps JavaScript API, Routes API, and Places API (New) | Browser map with a public key. Server-side web-service keys, user-triggered address lookup, shared request budgets, validated responses, and visible Google attribution. |
+| Styling and icons | Tailwind CSS 4.3.5 with `@tailwindcss/vite`, and `lucide-react` 1.73.0 | Development dependencies. The `@theme` block in `src/styles.css` mirrors the DESIGN.md tokens. Preflight is enabled. |
 
 The package versions are recorded in `package.json` and `bun.lock`.
 Verify current official documentation and installed versions before later implementation.
@@ -69,7 +108,7 @@ Show a sample-data notice and label sample prices. Preserve unknown prices and d
 Return no branch results for ambiguous, unmatched, or unconfirmed typo queries. Require explicit service selection.
 Use one radius range, 0.1 to 100 km, across URL validation, domain filtering, and controls.
 Show routing as unavailable until a selected provider supplies validated results. The OSRM adapter is an optional integration, not the default provider.
-The SVG map is a schematic preview. Provider selection, source-backed data, D1 access, address search, and map-based location selection remain unfinished.
+The SVG map is a schematic preview with no Google content. The `/discovery` route keeps sample data and does not use address search or map-based location selection. These features apply to `/find`.
 
 ### Provider-independent location input
 
@@ -81,7 +120,7 @@ Keep the query and radius when the center changes. Clear branch selection and sy
 Ignore late location callbacks after cancellation, another location selection, external center changes, or component removal.
 Show coordinate signs correctly. Do not label southern or western coordinates as north or east.
 Coordinates appear in the URL. Disclose this before location acquisition or manual submission.
-Address search and selection on a geographic map depend on provider selection and remain deferred.
+Address search and map-based location selection apply to `/find` through Google Maps Platform. The `/discovery` route keeps preset, browser, and manual coordinate input.
 
 ## System boundaries
 
@@ -108,7 +147,7 @@ Verified Visit evidence uploads are deferred from the required release. No evide
 ### Catalog foundation
 
 The implementation request on 27 October 2026 authorizes the local catalog slice described in the foundation proposal.
-Mapping-provider selection remains open. Local catalog reads do not depend on that selection.
+Local catalog reads do not depend on the mapping provider.
 Use `migrations/` for ordered schema changes and `seeds/catalog.sql` for the separately reviewed initial import.
 Keep repositories in `src/features/catalog/server/` and public contracts in `src/features/catalog/contracts.ts`.
 The read-only `/admin/catalog` inspector exposes published catalog fields only and now requires administrator access.
@@ -264,7 +303,7 @@ Apply resolution history, report status, listing audit, and selected price atomi
 
 Use free tiers first. Obtain explicit approval before enabling a paid service.
 Cloudflare free-tier suitability must be checked against the expected workload.
-Map, geocoding, and routing services require separate capability and billing checks.
+Google Maps Platform runs on the Maps Demo Key without a billing account. A production map requires a later owner billing decision.
 
 ## Documentation checked
 
@@ -291,7 +330,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Need for Hono within the single application deployment.
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Live Google OAuth client configuration.
-- Live Geoapify coverage and account usage acceptance. The implementation uses Geoapify and OpenStreetMap raster tiles.
+- Live Google Maps acceptance with the Demo Key, and the later owner billing decision for production.
 - Live review-volume acceptance. Service ratings use the mean of six required dimensions; branch/provider summaries include visible reviews at active records.
 - Production workload verification. Default sorting is ascending price; comparison allows two to four active listings for one service.
 

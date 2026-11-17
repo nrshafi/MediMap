@@ -7,7 +7,7 @@ The public application uses the source-backed D1 catalog. `/discovery` remains t
 | Route | Purpose |
 | --- | --- |
 | `/` | Service-discovery entry and account navigation |
-| `/find?service=<canonical-id>` | Public catalog search, geographic location selection, current branch prices, and eligible area statistics |
+| `/find?service=<canonical-id>` | Public catalog search, address and map location selection, current branch prices, and eligible area statistics |
 | `/services/<id>` | Server-rendered service details and published listings |
 | `/branches/<id>` | Server-rendered branch details, contacts, weekly hours, sources, and separately labelled branch/provider review summaries |
 | `/reviews?listing=<listing-id>` | Public service reviews and the signed-in user's retained review form |
@@ -41,22 +41,46 @@ No coordinates or review data were invented for the release dataset.
 
 ## Mapping provider
 
-Geoapify supplies server-side address search and driving estimates. Set `GEOAPIFY_API_KEY` in ignored local `.dev.vars` or deployed Worker secrets.
-The tracked example contains an empty placeholder.
-Requests use fixed HTTPS provider endpoints, bounded input, a six-second timeout, validated fields, and a 65,536-byte response limit.
-The application permits at most two provider requests per second and 600 per UTC day across address and route requests.
-Reservations are enforced in D1. Rejected or failed calls may consume a reservation, which keeps the ceiling conservative.
+Google Maps Platform provides the map, driving estimates, and address search. The owner selected it on 11 November 2026. It replaces the earlier Geoapify and OpenStreetMap design.
+
+- The browser map uses the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2 with `DEMO_MAP_ID`.
+- Driving estimates use Routes API Compute Routes with `TRAFFIC_UNAWARE` routing. The field mask is `routes.distanceMeters,routes.duration`.
+- Address search uses Places API (New) Autocomplete and Place Details. Suggestions are restricted to the rectangle from 23.6 to 24.0 N and 90.2 to 90.6 E, with region code `bd`. Place Details requests `location,formattedAddress`.
+
+Set `GOOGLE_MAPS_BROWSER_KEY` as a Worker variable. Set `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.
+All Google web-service calls run on the server through same-origin POST requests. The browser generates the Places session token with `crypto.randomUUID()`, and the server validates its format.
+Requests use a six-second timeout, a 65,536-byte response limit, and validated fields. The server sends each key in the `X-Goog-Api-Key` header.
+The application permits at most two provider requests per second and 600 per UTC day across address and route requests. Reservations are enforced in D1. Rejected or failed calls may consume a reservation, which keeps the ceiling conservative. Google publishes no Demo Key limit, so these values are local ceilings.
 The budget stores time buckets and counts, not user addresses or coordinates.
+Address lookup starts only when the user submits the address form. The client does not send a request for each keystroke.
 Provider failures leave catalog prices available and preserve the selected search location.
 
-OpenStreetMap supplies geographic raster tiles. Show its copyright link, preserve browser caching and referrer headers, and request only visible tiles.
-The map has no offline, bulk-download, or prefetch feature. Coordinate controls provide a keyboard alternative to map selection.
-Geoapify attribution appears beside the address and route controls.
-The public Nominatim endpoint is not used for autocomplete.
+### Terms constraints
 
-The Geoapify pricing page checked on 28 October 2026 lists 3,000 free daily credits and up to five requests per second.
-Basic geocoding and routing requests generally use one credit. Recheck account usage and endpoint-specific credit costs before increasing the local budget.
-No paid account, remote resource, or provider subscription was created.
+- MediMap is not an emergency or ambulance tool. Google's terms prohibit High Risk Activities, which are uses where failure of the services could reasonably cause death or serious personal injury.
+- Google content never appears with or near a non-Google map. The `/discovery` schematic preview has no Google content.
+- Do not write Google coordinates, addresses, or route values to D1. Do not add a server cache for route or place results.
+- Branch coordinates come only from official provider evidence and administrator entry. Google geocoding never fills them.
+- Keep Google attribution visible. The map attribution row stays uncovered.
+- Show "Google Maps" attribution beside suggestion lists when no Google map is visible.
+- Footer links go to the [Google Maps End User Additional Terms](https://maps.google.com/help/terms_maps/) and the [Google Privacy Policy](https://policies.google.com/privacy).
+
+### Maps Demo Key
+
+The Maps Demo Key is the only key in use. No billing account exists.
+Google states that the Demo Key is "intended for testing and prototyping purposes only". It "is not designed for production use".
+Google publishes no numeric daily limit. At the limit, usage pauses until the next day with no risk of charges.
+The browser key is visible to every visitor. A third party that uses it can exhaust the limit and pause the map for all users.
+On 11 November 2026, server requests to Compute Routes, Places Autocomplete, and Place Details accepted the Demo Key.
+A production map requires a billing account on the key or a new billing-enabled key. The owner decides this later. The release must work with the map unavailable.
+
+### Map availability
+
+- On `/find`, the map loads on page load at desktop widths. On mobile, it loads when the user opens the Map view.
+- On `/branches/<id>`, the map loads only after the user selects "Show on map".
+- A missing browser key, a rejected key, or a failed map load shows the "map unavailable" notice.
+- Address search and driving estimates use the server key and do not depend on the browser map.
+- Coordinate controls provide the keyboard alternative to map selection. The map has no offline, bulk-download, or prefetch feature.
 
 ## Migrations and setup
 
@@ -80,8 +104,11 @@ Live Google, provider credentials, verified branch coordinates, production capac
 
 ## Official references
 
-- [Geoapify geocoding](https://apidocs.geoapify.com/docs/geocoding/forward-geocoding/), [routing](https://apidocs.geoapify.com/docs/routing/), and [pricing](https://www.geoapify.com/pricing/).
-- [OpenStreetMap tile policy](https://operations.osmfoundation.org/policies/tiles/) and [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/).
+Checked on 11 November 2026, as listed in `docs/google-maps-integration-plan.md`.
+
+- [Google Maps Platform Terms of Service](https://cloud.google.com/maps-platform/terms) and [Service Specific Terms](https://cloud.google.com/maps-platform/terms/maps-service-terms).
+- [Maps Demo Key](https://developers.google.com/maps/documentation/javascript/demo-key) and [Routes API usage and billing](https://developers.google.com/maps/documentation/routes/usage-and-billing).
+- [Places API (New) Autocomplete](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete), [Place Details data fields](https://developers.google.com/maps/documentation/places/web-service/data-fields), and [Places policies](https://developers.google.com/maps/documentation/places/web-service/policies).
 - [TanStack Router data loading](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading) and [Google Maps directions URLs](https://developers.google.com/maps/documentation/urls/get-started).
 
 This document uses STE-guided prose without claiming formal ASD-STE100 compliance.

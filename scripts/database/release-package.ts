@@ -67,7 +67,7 @@ assert.deepEqual(Reflect.get(generated, 'observability'), {
   traces: { enabled: true, head_sampling_rate: 0 },
 });
 const forbidden =
-  /GEOAPIFY_API_KEY|GOOGLE_CLIENT_SECRET|GOOGLE_CLIENT_ID|AUTH_ORIGIN|medimap-release-check-not-a-real-secret|INSERT INTO auth_sessions|UPDATE correction_reports SET|report_resolutions|google_subject/;
+  /GOOGLE_MAPS_SERVER_KEY|GOOGLE_MAPS_BROWSER_KEY|GEOAPIFY_API_KEY|GOOGLE_CLIENT_SECRET|GOOGLE_CLIENT_ID|AUTH_ORIGIN|medimap-release-check-not-a-real-secret|INSERT INTO auth_sessions|UPDATE correction_reports SET|report_resolutions|google_subject/;
 let files = 0;
 let totalBytes = 0;
 let largestFileBytes = 0;

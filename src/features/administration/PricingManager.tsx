@@ -2,8 +2,8 @@ import { AdminLayout } from './AdminLayout';
 import { SourceForm, ListingForm, PriceForm, ClearPriceForm, decimalBdt } from './PricingForms';
 import { pricingMessages, pricingHref } from '../pricing/contracts';
 import type { readPricing } from '../pricing/operations.server';
-import './catalogManager.css';
-import './pricingManager.css';
+import { admin, Notice, PageTitle, Section, StateCard } from './adminUi';
+import { ui } from '../../ui/styles';
 
 export function PricingManager({
   result,
@@ -21,27 +21,25 @@ export function PricingManager({
     : undefined;
   return (
     <AdminLayout activeHref="/admin/prices">
-      <div className="admin-title">
-        <p className="admin-eyebrow">Prices and evidence</p>
-        <h1>Manage branch prices</h1>
-        <p>
-          Maintain diagnostic availability, standard BDT prices, and retained official source
-          evidence.
-        </p>
-      </div>
+      <PageTitle eyebrow="Prices and evidence" title="Manage branch prices">
+        Maintain diagnostic availability, standard BDT prices, and retained official source
+        evidence.
+      </PageTitle>
       {!result.ok ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'forbidden'
+        <StateCard
+          title={
+            result.code === 'forbidden'
               ? 'Administrator access required'
               : result.code === 'expired'
                 ? 'Session expired'
                 : result.code === 'unauthenticated'
                   ? 'Sign in to continue'
-                  : 'Pricing unavailable'}
-          </h2>
+                  : 'Pricing unavailable'
+          }
+        >
           <p>{result.message}</p>
           <a
+            className={admin.link}
             href={
               ['unauthenticated', 'expired'].includes(result.code)
                 ? '/sign-in?returnTo=%2Fadmin%2Fprices'
@@ -56,24 +54,31 @@ export function PricingManager({
                 ? 'Open your account'
                 : 'Reload prices'}
           </a>
-        </section>
+        </StateCard>
       ) : (
         data && (
           <>
             {feedback && (
-              <div className="admin-notice" role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
                 <p>{feedback}</p>
-                {search.code !== 'saved' && <a href={pricingHref()}>Reload prices</a>}
-              </div>
+                {search.code !== 'saved' && (
+                  <a className={admin.link} href={pricingHref()}>
+                    Reload prices
+                  </a>
+                )}
+              </Notice>
             )}
-            <p className="admin-notice">
+            <Notice>
               Price corrections retain history. Unknown prices stay unknown. Disputed prices are
               excluded from default statistics, and prices do not expire by age.
-            </p>
-            <form method="get" action="/admin/prices" className="catalog-filter">
-              <div>
-                <label htmlFor="pricing-provider">Provider filter</label>
+            </Notice>
+            <form method="get" action="/admin/prices" className={admin.filter}>
+              <div className="grid min-w-0 flex-1 gap-1 sm:max-w-md">
+                <label className="text-sm font-semibold text-ink" htmlFor="pricing-provider">
+                  Provider filter
+                </label>
                 <select
+                  className={admin.input}
                   id="pricing-provider"
                   name="provider"
                   defaultValue={data.provider?.id ?? ''}
@@ -90,10 +95,13 @@ export function PricingManager({
                   ))}
                 </select>
               </div>
-              <button type="submit">Apply provider</button>
+              <button className={ui.buttonPrimary} type="submit">
+                Apply provider
+              </button>
             </form>
             {data.providers.nextCursor && (
               <a
+                className={admin.link}
                 href={pricingHref({
                   ...search,
                   providerAfter: data.providers.nextCursor,
@@ -103,15 +111,14 @@ export function PricingManager({
                 More providers
               </a>
             )}
-            <section className="catalog-edit-card" aria-labelledby="price-listings">
-              <h2 id="price-listings">Branch-service listings</h2>
-              <ul className="pricing-list">
+            <Section id="price-listings" title="Branch-service listings">
+              <ul className={admin.list}>
                 {data.listings.items.map((item) => (
-                  <li key={item.id}>
-                    <a href={pricingHref({ listing: item.id })}>
+                  <li key={item.id} className="py-1">
+                    <a className={admin.link} href={pricingHref({ listing: item.id })}>
                       {item.serviceName} at {item.providerName}, {item.branchName}
                     </a>
-                    <p>
+                    <p className="text-sm text-muted">
                       {item.active ? 'Active listing' : 'Inactive listing'} ·{' '}
                       {item.price
                         ? `BDT ${decimalBdt(item.price.amountMinor)} · ${item.price.status}`
@@ -123,6 +130,7 @@ export function PricingManager({
               {!data.listings.items.length && <p>No listings on this page.</p>}
               {data.listings.nextCursor && (
                 <a
+                  className={admin.link}
                   href={pricingHref({
                     ...search,
                     after: data.listings.nextCursor,
@@ -132,17 +140,24 @@ export function PricingManager({
                   More listings
                 </a>
               )}
-            </section>
-            {search.listing && !data.selected && <p role="alert">Listing not found.</p>}
+            </Section>
+            {search.listing && !data.selected && <Notice role="alert">Listing not found.</Notice>}
             {data.provider && (
               <>
-                <section className="catalog-edit-card" aria-labelledby="source-snapshots">
-                  <h2 id="source-snapshots">Official source snapshots</h2>
+                <Section id="source-snapshots" title="Official source snapshots">
                   {sources.length ? (
                     sources.map((source) => (
-                      <article key={source.id} className="pricing-source">
-                        <h3>{source.id}</h3>
-                        <a href={source.url} target="_blank" rel="noreferrer">
+                      <article
+                        key={source.id}
+                        className="grid gap-1 rounded-sm border border-border bg-surface-sunken p-4 text-sm"
+                      >
+                        <h3 className="text-base font-bold text-ink">{source.id}</h3>
+                        <a
+                          className={admin.link}
+                          href={source.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           Open official source
                         </a>
                         <p>
@@ -158,7 +173,7 @@ export function PricingManager({
                           <br />
                           Website update: {source.sourceUpdatedDate ?? 'Unknown'}
                         </p>
-                        <p className="admin-muted">
+                        <p className={admin.hint}>
                           SHA-256: <code>{source.sha256}</code>
                         </p>
                         {source.notes && <p>{source.notes}</p>}
@@ -169,6 +184,7 @@ export function PricingManager({
                   )}
                   {data.sources.nextCursor && (
                     <a
+                      className={admin.link}
                       href={pricingHref({
                         ...search,
                         sourceAfter: data.sources.nextCursor,
@@ -178,20 +194,19 @@ export function PricingManager({
                       More sources
                     </a>
                   )}
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="new-source">
-                  <h2 id="new-source">Add source snapshot</h2>
-                  <p>
+                </Section>
+                <Section id="new-source" title="Add source snapshot">
+                  <p className="text-sm">
                     Record actual collection details. Create a new snapshot to correct evidence. A
                     URL alone does not establish a verified price.
                   </p>
                   <SourceForm provider={data.provider} />
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="new-listing">
-                  <h2 id="new-listing">Add branch-service listing</h2>
+                </Section>
+                <Section id="new-listing" title="Add branch-service listing">
                   <ListingForm branches={data.branches.items} services={data.services.items} />
                   {data.branches.nextCursor && (
                     <a
+                      className={admin.link}
                       href={pricingHref({
                         ...search,
                         branchAfter: data.branches.nextCursor,
@@ -203,6 +218,7 @@ export function PricingManager({
                   )}
                   {data.services.nextCursor && (
                     <a
+                      className={admin.link}
                       href={pricingHref({
                         ...search,
                         serviceAfter: data.services.nextCursor,
@@ -212,21 +228,19 @@ export function PricingManager({
                       More canonical services
                     </a>
                   )}
-                </section>
+                </Section>
               </>
             )}
             {data.selected && (
               <>
-                <section className="catalog-edit-card" aria-labelledby="edit-listing">
-                  <h2 id="edit-listing">Edit availability</h2>
+                <Section id="edit-listing" title="Edit availability">
                   <ListingForm
                     key={`listing-${data.selected.id}-${data.selected.revision}`}
                     existing={data.selected}
                   />
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="new-price">
-                  <h2 id="new-price">New price revision</h2>
-                  <p>
+                </Section>
+                <Section id="new-price" title="New price revision">
+                  <p className="text-sm">
                     {data.selected.serviceName} at {data.selected.branchName}.{' '}
                     {data.selected.price
                       ? `Current price: BDT ${decimalBdt(data.selected.price.amountMinor)} · ${data.selected.price.status}`
@@ -237,23 +251,24 @@ export function PricingManager({
                     listing={data.selected}
                     sources={sources}
                   />
-                  <a href={`/admin/catalog?service=${data.selected.serviceId}`}>
+                  <a
+                    className={admin.link}
+                    href={`/admin/catalog?service=${data.selected.serviceId}`}
+                  >
                     Inspect published service
                   </a>
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="clear-price">
-                  <h2 id="clear-price">Unknown current price</h2>
+                </Section>
+                <Section id="clear-price" title="Unknown current price">
                   <ClearPriceForm listing={data.selected} />
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="price-history">
-                  <h2 id="price-history">Retained price revisions</h2>
+                </Section>
+                <Section id="price-history" title="Retained price revisions">
                   {data.history.items.map((price) => (
                     <article
                       key={price.id}
-                      className="pricing-source"
+                      className="grid gap-1 rounded-sm border border-border bg-surface-sunken p-4 text-sm"
                       aria-label={`Price revision ${price.id}`}
                     >
-                      <h3>
+                      <h3 className="text-base font-bold text-ink">
                         BDT {decimalBdt(price.amountMinor)} · {price.status}
                       </h3>
                       <p>
@@ -278,6 +293,7 @@ export function PricingManager({
                   {!data.history.items.length && <p>No retained prices yet.</p>}
                   {data.history.nextCursor && (
                     <a
+                      className={admin.link}
                       href={pricingHref({
                         ...search,
                         historyAfter: data.history.nextCursor,
@@ -287,7 +303,7 @@ export function PricingManager({
                       More price revisions
                     </a>
                   )}
-                </section>
+                </Section>
               </>
             )}
           </>

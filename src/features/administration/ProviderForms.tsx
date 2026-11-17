@@ -1,4 +1,6 @@
 import { useId, type ReactNode } from 'react';
+import { admin } from './adminUi';
+import { ui } from '../../ui/styles';
 import type { ProviderRecord, BranchRecord, ContactSource } from '../providers/contracts';
 import { dayHoursInput, weekDays } from '../providers/hours';
 
@@ -26,9 +28,10 @@ function Field({
   step?: string;
 }) {
   return (
-    <label>
+    <label className={ui.label}>
       {label}
       <input
+        className={admin.input}
         name={name}
         defaultValue={value}
         required={required}
@@ -55,9 +58,9 @@ function Select({
 }) {
   const id = useId();
   return (
-    <div className="catalog-select-field">
+    <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select id={id} name={name} defaultValue={value}>
+      <select className={admin.input} id={id} name={name} defaultValue={value}>
         {children}
       </select>
     </div>
@@ -68,7 +71,7 @@ function Identity({ existing }: { existing?: ProviderRecord }) {
     <>
       <input type="hidden" name="id" value={existing.id} />
       <input type="hidden" name="revision" value={existing.revision} />
-      <p className="admin-muted">
+      <p className={admin.hint}>
         Stable ID: <code>{existing.id}</code> · Revision {existing.revision}
       </p>
     </>
@@ -106,14 +109,16 @@ function Contacts({ existing }: { existing?: ProviderRecord }) {
 }
 export function ProviderForm({ existing }: { existing?: ProviderRecord }) {
   return (
-    <form className="catalog-edit-form" method="post" action="/admin/providers/write">
+    <form className={admin.form} method="post" action="/admin/providers/write">
       <input type="hidden" name="entity" value="provider" />
       <input type="hidden" name="mode" value={existing ? 'update' : 'create'} />
       <Identity existing={existing} />
       <Field name="name" label="Provider name" value={existing?.name} required />
       <Contacts existing={existing} />
       <Status existing={existing} />
-      <button type="submit">{existing ? 'Save provider' : 'Create provider'}</button>
+      <button className={ui.buttonPrimary} type="submit">
+        {existing ? 'Save provider' : 'Create provider'}
+      </button>
     </form>
   );
 }
@@ -127,11 +132,11 @@ export function BranchForm({
   sources: ContactSource[];
 }) {
   return (
-    <form className="catalog-edit-form" method="post" action="/admin/providers/write">
+    <form className={admin.form} method="post" action="/admin/providers/write">
       <input type="hidden" name="entity" value="branch" />
       <input type="hidden" name="mode" value={existing ? 'update' : 'create'} />
       <input type="hidden" name="providerId" value={provider.id} />
-      <p>Provider: {provider.name}</p>
+      <p className="text-sm font-semibold">Provider: {provider.name}</p>
       <Identity existing={existing} />
       <Field name="name" label="Branch name" value={existing?.name} required />
       <Field name="address" label="Address" value={existing?.address} required maxLength={500} />
@@ -143,7 +148,7 @@ export function BranchForm({
         type="tel"
         maxLength={30}
       />
-      <div className="provider-coordinate-fields">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field
           name="latitude"
           type="number"
@@ -165,16 +170,16 @@ export function BranchForm({
           maxLength={30}
         />
       </div>
-      <p className="admin-muted">
+      <p className={admin.hint}>
         Leave both coordinates blank if unknown. Latitude ranges from -90 to 90; longitude ranges
         from -180 to 180.
       </p>
-      <fieldset className="provider-hours">
-        <legend>Usual weekly hours · Asia/Dhaka</legend>
-        <p>
+      <fieldset className={admin.fieldset}>
+        <legend className={admin.legend}>Usual weekly hours · Asia/Dhaka</legend>
+        <p className={admin.hint}>
           Leave a day blank if unknown. Enter closed or periods such as 08:00-13:00, 16:00-22:00.
         </p>
-        <p>
+        <p className={admin.hint}>
           Use 00:00-24:00 for all day. An earlier closing time continues into the next day. Maximum
           four periods per day.
         </p>
@@ -200,16 +205,18 @@ export function BranchForm({
           </option>
         ))}
       </Select>
-      <label className="catalog-confirm">
-        <input type="checkbox" name="confirmContact" value="yes" />
+      <label className={admin.check}>
+        <input className={admin.checkbox} type="checkbox" name="confirmContact" value="yes" />
         <span>I checked these branch details against the selected official contact source.</span>
       </label>
-      <p className="admin-muted">
+      <p className={admin.hint}>
         An active branch requires an official contact source and confirmation. Keep unsupported
         branches inactive. Leave unknown contacts and hours blank.
       </p>
       <Status existing={existing} />
-      <button type="submit">{existing ? 'Save branch' : 'Create branch'}</button>
+      <button className={ui.buttonPrimary} type="submit">
+        {existing ? 'Save branch' : 'Create branch'}
+      </button>
     </form>
   );
 }

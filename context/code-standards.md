@@ -20,7 +20,9 @@
 
 - Use React with TanStack Start as defined in `architecture.md`.
 - Use server rendering for public service and branch pages.
+- Render the Google map only in the browser. Server rendering produces the list, the location form, and a map placeholder.
 - Keep database access, authentication checks, and server secrets out of browser code.
+- Send only `GOOGLE_MAPS_BROWSER_KEY` to the browser. Keep `GOOGLE_MAPS_SERVER_KEY` in server code.
 - Keep route code focused on request handling and feature orchestration.
 - Keep search rules, statistics, and other domain calculations separate from rendering code.
 - Verify framework APIs against current official documentation and selected package versions before use.
@@ -42,6 +44,7 @@
 - Store schema changes in versioned SQL migrations.
 - Check reviewed migration hashes before release rehearsals. Never rewrite an applied migration to repair an upgrade.
 - Preserve price sources and verification metadata.
+- Do not store Google coordinates, addresses, or route values in D1. Do not add a server cache for Google results.
 - Apply the report-based freshness policy. Do not add an age-based expiry rule.
 - Require server-confirmed sign-in for correction reports. Derive reporter identity from the session.
 - Enforce report quotas, pending duplicates, target revisions, and price-dispute effects atomically in D1.
@@ -69,7 +72,12 @@ Finalize directory names when the application scaffold is selected. The followin
 
 ## Styling and UI
 
-The initial static page uses the design conventions in `ui-context.md`. Functional UI conventions remain pending.
+Visual rules follow `DESIGN.md`. Interaction and accessibility rules follow `ui-context.md`.
+Use Tailwind CSS 4 through `@tailwindcss/vite` for styling, and `lucide-react` for icons. Both are allowed.
+The DESIGN.md tokens define the Tailwind theme in the `@theme` block of `src/styles.css`. Import Tailwind with `@import 'tailwindcss'`, including Preflight.
+Keep shared class strings in `src/ui/styles.ts` and the header and footer in `src/ui/SiteChrome.tsx`.
+The `/discovery` demonstration keeps its own CSS.
+`ui-sdk` was evaluated and not installed. Its releases are beta only, which conflicts with the stable-release rule. Its accessibility rules apply as guidance.
 Do not treat example values in the UI template as selected fonts, colors, component libraries, or layout rules.
 Check changed screens on mobile before considering a feature complete.
 
@@ -140,6 +148,8 @@ Checked on 8 October 2026:
 - [TypeScript strict mode](https://www.typescriptlang.org/tsconfig/strict.html).
 - [D1 prepared statements](https://developers.cloudflare.com/d1/worker-api/prepared-statements/).
 - [TanStack Start on Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/).
+
+Checked on 11 November 2026, with the reference list in `docs/google-maps-integration-plan.md`: Google Maps Platform terms, the Maps Demo Key, Routes API, and Places API (New).
 
 ## Pending decisions
 

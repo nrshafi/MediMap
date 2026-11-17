@@ -3,4 +3,6 @@
 AUTH_ORIGIN="http://localhost:3000"
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
-GEOAPIFY_API_KEY=""
+# Google Maps Platform keys. The Demo Key can fill both. Never commit real values.
+GOOGLE_MAPS_BROWSER_KEY=""
+GOOGLE_MAPS_SERVER_KEY=""

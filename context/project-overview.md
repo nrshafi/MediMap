@@ -26,7 +26,7 @@ These decisions, confirmed on 27 October 2026, replace the earlier ten-hospital 
 
 1. Search for a diagnostic service.
 2. Select the matching canonical service.
-3. Share a current location, select an area or map location, or enter a location.
+3. Enter an address, share a current location, or select a map location. Dhaka presets and manual coordinates remain available.
 4. Choose a radius of 1 km, 3 km, 5 km, or a custom distance.
 5. Inspect relevant branches, base prices, and verification information.
 6. View price statistics and select branches for comparison.
@@ -116,8 +116,18 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Cloudflare free tiers are the intended hosting budget. The local pilot model is in `docs/workers-release-runbook.md`; production CPU and actual workload remain unverified.
 - Selected technologies: React with TanStack Start, one Cloudflare Workers application deployment, and Cloudflare D1 with direct SQL.
 - Google sign-in is the only account method for the first version. Assign administrator access separately.
-- Add Hono only if required. Select the mapping and routing provider after capability and budget checks.
+- Add Hono only if required. Google Maps Platform is the mapping provider, selected on 11 November 2026. See the mapping decisions below.
 
+
+## Mapping and layout decisions
+
+- Google Maps Platform replaces Geoapify and OpenStreetMap tiles. The owner decided this on 11 November 2026.
+- The map uses the Maps JavaScript API. Driving estimates use the Routes API. Address search uses Places API (New).
+- The Maps Demo Key is the only key in use, and no billing account exists. The Demo Key is for testing only. A production map requires a later owner billing decision.
+- The release must work with the map unavailable. Prices, lists, and manual location input keep working.
+- MediMap is not an emergency or ambulance tool. Google's terms prohibit High Risk Activities.
+- The public layout follows `DESIGN.md`. On desktop, `/find` shows a sidebar list, a full-height map, and a floating detail panel. On mobile, it shows a List and Map switch with a bottom sheet.
+- Location entry is address-first. Dhaka presets and manual coordinates sit under "More location options".
 
 ## Confirmed comparison and data rules
 

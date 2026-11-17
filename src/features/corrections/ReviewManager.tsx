@@ -4,8 +4,8 @@ import { TargetDetails } from './ReportView';
 import { issueLabels } from './contracts';
 import { resolutionMessages, reviewHref, type ResolutionDraft } from './review-contracts';
 import type { readReview } from './review-operations.server';
-import '../administration/catalogManager.css';
-import './review.css';
+import { admin, Notice, PageTitle, Section, StateCard } from '../administration/adminUi';
+import { ui } from '../../ui/styles';
 
 export function ReviewManager({
   result,
@@ -31,27 +31,25 @@ export function ReviewManager({
   };
   return (
     <AdminLayout activeHref="/admin/reports">
-      <div className="admin-title">
-        <p className="admin-eyebrow">Information corrections</p>
-        <h1>Review reports</h1>
-        <p>
-          Compare retained submissions with current records. Record the evidence and reason for each
-          decision.
-        </p>
-      </div>
+      <PageTitle eyebrow="Information corrections" title="Review reports">
+        Compare retained submissions with current records. Record the evidence and reason for each
+        decision.
+      </PageTitle>
       {!result.ok ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'forbidden'
+        <StateCard
+          title={
+            result.code === 'forbidden'
               ? 'Administrator access required'
               : result.code === 'expired'
                 ? 'Session expired'
                 : result.code === 'unauthenticated'
                   ? 'Sign in to continue'
-                  : 'Report review unavailable'}
-          </h2>
+                  : 'Report review unavailable'
+          }
+        >
           <p>{result.message}</p>
           <a
+            className={admin.link}
             href={
               ['unauthenticated', 'expired'].includes(result.code)
                 ? `/sign-in?returnTo=${encodeURIComponent(reviewHref(search))}`
@@ -62,52 +60,70 @@ export function ReviewManager({
           >
             Open report review
           </a>
-          {draft.reason && <p className="report-prose">Your typed reason: {draft.reason}</p>}
-        </section>
+          {draft.reason && (
+            <p className={`report-prose ${admin.prose}`}>Your typed reason: {draft.reason}</p>
+          )}
+        </StateCard>
       ) : (
         data && (
           <>
             {feedback && (
-              <section className="admin-notice" role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
                 <p>{feedback}</p>
-              </section>
+              </Notice>
             )}
             {draft.reason && selected?.report.status !== 'pending' && (
-              <section className="admin-notice">
-                <h2>Your unsaved reason</h2>
-                <p className="report-prose">{draft.reason}</p>
-              </section>
+              <Notice>
+                <h2 className="font-bold">Your unsaved reason</h2>
+                <p className={`report-prose ${admin.prose}`}>{draft.reason}</p>
+              </Notice>
             )}
-            <form method="get" action="/admin/reports" className="catalog-filter">
+            <form method="get" action="/admin/reports" className={admin.filter}>
               <input type="hidden" name="limit" value={data.query.limit} />
               <div>
-                <label htmlFor="review-status">Report status</label>
-                <select id="review-status" name="status" defaultValue={data.query.status}>
+                <label className="text-sm font-semibold text-ink" htmlFor="review-status">
+                  Report status
+                </label>
+                <select
+                  className={admin.input}
+                  id="review-status"
+                  name="status"
+                  defaultValue={data.query.status}
+                >
                   <option value="pending">Pending</option>
                   <option value="accepted">Accepted</option>
                   <option value="rejected">Rejected</option>
                   <option value="all">All reports</option>
                 </select>
               </div>
-              <button type="submit">Filter reports</button>
+              <button className={ui.buttonPrimary} type="submit">
+                Filter reports
+              </button>
             </form>
-            <section className="catalog-edit-card" aria-labelledby="report-queue-title">
-              <h2 id="report-queue-title">Report queue</h2>
-              <p className="admin-muted">Oldest submissions first.</p>
+            <Section id="report-queue-title" title="Report queue">
+              <p className={admin.hint}>Oldest submissions first.</p>
               {data.queue.items.length ? (
-                <ul className="catalog-management-list review-queue">
+                <ul className={admin.list}>
                   {data.queue.items.map((item) => (
-                    <li key={item.id}>
-                      <div>
-                        <strong>{item.providerName}</strong>
+                    <li
+                      key={item.id}
+                      className="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                    >
+                      <div className="min-w-0 text-sm">
+                        <strong className="font-semibold">{item.providerName}</strong>
                         <p>
                           {issueLabels[item.issue]} · {item.status}
                         </p>
-                        <p className="admin-muted">
+                        <p className={admin.hint}>
                           {item.targetType} · {item.targetId}
                         </p>
                       </div>
-                      <a href={reviewHref({ ...savedSearch, report: item.id })}>Review {item.id}</a>
+                      <a
+                        className={admin.link}
+                        href={reviewHref({ ...savedSearch, report: item.id })}
+                      >
+                        Review {item.id}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -115,29 +131,36 @@ export function ReviewManager({
                 <p>No reports match this status.</p>
               )}
               {data.queue.nextCursor && (
-                <a href={reviewHref({ ...savedSearch, after: data.queue.nextCursor })}>
+                <a
+                  className={admin.link}
+                  href={reviewHref({ ...savedSearch, after: data.queue.nextCursor })}
+                >
                   Next reports
                 </a>
               )}
-            </section>
+            </Section>
             {selected && (
               <>
-                <section className="catalog-edit-card" aria-labelledby="report-submission-title">
-                  <h2 id="report-submission-title">Original submission</h2>
+                <Section id="report-submission-title" title="Original submission">
                   <p>Reference: {selected.report.id}</p>
                   <p>
                     {issueLabels[selected.report.issue]} · {selected.report.status}
                   </p>
                   <p>Account reference: {selected.reporterId}</p>
                   <p>Submitted: {new Date(selected.report.createdAt).toISOString()}</p>
-                  <p className="report-prose">{selected.report.details}</p>
+                  <p className={`report-prose ${admin.prose}`}>{selected.report.details}</p>
                   {selected.report.suggestedCorrection && (
-                    <p className="report-prose">
+                    <p className={`report-prose ${admin.prose}`}>
                       Suggested correction: {selected.report.suggestedCorrection}
                     </p>
                   )}
                   {selected.report.evidenceUrl && (
-                    <a href={selected.report.evidenceUrl} rel="noreferrer" target="_blank">
+                    <a
+                      className={admin.link}
+                      href={selected.report.evidenceUrl}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
                       Submitted evidence link
                     </a>
                   )}
@@ -146,9 +169,8 @@ export function ReviewManager({
                     receipt
                     headingId="review-original-target-title"
                   />
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="review-current-title">
-                  <h2 id="review-current-title">Current target</h2>
+                </Section>
+                <Section id="review-current-title" title="Current target">
                   <p>
                     Record status: {selected.active ? 'Active' : 'Inactive'}. Revision{' '}
                     {selected.current.revision}.
@@ -161,6 +183,7 @@ export function ReviewManager({
                     <p>Pending price reports for this listing: {selected.pendingPriceReports}</p>
                   )}
                   <a
+                    className={admin.link}
                     href={
                       selected.current.kind === 'listing'
                         ? `/admin/prices?listing=${selected.current.id}`
@@ -171,12 +194,11 @@ export function ReviewManager({
                   >
                     Open record editor
                   </a>
-                </section>
+                </Section>
                 {selected.resolution ? (
-                  <section className="catalog-edit-card" aria-labelledby="resolution-history-title">
-                    <h2 id="resolution-history-title">Recorded resolution</h2>
+                  <Section id="resolution-history-title" title="Recorded resolution">
                     <p>Decision: {selected.resolution.outcome}</p>
-                    <p className="report-prose">{selected.resolution.reason}</p>
+                    <p className={`report-prose ${admin.prose}`}>{selected.resolution.reason}</p>
                     <p>Administrator: {selected.resolution.actorId}</p>
                     <p>Reviewed: {new Date(selected.resolution.createdAt).toISOString()}</p>
                     <p>
@@ -196,37 +218,41 @@ export function ReviewManager({
                         : (selected.resolution.resultingPriceStatus ?? 'Unchanged')}
                     </p>
                     <p>Reviewed target revision: {selected.resolution.reviewedTarget.revision}</p>
-                  </section>
+                  </Section>
                 ) : (
                   selected.report.status === 'pending' && (
-                    <section className="catalog-edit-card" aria-labelledby="resolve-report-title">
-                      <h2 id="resolve-report-title">Resolve report</h2>
+                    <Section id="resolve-report-title" title="Resolve report">
                       <p>
                         Review an official source and the current record before recording a
                         decision.
                       </p>
                       {selected.report.issue === 'price' ? (
-                        <p className="admin-notice">
+                        <Notice>
                           A fresh official-source review is required, including rejection. Other
                           pending price reports keep the reviewed price disputed.
-                        </p>
+                        </Notice>
                       ) : (
-                        <p className="admin-muted">
+                        <p className={admin.hint}>
                           For an accepted non-price report, apply the correction in the record
                           editor first. Return here to review and record the decision.
                         </p>
                       )}
-                      <p className="admin-muted">
+                      <p className={admin.hint}>
                         Official evidence is restricted to this provider. Source collection and
                         review dates remain separate.
                       </p>
-                      <ul className="review-sources">
+                      <ul className="grid gap-2 text-sm">
                         {sources.map((source) => (
-                          <li key={source.id}>
-                            <a href={source.url} rel="noreferrer" target="_blank">
+                          <li key={source.id} className="grid min-w-0 gap-0.5">
+                            <a
+                              className={admin.link}
+                              href={source.url}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
                               {source.id}
                             </a>
-                            <span>
+                            <span className="text-muted">
                               {source.kind} · collected {source.retrievedAt}
                             </span>
                           </li>
@@ -234,6 +260,7 @@ export function ReviewManager({
                       </ul>
                       {data.sources.nextCursor && (
                         <a
+                          className={admin.link}
                           href={reviewHref({
                             ...savedSearch,
                             sourceAfter: data.sources.nextCursor,
@@ -243,14 +270,12 @@ export function ReviewManager({
                         </a>
                       )}
                       {data.query.sourceAfter && (
-                        <a href={reviewHref(savedSearch)}>First official sources</a>
+                        <a className={admin.link} href={reviewHref(savedSearch)}>
+                          First official sources
+                        </a>
                       )}
                       {
-                        <form
-                          method="post"
-                          action="/admin/reports/resolve"
-                          className="catalog-edit-form"
-                        >
+                        <form method="post" action="/admin/reports/resolve" className={admin.form}>
                           <input type="hidden" name="reportId" value={selected.report.id} />
                           <input
                             type="hidden"
@@ -264,9 +289,10 @@ export function ReviewManager({
                           />
                           {selected.report.issue === 'price' ? (
                             <>
-                              <label>
+                              <label className={ui.label}>
                                 Price outcome
                                 <select
+                                  className={admin.input}
                                   name="priceAction"
                                   defaultValue={
                                     draft.priceAction ??
@@ -279,9 +305,10 @@ export function ReviewManager({
                                   <option value="unknown">Set or retain unknown price</option>
                                 </select>
                               </label>
-                              <label>
+                              <label className={ui.label}>
                                 Reviewed standard price (BDT)
                                 <input
+                                  className={admin.input}
                                   name="amount"
                                   inputMode="decimal"
                                   pattern="(?:0|[1-9][0-9]*)(?:\.[0-9]{1,2})?"
@@ -293,9 +320,10 @@ export function ReviewManager({
                                   }
                                 />
                               </label>
-                              <label>
+                              <label className={ui.label}>
                                 Provider effective date (optional)
                                 <input
+                                  className={admin.input}
                                   type="date"
                                   name="effectiveDate"
                                   defaultValue={
@@ -305,14 +333,19 @@ export function ReviewManager({
                                   }
                                 />
                               </label>
-                              <label className="catalog-confirm">
-                                <input type="checkbox" name="standardPrice" value="yes" />
+                              <label className={admin.check}>
+                                <input
+                                  className={admin.checkbox}
+                                  type="checkbox"
+                                  name="standardPrice"
+                                  value="yes"
+                                />
                                 <span>
                                   The reviewed amount is a standard base price without a promotion
                                   or discount.
                                 </span>
                               </label>
-                              <p className="admin-muted">
+                              <p className={admin.hint}>
                                 A known reviewed price needs a tariff source, currency evidence, and
                                 row number. Rejection must retain the current amount and effective
                                 date. Unknown prices never qualify for statistics.
@@ -321,17 +354,21 @@ export function ReviewManager({
                           ) : (
                             <input type="hidden" name="priceAction" value="none" />
                           )}
-                          <label>
+                          <label className={ui.label}>
                             Resolution decision
-                            <select name="outcome" defaultValue={draft.outcome ?? 'rejected'}>
+                            <select
+                              className={admin.input}
+                              name="outcome"
+                              defaultValue={draft.outcome ?? 'rejected'}
+                            >
                               <option value="rejected">Reject report</option>
                               <option value="accepted">Accept corrected report</option>
                             </select>
                           </label>
-                          <label>
+                          <label className={ui.label}>
                             Resolution reason
                             <textarea
-                              className="review-reason"
+                              className={`${admin.textarea} min-h-40`}
                               name="reason"
                               minLength={20}
                               maxLength={2000}
@@ -339,9 +376,10 @@ export function ReviewManager({
                               defaultValue={draft.reason ?? ''}
                             />
                           </label>
-                          <label>
+                          <label className={ui.label}>
                             Reviewed official source
                             <select
+                              className={admin.input}
                               name="sourceId"
                               required
                               defaultValue={
@@ -356,9 +394,10 @@ export function ReviewManager({
                               ))}
                             </select>
                           </label>
-                          <label>
+                          <label className={ui.label}>
                             Evidence row (optional for non-price issues)
                             <input
+                              className={admin.input}
                               name="sourceRow"
                               inputMode="numeric"
                               pattern="[1-9][0-9]*"
@@ -370,14 +409,22 @@ export function ReviewManager({
                               }
                             />
                           </label>
-                          <label className="catalog-confirm">
-                            <input type="checkbox" name="confirmReview" value="yes" required />
+                          <label className={admin.check}>
+                            <input
+                              className={admin.checkbox}
+                              type="checkbox"
+                              name="confirmReview"
+                              value="yes"
+                              required
+                            />
                             <span>I reviewed this official source and the current target now.</span>
                           </label>
-                          <button type="submit">Save resolution</button>
+                          <button className={ui.buttonPrimary} type="submit">
+                            Save resolution
+                          </button>
                         </form>
                       }
-                    </section>
+                    </Section>
                   )
                 )}
               </>

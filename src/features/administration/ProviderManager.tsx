@@ -2,8 +2,7 @@ import { AdminLayout } from './AdminLayout';
 import { ProviderForm, BranchForm } from './ProviderForms';
 import { providerMessages, providersHref } from '../providers/contracts';
 import type { readProviders } from '../providers/operations.server';
-import './catalogManager.css';
-import './providerManager.css';
+import { admin, ActiveBadge, Notice, PageTitle, Section, StateCard } from './adminUi';
 
 export function ProviderManager({
   result,
@@ -21,27 +20,25 @@ export function ProviderManager({
     : undefined;
   return (
     <AdminLayout activeHref="/admin/providers">
-      <div className="admin-title">
-        <p className="admin-eyebrow">Provider administration</p>
-        <h1>Manage providers and branches</h1>
-        <p>
-          Keep provider identity separate from each branch. Record known contacts, coordinates, and
-          usual weekly hours.
-        </p>
-      </div>
+      <PageTitle eyebrow="Provider administration" title="Manage providers and branches">
+        Keep provider identity separate from each branch. Record known contacts, coordinates, and
+        usual weekly hours.
+      </PageTitle>
       {!result.ok ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'forbidden'
+        <StateCard
+          title={
+            result.code === 'forbidden'
               ? 'Administrator access required'
               : result.code === 'expired'
                 ? 'Session expired'
                 : result.code === 'unauthenticated'
                   ? 'Sign in to continue'
-                  : 'Provider data unavailable'}
-          </h2>
+                  : 'Provider data unavailable'
+          }
+        >
           <p>{result.message}</p>
           <a
+            className={admin.link}
             href={
               ['unauthenticated', 'expired'].includes(result.code)
                 ? '/sign-in?returnTo=%2Fadmin%2Fproviders'
@@ -57,38 +54,43 @@ export function ProviderManager({
                 ? 'Open your account'
                 : 'Reload providers'}
           </a>
-        </section>
+        </StateCard>
       ) : (
         data && (
           <>
             {message && (
-              <div className="admin-notice" role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
                 <p>{message}</p>
-                {search.code !== 'saved' && <a href={providersHref()}>Reload providers</a>}
-              </div>
+                {search.code !== 'saved' && (
+                  <a className={admin.link} href={providersHref()}>
+                    Reload providers
+                  </a>
+                )}
+              </Notice>
             )}
-            <p className="admin-notice">
+            <Notice>
               Deactivation hides a provider or branch from public reads and keeps its listing and
               price history. Blank fields remain unknown.
-            </p>
-            <section className="catalog-edit-card" aria-labelledby="add-provider">
-              <h2 id="add-provider">Add provider</h2>
+            </Notice>
+            <Section id="add-provider" title="Add provider">
               <ProviderForm />
-            </section>
-            <div className="catalog-management-grid">
-              <section className="catalog-edit-card" aria-labelledby="providers">
-                <h2 id="providers">Providers</h2>
-                <ul className="catalog-management-list">
+            </Section>
+            <div className={admin.twoColumns}>
+              <Section id="providers" title="Providers">
+                <ul className={admin.list}>
                   {data.providers.items.map((provider) => (
-                    <li key={provider.id}>
-                      <a href={providersHref({ provider: provider.id })}>{provider.name}</a>
-                      <span>{provider.active ? 'Active' : 'Inactive'}</span>
+                    <li key={provider.id} className={admin.listRow}>
+                      <a className={admin.link} href={providersHref({ provider: provider.id })}>
+                        {provider.name}
+                      </a>
+                      <ActiveBadge active={provider.active} />
                     </li>
                   ))}
                 </ul>
                 {!data.providers.items.length && <p>No providers on this page.</p>}
                 {data.providers.nextCursor && (
                   <a
+                    className={admin.link}
                     href={providersHref({
                       ...search,
                       providerAfter: data.providers.nextCursor,
@@ -98,23 +100,28 @@ export function ProviderManager({
                     More providers
                   </a>
                 )}
-              </section>
-              <section className="catalog-edit-card" aria-labelledby="branches">
-                <h2 id="branches">Branches</h2>
-                <ul className="catalog-management-list">
+              </Section>
+              <Section id="branches" title="Branches">
+                <ul className={admin.list}>
                   {data.branches.items.map((branch) => (
-                    <li key={branch.id}>
-                      <a href={providersHref({ provider: branch.providerId, branch: branch.id })}>
+                    <li key={branch.id} className={admin.listRow}>
+                      <a
+                        className={admin.link}
+                        href={providersHref({ provider: branch.providerId, branch: branch.id })}
+                      >
                         {branch.name}
                       </a>
-                      <span>{branch.active ? 'Active' : 'Inactive'}</span>
+                      <ActiveBadge active={branch.active} />
                     </li>
                   ))}
                 </ul>
                 {!data.branches.items.length && <p>No branches on this page.</p>}
-                <a href={providersHref()}>Show all providers and branches</a>
+                <a className={admin.link} href={providersHref()}>
+                  Show all providers and branches
+                </a>
                 {data.branches.nextCursor && (
                   <a
+                    className={admin.link}
                     href={providersHref({
                       ...search,
                       after: data.branches.nextCursor,
@@ -124,30 +131,33 @@ export function ProviderManager({
                     More branches
                   </a>
                 )}
-              </section>
+              </Section>
             </div>
-            {search.provider && !data.provider && <p role="alert">Provider not found.</p>}
-            {search.branch && !data.branch && <p role="alert">Branch not found.</p>}
+            {search.provider && !data.provider && <Notice role="alert">Provider not found.</Notice>}
+            {search.branch && !data.branch && <Notice role="alert">Branch not found.</Notice>}
             {data.provider && (
               <>
-                <section className="catalog-edit-card" aria-labelledby="edit-provider">
-                  <h2 id="edit-provider">Edit provider</h2>
+                <Section id="edit-provider" title="Edit provider">
                   <ProviderForm
                     key={`${data.provider.id}-${data.provider.revision}`}
                     existing={data.provider}
                   />
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="contact-sources">
-                  <h2 id="contact-sources">Official contact sources</h2>
+                </Section>
+                <Section id="contact-sources" title="Official contact sources">
                   <p>
                     Check the selected source before publishing a branch. Source retrieval alone
                     does not verify a coordinate, telephone number, or schedule.
                   </p>
                   {sources.length ? (
-                    <ul>
+                    <ul className="grid gap-1 text-sm">
                       {sources.map((source) => (
-                        <li key={source.id}>
-                          <a href={source.url} target="_blank" rel="noreferrer">
+                        <li key={source.id} className={admin.listRow}>
+                          <a
+                            className={admin.link}
+                            href={source.url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
                             {source.id}
                           </a>
                         </li>
@@ -161,6 +171,7 @@ export function ProviderManager({
                   )}
                   {data.sources.nextCursor && (
                     <a
+                      className={admin.link}
                       href={providersHref({
                         ...search,
                         sourceAfter: data.sources.nextCursor,
@@ -170,24 +181,24 @@ export function ProviderManager({
                       More contact sources
                     </a>
                   )}
-                </section>
-                <section className="catalog-edit-card" aria-labelledby="add-branch">
-                  <h2 id="add-branch">Add branch</h2>
+                </Section>
+                <Section id="add-branch" title="Add branch">
                   <BranchForm provider={data.provider} sources={sources} />
-                </section>
+                </Section>
               </>
             )}
             {data.provider && data.branch && (
-              <section className="catalog-edit-card" aria-labelledby="edit-branch">
-                <h2 id="edit-branch">Edit branch</h2>
+              <Section id="edit-branch" title="Edit branch">
                 <BranchForm
                   key={`${data.branch.id}-${data.branch.revision}`}
                   provider={data.provider}
                   existing={data.branch}
                   sources={sources}
                 />
-                <a href="/admin/catalog">Open catalog inspector</a>
-              </section>
+                <a className={admin.link} href="/admin/catalog">
+                  Open catalog inspector
+                </a>
+              </Section>
             )}
           </>
         )

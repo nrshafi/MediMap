@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import {
   issueLabels,
   targetIssues,
@@ -8,7 +9,8 @@ import {
   type ReportTarget,
 } from './contracts';
 import { weekDays, dayHoursLabel } from '../providers/hours';
-import './report.css';
+import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
+import { ui } from '../../ui/styles';
 
 export type ReportPageData = {
   target: ReportTarget | null;
@@ -16,10 +18,42 @@ export type ReportPageData = {
   receipt: ReportReceipt | null;
   error: keyof typeof reportMessages | null;
 };
+
+const panel = `grid min-w-0 gap-3 rounded-md border border-border bg-surface p-5 text-sm leading-relaxed [overflow-wrap:anywhere]`;
+const panelTitle = ui.heading2;
+const prose = 'report-prose whitespace-pre-wrap [overflow-wrap:anywhere]';
+const link = 'inline-flex min-h-touch items-center font-medium text-primary hover:underline';
+const hint = 'text-sm text-muted';
+const textarea = `${ui.input} resize-y py-2`;
+
 function priceLabel(minor: number): string {
   const value = BigInt(minor);
   return `BDT ${value / 100n}.${String(value % 100n).padStart(2, '0')}`;
 }
+
+function Notice({
+  title,
+  role,
+  children,
+}: {
+  title: string;
+  role?: 'alert' | 'status';
+  children: ReactNode;
+}) {
+  const alert = role === 'alert';
+  return (
+    <section
+      role={role}
+      className={`grid gap-1 rounded-md border p-4 text-sm leading-relaxed [overflow-wrap:anywhere] ${
+        alert ? 'border-error/30 bg-error-soft text-error' : 'border-border bg-surface text-ink'
+      }`}
+    >
+      <h2 className="text-base font-bold">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
 export function TargetDetails({
   target,
   receipt = false,
@@ -30,10 +64,12 @@ export function TargetDetails({
   headingId?: string;
 }) {
   return (
-    <section className="report-target" aria-labelledby={headingId}>
-      <h2 id={headingId}>{receipt ? 'Details at submission' : 'Selected record'}</h2>
+    <section className={panel} aria-labelledby={headingId}>
+      <h2 id={headingId} className={panelTitle}>
+        {receipt ? 'Details at submission' : 'Selected record'}
+      </h2>
       <p>
-        <strong>{target.providerName}</strong>
+        <strong className="font-semibold">{target.providerName}</strong>
         {target.branchName && (
           <>
             <br />
@@ -66,7 +102,9 @@ export function TargetDetails({
       )}
       {target.kind === 'branch' && (
         <details>
-          <summary>Usual weekly hours · Asia/Dhaka</summary>
+          <summary className="min-h-touch cursor-pointer py-2.5 font-semibold text-primary">
+            Usual weekly hours · Asia/Dhaka
+          </summary>
           {target.openingHours ? (
             <ul>
               {weekDays.map((day) => (
@@ -83,6 +121,7 @@ export function TargetDetails({
     </section>
   );
 }
+
 export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?: ReportDraft }) {
   const target = data.receipt?.target ?? data.target;
   const returnTo = target
@@ -93,34 +132,40 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
       targetIssues[target.kind][0])
     : undefined;
   return (
-    <div className="report-page">
-      <header className="report-header">
-        <a className="report-brand" href="/">
-          MediMap
+    <div className="flex min-h-svh flex-col">
+      <SiteHeader>
+        <a
+          href="/find"
+          className="inline-flex min-h-touch items-center rounded-sm px-3 hover:bg-white/10"
+        >
+          Find services
         </a>
-        <a href="/discovery">Browse services</a>
-      </header>
-      <main>
-        <div className="report-title">
-          <p className="report-eyebrow">Data corrections</p>
-          <h1>Report incorrect information</h1>
-          <p>
+      </SiteHeader>
+      <main
+        id="main-content"
+        className="mx-auto grid w-full max-w-3xl flex-1 content-start gap-5 px-4 py-6 sm:px-6"
+      >
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Data corrections
+          </p>
+          <h1 className={`${ui.heading1} mt-1`}>Report incorrect information</h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
             Describe an issue with the published provider, branch, or diagnostic listing so an
             administrator can review it.
           </p>
         </div>
         {data.error && (
-          <section className="report-notice" role="alert">
-            <h2>
-              {data.error === 'not_found' ? 'Record unavailable' : 'Your report was not saved'}
-            </h2>
+          <Notice
+            role="alert"
+            title={data.error === 'not_found' ? 'Record unavailable' : 'Your report was not saved'}
+          >
             <p>{reportMessages[data.error]}</p>
-          </section>
+          </Notice>
         )}
         {data.receipt ? (
           <>
-            <section className="report-notice" role="status">
-              <h2>Report submitted</h2>
+            <Notice role="status" title="Report submitted">
               <p>Reference: {data.receipt.id}</p>
               <p>Status: {data.receipt.status}</p>
               <p>
@@ -134,19 +179,22 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
                       ? 'An administrator reviewed and rejected this report. The original submitted details remain below.'
                       : 'An administrator reviews the report before changing the published details.'}
               </p>
-            </section>
+            </Notice>
             <TargetDetails target={data.receipt.target} receipt />
-            <section className="report-panel">
-              <h2>Your submitted information</h2>
+            <section className={panel}>
+              <h2 className={panelTitle}>Your submitted information</h2>
               <p>{issueLabels[data.receipt.issue]}</p>
-              <p className="report-prose">{data.receipt.details}</p>
+              <p className={prose}>{data.receipt.details}</p>
               {data.receipt.suggestedCorrection && (
-                <p className="report-prose">
-                  Suggested correction: {data.receipt.suggestedCorrection}
-                </p>
+                <p className={prose}>Suggested correction: {data.receipt.suggestedCorrection}</p>
               )}
               {data.receipt.evidenceUrl && (
-                <a href={data.receipt.evidenceUrl} target="_blank" rel="noreferrer">
+                <a
+                  className={link}
+                  href={data.receipt.evidenceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Your evidence link
                 </a>
               )}
@@ -156,112 +204,140 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
           <>
             {target && <TargetDetails target={target} />}
             {data.access === 'sign_in' || data.access === 'expired' ? (
-              <section className="report-notice">
-                <h2>
-                  {data.access === 'expired' ? 'Session expired' : 'Sign in to submit a report'}
-                </h2>
+              <Notice
+                title={data.access === 'expired' ? 'Session expired' : 'Sign in to submit a report'}
+              >
                 <p>Use your account to submit this correction.</p>
                 <a
+                  className={link}
                   href={`/sign-in?returnTo=${encodeURIComponent(returnTo)}&reason=${data.access === 'expired' ? 'expired' : 'required'}`}
                 >
                   Sign in with Google
                 </a>
-              </section>
+              </Notice>
             ) : (
               data.access === 'unavailable' && (
-                <p className="report-notice">
+                <p className={ui.notice}>
                   Reporting is unavailable. Your typed details remain below if you need to copy
                   them.
                 </p>
               )
             )}
             {target ? (
-              <section className="report-panel" aria-labelledby="report-form-title">
-                <h2 id="report-form-title">Report details</h2>
-                <form method="post" action="/report/submit" className="report-form">
+              <section className={panel} aria-labelledby="report-form-title">
+                <h2 id="report-form-title" className={panelTitle}>
+                  Report details
+                </h2>
+                <form method="post" action="/report/submit" className="grid gap-4">
                   <input type="hidden" name="target" value={target.kind} />
                   <input type="hidden" name="id" value={target.id} />
                   <input type="hidden" name="observedRevision" value={target.revision} />
                   <input type="hidden" name="observedPriceId" value={target.price?.id ?? ''} />
-                  <label htmlFor="report-issue">Issue type</label>
-                  <select id="report-issue" name="issue" defaultValue={selectedIssue}>
-                    {targetIssues[target.kind].map((issue) => (
-                      <option key={issue} value={issue}>
-                        {issueLabels[issue]}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="report-details">What is incorrect?</label>
-                  <textarea
-                    id="report-details"
-                    name="details"
-                    defaultValue={draft.details ?? ''}
-                    required
-                    minLength={20}
-                    maxLength={2000}
-                    rows={6}
-                  />
-                  <p className="report-help">
-                    Use 20 to 2,000 characters. Describe the incorrect public information and how
-                    you found the issue.
-                  </p>
-                  <label htmlFor="report-correction">Suggested correction (optional)</label>
-                  <textarea
-                    id="report-correction"
-                    name="suggestedCorrection"
-                    defaultValue={draft.suggestedCorrection ?? ''}
-                    maxLength={500}
-                    rows={3}
-                  />
-                  <label htmlFor="report-evidence">Evidence link (optional)</label>
-                  <input
-                    id="report-evidence"
-                    name="evidenceUrl"
-                    type="url"
-                    pattern="https://.*"
-                    maxLength={2048}
-                    defaultValue={draft.evidenceUrl ?? ''}
-                  />
-                  <label className="report-confirm">
-                    <input type="checkbox" name="confirmReport" value="yes" required />
+                  <div className={ui.label}>
+                    <label htmlFor="report-issue">Issue type</label>
+                    <select
+                      className={ui.input}
+                      id="report-issue"
+                      name="issue"
+                      defaultValue={selectedIssue}
+                    >
+                      {targetIssues[target.kind].map((issue) => (
+                        <option key={issue} value={issue}>
+                          {issueLabels[issue]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={ui.label}>
+                    <label htmlFor="report-details">What is incorrect?</label>
+                    <textarea
+                      className={textarea}
+                      id="report-details"
+                      name="details"
+                      defaultValue={draft.details ?? ''}
+                      required
+                      minLength={20}
+                      maxLength={2000}
+                      rows={6}
+                    />
+                    <p className={`${hint} font-normal`}>
+                      Use 20 to 2,000 characters. Describe the incorrect public information and how
+                      you found the issue.
+                    </p>
+                  </div>
+                  <div className={ui.label}>
+                    <label htmlFor="report-correction">Suggested correction (optional)</label>
+                    <textarea
+                      className={textarea}
+                      id="report-correction"
+                      name="suggestedCorrection"
+                      defaultValue={draft.suggestedCorrection ?? ''}
+                      maxLength={500}
+                      rows={3}
+                    />
+                  </div>
+                  <div className={ui.label}>
+                    <label htmlFor="report-evidence">Evidence link (optional)</label>
+                    <input
+                      className={ui.input}
+                      id="report-evidence"
+                      name="evidenceUrl"
+                      type="url"
+                      pattern="https://.*"
+                      maxLength={2048}
+                      defaultValue={draft.evidenceUrl ?? ''}
+                    />
+                  </div>
+                  <label className="flex min-h-touch items-start gap-3 text-sm leading-snug">
+                    <input
+                      className="mt-0.5 size-5 shrink-0 accent-primary"
+                      type="checkbox"
+                      name="confirmReport"
+                      value="yes"
+                      required
+                    />
                     <span>I am reporting an issue with this specific record.</span>
                   </label>
-                  <p className="report-help">
+                  <p className={hint}>
                     You can submit five reports per rolling 24 hours, with one pending report per
                     record and issue.
                   </p>
-                  <p className="report-help">
+                  <p className={hint}>
                     A price report immediately marks the current price disputed. Other public
                     details change only after administrator review.
                   </p>
-                  <button type="submit" disabled={data.access !== 'allowed'}>
+                  <button
+                    className={`${ui.buttonPrimary} sm:w-fit`}
+                    type="submit"
+                    disabled={data.access !== 'allowed'}
+                  >
                     Submit report
                   </button>
                 </form>
               </section>
             ) : (
-              <section className="report-panel">
-                <h2>Choose a record to report</h2>
+              <section className={panel}>
+                <h2 className={panelTitle}>Choose a record to report</h2>
                 <p>Use the report link for a published provider, branch, or service listing.</p>
-                <a href="/discovery">Browse services</a>
+                <a className={link} href="/discovery">
+                  Browse services
+                </a>
                 {draft.details && (
                   <>
-                    <h3>Your report text</h3>
-                    <p className="report-prose">{draft.details}</p>
+                    <h3 className="font-bold text-ink">Your report text</h3>
+                    <p className={prose}>{draft.details}</p>
                   </>
                 )}
                 {draft.suggestedCorrection && (
-                  <p className="report-prose">Suggested correction: {draft.suggestedCorrection}</p>
+                  <p className={prose}>Suggested correction: {draft.suggestedCorrection}</p>
                 )}
-                {draft.evidenceUrl && (
-                  <p className="report-prose">Evidence link: {draft.evidenceUrl}</p>
-                )}
+                {draft.evidenceUrl && <p className={prose}>Evidence link: {draft.evidenceUrl}</p>}
               </section>
             )}
           </>
         )}
       </main>
-      <footer className="report-footer">MediMap · Public information corrections</footer>
+      <SiteFooter />
     </div>
   );
 }

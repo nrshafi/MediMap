@@ -64,6 +64,6 @@ test('expired session leaves a recoverable draft and disables submission', () =>
   );
   assert.match(html, /Session expired/);
   assert.match(html, /My retained report details/);
-  assert.match(html, /button type="submit" disabled/);
+  assert.match(html, /<button[^>]*type="submit"[^>]* disabled/);
   assert.match(html, /returnTo=/);
 });

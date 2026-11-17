@@ -8,7 +8,8 @@ import {
   type AliasRecord,
 } from '../catalog/administration/contracts';
 import type { readManagement } from '../catalog/administration/operations.server';
-import './catalogManager.css';
+import { admin, ActiveBadge, Notice, PageTitle, Section, StateCard } from './adminUi';
+import { ui } from '../../ui/styles';
 
 type FormRecord = CategoryRecord | ServiceRecord | AliasRecord;
 function SelectField({
@@ -26,9 +27,9 @@ function SelectField({
 }) {
   const id = useId();
   return (
-    <div className="catalog-select-field">
+    <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select id={id} name={name} defaultValue={value} required={required}>
+      <select className={admin.input} id={id} name={name} defaultValue={value} required={required}>
         {children}
       </select>
     </div>
@@ -46,9 +47,10 @@ function TextField({
   idField?: boolean;
 }) {
   return (
-    <label>
+    <label className={ui.label}>
       {label}
       <input
+        className={admin.input}
         name={name}
         defaultValue={value}
         required
@@ -73,14 +75,14 @@ function EditForm({
   submit: string;
 }) {
   return (
-    <form className="catalog-edit-form" method="post" action="/admin/catalog/write">
+    <form className={admin.form} method="post" action="/admin/catalog/write">
       <input type="hidden" name="entity" value={entity} />
       <input type="hidden" name="mode" value={existing ? 'update' : 'create'} />
       {existing ? (
         <>
           <input type="hidden" name="id" value={existing.id} />
           <input type="hidden" name="revision" value={existing.revision} />
-          <p className="admin-muted">
+          <p className={admin.hint}>
             Stable ID: <code>{existing.id}</code> · Revision {existing.revision}
           </p>
         </>
@@ -98,12 +100,14 @@ function EditForm({
         <option value="0">Inactive</option>
       </SelectField>
       {existing && entity !== 'category' && (
-        <label className="catalog-confirm">
-          <input type="checkbox" name="confirm" value="yes" required />
+        <label className={admin.check}>
+          <input className={admin.checkbox} type="checkbox" name="confirm" value="yes" required />
           <span>This correction keeps the same diagnostic meaning.</span>
         </label>
       )}
-      <button type="submit">{submit}</button>
+      <button className={ui.buttonPrimary} type="submit">
+        {submit}
+      </button>
     </form>
   );
 }
@@ -143,10 +147,35 @@ function Feedback({ code }: { code?: string }) {
   if (!code || !Object.hasOwn(editMessages, code)) return null;
   const message = Object.entries(editMessages).find(([key]) => key === code)?.[1];
   return (
-    <div className="admin-notice" role={code === 'saved' ? 'status' : 'alert'}>
+    <Notice role={code === 'saved' ? 'status' : 'alert'}>
       <p>{message}</p>
-      {code !== 'saved' && <a href={managementHref()}>Reload catalog management</a>}
-    </div>
+      {code !== 'saved' && (
+        <a className={admin.link} href={managementHref()}>
+          Reload catalog management
+        </a>
+      )}
+    </Notice>
+  );
+}
+
+function NameList({
+  items,
+  hrefFor,
+}: {
+  items: readonly { id: string; name: string; active: boolean }[];
+  hrefFor: (id: string) => string;
+}) {
+  return (
+    <ul className={admin.list}>
+      {items.map((item) => (
+        <li key={item.id} className={admin.listRow}>
+          <a className={admin.link} href={hrefFor(item.id)}>
+            {item.name}
+          </a>
+          <ActiveBadge active={item.active} />
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -169,27 +198,25 @@ export function CatalogManager({
   }
   return (
     <AdminLayout activeHref="/admin/catalog/manage">
-      <div className="admin-title">
-        <p className="admin-eyebrow">Catalog administration</p>
-        <h1>Manage diagnostic catalog</h1>
-        <p>
-          Maintain categories, canonical services, and English or Bangla aliases. Keep different
-          diagnostic variants as separate services.
-        </p>
-      </div>
+      <PageTitle eyebrow="Catalog administration" title="Manage diagnostic catalog">
+        Maintain categories, canonical services, and English or Bangla aliases. Keep different
+        diagnostic variants as separate services.
+      </PageTitle>
       {!result.ok ? (
-        <section className="catalog-state" role="alert">
-          <h2>
-            {result.code === 'forbidden'
+        <StateCard
+          title={
+            result.code === 'forbidden'
               ? 'Administrator access required'
               : result.code === 'unauthenticated'
                 ? 'Sign in to continue'
                 : result.code === 'expired'
                   ? 'Session expired'
-                  : 'Catalog unavailable'}
-          </h2>
+                  : 'Catalog unavailable'
+          }
+        >
           <p>{result.message}</p>
           <a
+            className={admin.link}
             href={
               ['unauthenticated', 'expired'].includes(result.code)
                 ? '/sign-in?returnTo=%2Fadmin%2Fcatalog%2Fmanage'
@@ -204,47 +231,39 @@ export function CatalogManager({
                 ? 'Open your account'
                 : 'Reload catalog management'}
           </a>
-        </section>
+        </StateCard>
       ) : (
         <>
           <Feedback code={code} />
-          <p className="admin-notice">
+          <Notice>
             Deactivation hides a record from public catalog reads and keeps its relationships.
             Inactive terms remain reserved.
-          </p>
-          <div className="catalog-management-grid">
-            <section className="catalog-edit-card" aria-labelledby="new-category">
-              <h2 id="new-category">Add category</h2>
+          </Notice>
+          <div className={admin.twoColumns}>
+            <Section id="new-category" title="Add category">
               <EditForm entity="category" submit="Create category" />
-            </section>
-            <section className="catalog-edit-card" aria-labelledby="new-service">
-              <h2 id="new-service">Add canonical service</h2>
+            </Section>
+            <Section id="new-service" title="Add canonical service">
               <EditForm entity="service" submit="Create service">
                 <CategoryField categories={categories} />
               </EditForm>
-              <p className="admin-muted">
+              <p className={admin.hint}>
                 A service can have no branch listings yet. Creating it does not verify a hospital or
                 price.
               </p>
-            </section>
+            </Section>
           </div>
-          <div className="catalog-management-grid">
-            <section className="catalog-edit-card" aria-labelledby="category-list">
-              <h2 id="category-list">Categories</h2>
-              <p className="admin-muted">An inactive category hides all its services.</p>
-              <ul className="catalog-management-list">
-                {result.data.categories.items.map((item) => (
-                  <li key={item.id}>
-                    <a href={managementHref({ ...search, category: item.id, code: undefined })}>
-                      {item.name}
-                    </a>
-                    <span>{item.active ? 'Active' : 'Inactive'}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className={admin.twoColumns}>
+            <Section id="category-list" title="Categories">
+              <p className={admin.hint}>An inactive category hides all its services.</p>
+              <NameList
+                items={result.data.categories.items}
+                hrefFor={(id) => managementHref({ ...search, category: id, code: undefined })}
+              />
               {!result.data.categories.items.length && <p>No categories on this page.</p>}
               {result.data.categories.nextCursor && (
                 <a
+                  className={admin.link}
                   href={managementHref({
                     ...search,
                     categoryAfter: result.data.categories.nextCursor,
@@ -254,29 +273,23 @@ export function CatalogManager({
                   More categories
                 </a>
               )}
-            </section>
-            <section className="catalog-edit-card" aria-labelledby="service-list">
-              <h2 id="service-list">Canonical services</h2>
-              <ul className="catalog-management-list">
-                {result.data.services.items.map((item) => (
-                  <li key={item.id}>
-                    <a
-                      href={managementHref({
-                        ...search,
-                        service: item.id,
-                        aliasAfter: undefined,
-                        code: undefined,
-                      })}
-                    >
-                      {item.name}
-                    </a>
-                    <span>{item.active ? 'Active' : 'Inactive'}</span>
-                  </li>
-                ))}
-              </ul>
+            </Section>
+            <Section id="service-list" title="Canonical services">
+              <NameList
+                items={result.data.services.items}
+                hrefFor={(id) =>
+                  managementHref({
+                    ...search,
+                    service: id,
+                    aliasAfter: undefined,
+                    code: undefined,
+                  })
+                }
+              />
               {!result.data.services.items.length && <p>No services on this page.</p>}
               {result.data.services.nextCursor && (
                 <a
+                  className={admin.link}
                   href={managementHref({
                     ...search,
                     after: result.data.services.nextCursor,
@@ -286,33 +299,37 @@ export function CatalogManager({
                   More services
                 </a>
               )}
-            </section>
+            </Section>
           </div>
           {search.category && !result.data.category && (
-            <p role="alert">
-              Category not found. <a href={managementHref()}>Reload catalog management</a>
-            </p>
+            <Notice role="alert">
+              Category not found.{' '}
+              <a className={ui.link} href={managementHref()}>
+                Reload catalog management
+              </a>
+            </Notice>
           )}
           {result.data.category && (
-            <section className="catalog-edit-card" aria-labelledby="edit-category">
-              <h2 id="edit-category">Edit category</h2>
+            <Section id="edit-category" title="Edit category">
               <EditForm
                 key={`category-${result.data.category.id}-${result.data.category.revision}`}
                 entity="category"
                 existing={result.data.category}
                 submit="Save category"
               />
-            </section>
+            </Section>
           )}
           {search.service && !result.data.service && (
-            <p role="alert">
-              Service not found. <a href={managementHref()}>Reload catalog management</a>
-            </p>
+            <Notice role="alert">
+              Service not found.{' '}
+              <a className={ui.link} href={managementHref()}>
+                Reload catalog management
+              </a>
+            </Notice>
           )}
           {result.data.service && (
             <>
-              <section className="catalog-edit-card" aria-labelledby="edit-service">
-                <h2 id="edit-service">Edit service</h2>
+              <Section id="edit-service" title="Edit service">
                 <EditForm
                   key={`service-${result.data.service.id}-${result.data.service.revision}`}
                   entity="service"
@@ -321,13 +338,12 @@ export function CatalogManager({
                 >
                   <CategoryField categories={categories} value={result.data.service.categoryId} />
                 </EditForm>
-                <a href={`/admin/catalog?service=${result.data.service.id}`}>
+                <a className={admin.link} href={`/admin/catalog?service=${result.data.service.id}`}>
                   Inspect published service
                 </a>
-              </section>
-              <section className="catalog-edit-card" aria-labelledby="new-alias">
-                <h2 id="new-alias">Add alias</h2>
-                <p>
+              </Section>
+              <Section id="new-alias" title="Add alias">
+                <p className="text-sm">
                   For {result.data.service.name}. Add only names that refer to this diagnostic
                   service.
                 </p>
@@ -335,18 +351,19 @@ export function CatalogManager({
                   <input type="hidden" name="serviceId" value={result.data.service.id} />
                   <LanguageField />
                 </EditForm>
-              </section>
-              <section className="catalog-edit-card" aria-labelledby="aliases">
-                <h2 id="aliases">Aliases</h2>
+              </Section>
+              <Section id="aliases" title="Aliases">
                 {!result.data.aliases.items.length && <p>No aliases on this page.</p>}
-                <div className="catalog-management-grid">
+                <div className={admin.twoColumns}>
                   {result.data.aliases.items.map((item) => (
                     <section
                       key={item.id}
-                      className="catalog-alias"
+                      className="grid min-w-0 gap-3 rounded-sm border border-border p-4"
                       aria-label={`Edit alias ${item.name}`}
                     >
-                      <h3 lang={item.language}>{item.name}</h3>
+                      <h3 className="text-base font-bold text-ink" lang={item.language}>
+                        {item.name}
+                      </h3>
                       <EditForm
                         key={`${item.id}-${item.revision}`}
                         entity="alias"
@@ -361,6 +378,7 @@ export function CatalogManager({
                 </div>
                 {result.data.aliases.nextCursor && (
                   <a
+                    className={admin.link}
                     href={managementHref({
                       ...search,
                       aliasAfter: result.data.aliases.nextCursor,
@@ -370,7 +388,7 @@ export function CatalogManager({
                     More aliases
                   </a>
                 )}
-              </section>
+              </Section>
             </>
           )}
         </>

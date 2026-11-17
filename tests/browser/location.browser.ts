@@ -184,3 +184,30 @@ for (const action of ['cancel', 'preset', 'manual', 'query'] as const) {
     }
   });
 }
+
+test('find page puts address search first and keeps presets and coordinates under more options', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['geolocation']);
+  await context.setGeolocation({ latitude: 23.7946, longitude: 90.4143 });
+  await page.goto('/find?service=complete-blood-count');
+  const region = locationRegion(page);
+  const presets = region.getByRole('button', { name: /Set location to Dhanmondi/ });
+  await expect(page.getByLabel('Dhaka address')).toBeVisible();
+  await expect(presets).toBeHidden();
+  await region.getByText('More location options').click();
+  await expect(presets).toBeVisible();
+  await region.getByLabel('Latitude', { exact: true }).fill('91');
+  await region.getByRole('button', { name: 'Apply coordinates' }).click();
+  await expect(region.getByRole('status')).toContainText('Both values are required');
+  await region.getByLabel('Latitude', { exact: true }).fill('23.75');
+  await region.getByLabel('Longitude', { exact: true }).fill('90.4');
+  await region.getByRole('button', { name: 'Apply coordinates' }).click();
+  await expect.poll(() => new URL(page.url()).searchParams.get('lat')).toBe('23.75');
+  expect(new URL(page.url()).searchParams.get('service')).toBe('complete-blood-count');
+  await region.getByRole('button', { name: 'Use my location' }).click();
+  await expect.poll(() => new URL(page.url()).searchParams.get('lat')).toBe('23.7946');
+  await expect(page.getByText('Searching near')).toContainText('23.7946, 90.4143');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

@@ -4,9 +4,10 @@ test('public catalog, details, unknown locations and URL filters use persisted d
   page,
 }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: 'Search diagnostic services' }).click();
-  await expect(page.getByRole('heading', { name: 'Find a diagnostic service' })).toBeVisible();
   await page.getByLabel('Service name or abbreviation').fill('CBC');
+  await page.getByRole('button', { name: 'Search services' }).click();
+  await expect(page).toHaveURL(/\/find\?.*q=CBC/);
+  await expect(page.getByRole('heading', { name: 'Find a diagnostic service' })).toBeVisible();
   await page
     .getByRole('region', { name: 'Service suggestions' })
     .getByRole('link', { name: 'Complete Blood Count', exact: true })
@@ -14,16 +15,25 @@ test('public catalog, details, unknown locations and URL filters use persisted d
   await expect(page.getByRole('region', { name: 'Published listings' })).toContainText(
     'BDT 400.00',
   );
+  await expect(page.getByRole('region', { name: 'Published listings' })).toContainText(
+    'Location not recorded',
+  );
   await expect(page.getByRole('region', { name: 'Area price statistics' })).toContainText(
     'At least three eligible branches',
   );
-  await page.getByLabel('Price verification').selectOption('yes');
+  const verifiedOnly = page.getByRole('button', { name: 'Verified prices only' });
+  await verifiedOnly.click();
   await expect(page).toHaveURL(/verified=yes/);
   await page.reload();
-  await expect(page.getByLabel('Price verification')).toHaveValue('yes');
+  await expect(page.getByRole('button', { name: 'Verified prices only' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('link', { name: 'Branch details', exact: true }).first().click();
   await expect(page.getByRole('heading', { name: 'Moghbazar', exact: true })).toBeVisible();
   await expect(page.getByText('Opening hours:', { exact: false })).toContainText('Unknown');
+  await expect(page.getByText('Map location unavailable')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Get directions to this address' })).toHaveAttribute(
     'href',
     /destination=/,
@@ -45,6 +55,68 @@ test('public catalog, details, unknown locations and URL filters use persisted d
     fullPage: true,
   });
 });
+test('find page shows listing details, controls meet touch size and the map falls back', async ({
+  page,
+}) => {
+  const mobile = test.info().project.name === 'mobile';
+  await page.goto('/find?service=complete-blood-count');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  for (const control of [
+    page.getByRole('button', { name: 'Find address' }),
+    page.getByRole('button', { name: 'Verified prices only' }),
+    page.getByRole('button', { name: '3 km', exact: true }),
+    page.getByRole('button', { name: 'Show details' }).first(),
+  ]) {
+    const bounds = await control.boundingBox();
+    expect(bounds?.height).toBeGreaterThanOrEqual(44);
+  }
+  if (mobile) {
+    const list = page.getByRole('button', { name: 'List', exact: true });
+    const map = page.getByRole('button', { name: 'Map', exact: true });
+    await expect(list).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByText('Map unavailable')).toBeHidden();
+    await map.click();
+    await expect(map).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('region', { name: 'Published listings' })).toBeHidden();
+  } else {
+    await expect(page.getByRole('region', { name: 'Map' })).toBeVisible();
+  }
+  const notice = page.getByText('Map unavailable');
+  if (await notice.count()) await expect(notice).toBeVisible();
+  if (mobile) await page.getByRole('button', { name: 'List', exact: true }).click();
+  await page.getByRole('button', { name: 'Show details' }).first().click();
+  const panel = page.getByRole('region', { name: 'Listing details' });
+  await expect(panel).toBeVisible();
+  await expect(panel).toContainText('BDT 400.00');
+  await expect(panel.getByRole('link', { name: 'Open directions in Google Maps' })).toHaveAttribute(
+    'href',
+    /google\.com\/maps\/dir\/\?api=1&destination=/,
+  );
+  await panel.getByRole('button', { name: 'Get driving estimate' }).click();
+  await expect(panel.getByRole('status')).toContainText(/unavailable|failed/);
+  await panel.getByRole('button', { name: 'Close listing details' }).click();
+  await expect(panel).toHaveCount(0);
+  await page.getByLabel('Dhaka address').fill('Moghbazar');
+  await page.getByRole('button', { name: 'Find address' }).click();
+  await expect(page.getByTestId('address-message')).not.toBeEmpty();
+  await page.getByText('More location options').click();
+  await expect(page.getByRole('button', { name: /Set location to Dhanmondi/ })).toBeVisible();
+});
+
+test('a blocked Google Maps script shows the map unavailable notice', async ({ page }) => {
+  await page.route('https://maps.googleapis.com/**', (route) => route.abort());
+  await page.goto('/find?service=complete-blood-count');
+  if (test.info().project.name === 'mobile')
+    await page.getByRole('button', { name: 'Map', exact: true }).click();
+  // Without a key the notice shows at once. With a key the aborted script triggers it.
+  await expect(page.getByText('Map unavailable')).toBeVisible();
+  if (test.info().project.name === 'mobile')
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Published listings' })).toContainText(
+    'BDT 400.00',
+  );
+});
+
 test('signed-in reviews, abuse reports and moderation change public summaries', async ({
   page,
   context,

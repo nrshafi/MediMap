@@ -3,7 +3,6 @@ import { ReportView } from './ReportView';
 import { submitReport } from './operations.server';
 import { reportHref } from './contracts';
 import stylesheet from '../../styles.css?inline';
-import reportStyles from './report.css?inline';
 
 export async function reportSubmissionResponse(
   request: Request,
@@ -24,7 +23,7 @@ export async function reportSubmissionResponse(
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="noindex" />
         <title>Report incorrect information | MediMap</title>
-        <style>{`${stylesheet}\n${reportStyles}`}</style>
+        <style>{stylesheet}</style>
       </head>
       <body>
         <ReportView data={result.data} draft={result.draft} />

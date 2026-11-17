@@ -116,5 +116,13 @@ Open `/find` for the source-backed catalog. Select two to four listings for one 
 Public service and branch pages retain source links and explicit unknown values.
 Signed-in users can submit and edit service reviews. Administrators can review abuse reports at `/admin/reviews`.
 
-Apply local migrations with `bun run db:setup`. Configure `GEOAPIFY_API_KEY` in ignored `.dev.vars` for address and route requests.
+Apply local migrations with `bun run db:setup`.
+
+Google Maps uses two keys. During development, set both in ignored `.dev.vars` to the same Maps Demo Key.
+
+- `GOOGLE_MAPS_BROWSER_KEY` is a Worker variable for the browser map. It is public by design.
+- `GOOGLE_MAPS_SERVER_KEY` is a Worker secret for address search and driving estimates.
+
+The Maps Demo Key is for testing only and has no billing account. Without `GOOGLE_MAPS_BROWSER_KEY`, the map shows an unavailable notice. Without `GOOGLE_MAPS_SERVER_KEY`, address search and driving estimates are unavailable. Prices and lists still work.
+Deploy the browser key as a Worker variable and the server key as a Worker secret.
 See [public integration](docs/public-integration.md) for contracts and [the verification checklist](docs/public-release-checklist.md) for results and remaining acceptance.

@@ -2,10 +2,24 @@ import { createServerFn } from '@tanstack/react-start';
 import { env } from 'cloudflare:workers';
 import { getRequest } from '@tanstack/react-start/server';
 import { requireSameOriginPost } from '../authentication/server/config.server';
-import { reserveMappingRequest, providerJson } from './provider.server';
+import { reserveMappingRequest } from './provider.server';
 import { CatalogRepository } from '../catalog/server/repository.server';
 import { isValidCoordinate } from '../map/coordinates';
 import type { Coordinates } from '../map/types';
+import { computeRoadEstimate } from '../../integrations/mapping/google/routes.server';
+import {
+  autocompletePlaces,
+  fetchPlace,
+  isPlaceId,
+  isSessionToken,
+  type PlaceSuggestion,
+  type SelectedPlace,
+} from '../../integrations/mapping/google/places.server';
+
+function serverKey(): string | null {
+  const key: unknown = Reflect.get(env, 'GOOGLE_MAPS_SERVER_KEY');
+  return typeof key === 'string' && key.trim() ? key.trim() : null;
+}
 
 export const publicRoute = createServerFn({ method: 'POST' })
   .validator((value: unknown) => {
@@ -24,9 +38,9 @@ export const publicRoute = createServerFn({ method: 'POST' })
     return { from: point(input.from), listing: catalogId(input.listing) };
   })
   .handler(async ({ data }) => {
-    const key: unknown = Reflect.get(env, 'GEOAPIFY_API_KEY');
+    const key = serverKey();
     const listing = await new CatalogRepository(env.DB).getBranchService(data.listing);
-    if (!listing?.branch.coordinates || typeof key !== 'string' || !key)
+    if (!listing?.branch.coordinates || !key)
       return {
         available: false as const,
         message: 'Road distance and travel time are unavailable.',
@@ -34,32 +48,11 @@ export const publicRoute = createServerFn({ method: 'POST' })
     try {
       requireSameOriginPost(getRequest(), env);
       if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
-      const to = listing.branch.coordinates;
-      const url = new URL('https://api.geoapify.com/v1/routing');
-      url.search = new URLSearchParams({
-        waypoints: `${data.from.latitude},${data.from.longitude}|${to.latitude},${to.longitude}`,
-        mode: 'drive',
-        apiKey: key,
-      }).toString();
-      const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
-      if (!response.ok) throw new Error('Routing unavailable');
-      const payload = record(await providerJson(response));
-      if (!Array.isArray(payload.features) || !payload.features.length) throw new Error('No route');
-      const properties = record(record(payload.features[0]).properties);
-      if (
-        typeof properties.distance !== 'number' ||
-        typeof properties.time !== 'number' ||
-        !Number.isFinite(properties.distance) ||
-        !Number.isFinite(properties.time) ||
-        properties.distance < 0 ||
-        properties.time < 0
-      )
-        throw new Error('Invalid route');
-      return {
-        available: true as const,
-        roadKm: properties.distance / 1000,
-        minutes: properties.time / 60,
-      };
+      const estimate = await computeRoadEstimate(key, {
+        from: data.from,
+        to: listing.branch.coordinates,
+      });
+      return { available: true as const, ...estimate };
     } catch {
       return {
         available: false as const,
@@ -107,56 +100,60 @@ export const findLocation = createServerFn({ method: 'POST' })
     if (
       typeof input.query !== 'string' ||
       input.query.trim().length < 3 ||
-      input.query.length > 160
+      input.query.trim().length > 160
     )
       throw new Error('Enter 3 to 160 characters.');
-    return input.query.trim();
+    if (!isSessionToken(input.sessionToken)) throw new Error('Invalid session token.');
+    return { query: input.query.trim(), sessionToken: input.sessionToken };
   })
   .handler(async ({ data }) => {
-    const key: unknown = Reflect.get(env, 'GEOAPIFY_API_KEY');
-    if (typeof key !== 'string' || !key)
+    const key = serverKey();
+    if (!key)
       return {
-        places: [],
+        suggestions: [] as PlaceSuggestion[],
         message: 'Address lookup is unavailable. Use the map, coordinates, or browser location.',
       };
     try {
-      const url = new URL('https://api.geoapify.com/v1/geocode/search');
       requireSameOriginPost(getRequest(), env);
       if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
-      url.search = new URLSearchParams({
-        text: data,
-        filter: 'rect:90.2,23.6,90.6,24.0',
-        format: 'json',
-        limit: '5',
-        apiKey: key,
-      }).toString();
-      const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
-      if (!response.ok) throw new Error('Provider unavailable');
-      const payload = record(await providerJson(response));
-      if (!Array.isArray(payload.results)) throw new Error('Invalid provider result');
-      const places = payload.results.map((value: unknown) => {
-        const p = record(value);
-        if (
-          typeof p.formatted !== 'string' ||
-          typeof p.lat !== 'number' ||
-          typeof p.lon !== 'number' ||
-          !Number.isFinite(p.lat) ||
-          !Number.isFinite(p.lon) ||
-          p.lat < 23.6 ||
-          p.lat > 24 ||
-          p.lon < 90.2 ||
-          p.lon > 90.6
-        )
-          throw new Error('Invalid location');
-        return { label: p.formatted.slice(0, 300), latitude: p.lat, longitude: p.lon };
-      });
+      const suggestions = await autocompletePlaces(key, data);
       return {
-        places,
-        message: places.length
+        suggestions,
+        message: suggestions.length
           ? 'Choose a location.'
           : 'No matching Dhaka location. Try another address.',
       };
     } catch {
-      return { places: [], message: 'Address lookup failed. Your previous location is unchanged.' };
+      return {
+        suggestions: [] as PlaceSuggestion[],
+        message: 'Address lookup failed. Your previous location is unchanged.',
+      };
+    }
+  });
+
+export const selectLocation = createServerFn({ method: 'POST' })
+  .validator((value: unknown) => {
+    const input = record(value);
+    if (!isPlaceId(input.placeId)) throw new Error('Invalid place.');
+    if (!isSessionToken(input.sessionToken)) throw new Error('Invalid session token.');
+    return { placeId: input.placeId, sessionToken: input.sessionToken };
+  })
+  .handler(async ({ data }) => {
+    const key = serverKey();
+    if (!key)
+      return {
+        place: null as SelectedPlace | null,
+        message: 'Address lookup is unavailable. Use the map, coordinates, or browser location.',
+      };
+    try {
+      requireSameOriginPost(getRequest(), env);
+      if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
+      const place: SelectedPlace | null = await fetchPlace(key, data);
+      return { place, message: 'Location selected.' };
+    } catch {
+      return {
+        place: null as SelectedPlace | null,
+        message: 'That address could not be loaded. Your previous location is unchanged.',
+      };
     }
   });

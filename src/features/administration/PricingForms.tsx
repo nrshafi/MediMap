@@ -1,4 +1,6 @@
 import { useId, type ReactNode } from 'react';
+import { admin } from './adminUi';
+import { ui } from '../../ui/styles';
 import type { Choice, ListingRecord, SourceRecord } from '../pricing/contracts';
 
 function Input({
@@ -19,9 +21,10 @@ function Input({
   maxLength?: number;
 }) {
   return (
-    <label>
+    <label className={ui.label}>
       {label}
       <input
+        className={admin.input}
         name={name}
         defaultValue={value}
         required={required}
@@ -45,9 +48,9 @@ function Select({
 }) {
   const id = useId();
   return (
-    <div className="catalog-select-field">
+    <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select id={id} name={name} defaultValue={value}>
+      <select className={admin.input} id={id} name={name} defaultValue={value}>
         {children}
       </select>
     </div>
@@ -55,8 +58,8 @@ function Select({
 }
 function Check({ name, children }: { name: string; children: ReactNode }) {
   return (
-    <label className="catalog-confirm">
-      <input name={name} type="checkbox" value="yes" required />
+    <label className={admin.check}>
+      <input className={admin.checkbox} name={name} type="checkbox" value="yes" required />
       <span>{children}</span>
     </label>
   );
@@ -71,7 +74,7 @@ function Revision({ listing }: { listing: ListingRecord }) {
     <>
       <input name="id" type="hidden" value={listing.id} />
       <input name="revision" type="hidden" value={listing.revision} />
-      <p className="admin-muted">
+      <p className={admin.hint}>
         Stable ID: <code>{listing.id}</code> · Revision {listing.revision}
       </p>
     </>
@@ -87,9 +90,15 @@ function Notes({
   value?: string;
 }) {
   return (
-    <label>
+    <label className={ui.label}>
       {label}
-      <textarea name={name} defaultValue={value} maxLength={1000} rows={3} />
+      <textarea
+        className={admin.textarea}
+        name={name}
+        defaultValue={value}
+        maxLength={1000}
+        rows={3}
+      />
     </label>
   );
 }
@@ -100,10 +109,10 @@ export function decimalBdt(minor: number) {
 
 export function SourceForm({ provider }: { provider: Choice }) {
   return (
-    <form className="catalog-edit-form pricing-form" method="post" action="/admin/prices/write">
+    <form className={admin.form} method="post" action="/admin/prices/write">
       <input name="entity" type="hidden" value="source" />
       <input name="providerId" type="hidden" value={provider.id} />
-      <p>Provider: {provider.name}</p>
+      <p className="text-sm font-semibold">Provider: {provider.name}</p>
       <Id />
       <Input
         name="url"
@@ -118,7 +127,7 @@ export function SourceForm({ provider }: { provider: Choice }) {
         <option value="official_contact">Official contact page</option>
       </Select>
       <Input name="retrievedAt" label="Collection timestamp (UTC)" required maxLength={24} />
-      <p className="admin-muted">
+      <p className={admin.hint}>
         Enter the actual collection time, such as 2026-10-28T09:00:00Z. Submission time is recorded
         separately.
       </p>
@@ -140,7 +149,9 @@ export function SourceForm({ provider }: { provider: Choice }) {
       <Check name="confirmSource">
         These are the actual details of a reviewed official source snapshot.
       </Check>
-      <button type="submit">Create source snapshot</button>
+      <button className={ui.buttonPrimary} type="submit">
+        Create source snapshot
+      </button>
     </form>
   );
 }
@@ -154,13 +165,13 @@ export function ListingForm({
   services?: Choice[];
 }) {
   return (
-    <form className="catalog-edit-form pricing-form" method="post" action="/admin/prices/write">
+    <form className={admin.form} method="post" action="/admin/prices/write">
       <input name="entity" type="hidden" value="listing" />
       <input name="mode" type="hidden" value={existing ? 'update' : 'create'} />
       {existing ? (
         <>
           <Revision listing={existing} />
-          <p>
+          <p className="text-sm">
             {existing.serviceName} at {existing.branchName}
           </p>
         </>
@@ -198,7 +209,7 @@ export function ListingForm({
       <Check name="confirmMapping">
         The provider label refers to this canonical diagnostic service and variant.
       </Check>
-      <button type="submit">
+      <button className={ui.buttonPrimary} type="submit">
         {existing ? 'Save availability' : 'Create branch-service listing'}
       </button>
     </form>
@@ -213,7 +224,7 @@ export function PriceForm({
 }) {
   const price = listing.price;
   return (
-    <form className="catalog-edit-form pricing-form" method="post" action="/admin/prices/write">
+    <form className={admin.form} method="post" action="/admin/prices/write">
       <input name="entity" type="hidden" value="price" />
       <input name="action" type="hidden" value="set" />
       <Revision listing={listing} />
@@ -253,32 +264,36 @@ export function PriceForm({
         type="date"
         value={price?.effectiveDate ?? ''}
       />
-      <p className="admin-muted">
+      <p className={admin.hint}>
         Leave an unknown effective date blank. A verified price requires an official provider
         tariff, explicit taka evidence, and its row number.
       </p>
-      <label className="catalog-confirm">
-        <input name="confirmReview" type="checkbox" value="yes" />
+      <label className={admin.check}>
+        <input className={admin.checkbox} name="confirmReview" type="checkbox" value="yes" />
         <span>I reviewed this tariff and price now. Required for verified status.</span>
       </label>
       <Check name="standardPrice">
         This is a standard base price without a promotion or discount.
       </Check>
       <Notes label="Revision notes" />
-      <button type="submit">Save new price revision</button>
+      <button className={ui.buttonPrimary} type="submit">
+        Save new price revision
+      </button>
     </form>
   );
 }
 export function ClearPriceForm({ listing }: { listing: ListingRecord }) {
   return (
-    <form className="catalog-edit-form pricing-form" method="post" action="/admin/prices/write">
+    <form className={admin.form} method="post" action="/admin/prices/write">
       <input name="entity" type="hidden" value="price" />
       <input name="action" type="hidden" value="clear" />
       <Revision listing={listing} />
       <Check name="confirmClear">
         Set the current price to unknown and retain all previous revisions.
       </Check>
-      <button type="submit">Set current price to unknown</button>
+      <button className={ui.buttonPrimary} type="submit">
+        Set current price to unknown
+      </button>
     </form>
   );
 }

@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-10-28 22:45:44 +06:00`.
+Last updated: `2026-11-17 20:51:59 +06:00`.
 
 ## Current phase
 
@@ -21,7 +21,7 @@ Administrator correction resolution is implemented and locally verified. Fresh s
 The reviewed publication subset is implemented and reconciled locally with 196 listings, 136 canonical services, and three hospital branches.
 Local release preparation is verified, with migration hashes, a successful failure/restore rehearsal, dry-run packaging, and the release runbook.
 Production acceptance still requires real credentials, target bindings, CPU/workload checks, live mapping acceptance, and query redaction.
-Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Geoapify adapters, service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
+Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Google Maps adapters (replaced Geoapify on 2026-11-17), service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
 The original `/discovery` route remains a labelled demonstration. Live provider acceptance requires configured credentials and branch coordinates.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
 The research export remains separate from application fixtures and reviewed D1 data. The original CBC listing and review history remain intact.
@@ -50,6 +50,43 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Google Maps integration and full UI redesign (2026-11-17 20:51:59 +06:00)
+
+- Pulled 8 remote commits (`253a9b8` to `3c7ea0f`) by fast-forward. Local uncommitted copies of the same work were stashed as `pre-pull local work`. Four locally changed files were restored on top.
+- Plan phases 1 to 5 are implemented. Geoapify and the OpenStreetMap tiles are removed. Server adapters in `src/integrations/mapping/google/` call Compute Routes, Places Autocomplete (New), and Place Details (New) with the existing same-origin, D1 budget, timeout, and size protections. New server functions: `selectLocation` and `publicMapsConfig`.
+- `GoogleMapView.tsx` replaces `GeographicMap.tsx`. It renders client-only with `DEMO_MAP_ID` and shows a "Map unavailable" notice for a missing key, an authentication failure, or a load failure.
+- Owner decisions for this step: search-first single screen; address-first location entry with presets and coordinates under "More location options"; every page in scope (public, account, report, administration); ui-sdk used as guidance only and not installed, because only beta releases exist.
+- Tailwind CSS 4.3.5 (with Preflight) and `@tailwindcss/vite` 4.3.5 are dev dependencies. `lucide-react` 1.73.0 and `@vis.gl/react-google-maps` 1.10.2 are dependencies. The `@theme` block in `src/styles.css` mirrors `DESIGN.md`. All per-feature CSS files except the `/discovery` demonstration styles are removed. `ComingSoon.tsx` and its global styles are removed.
+- The release secret check now also rejects `GOOGLE_MAPS_SERVER_KEY` and `GOOGLE_MAPS_BROWSER_KEY`. Oxlint ignores the untracked AI Studio prototype folder.
+- Verification: typecheck, lint, and format checks passed. `bun test`: 313 passed. `bun run test:database`: 108 passed. `bun run build` passed. Playwright: 96 passed (desktop and mobile).
+- Manual check in ego-browser with the Demo Key on the dev server: the Google map loaded on `/find` at desktop width. The floating panel and compare tray worked and did not cover the attribution. At 375 px there was no horizontal scroll, the List/Map switch and bottom sheet worked, and only inline text links were under 44 px. Branch, compare, reviews, sign-in, and report pages were inspected. Administration pages were not inspected visually because they need a signed-in administrator session. Their browser tests passed.
+- Not verified: live address search and driving estimates from the browser, and branch pins (no reviewed branch has coordinates yet).
+
+### Public page layout repair (2026-11-11 11:34:17 +06:00)
+
+- Cause: `LocationSelector` used `.medimap-*` rules from `discoveryView.css`, but only `DiscoveryView` imported that file. On `/find`, the selector had no styles. Also, the `.public-page button` rules in `public.css` had a higher specificity than the component classes, and set all buttons to `display: block`.
+- `LocationSelector.tsx` now imports `discoveryView.css`. The element defaults in `public.css` now use `:where(.public-page)`, so component classes override them. Buttons are inline. Toggle buttons (`aria-pressed`) have an outline style.
+- Each `/find` listing is now one `.listing-card`. The highlight, comparison, and driving-estimate controls are in a `.listing-actions` row below the card details.
+- Verification: type checking passed. `oxlint src` passed. 120 public/search unit tests passed. 28 Playwright tests passed (`public-integration` and `location`, desktop and mobile). Screenshots at 1280 px and 375 px showed no horizontal overflow.
+
+### Google Maps Demo Key server check (2026-11-11 11:05:23 +06:00)
+
+- The owner confirmed Google Maps as the provider after a review of alternatives, and added `GOOGLE_MAPS_BROWSER_KEY` and `GOOGLE_MAPS_SERVER_KEY` to the ignored `.dev.vars`. Both hold the same Demo Key.
+- Server requests with the Demo Key passed: Compute Routes (`DRIVE`, `TRAFFIC_UNAWARE`, field mask `routes.distanceMeters,routes.duration`) returned HTTP 200 with `distanceMeters` 5727 and `duration` `"1336s"`.
+- Places API (New) Autocomplete with the Dhaka rectangle, `includedRegionCodes: ["bd"]`, and a session token returned HTTP 200 with five suggestions. Place Details with `location,formattedAddress` and the same token returned HTTP 200.
+- A request with an unrelated `Referer` header also passed, so the key has no referrer restriction now. Whether a Demo Key accepts restrictions remains unverified.
+- The Maps JavaScript API bootstrap URL returned HTTP 200. This does not prove browser authentication; Phase 4 checks the map in a browser.
+- Result: plan Phase 0 selects the server-side adapter design. The browser-side fallback is not needed.
+
+### Design system and Google Maps integration plan (2026-11-11 10:45:46 +06:00)
+
+- Added `DESIGN.md` in the DESIGN.md `alpha` format. It keeps the clinical teal palette and adopts the AI Studio prototype's sidebar, map, card, chip, and floating-panel layout.
+- `npx -p @google/design.md designmd lint DESIGN.md` reported 0 errors and 0 warnings.
+- Added `docs/google-maps-integration-plan.md`. No application code, dependency, migration, or context-file requirement changed in this step.
+- Owner decisions: full swap from Geoapify and OpenStreetMap tiles to Google Maps, Routes API, and Places API (New); Maps Demo Key only, with no billing account; Tailwind CSS v4 and `lucide-react`.
+- The prototype's emergency-triage features are excluded. They are outside product scope, and the Google Maps Platform terms prohibit High Risk Activities.
+- Phase 1 of the plan updates `architecture.md`, `project-overview.md`, `ui-context.md`, and `code-standards.md` before implementation.
 
 ### Public application implementation (2026-10-28 22:24:18 +06:00)
 
@@ -601,7 +638,9 @@ These are confirmed constraints for later feature implementation. Full details a
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
 - Google OAuth client credentials for live login verification.
-- Live Geoapify Dhaka coverage and account usage acceptance. Provider selection and conservative local request budgets are implemented.
+- Live Geoapify Dhaka coverage and account usage acceptance. Superseded on 11 November 2026 by the Google Maps decision. Google Maps replaced Geoapify on 17 November 2026.
+- Maps Demo Key daily limit and referrer-restriction support. Server-side Routes and Places requests were verified on 11 November 2026.
+- Production map provision. The Demo Key is not for production; a live production map needs a later billing decision before the 29 November release candidate.
 - Production CPU and actual workload fit. The local pilot capacity model is in `docs/workers-release-runbook.md`; live mapping-provider usage remains unverified.
 - Production acceptance of the implemented defaults: ascending price, two-to-four listing comparison, and six-dimension service review means.
 - Authorized production account/database/origin, protected backup storage, and migration execution approval. The reviewed local procedure is now documented.
@@ -612,5 +651,5 @@ These are confirmed constraints for later feature implementation. Full details a
 1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
 2. Select authorized production targets and resolve the release runbook's remaining acceptance requirements before deployment.
 3. Add hospitals or branches when their diagnostic services, standard prices, and locations have verified official evidence.
-4. Research mapping-provider coverage and free-tier limits before address search and geographic map selection.
+4. Run Phase 1 of `docs/google-maps-integration-plan.md`, then implement the Google Maps integration in the plan's phase order. Phase 0 is complete.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-18 00:30:46 +06:00`.
+Last updated: `2026-11-18 18:28:46 +06:00`.
 
 ## Current phase
 
@@ -51,6 +51,19 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### In-app driving route on `/find` (2026-11-18 18:28:46 +06:00)
+
+- The course teacher asked for the route to the hospital inside the app, similar to ride-hailing apps. The listing panel button is now "Show route". It draws the Google driving route from the search location to the branch, with a white casing and a primary-colour line, and fits the map to the route.
+- The panel shows road distance, travel time "without live traffic", and a collapsible "Driving steps" list labelled "Directions from Google Maps". On mobile list view, "View route on map" opens the map view.
+- "Show my position on the route" follows the browser position (`src/features/public/useLivePosition.ts`). The position stays in the browser. It does not request a new route.
+- New adapter `computeRoadRoute` in `src/integrations/mapping/google/routes.server.ts` and decoder `src/integrations/mapping/google/polyline.ts`. `publicRoute` takes `path: true`. `/compare` still uses `computeRoadEstimate` with the original field mask.
+- Live Demo Key check, Dhanmondi to Moghbazar: HTTP 200, 5,134 bytes, 7.2 km, 20 minutes, 86 path points, 14 steps. The adapter parsed the live response. Without `languageCode: "en"` the steps were in Bangla.
+- Out of scope: voice or turn-by-turn navigation, rerouting, traffic-aware routes, and two-wheeler routes. The Navigation SDK is documented for Android and iOS only.
+- Verification: typecheck passed. Lint passed. Format check passed. `bun test`: all passed, with new adapter and decoder tests. Playwright: 96 passed (desktop and mobile). The browser test server has no Google key, so it checks the fallback only.
+- Not verified: the route line and live position marker on a live Google map in a browser.
+- Open: read the full Routes API section of the Google Maps Platform Service Specific Terms for display of steps next to a map. The EEA terms prohibit this. The full global text was not available during this check.
+- No commit or push.
 
 ### Reviewed branch coordinates and compare travel label (2026-11-18 00:30:46 +06:00)
 

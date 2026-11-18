@@ -46,6 +46,7 @@ Google Maps Platform provides the map, driving estimates, and address search. Th
 
 - The browser map uses the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2 with `DEMO_MAP_ID`.
 - Driving estimates use Routes API Compute Routes with `TRAFFIC_UNAWARE` routing. The field mask is `routes.distanceMeters,routes.duration`.
+- The `/find` "Show route" request adds `routes.polyline.encodedPolyline`, `routes.legs.steps.distanceMeters`, and `routes.legs.steps.navigationInstruction`, with `languageCode: "en"`.
 - Address search uses Places API (New) Autocomplete and Place Details. Suggestions are restricted to the rectangle from 23.6 to 24.0 N and 90.2 to 90.6 E, with region code `bd`. Place Details requests `location,formattedAddress`.
 
 Set `GOOGLE_MAPS_BROWSER_KEY` as a Worker variable. Set `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.

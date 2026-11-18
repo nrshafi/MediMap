@@ -1,10 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, ExternalLink, Navigation, Plus, X } from 'lucide-react';
+import {
+  Check,
+  ExternalLink,
+  LocateFixed,
+  Map as MapIcon,
+  Navigation,
+  Plus,
+  X,
+} from 'lucide-react';
 import type { Coordinates } from '../map/types';
 import type { BranchService } from '../catalog/contracts';
 import { ui } from '../../ui/styles';
 import { publicRoute } from './catalog.functions';
-import { directionsUrl, formatBdt, formatKm, type RouteResult, formatReviewDate } from './format';
+import {
+  directionsUrl,
+  formatBdt,
+  formatKm,
+  formatMeters,
+  type RouteResult,
+  formatReviewDate,
+} from './format';
+import type { LivePosition } from './useLivePosition';
 import { StatusBadge } from './ListingCard';
 
 const linkRow = `${ui.link} inline-flex min-h-touch items-center gap-1`;
@@ -37,7 +53,7 @@ function RouteEstimate({
         onClick={async () => {
           setPending(true);
           try {
-            const estimate = await publicRoute({ data: { listing, from: center } });
+            const estimate = await publicRoute({ data: { listing, from: center, path: true } });
             if (mounted.current) onResult(estimate);
           } catch {
             if (mounted.current)
@@ -51,13 +67,31 @@ function RouteEstimate({
         }}
       >
         <Navigation aria-hidden size={16} />
-        {pending ? 'Finding route…' : 'Get driving estimate'}
+        {pending ? 'Finding route…' : result?.available ? 'Update route' : 'Show route'}
       </button>
       <p role="status" className={ui.muted}>
         {result?.available
-          ? `Road distance ${formatKm(result.roadKm)} · Estimated travel time ${Math.round(result.minutes)} minutes. Estimate from Google Maps.`
-          : (result?.message ?? 'Travel estimates have not been requested.')}
+          ? `Road distance ${formatKm(result.roadKm)} · Estimated travel time ${Math.round(result.minutes)} minutes, without live traffic. Route from Google Maps.`
+          : (result?.message ?? 'The driving route has not been requested.')}
       </p>
+      {result?.available && result.steps && result.steps.length > 0 && (
+        <details className="rounded-sm border border-border p-2">
+          <summary className="min-h-touch cursor-pointer content-center text-sm font-semibold">
+            Driving steps ({result.steps.length})
+          </summary>
+          <ol className="mt-2 flex list-decimal flex-col gap-2 pl-5 text-sm">
+            {result.steps.map((step, index) => (
+              <li key={index}>
+                {step.instruction}
+                {step.distanceMeters !== null && (
+                  <span className="text-muted"> · {formatMeters(step.distanceMeters)}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+          <p className="mt-2 text-xs text-muted">Directions from Google Maps.</p>
+        </details>
+      )}
     </section>
   );
 }
@@ -72,6 +106,8 @@ export function ListingPanel({
   compareDisabled,
   onToggleCompare,
   onClose,
+  live,
+  onShowMap,
 }: {
   listing: BranchService;
   center: Coordinates;
@@ -82,6 +118,9 @@ export function ListingPanel({
   compareDisabled: boolean;
   onToggleCompare: () => void;
   onClose: () => void;
+  live?: LivePosition;
+  /** Shows the map view on narrow screens. Absent when the map is already visible. */
+  onShowMap?: () => void;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -162,6 +201,33 @@ export function ListingPanel({
         result={route}
         onResult={onRoute}
       />
+      {route?.available && route.path && onShowMap && (
+        <button type="button" className={`${ui.buttonSecondary} lg:hidden`} onClick={onShowMap}>
+          <MapIcon aria-hidden size={16} />
+          View route on map
+        </button>
+      )}
+      {route?.available && route.path && live && (
+        <div className="flex flex-col gap-1">
+          <button
+            type="button"
+            aria-pressed={live.active}
+            className={ui.buttonSecondary}
+            onClick={live.active ? live.stop : live.start}
+          >
+            <LocateFixed aria-hidden size={16} />
+            {live.active ? 'Stop showing my position' : 'Show my position on the route'}
+          </button>
+          <p className="text-sm text-muted" aria-live="polite">
+            {live.message ??
+              (live.active
+                ? live.position
+                  ? 'Your position updates on the map. It stays in this browser.'
+                  : 'Waiting for your position…'
+                : 'Your position stays in this browser and does not change the route.')}
+          </p>
+        </div>
+      )}
       <a
         className={ui.buttonSecondary}
         href={directionsUrl(l.branch)}

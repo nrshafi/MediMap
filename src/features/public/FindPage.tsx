@@ -14,6 +14,7 @@ import { ListingCard } from './ListingCard';
 import { ListingPanel } from './ListingPanel';
 import { LocationPanel } from './LocationPanel';
 import { sortListings, sortChoices, type PublicSort } from './sorting';
+import { useLivePosition } from './useLivePosition';
 
 const sortLabels: Record<PublicSort, string> = {
   'price-asc': 'Price, lowest first',
@@ -63,6 +64,7 @@ export function FindPage({
   const [view, setView] = useState<'list' | 'map'>('list');
   const [desktop, setDesktop] = useState<boolean | null>(null);
   const [mapFailed, setMapFailed] = useState(false);
+  const live = useLivePosition();
   const previousUrl = useRef('');
 
   useEffect(() => {
@@ -159,6 +161,12 @@ export function FindPage({
       : [],
   );
   const open = visible.find((l) => l.id === highlight);
+  const openRoute = open ? routes[open.id] : undefined;
+  const routePath = openRoute?.available ? openRoute.path : undefined;
+  const stopLive = live.stop;
+  useEffect(() => {
+    if (!routePath) stopLive();
+  }, [routePath]);
   const mapWanted = desktop === true || view === 'map';
   const mapVisible = mapWanted && browserKey !== null && !mapFailed;
 
@@ -434,6 +442,8 @@ export function FindPage({
                   }}
                   onPickLocation={desktop ? (c) => chooseLocation(c) : undefined}
                   onUnavailable={() => setMapFailed(true)}
+                  route={routePath}
+                  livePosition={live.position}
                 />
               </ClientOnly>
             ) : (
@@ -452,6 +462,12 @@ export function FindPage({
                 compareDisabled={comparison.length >= 4}
                 onToggleCompare={() => toggleCompare(open.id)}
                 onClose={closePanel}
+                live={browserKey !== null && !mapFailed ? live : undefined}
+                onShowMap={
+                  view === 'list' && browserKey !== null && !mapFailed
+                    ? () => setView('map')
+                    : undefined
+                }
               />
             </div>
           )}

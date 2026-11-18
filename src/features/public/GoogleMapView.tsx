@@ -42,6 +42,44 @@ export function MapPlaceholder() {
   );
 }
 
+function RouteLine({ path }: { path: Coordinates[] }) {
+  const map = useMap();
+  const signature = `${path.length}:${path[0]?.latitude},${path[0]?.longitude}:${path.at(-1)?.latitude},${path.at(-1)?.longitude}`;
+  useEffect(() => {
+    if (!map || path.length < 2) return;
+    const points = path.map((p) => ({ lat: p.latitude, lng: p.longitude }));
+    // Two strokes: a wide light casing under a narrower route line keeps the route readable on any road colour.
+    const casing = new google.maps.Polyline({
+      path: points,
+      strokeColor: '#ffffff',
+      strokeOpacity: 1,
+      strokeWeight: 8,
+      clickable: false,
+      zIndex: 1,
+      map,
+    });
+    const line = new google.maps.Polyline({
+      path: points,
+      strokeColor:
+        getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() ||
+        '#117c73',
+      strokeOpacity: 1,
+      strokeWeight: 5,
+      clickable: false,
+      zIndex: 2,
+      map,
+    });
+    const bounds = new google.maps.LatLngBounds();
+    for (const point of points) bounds.extend(point);
+    map.fitBounds(bounds, 64);
+    return () => {
+      casing.setMap(null);
+      line.setMap(null);
+    };
+  }, [map, signature]);
+  return null;
+}
+
 function FitBounds({ center, pins }: { center: Coordinates; pins: MapPinData[] }) {
   const map = useMap();
   const fitted = useRef(false);
@@ -76,6 +114,8 @@ export function GoogleMapView({
   onPickLocation,
   onUnavailable,
   showUser = true,
+  route,
+  livePosition,
 }: {
   apiKey: string;
   center: Coordinates;
@@ -85,6 +125,10 @@ export function GoogleMapView({
   onPickLocation?: (value: Coordinates) => void;
   onUnavailable?: () => void;
   showUser?: boolean;
+  /** Driving route from the search location to the selected branch. */
+  route?: Coordinates[];
+  /** The user's current browser position while live tracking is on. */
+  livePosition?: Coordinates | null;
 }) {
   const [failed, setFailed] = useState(false);
   const [picked, setPicked] = useState(false);
@@ -126,7 +170,20 @@ export function GoogleMapView({
             onPickLocation({ latitude: point.lat, longitude: point.lng });
           }}
         >
-          <FitBounds center={center} pins={pins} />
+          {route && route.length > 1 ? (
+            <RouteLine path={route} />
+          ) : (
+            <FitBounds center={center} pins={pins} />
+          )}
+          {livePosition && (
+            <AdvancedMarker
+              position={{ lat: livePosition.latitude, lng: livePosition.longitude }}
+              title="Your current position"
+              zIndex={4}
+            >
+              <div className="size-4 rounded-full border-2 border-on-primary bg-primary shadow-[0_0_0_6px_rgb(17_124_115/0.25)]" />
+            </AdvancedMarker>
+          )}
           {showUser && (
             <AdvancedMarker
               position={{ lat: center.latitude, lng: center.longitude }}

@@ -7,7 +7,7 @@
 Public source-backed discovery uses `/find`, separate from the existing labelled `/discovery` demonstration.
 Google Maps Platform is the mapping provider. The owner decided on 11 November 2026 that it replaces Geoapify and OpenStreetMap tiles.
 Render the map with the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2. Render it only in the browser, with `DEMO_MAP_ID`.
-Use Routes API Compute Routes for driving estimates. Use Places API (New) Autocomplete and Place Details for address search.
+Use Routes API Compute Routes for driving estimates and for the driving route on `/find`. Use Places API (New) Autocomplete and Place Details for address search.
 Run every Google web-service call on the server. Place the adapters in `src/integrations/mapping/google/` and the request handling in `src/features/public/catalog.functions.ts`.
 Use `GOOGLE_MAPS_BROWSER_KEY` as a public Worker variable. Use `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.
 Missing provider configuration must retain core catalog results. A missing browser key, a rejected key, or a failed map load shows a "map unavailable" notice.
@@ -45,6 +45,10 @@ A production map requires a billing account on the key or a new billing-enabled 
 - Start address lookup only after the user submits the address form. Do not send a request for each keystroke.
 - Generate the Places session token in the browser with `crypto.randomUUID()`. The server validates its format.
 - Parse the route `duration` value. Reject values that are not finite and non-negative.
+- The `/find` route request (`computeRoadRoute`) adds `routes.polyline.encodedPolyline`, `routes.legs.steps.distanceMeters`, and `routes.legs.steps.navigationInstruction` to the field mask and sets `languageCode: "en"`. Without `languageCode`, Google returns Dhaka steps in Bangla. Google's Compute Routes SKU list does not name these fields as Pro or Enterprise triggers. Do not request traffic on polylines, because it is an Enterprise feature. `/compare` keeps the distance and duration field mask.
+- The server decodes the polyline and validates each point, the step text, the maneuver, and the step distance. It rejects more than 5,000 points or 200 steps. The browser keeps the route only in component state.
+- Show a route request only after the user selects "Show route". Do not request a route for each listing or again when the live position changes.
+- Live position uses `navigator.geolocation.watchPosition` after a user action. Stop it when the user stops it, when the route clears, or when the page closes. Do not send the live position to the server or put it in the URL.
 - On failure, return the unavailable result. Prices, the selected location, and the list stay unchanged.
 
 ### Map loading

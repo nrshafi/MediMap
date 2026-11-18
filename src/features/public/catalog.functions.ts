@@ -6,7 +6,10 @@ import { reserveMappingRequest } from './provider.server';
 import { CatalogRepository } from '../catalog/server/repository.server';
 import { isValidCoordinate } from '../map/coordinates';
 import type { Coordinates } from '../map/types';
-import { computeRoadEstimate } from '../../integrations/mapping/google/routes.server';
+import {
+  computeRoadEstimate,
+  computeRoadRoute,
+} from '../../integrations/mapping/google/routes.server';
 import {
   autocompletePlaces,
   fetchPlace,
@@ -35,7 +38,13 @@ export const publicRoute = createServerFn({ method: 'POST' })
         throw new Error('Invalid coordinates');
       return result;
     }
-    return { from: point(input.from), listing: catalogId(input.listing) };
+    if (input.path !== undefined && typeof input.path !== 'boolean')
+      throw new Error('Invalid path');
+    return {
+      from: point(input.from),
+      listing: catalogId(input.listing),
+      path: input.path === true,
+    };
   })
   .handler(async ({ data }) => {
     const key = serverKey();
@@ -48,11 +57,10 @@ export const publicRoute = createServerFn({ method: 'POST' })
     try {
       requireSameOriginPost(getRequest(), env);
       if (!(await reserveMappingRequest(env.DB))) throw new Error('Mapping request limit');
-      const estimate = await computeRoadEstimate(key, {
-        from: data.from,
-        to: listing.branch.coordinates,
-      });
-      return { available: true as const, ...estimate };
+      const input = { from: data.from, to: listing.branch.coordinates };
+      // The route is returned to the browser only. Never store it in D1 or a cache.
+      if (data.path) return { available: true as const, ...(await computeRoadRoute(key, input)) };
+      return { available: true as const, ...(await computeRoadEstimate(key, input)) };
     } catch {
       return {
         available: false as const,

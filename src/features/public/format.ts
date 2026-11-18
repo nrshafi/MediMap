@@ -25,8 +25,25 @@ export function formatKm(value: number) {
   return `${value.toFixed(1)} km`;
 }
 
+export type RouteStep = {
+  instruction: string;
+  maneuver: string | null;
+  distanceMeters: number | null;
+};
+
 export type RouteResult =
-  { available: true; roadKm: number; minutes: number } | { available: false; message: string };
+  | {
+      available: true;
+      roadKm: number;
+      minutes: number;
+      path?: { latitude: number; longitude: number }[];
+      steps?: RouteStep[];
+    }
+  | { available: false; message: string };
+
+export function formatMeters(value: number) {
+  return value < 1000 ? `${Math.round(value)} m` : `${(value / 1000).toFixed(1)} km`;
+}
 
 export function formatReviewDate(value: string | null | undefined) {
   if (!value) return 'Unknown';

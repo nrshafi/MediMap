@@ -32,7 +32,7 @@ These decisions, confirmed on 27 October 2026, replace the earlier ten-hospital 
 6. View price statistics and select branches for comparison.
 7. Compare prices, travel estimates, ratings, and available branch information.
 8. Read branch details and service-specific reviews.
-9. Call the provider, open its website, or request directions.
+9. Call the provider, open its website, show the driving route in the app, or open directions in Google Maps.
 10. Report incorrect information when necessary.
 
 Browsing and comparison do not require an account. Review submission requires an account.
@@ -123,6 +123,8 @@ Accessibility and performance targets remain open for the UI and implementation 
 
 - Google Maps Platform replaces Geoapify and OpenStreetMap tiles. The owner decided this on 11 November 2026.
 - The map uses the Maps JavaScript API. Driving estimates use the Routes API. Address search uses Places API (New).
+- The listing panel on `/find` shows the driving route on the map, with road distance, travel time, and written driving steps. The course teacher requested this on 18 November 2026. The route is a preview. MediMap does not give voice or turn-by-turn navigation. "Open directions in Google Maps" stays available.
+- After the route shows, the user can show their live browser position on the map. The position stays in the browser and does not request a new route.
 - The Maps Demo Key is the only key in use, and no billing account exists. The Demo Key is for testing only. A production map requires a later owner billing decision.
 - The release must work with the map unavailable. Prices, lists, and manual location input keep working.
 - MediMap is not an emergency or ambulance tool. Google's terms prohibit High Risk Activities.

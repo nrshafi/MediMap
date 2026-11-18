@@ -93,7 +93,7 @@ test('find page shows listing details, controls meet touch size and the map fall
     'href',
     /google\.com\/maps\/dir\/\?api=1&destination=/,
   );
-  await panel.getByRole('button', { name: 'Get driving estimate' }).click();
+  await panel.getByRole('button', { name: 'Show route' }).click();
   await expect(panel.getByRole('status')).toContainText(/unavailable|failed/);
   await panel.getByRole('button', { name: 'Close listing details' }).click();
   await expect(panel).toHaveCount(0);

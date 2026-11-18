@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeRoadEstimate, parseDurationSeconds, type FetchImpl } from './routes.server';
+import {
+  computeRoadEstimate,
+  computeRoadRoute,
+  parseDurationSeconds,
+  type FetchImpl,
+} from './routes.server';
 
 const input = {
   from: { latitude: 23.78, longitude: 90.4 },
@@ -26,6 +31,7 @@ test('route request uses the documented method, header key and field mask', asyn
   const body = JSON.parse(String(seen?.init.body));
   assert.equal(body.travelMode, 'DRIVE');
   assert.equal(body.routingPreference, 'TRAFFIC_UNAWARE');
+  assert.equal(body.languageCode, undefined);
   assert.deepEqual(body.origin.location.latLng, { latitude: 23.78, longitude: 90.4 });
   assert.ok(seen?.init.signal);
 });
@@ -69,4 +75,76 @@ test('route adapter rejects oversized bodies and propagates aborts', async () =>
       throw new DOMException('timeout', 'TimeoutError');
     }),
   );
+});
+
+const encoded = '_p~iF~ps|U_ulLnnqC_mqNvxq`@';
+
+test('route request adds only Essentials path and step fields', async () => {
+  let headers: Record<string, string> | undefined;
+  let body: Record<string, unknown> | undefined;
+  const result = await computeRoadRoute('k1', input, async (_url, init) => {
+    headers = init.headers as Record<string, string>;
+    body = JSON.parse(String(init.body));
+    return new Response(
+      JSON.stringify({
+        routes: [
+          {
+            distanceMeters: 5200,
+            duration: '1336s',
+            polyline: { encodedPolyline: encoded },
+            legs: [
+              {
+                steps: [
+                  {
+                    distanceMeters: 120,
+                    navigationInstruction: { maneuver: 'TURN_LEFT', instructions: ' Turn left ' },
+                  },
+                  { distanceMeters: 40 },
+                  { navigationInstruction: { instructions: 'Arrive' } },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+    );
+  });
+  assert.equal(
+    headers?.['X-Goog-FieldMask'],
+    'routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline,routes.legs.steps.distanceMeters,routes.legs.steps.navigationInstruction',
+  );
+  assert.equal(body?.routingPreference, 'TRAFFIC_UNAWARE');
+  assert.equal(body?.extraComputations, undefined);
+  assert.equal(body?.languageCode, 'en');
+  assert.equal(result.roadKm, 5.2);
+  assert.equal(result.path.length, 3);
+  assert.deepEqual(result.steps, [
+    { instruction: 'Turn left', maneuver: 'TURN_LEFT', distanceMeters: 120 },
+    { instruction: 'Arrive', maneuver: null, distanceMeters: null },
+  ]);
+});
+
+test('route adapter rejects a missing path and malformed steps', async () => {
+  const base = { distanceMeters: 5, duration: '5s', polyline: { encodedPolyline: encoded } };
+  const bad = [
+    { distanceMeters: 5, duration: '5s' },
+    { ...base, polyline: { encodedPolyline: '_p~iF' } },
+    { ...base, legs: 'x' },
+    { ...base, legs: [{ steps: 'x' }] },
+    { ...base, legs: [{ steps: [null] }] },
+    { ...base, legs: [{ steps: [{ navigationInstruction: { instructions: 5 } }] }] },
+    { ...base, legs: [{ steps: [{ navigationInstruction: { instructions: '' } }] }] },
+    {
+      ...base,
+      legs: [{ steps: [{ navigationInstruction: { instructions: 'x', maneuver: '<b>' } }] }],
+    },
+    {
+      ...base,
+      legs: [{ steps: [{ distanceMeters: -1, navigationInstruction: { instructions: 'x' } }] }],
+    },
+  ];
+  for (const route of bad)
+    await assert.rejects(computeRoadRoute('k', input, ok({ routes: [route] })));
+  const ok200 = await computeRoadRoute('k', input, ok({ routes: [base] }));
+  assert.deepEqual(ok200.steps, []);
 });

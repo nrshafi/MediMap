@@ -44,6 +44,7 @@ test('public catalog, details, unknown locations and URL filters use persisted d
     'href',
     /destination=/,
   );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/services/complete-blood-count?lat=23.75&lng=90.4&radius=5');
   await expect(page.getByText('Selected area:', { exact: false })).toContainText(
     '5 km from 23.7500, 90.4000',

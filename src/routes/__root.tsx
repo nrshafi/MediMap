@@ -14,7 +14,15 @@ export const Route = createRootRoute({
           'Compare published prices for diagnostic services at hospital branches in Dhaka, with official sources and review dates.',
       },
     ],
-    links: [{ rel: 'stylesheet', href: stylesheet }],
+    links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap',
+      },
+      { rel: 'stylesheet', href: stylesheet },
+    ],
   }),
   component: () => <Outlet />,
   shellComponent: RootDocument,

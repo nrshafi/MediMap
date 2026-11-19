@@ -11,18 +11,19 @@ Use clear service-search navigation and explicit source coverage. Retain the cli
 
 `DESIGN.md` at the repository root is the visual source of truth. It defines colors, typography, layout, elevation, shapes, components, and icons. Do not copy its token values into this file.
 The Tailwind theme in `src/styles.css` mirrors these tokens. Legacy properties such as `--bg-base` remain as aliases until each stylesheet is migrated.
+Use `border` for decorative card outlines, dividers, table rules, panel edges, and notice boxes. Use `border-strong` for text inputs, selects, textareas, checkboxes, and any control whose border is the only visual cue. Alert notices use a light `error` edge; the role, heading, and text color identify them.
 The `/discovery` demonstration keeps its own CSS.
 
 ## Typography and layout
 
-- Use the system sans-serif stack for body text and the product name.
-- Use Georgia for the hero heading.
-- Define `--font-sans` and `--font-display` in the stylesheet.
+- Use Inter for body text, labels, controls, and prices.
+- Use Plus Jakarta Sans for the product name, the hero heading, and section headings.
+- Define `--font-sans` and `--font-display` in the stylesheet. Keep the system fallback stack.
 - Center the hero in the available page height. Keep the header and footer visually quiet.
-- Use fluid heading sizes and responsive padding. Check the page at mobile widths.
+- Use the `display`, `h1`, `h2`, `h3`, `body`, `small`, and `label` type scale. Check the page at mobile widths.
 - Use an inline SVG for the decorative location mark. Hide decorative graphics from assistive technology.
 - Use Tailwind utilities and the shared class strings in `src/ui/styles.ts`. Use semantic React components. Use `lucide-react` icons beside text labels, and hide decorative icons from assistive technology.
-- Keep the page static, without animation.
+- Use the shared motion tokens for hover, focus, and selection only. Remove transitions and animations under `prefers-reduced-motion: reduce`.
 
 ## Discovery demonstration
 
@@ -49,7 +50,7 @@ Stack coordinate fields on mobile. Disclose that coordinates appear in the page 
 
 ## Catalog inspector
 
-Use the existing teal, surface, border, system sans-serif, and Georgia tokens for the read-only catalog inspector.
+Use the existing teal, surface, border, Inter, and Plus Jakarta Sans tokens for the read-only catalog inspector.
 Show the selected service, provider label, branch address, price, source, and review date in a single readable record.
 Use a service selector with an explicit apply button. Preserve selection in the URL.
 Show unknown fields as unknown. Distinguish website review from provider confirmation.
@@ -70,7 +71,7 @@ Provide reload links for outdated edits and explicit access, validation, collisi
 
 ## Account access
 
-Use the existing teal palette and system typography for sign-in and account screens.
+Use the existing teal palette and the Inter and Plus Jakarta Sans typography tokens for sign-in and account screens.
 Keep Google as the only sign-in option. Explain that browsing does not require an account.
 Use ordinary POST forms for sign-in initiation and sign-out so both actions work without JavaScript.
 Show distinct messages for expired sessions, cancelled or failed sign-in, missing configuration, and denied administrator access.
@@ -102,7 +103,7 @@ Use 44 px controls and stack forms at 375 px. Preserve current selection after r
 
 ## Incorrect-information reporting
 
-Use a standalone report page with the existing teal palette and system typography.
+Use a standalone report page with the existing teal palette and the Inter and Plus Jakarta Sans typography tokens.
 Identify the provider, branch, service, and observed price before the form when applicable.
 Limit issue choices to the selected target type. Keep user details and an optional correction/evidence link separate.
 Use native form validation and ordinary POST forms. Keep submitted text visible on rejected or failed requests.

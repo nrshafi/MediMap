@@ -25,12 +25,12 @@ export const Route = createFileRoute('/')({
     <PageShell>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center gap-8 px-4 py-10 sm:px-6">
         <div className="flex flex-col gap-3">
-          <h1 className="font-display text-4xl leading-tight sm:text-display">
+          <h1 className="max-w-[16ch] font-display text-display">
             Find the test.
             <br />
             Know the published price.
           </h1>
-          <p className="text-base text-muted">
+          <p className="text-body text-muted">
             Compare diagnostic service prices across Dhaka hospital branches. Each price shows its
             official source and review date.
           </p>

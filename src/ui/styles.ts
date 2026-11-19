@@ -14,7 +14,6 @@ export const ui = {
     'min-h-touch w-full rounded-sm border border-border-strong bg-surface px-2.5 text-base text-ink placeholder:text-muted',
   // Replaced by Field component
   label: 'flex flex-col gap-1 text-small font-semibold text-ink',
-  chip: 'inline-flex min-h-touch items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 text-small font-semibold text-ink hover:border-border-strong aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-on-ink',
   // Replaced by Card component (variant="default")
   card: 'rounded-md border border-border bg-surface p-4',
   metric: 'rounded-sm bg-surface-sunken p-2 text-label font-semibold text-ink',

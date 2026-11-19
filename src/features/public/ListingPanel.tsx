@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { ExternalLink, LocateFixed, Map as MapIcon, Navigation, X } from 'lucide-react';
 import type { Coordinates } from '../map/types';
 import type { BranchService } from '../catalog/contracts';
-import { ui } from '../../ui/styles';
+import { Button, ButtonLink } from '../../ui/Button';
+import { Notice } from '../../ui/Notice';
+import { Skeleton } from '../../ui/Skeleton';
+import { StatTile } from '../../ui/StatTile';
+import { StatusBadge } from '../../ui/Badge';
 import { publicRoute } from './catalog.functions';
 import {
   directionsUrl,
@@ -13,9 +17,9 @@ import {
   formatReviewDate,
 } from './format';
 import type { LivePosition } from './useLivePosition';
-import { StatusBadge } from '../../ui/Badge';
 
-const linkRow = `${ui.link} inline-flex min-h-touch items-center gap-1`;
+const linkRow =
+  'font-medium text-primary underline-offset-2 hover:underline inline-flex min-h-touch items-center gap-1';
 
 function RouteEstimate({
   listing,
@@ -38,10 +42,10 @@ function RouteEstimate({
   }, []);
   return (
     <section aria-label="Road travel estimate" className="flex flex-col gap-2">
-      <button
-        type="button"
-        className={ui.buttonPrimary}
-        disabled={pending}
+      <Button
+        variant="primary"
+        pending={pending}
+        icon={<Navigation aria-hidden size={16} />}
         onClick={async () => {
           setPending(true);
           try {
@@ -58,20 +62,24 @@ function RouteEstimate({
           }
         }}
       >
-        <Navigation aria-hidden size={16} />
         {pending ? 'Finding route…' : result?.available ? 'Update route' : 'Show route'}
-      </button>
-      <p role="status" className={ui.muted}>
+      </Button>
+      {pending && (
+        <div className="py-1">
+          <Skeleton role="presentation" aria-hidden="true" variant="text" lines={2} />
+        </div>
+      )}
+      <p role="status" className={pending ? 'sr-only' : 'text-small text-muted'}>
         {result?.available
           ? `Road distance ${formatKm(result.roadKm)} · Estimated travel time ${Math.round(result.minutes)} minutes, without live traffic. Route from Google Maps.`
           : (result?.message ?? 'The driving route has not been requested.')}
       </p>
       {result?.available && result.steps && result.steps.length > 0 && (
         <details className="rounded-sm border border-border p-2">
-          <summary className="min-h-touch cursor-pointer content-center text-sm font-semibold">
+          <summary className="min-h-touch cursor-pointer content-center text-small font-semibold text-ink">
             Driving steps ({result.steps.length})
           </summary>
-          <ol className="mt-2 flex list-decimal flex-col gap-2 pl-5 text-sm">
+          <ol className="mt-2 flex list-decimal flex-col gap-2 pl-5 text-small">
             {result.steps.map((step, index) => (
               <li key={index}>
                 {step.instruction}
@@ -96,6 +104,7 @@ export function ListingPanel({
   onClose,
   live,
   onShowMap,
+  isBottomSheet,
 }: {
   listing: BranchService;
   center: Coordinates;
@@ -106,6 +115,7 @@ export function ListingPanel({
   live?: LivePosition;
   /** Shows the map view on narrow screens. Absent when the map is already visible. */
   onShowMap?: () => void;
+  isBottomSheet?: boolean;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -119,26 +129,42 @@ export function ListingPanel({
         if (event.key === 'Escape') onClose();
       }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <h2 ref={heading} tabIndex={-1} className={ui.heading2}>
-            {l.branch.provider.name}, {l.branch.name}
-          </h2>
-          <p className={ui.muted}>{l.service.name}</p>
+      {isBottomSheet && (
+        <div className="flex justify-center pb-1 lg:hidden" aria-hidden="true">
+          <div className="h-1 w-12 rounded-full bg-border-strong/60" />
         </div>
-        <button
-          type="button"
-          aria-label="Close listing details"
-          className="inline-flex min-h-touch min-w-touch shrink-0 items-center justify-center rounded-sm text-primary hover:bg-primary-soft"
-          onClick={onClose}
-        >
-          <X aria-hidden size={20} />
-        </button>
-      </div>
-      <p className={ui.muted}>{l.branch.address}</p>
-      <div className="flex flex-col gap-1">
-        <p className={ui.price}>{l.price ? formatBdt(l.price.amountBdt) : 'Price unknown'}</p>
-        <div className="flex flex-wrap items-center gap-x-2 text-sm">
+      )}
+      <header className="flex flex-col gap-2 border-b border-border pb-3">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h2
+              ref={heading}
+              tabIndex={-1}
+              className="font-display text-h2 font-bold text-ink outline-none"
+            >
+              {l.branch.provider.name}, {l.branch.name}
+            </h2>
+          </div>
+          <button
+            type="button"
+            aria-label="Close listing details"
+            className="inline-flex min-h-touch min-w-touch shrink-0 items-center justify-center rounded-sm text-primary hover:bg-primary-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            onClick={onClose}
+          >
+            <X aria-hidden size={20} />
+          </button>
+        </div>
+        <div className="text-small text-muted">
+          <p className="font-medium text-ink">{l.service.name}</p>
+          <p>{l.branch.address}</p>
+        </div>
+      </header>
+
+      <div className="flex flex-col gap-1.5">
+        <p className="text-price tabular-nums text-ink">
+          {l.price ? formatBdt(l.price.amountBdt) : 'Price unknown'}
+        </p>
+        <div className="flex flex-wrap items-center gap-x-2 text-small">
           <StatusBadge price={l.price} />
           <span className="text-muted">{formatReviewDate(l.price?.verifiedAt)}</span>
           {l.price?.source && (
@@ -149,24 +175,27 @@ export function ListingPanel({
           )}
         </div>
       </div>
+
       <dl className="grid grid-cols-1 gap-2">
-        <div className={ui.tile}>
-          <dt className={ui.tileLabel}>Straight-line distance</dt>
-          <dd className={ui.tileValue}>
-            {l.branch.coordinates
+        <StatTile
+          label="Straight-line distance"
+          value={
+            l.branch.coordinates
               ? distanceKm === null
                 ? 'Not calculated'
                 : formatKm(distanceKm)
-              : 'Unknown'}
-          </dd>
-        </div>
+              : 'Unknown'
+          }
+        />
       </dl>
+
       {!l.branch.coordinates && (
-        <p className={ui.notice}>
+        <Notice kind="info">
           Location not recorded. This branch has no pin on the map. Prices and branch details stay
           available.
-        </p>
+        </Notice>
       )}
+
       <RouteEstimate
         key={`${l.id}-${center.latitude}-${center.longitude}`}
         listing={l.id}
@@ -174,24 +203,29 @@ export function ListingPanel({
         result={route}
         onResult={onRoute}
       />
+
       {route?.available && route.path && onShowMap && (
-        <button type="button" className={`${ui.buttonSecondary} lg:hidden`} onClick={onShowMap}>
-          <MapIcon aria-hidden size={16} />
+        <Button
+          variant="secondary"
+          className="lg:hidden"
+          icon={<MapIcon aria-hidden size={16} />}
+          onClick={onShowMap}
+        >
           View route on map
-        </button>
+        </Button>
       )}
+
       {route?.available && route.path && live && (
         <div className="flex flex-col gap-1">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
             aria-pressed={live.active}
-            className={ui.buttonSecondary}
+            icon={<LocateFixed aria-hidden size={16} />}
             onClick={live.active ? live.stop : live.start}
           >
-            <LocateFixed aria-hidden size={16} />
             {live.active ? 'Stop showing my position' : 'Show my position on the route'}
-          </button>
-          <p className="text-sm text-muted" aria-live="polite">
+          </Button>
+          <p className="text-small text-muted" aria-live="polite">
             {live.message ??
               (live.active
                 ? live.position
@@ -201,16 +235,18 @@ export function ListingPanel({
           </p>
         </div>
       )}
-      <a
-        className={ui.buttonSecondary}
+
+      <ButtonLink
+        variant="secondary"
         href={directionsUrl(l.branch)}
         target="_blank"
         rel="noreferrer"
+        icon={<ExternalLink aria-hidden size={16} />}
       >
-        <ExternalLink aria-hidden size={16} />
         Open directions in Google Maps
-      </a>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-3 text-sm">
+      </ButtonLink>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-3 text-small">
         <a className={linkRow} href={`/branches/${l.branch.id}`}>
           Branch details
         </a>

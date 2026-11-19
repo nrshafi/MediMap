@@ -4,6 +4,10 @@ import { BadgeCheck, List, Map as MapIcon, Search } from 'lucide-react';
 import type { Service, BranchService } from '../catalog/contracts';
 import { resolveDiagnosticQuery } from '../search/resolutionEngine';
 import { calculateHaversineDistanceKm } from '../map/haversine';
+import { EmptyState } from '../../ui/EmptyState';
+import { Field, fieldControlStyles } from '../../ui/Field';
+import { Button, ButtonLink } from '../../ui/Button';
+import { Chip } from '../../ui/Chip';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
 import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
@@ -179,17 +183,22 @@ export function FindPage({
     setHighlight(undefined);
     if (id)
       requestAnimationFrame(() =>
-        Array.from(document.querySelectorAll<HTMLElement>('[data-select-listing]'))
-          .find((element) => element.dataset.selectListing === id)
+        document
+          .getElementById(`listing-${id}`)
+          ?.querySelector<HTMLButtonElement>('h3 button')
           ?.focus(),
       );
   }
 
-  const panelClass = `${ui.floating} z-30 ${
+  const panelShared =
+    'z-30 bg-surface text-ink shadow-overlay lg:absolute lg:inset-auto lg:right-4 lg:top-4 lg:m-0 lg:max-h-[calc(100%-1rem-var(--spacing-attribution))] lg:w-panel lg:overflow-y-auto lg:rounded-lg lg:border lg:border-border';
+
+  const panelViewClass =
     view === 'map'
-      ? 'm-4 lg:m-0'
-      : 'fixed inset-x-0 bottom-0 max-h-[60svh] overflow-y-auto rounded-b-none'
-  } lg:absolute lg:inset-auto lg:right-4 lg:top-4 lg:max-h-[calc(100%-1rem-var(--spacing-attribution))] lg:w-panel lg:overflow-y-auto lg:rounded-b-lg`;
+      ? 'm-4 rounded-lg border border-border'
+      : 'fixed inset-x-0 bottom-0 max-h-[55svh] overflow-y-auto rounded-t-lg rounded-b-none border-t border-x border-border';
+
+  const panelClass = `${panelShared} ${panelViewClass}`;
   const hideOnMobile = (hidden: boolean) => (hidden ? 'hidden lg:block' : '');
 
   return (
@@ -200,27 +209,31 @@ export function FindPage({
           className={`flex flex-col gap-4 p-4 lg:w-sidebar lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-border ${open && view === 'list' ? 'pb-[55svh] lg:pb-4' : ''}`}
         >
           <div>
-            <h1 className={ui.heading1}>Find a diagnostic service</h1>
-            <p className={ui.muted}>Compare published branch prices and inspect their sources.</p>
+            <h1 className="font-display text-h1 font-bold text-ink">Find a diagnostic service</h1>
+            <p className="text-small text-muted">
+              Compare published branch prices and inspect their sources.
+            </p>
           </div>
 
           <section aria-label="Choose a service" className="flex flex-col gap-2">
-            <label className={ui.label}>
-              Service name or abbreviation
-              <span className="relative">
-                <Search
-                  aria-hidden
-                  size={18}
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
-                />
-                <input
-                  className={`${ui.input} pl-10`}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  maxLength={256}
-                />
-              </span>
-            </label>
+            <Field label="Service name or abbreviation">
+              {(fieldProps) => (
+                <div className="relative">
+                  <Search
+                    aria-hidden
+                    size={18}
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+                  />
+                  <input
+                    {...fieldProps}
+                    className={`${fieldControlStyles} pl-10`}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    maxLength={256}
+                  />
+                </div>
+              )}
+            </Field>
             {matches && (
               <section aria-label="Service suggestions" className="flex flex-col">
                 {matches.matches.map((m) => (
@@ -242,12 +255,12 @@ export function FindPage({
                   </p>
                 ))}
                 {!matches.matches.length && !matches.typoSuggestions?.length && (
-                  <p className={ui.muted}>No matching service.</p>
+                  <p className="text-small text-muted">No matching service.</p>
                 )}
               </section>
             )}
             <details>
-              <summary className="flex min-h-touch cursor-pointer items-center text-sm font-semibold text-primary">
+              <summary className="flex min-h-touch cursor-pointer items-center text-small font-semibold text-primary">
                 Browse all {services.length} services
               </summary>
               <ul className="flex flex-col">
@@ -272,48 +285,48 @@ export function FindPage({
             showAttribution={!mapVisible}
           />
 
-          <section aria-label="Filters" className="flex flex-col gap-3">
-            <h2 className={ui.heading2}>Filters</h2>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                className={ui.chip}
-                aria-pressed={verified === 'yes'}
+          <section
+            aria-label="Filters"
+            className="flex flex-col gap-3 rounded-md border border-border bg-surface p-3"
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="text-small font-bold text-ink">Filters and sort</h2>
+              <Chip
+                pressed={verified === 'yes'}
+                icon={<BadgeCheck aria-hidden size={16} />}
                 onClick={() => setVerified(verified === 'yes' ? 'all' : 'yes')}
               >
-                <BadgeCheck aria-hidden size={16} />
                 Verified prices only
-              </button>
+              </Chip>
             </div>
-            <div role="group" aria-label="Straight-line radius" className="flex flex-wrap gap-2">
+
+            <div
+              role="group"
+              aria-label="Straight-line radius"
+              className="flex flex-wrap items-center gap-1.5"
+            >
+              <span className="mr-1 text-label font-semibold text-muted">Radius:</span>
               {radiusPresets.map((preset) => (
-                <button
+                <Chip
                   key={preset}
-                  type="button"
-                  className={ui.chip}
-                  aria-pressed={!customRadius && radius === preset}
+                  pressed={!customRadius && radius === preset}
                   onClick={() => {
                     setCustomRadius(false);
                     setRadius(preset);
                   }}
                 >
                   {preset} km
-                </button>
+                </Chip>
               ))}
-              <button
-                type="button"
-                className={ui.chip}
-                aria-pressed={customRadius}
-                onClick={() => setCustomRadius(true)}
-              >
+              <Chip pressed={customRadius} onClick={() => setCustomRadius(true)}>
                 Custom
-              </button>
+              </Chip>
             </div>
+
             {customRadius && (
-              <label className={ui.label}>
-                Straight-line radius in km
+              <Field label="Straight-line radius in km">
                 <input
-                  className={ui.input}
+                  className={fieldControlStyles}
                   type="number"
                   min="0.1"
                   max="100"
@@ -324,12 +337,16 @@ export function FindPage({
                     if (n >= 0.1 && n <= 100) setRadius(n);
                   }}
                 />
-              </label>
+              </Field>
             )}
-            <label className={ui.label}>
-              Sort listings
+
+            <div className="flex items-center justify-between gap-2 border-t border-border pt-2">
+              <label htmlFor="sort-listings" className="text-small font-semibold text-ink">
+                Sort listings
+              </label>
               <select
-                className={ui.select}
+                id="sort-listings"
+                className="min-h-touch rounded-sm border border-border-strong bg-surface px-2.5 py-1 text-small text-ink focus-visible:outline-focus"
                 value={sort}
                 onChange={(e) => setSort(e.target.value as PublicSort)}
               >
@@ -339,40 +356,43 @@ export function FindPage({
                   </option>
                 ))}
               </select>
-            </label>
+            </div>
           </section>
 
           {selected && <AreaStatistics listings={listings} center={center} radius={radius} />}
 
           <div role="group" aria-label="Results view" className="grid grid-cols-2 gap-2 lg:hidden">
-            <button
-              type="button"
-              className={`${ui.chip} justify-center`}
-              aria-pressed={view === 'list'}
+            <Chip
+              className="justify-center"
+              pressed={view === 'list'}
+              icon={<List aria-hidden size={16} />}
               onClick={() => setView('list')}
             >
-              <List aria-hidden size={16} />
               List
-            </button>
-            <button
-              type="button"
-              className={`${ui.chip} justify-center`}
-              aria-pressed={view === 'map'}
+            </Chip>
+            <Chip
+              className="justify-center"
+              pressed={view === 'map'}
+              icon={<MapIcon aria-hidden size={16} />}
               onClick={() => setView('map')}
             >
-              <MapIcon aria-hidden size={16} />
               Map
-            </button>
+            </Chip>
           </div>
 
           <div className={`flex flex-col gap-3 ${hideOnMobile(view === 'map')}`}>
-            <h2 className={ui.heading2}>{selected?.name ?? 'Select a service to see prices'}</h2>
-            <p className={ui.muted}>
+            <h2 className="font-display text-h2 font-bold text-ink">
+              {selected?.name ?? 'Select a service to see prices'}
+            </h2>
+            <p className="text-small text-muted">
               Branches without recorded coordinates appear in the list with “Location not recorded”.
               They are not counted as inside your radius.
             </p>
             {selected && !visible.length && (
-              <p className={ui.notice}>No published listings match this service and area.</p>
+              <EmptyState
+                title="No published listings"
+                description="No published listings match this service and area."
+              />
             )}
             <section aria-label="Published listings" className="flex flex-col gap-3">
               {visible.map((l) => (
@@ -393,25 +413,23 @@ export function FindPage({
           </div>
 
           {comparison.length === 1 && (
-            <p className={ui.muted}>1 of 4 selected for comparison. Select one more to compare.</p>
+            <p className="text-small text-muted">
+              1 of 4 selected for comparison. Select one more to compare.
+            </p>
           )}
           {comparison.length >= 2 && (
             <section
               aria-label="Comparison"
-              className={`${ui.floating} sticky bottom-0 z-20 flex flex-wrap items-center justify-between gap-2 p-3`}
+              className="sticky bottom-0 z-20 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-surface p-3 shadow-overlay"
             >
-              <p className="text-sm font-semibold">{comparison.length} of 4 selected</p>
+              <p className="text-small font-semibold text-ink">{comparison.length} of 4 selected</p>
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className={ui.buttonSecondary}
-                  onClick={() => setComparison([])}
-                >
+                <Button variant="secondary" onClick={() => setComparison([])}>
                   Clear comparison
-                </button>
-                <a className={ui.buttonPrimary} href={`/compare?ids=${comparison.join(',')}`}>
+                </Button>
+                <ButtonLink variant="primary" href={`/compare?ids=${comparison.join(',')}`}>
                   Compare selected branches
-                </a>
+                </ButtonLink>
               </div>
             </section>
           )}
@@ -462,6 +480,7 @@ export function FindPage({
                     ? () => setView('map')
                     : undefined
                 }
+                isBottomSheet={view === 'list'}
               />
             </div>
           )}

@@ -68,7 +68,7 @@ typography:
     letterSpacing: 0.02em
   price:
     fontFamily: Inter
-    fontSize: 1.25rem
+    fontSize: 1.5rem
     fontWeight: 700
     lineHeight: 1.2
     fontFeature: "'tnum' 1"
@@ -487,7 +487,13 @@ A small `map-hint` label at the top left of the map says "Click the map to choos
 
 These show one selected listing. Include a close button with the accessible name "Close listing details". Include the road estimate action "Get driving estimate". After a result arrives, show "Road distance 4.2 km · Estimated travel time 18 minutes". Label the source of the estimate.
 
-### Filter chips
+### Chip and filter chips
+
+Use `Chip` for toggle controls such as filter options, radius presets, view switches, and selection toggles.
+
+- Purpose: Render compact toggle buttons with accessible pressed state.
+- Structure: Rounded pill (`rounded.full`), light border, hover state, pressed state with dark fill, and visible focus outline.
+- States: Unpressed, pressed (`aria-pressed="true"`), and disabled.
 
 Radius presets (1 km, 3 km, 5 km, Custom) and sort options use `chip-filter`. The active chip uses `chip-filter-active` and `aria-pressed="true"`. Label the radius group "Straight-line radius".
 

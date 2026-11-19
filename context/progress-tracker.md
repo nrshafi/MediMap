@@ -4,10 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-19 21:02:00 +06:00`.
+Last updated: `2026-11-19 23:14:00 +06:00`.
 
 ## Current phase
 
+Find page refactored and polished (`src/features/public/FindPage.tsx`, `ListingCard.tsx`, `ListingPanel.tsx`, `LocationPanel.tsx`, `AreaStatistics.tsx`, `GoogleMapView.tsx`). Removed redundancy per `docs/ui-audit.md` and adopted shared design system components (`Card`, `StatTile`, `Field`, `Notice`, `EmptyState`, `Skeleton`, `StatusBadge`).
 Responsive site chrome and landing page sections with real catalog data implemented in `src/ui/SiteChrome.tsx`, `src/features/landing/LandingView.tsx`, and `src/features/public/landing.functions.ts`. Step 3a fixes applied: removed prices without provenance, ordered popular services by listing count and name, linked hospital cards to branch pages, made popular service cards unified accessible links, corrected landing copy and removed redundant eyebrows, moved landing SQL into `CatalogRepository`, and removed unused props from site chrome.
 Shared component library created in `src/ui/` with tests and DESIGN.md documentation. Steps 4 to 6 will continue adopting these components across remaining feature pages.
 UI audit, design tokens, and web fonts are applied to the shared foundation. Page-level follow-ups are listed in [ui-audit.md](../docs/ui-audit.md).
@@ -54,6 +55,45 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Find page redundancy removal and design system polish (2026-11-19 22:15:00 +06:00)
+
+- Refactored `/find` to eliminate duplicate facts and repeated actions recorded in `docs/ui-audit.md`:
+  - `ListingCard.tsx`: Kept price verification badge, review date, and a compact "Source" external link on one line. The card shows provider, branch, service, price, status line, straight-line distance, and road time only if known.
+  - Card interaction: Clicking the card opens the floating panel or mobile bottom sheet. Retained one action button: "Select for comparison".
+  - Moved branch details, service reviews, and report incorrect information links off the card into the listing panel.
+  - `ListingPanel.tsx`: Removed duplicate road time tile; travel time is displayed in the route estimate status. Removed repeated "Location not recorded" in the straight-line tile. Removed duplicate "Directions from Google Maps" footer.
+  - Panel actions: Each action appears once ("Show route", "Open directions in Google Maps", "Branch details", "Service reviews", "Report incorrect information"). Grouped secondary links in a single row.
+  - Google Maps attribution stays visible and is never covered by panels or bottom sheets.
+- Polished `/find` components using shared design system primitives:
+  - Replaced legacy `ui.tile`, `ui.tileLabel`, and `ui.tileValue` styles with `StatTile` across `ListingCard`, `ListingPanel`, and `AreaStatistics`.
+  - Replaced ad hoc card markup with `Card` (`variant="default"`, interactive hover lift, and clear selected ring matching the selected pin).
+  - Selected map pin styled with elevated accent, primary background, and ring while keeping the price label.
+  - Listing panel updated with PageHeader-style title, stat tiles, primary action "Show route", and `Skeleton` during route calculation. Collapsible driving steps preserved.
+  - `LocationPanel.tsx`: Adopted `Field` component with `fieldControlStyles` and unified `Notice` feedback for lookup errors and status messages.
+  - Compact toolbar for filters and sorting: Decorative light `border` for unselected chips and clear pressed state; radius chips and sort dropdown consolidated.
+  - Empty state: Replaced empty notice with `EmptyState` component.
+  - Mobile bottom sheet: Styled with a drag handle look, rounded top corners (`rounded-t-lg`), and max height leaving the map visible.
+  - Verified mobile menu panel in `SiteChrome.tsx` opens above the map and bottom sheet with `relative z-40` on header.
+- Step 4a fixes:
+  - Task 1: Replaced `tabIndex` and `onKeyDown` on listing card with a real `<button type="button">` inside `<h3>` with `aria-expanded` and visible focus outline; kept card background click opening panel while ignoring link and button clicks; added keyboard navigation browser tests.
+  - Task 2: Restored mobile map view panel in page flow below the map with card styling (`rounded-lg`, border, shadow), keeping the fixed bottom sheet (drag handle, rounded top corners, max height) for mobile list view; built `panelClass` from shared and view-specific parts; added browser test verifying panel does not intersect bottom 40 px of map at 375 px.
+  - Task 3: Replaced hand-written button class strings in `ListingPanel.tsx`, `FindPage.tsx`, and `LocationPanel.tsx` with shared `Button` and `ButtonLink` components.
+  - Task 4: Created `src/ui/Chip.tsx` toggle button with `aria-pressed`, optional icon, border, hover, and focus states; added unit tests in `src/ui/__tests__/Chip.test.tsx`; adopted `Chip` across "Verified prices only", radius presets, "List" / "Map" switcher, and compare buttons; removed unused `ui.chip` from `src/ui/styles.ts`.
+  - Task 5: Restored `var(--spacing-attribution)` in `FindPage.tsx`; removed redundant "Branch listing" eyebrow in `ListingPanel.tsx`; added `--text-price` token (1.5rem, line height 1.2, weight 700) to `src/styles.css` and `DESIGN.md`, adopting `text-price tabular-nums` for card and panel prices; replaced `text-xs` with `text-label` across `ListingPanel.tsx`, `FindPage.tsx`, and `GoogleMapView.tsx`; cleaned sort `<select>` accessibility and styling; stored typed notice states `{ kind, text }` in `LocationPanel.tsx`; made review date assertion exact in browser test using `formatReviewDate`.
+- Automated tests and verification:
+  - Updated `tests/browser/public-integration.browser.ts` for card click-to-open interaction, touch targets, and link moves.
+  - Added test verifying compact status line and source link on card, absence of secondary links on card, single occurrence of panel actions, and zero horizontal overflow at 375 px.
+  - Added browser tests for card keyboard navigation and mobile map attribution clearance.
+  - `bun run typecheck`: clean (0 errors in 240 application files and 27 tooling files).
+  - `oxlint . --deny-warnings`: clean (0 warnings and 0 errors across 252 files).
+  - `bun run format:check`: all 262 files formatted.
+  - `bun test`: 354 unit/component tests passing across 50 files.
+  - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1.
+  - `bun run test:browser`: 110 browser tests passing (2 skipped) across desktop and mobile.
+- Open items:
+  - Owner billing decision for production Google Maps Platform key before release.
+  - Steps 5 and 6 component migrations for remaining comparison, reviews, and administration screens.
 
 ### Responsive site chrome and landing page sections (2026-11-19 20:16:00 +06:00)
 

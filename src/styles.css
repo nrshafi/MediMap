@@ -70,6 +70,10 @@
   --text-label--letter-spacing: 0.02em;
   --text-label--font-weight: 600;
 
+  --text-price: 1.5rem;
+  --text-price--line-height: 1.2;
+  --text-price--font-weight: 700;
+
   --shadow-card: 0 1px 2px rgb(20 61 60 / 0.06), 0 2px 6px rgb(20 61 60 / 0.05);
   --shadow-lift: 0 2px 4px rgb(20 61 60 / 0.07), 0 8px 18px rgb(20 61 60 / 0.1);
   --shadow-overlay: 0 4px 10px rgb(20 61 60 / 0.1), 0 18px 44px rgb(20 61 60 / 0.18);

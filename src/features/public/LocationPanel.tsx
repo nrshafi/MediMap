@@ -3,10 +3,13 @@ import { MapPin, Search } from 'lucide-react';
 import type { Coordinates } from '../map/types';
 import { DHAKA_LOCATION_PRESETS } from '../search/discoveryData';
 import { LocationSelector } from '../search/ui/LocationSelector';
-import { ui } from '../../ui/styles';
+import { Button } from '../../ui/Button';
+import { Field, fieldControlStyles } from '../../ui/Field';
+import { Notice } from '../../ui/Notice';
 import { findLocation, selectLocation } from './catalog.functions';
 
 type Suggestion = { placeId: string; label: string };
+type NoticeState = { kind: 'error' | 'info'; text: string };
 
 export function locationLabel(center: Coordinates, custom?: string) {
   if (custom) return custom;
@@ -30,7 +33,7 @@ export function LocationPanel({
 }) {
   const [address, setAddress] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const [message, setMessage] = useState('');
+  const [notice, setNotice] = useState<NoticeState | null>(null);
   const [pending, setPending] = useState(false);
   const generation = useRef(0);
   const token = useRef<string | null>(null);
@@ -38,47 +41,54 @@ export function LocationPanel({
   function reset() {
     generation.current++;
     setSuggestions([]);
-    setMessage('');
+    setNotice(null);
     setPending(false);
   }
 
   return (
     <section aria-label="Choose your location" className="flex flex-col gap-3">
-      <h2 className={ui.heading2}>Your location</h2>
-      <p className="flex items-center gap-2 text-sm">
+      <h2 className="font-display text-h2 font-bold text-ink">Your location</h2>
+      <p className="flex items-center gap-2 text-small text-ink">
         <MapPin aria-hidden size={16} className="shrink-0 text-primary" />
         <span>
           Searching near <strong>{locationLabel(center, label)}</strong>
         </span>
       </p>
       <form
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-2.5"
         onSubmit={async (event) => {
           event.preventDefault();
           const current = ++generation.current;
           token.current ??= crypto.randomUUID();
           setPending(true);
           setSuggestions([]);
-          setMessage('');
+          setNotice(null);
           try {
             const result = await findLocation({
               data: { query: address, sessionToken: token.current },
             });
             if (current !== generation.current) return;
             setSuggestions(result.suggestions);
-            setMessage(result.message);
+            if (result.message) {
+              setNotice({
+                kind: result.suggestions.length > 0 ? 'info' : 'error',
+                text: result.message,
+              });
+            }
           } catch {
             if (current !== generation.current) return;
-            setMessage('Address lookup is unavailable. Your previous location is unchanged.');
+            setNotice({
+              kind: 'error',
+              text: 'Address lookup is unavailable. Your previous location is unchanged.',
+            });
           } finally {
             if (current === generation.current) setPending(false);
           }
         }}
       >
-        <label className={ui.label}>
-          Dhaka address
+        <Field label="Dhaka address" required>
           <input
-            className={ui.input}
+            className={fieldControlStyles}
             value={address}
             minLength={3}
             maxLength={160}
@@ -90,23 +100,27 @@ export function LocationPanel({
               setAddress(event.target.value);
             }}
           />
-        </label>
-        <button className={ui.buttonPrimary} disabled={pending}>
-          <Search aria-hidden size={16} />
+        </Field>
+        <Button
+          type="submit"
+          variant="primary"
+          pending={pending}
+          icon={<Search aria-hidden size={16} />}
+        >
           {pending ? 'Finding address…' : 'Find address'}
-        </button>
+        </Button>
       </form>
-      <p role="status" data-testid="address-message" className="text-sm empty:hidden">
-        {message}
-      </p>
+      <div data-testid="address-message" className="empty:hidden" aria-live="polite">
+        {notice && <Notice kind={notice.kind}>{notice.text}</Notice>}
+      </div>
       {suggestions.length > 0 && (
         <div className="flex flex-col gap-1">
           <ul className="flex flex-col gap-1">
             {suggestions.map((suggestion) => (
               <li key={suggestion.placeId}>
-                <button
-                  type="button"
-                  className={`${ui.buttonSecondary} w-full justify-start text-left`}
+                <Button
+                  variant="secondary"
+                  className="w-full justify-start text-left"
                   onClick={async () => {
                     const current = ++generation.current;
                     const sessionToken = token.current ?? crypto.randomUUID();
@@ -118,26 +132,29 @@ export function LocationPanel({
                       token.current = null;
                       if (result.place) {
                         setSuggestions([]);
-                        setMessage(`Selected ${result.place.label}`);
+                        setNotice({ kind: 'info', text: `Selected ${result.place.label}` });
                         onSelect(
                           { latitude: result.place.latitude, longitude: result.place.longitude },
                           result.place.label,
                         );
-                      } else setMessage(result.message);
+                      } else {
+                        setNotice({ kind: 'error', text: result.message });
+                      }
                     } catch {
                       if (current !== generation.current) return;
-                      setMessage(
-                        'That address could not be loaded. Your previous location is unchanged.',
-                      );
+                      setNotice({
+                        kind: 'error',
+                        text: 'That address could not be loaded. Your previous location is unchanged.',
+                      });
                     }
                   }}
                 >
                   {suggestion.label}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
-          {showAttribution && <p className="text-xs font-semibold text-muted">Google Maps</p>}
+          {showAttribution && <p className="text-label font-semibold text-muted">Google Maps</p>}
         </div>
       )}
       <LocationSelector

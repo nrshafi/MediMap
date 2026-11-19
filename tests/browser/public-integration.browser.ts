@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { useBrowserSession } from './session-fixture';
+import { formatReviewDate } from '../../src/features/public/format';
 test('public catalog, details, unknown locations and URL filters use persisted data', async ({
   page,
 }) => {
@@ -296,7 +297,7 @@ test('find page removes repeated facts and actions while keeping source and pane
 
   // Card still shows status, review date and source
   await expect(card.getByText(/Verified|Price unknown|Disputed/)).toBeVisible();
-  await expect(card.getByText(/2026|Unknown/)).toBeVisible();
+  await expect(card.getByText(formatReviewDate('2026-10-27T11:20:41Z'))).toBeVisible();
   await expect(card.getByRole('link', { name: 'Source' })).toBeVisible();
 
   // Card no longer shows branch, review and report links
@@ -333,4 +334,87 @@ test('find page removes repeated facts and actions while keeping source and pane
 
   // No horizontal scroll at 375 px and desktop
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('card keyboard navigation activates card button, source link and compare button independently', async ({
+  page,
+}) => {
+  await page.goto('/find?service=complete-blood-count&radius=10');
+  if (test.info().project.name === 'mobile') {
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+  }
+  const card = page.locator('[data-select-listing]').first();
+  await expect(card).toBeVisible();
+
+  // 1. Tab to the card button and press Enter opens the panel
+  const cardButton = card.getByRole('button', { name: /Ad-din/ });
+  await cardButton.focus();
+  await expect(cardButton).toBeFocused();
+  await page.keyboard.press('Enter');
+  const panel = page.getByRole('region', { name: 'Listing details' });
+  await expect(panel).toBeVisible();
+
+  // Close the panel
+  await panel.getByRole('button', { name: 'Close listing details' }).click();
+  await expect(panel).toHaveCount(0);
+
+  // 2. Enter on the focused "Source" link does not open the panel
+  const sourceLink = card.getByRole('link', { name: 'Source' });
+  await sourceLink.focus();
+  await expect(sourceLink).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(panel).toHaveCount(0);
+
+  // 3. Space on the focused compare button toggles comparison and does not open the panel
+  const compareButton = card.getByRole('button', { name: 'Select for comparison' });
+  await compareButton.focus();
+  await expect(compareButton).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(panel).toHaveCount(0);
+  await expect(card.getByRole('button', { name: 'Remove from comparison' })).toBeVisible();
+
+  // Toggle back with Space
+  await page.keyboard.press('Space');
+  await expect(panel).toHaveCount(0);
+  await expect(card.getByRole('button', { name: 'Select for comparison' })).toBeVisible();
+});
+
+test('mobile map view at 375 px does not cover the bottom 40 px of the map when listing panel is open', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/find?service=complete-blood-count&radius=10');
+
+  // In list view, open the panel
+  await page.getByRole('button', { name: 'List', exact: true }).click();
+  const card = page.locator('[data-select-listing]').first();
+  await card.click();
+  const panel = page.getByRole('region', { name: 'Listing details' });
+  await expect(panel).toBeVisible();
+
+  // Switch to map view
+  await page.getByRole('button', { name: 'Map', exact: true }).click();
+  await expect(panel).toBeVisible();
+
+  // Map container is visible
+  const mapContainer = page.getByRole('region', { name: 'Map' }).locator('.h-\\[60svh\\]');
+  await expect(mapContainer).toBeVisible();
+
+  const mapBox = await mapContainer.boundingBox();
+  const panelBox = await panel.boundingBox();
+  expect(mapBox).not.toBeNull();
+  expect(panelBox).not.toBeNull();
+
+  if (mapBox && panelBox) {
+    const mapAttributionTop = mapBox.y + mapBox.height - 40;
+    const mapAttributionBottom = mapBox.y + mapBox.height;
+
+    // Check that panel bounding box does not intersect the bottom 40 px of the map
+    const intersects =
+      panelBox.y < mapAttributionBottom && panelBox.y + panelBox.height > mapAttributionTop;
+    expect(intersects).toBe(false);
+
+    // The panel is placed below the map container in the page flow
+    expect(panelBox.y).toBeGreaterThanOrEqual(mapBox.y + mapBox.height);
+  }
 });

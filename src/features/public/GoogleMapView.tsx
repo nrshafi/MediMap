@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AdvancedMarker, APIProvider, Map, useMap } from '@vis.gl/react-google-maps';
 import { MapPin } from 'lucide-react';
-import { ui } from '../../ui/styles';
+import { Notice } from '../../ui/Notice';
 import type { Coordinates } from '../map/types';
 
 declare global {
@@ -20,12 +20,11 @@ export type MapPinData = {
 
 export function MapUnavailable() {
   return (
-    <div role="status" className={`${ui.alertError} m-4`}>
-      <p className="font-semibold">Map unavailable</p>
-      <p>
+    <div className="m-4">
+      <Notice kind="error" title="Map unavailable">
         The map could not load. Prices, branch details, and the location form still work. Use the
         address search, coordinates, or browser location to set your search location.
-      </p>
+      </Notice>
     </div>
   );
 }
@@ -34,7 +33,7 @@ export function MapPlaceholder() {
   return (
     <div
       role="status"
-      className="flex h-full min-h-48 items-center justify-center bg-surface-sunken p-4 text-sm text-muted"
+      className="flex h-full min-h-48 items-center justify-center bg-surface-sunken p-4 text-small text-muted"
     >
       <MapPin aria-hidden size={20} className="mr-2" />
       Map loads in your browser.
@@ -200,12 +199,16 @@ export function GoogleMapView({
                 key={pin.id}
                 position={{ lat: pin.coordinates.latitude, lng: pin.coordinates.longitude }}
                 title={onSelect ? `Select ${pin.name}` : pin.name}
-                zIndex={active ? 3 : 2}
+                zIndex={active ? 10 : 2}
                 onClick={() => onSelect?.(pin.id)}
               >
                 <div className="flex min-h-touch min-w-touch items-center justify-center">
                   <div
-                    className={`flex h-8 max-w-40 items-center rounded-full border px-2 text-xs font-semibold ${active ? 'border-primary bg-primary text-on-primary' : 'border-border-strong bg-surface text-ink'}`}
+                    className={`flex h-8 max-w-40 items-center rounded-full border px-2.5 text-label font-bold transition-all duration-fast ${
+                      active
+                        ? 'scale-110 border-primary bg-primary text-on-primary shadow-lift ring-2 ring-primary ring-offset-2'
+                        : 'border-border-strong bg-surface text-ink shadow-card hover:border-primary hover:text-primary'
+                    }`}
                   >
                     <span className="truncate">{pin.label}</span>
                   </div>
@@ -216,7 +219,7 @@ export function GoogleMapView({
         </Map>
       </APIProvider>
       {onPickLocation && !picked && (
-        <p className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-2 text-xs font-semibold text-on-ink shadow-overlay">
+        <p className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-2 text-label font-semibold text-on-ink shadow-overlay">
           Click the map to choose your search location
         </p>
       )}

@@ -12,7 +12,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   secondary:
     'border border-border-strong bg-surface text-primary hover:bg-primary-soft hover:text-primary-strong',
   ghost: 'text-primary hover:bg-primary-soft',
-  danger: 'bg-error text-white hover:bg-[#9c1f18]',
+  danger: 'bg-error text-on-primary hover:bg-error-strong',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -58,7 +58,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   pending?: boolean;
-  href?: string;
   icon?: ReactNode;
 }
 
@@ -70,25 +69,9 @@ export function Button({
   className = '',
   children,
   icon,
-  href,
   type = 'button',
   ...props
 }: ButtonProps) {
-  if (href) {
-    return (
-      <ButtonLink
-        variant={variant}
-        size={size}
-        className={className}
-        href={href}
-        icon={icon}
-        {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
-      >
-        {children}
-      </ButtonLink>
-    );
-  }
-
   return (
     <button
       type={type}

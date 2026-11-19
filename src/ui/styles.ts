@@ -1,18 +1,26 @@
 export const ui = {
+  // Replaced by Button component (variant="primary")
   buttonPrimary:
     'inline-flex min-h-touch items-center justify-center gap-2 rounded-sm bg-primary px-3 text-small font-semibold text-on-primary hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-60',
+  // Replaced by Button component (variant="secondary")
   buttonSecondary:
     'inline-flex min-h-touch items-center justify-center gap-2 rounded-sm border border-border-strong bg-surface px-3 text-small font-semibold text-primary hover:bg-primary-soft hover:text-primary-strong disabled:cursor-not-allowed disabled:opacity-60',
+  // Replaced by Button component (variant="ghost")
   buttonGhost:
     'inline-flex min-h-touch items-center justify-center gap-2 rounded-sm px-3 text-small font-semibold text-primary hover:bg-primary-soft disabled:cursor-not-allowed disabled:opacity-60',
   link: 'font-medium text-primary underline-offset-2 hover:underline',
+  // Replaced by Field component and fieldControlStyles
   input:
     'min-h-touch w-full rounded-sm border border-border-strong bg-surface px-2.5 text-base text-ink placeholder:text-muted',
+  // Replaced by Field component
   label: 'flex flex-col gap-1 text-small font-semibold text-ink',
   chip: 'inline-flex min-h-touch items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 text-small font-semibold text-ink hover:border-border-strong aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-on-ink',
+  // Replaced by Card component (variant="default")
   card: 'rounded-md border border-border bg-surface p-4',
   metric: 'rounded-sm bg-surface-sunken p-2 text-label font-semibold text-ink',
+  // Replaced by Notice component (kind="error")
   alertError: 'rounded-sm border border-error/40 bg-error-soft p-3 text-small text-error',
+  // Replaced by Notice component (kind="info")
   notice: 'rounded-sm border border-border bg-surface-sunken p-3 text-small text-muted',
   heading1: 'font-display text-h1 font-bold text-ink',
   heading2: 'font-display text-h2 font-bold text-ink',
@@ -24,12 +32,16 @@ export const ui = {
   select:
     'min-h-touch w-full rounded-sm border border-border-strong bg-surface px-2 text-base text-ink',
   floating: 'rounded-lg border border-border bg-surface text-ink shadow-overlay',
+  // Replaced by StatTile component
   tile: 'min-w-0 rounded-sm bg-surface-sunken p-2 text-ink',
+  // Replaced by StatTile component
   tileLabel: 'text-label font-semibold text-muted',
+  // Replaced by StatTile component
   tileValue: 'break-words text-small font-bold [font-feature-settings:"tnum"_1]',
   price: 'text-xl font-bold leading-tight text-ink [font-feature-settings:"tnum"_1]',
 } as const;
 
+// Replaced by StatusBadge and Badge components
 export const statusBadge: Record<string, string> = {
   verified:
     'inline-flex items-center gap-1 rounded-full bg-verified-soft px-2 py-1 text-label font-semibold text-verified',

@@ -4,8 +4,6 @@ import { ui } from '../../ui/styles';
 import { StatusBadge } from '../../ui/Badge';
 import { formatBdt, formatKm, type RouteResult, formatReviewDate } from './format';
 
-export { StatusBadge };
-
 const linkRow = `${ui.link} inline-flex min-h-touch items-center`;
 
 function roadValue(route: RouteResult | undefined) {

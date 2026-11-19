@@ -23,6 +23,7 @@ colors:
   unknown: "#506b69"
   unknown-soft: "#eef3f2"
   error: "#b3261e"
+  error-strong: "#9c1f18"
   error-soft: "#fce8e6"
 typography:
   display:
@@ -385,14 +386,14 @@ Under `prefers-reduced-motion: reduce`, remove transitions and animations, and s
 
 ## Components
 
-### Button
+### Button and ButtonLink
 
-Use buttons to trigger actions or navigate to routes.
+Use `Button` to trigger actions and `ButtonLink` to navigate to routes.
 
-- Purpose: Execute user commands or open internal paths.
+- Purpose: `Button` executes user commands. `ButtonLink` renders an `<a>` element with button styling for navigation.
 - Variants: `primary` for primary actions, `secondary` for secondary actions, `ghost` for subtle actions, and `danger` for destructive actions.
 - Sizes: `default` and `small`. Both sizes keep the 44 px touch height.
-- States: Normal, hover, focus, disabled, and pending with a spinner and `aria-busy`. Link variant renders an `<a>` element with button appearance.
+- States: Normal, hover, focus, disabled, and pending with a spinner and `aria-busy` (for `Button`).
 
 ### Card
 
@@ -415,6 +416,43 @@ Use notices to display contextual messages and system feedback.
 
 - Purpose: Present important messages, operational status, or system errors.
 - Variants: `info` with a status role, `warning` with a status role, and `error` with an alert role.
+
+### Empty state
+
+Use empty states when a query, filter, or record list has no results.
+
+- Purpose: Show clear feedback and give a recovery action.
+- Structure: Centered icon, title, one line of text, and an optional action button.
+
+### Skeleton
+
+Use skeletons to show placeholder content while data loads.
+
+- Purpose: Maintain visual structure during asynchronous requests.
+- Variants: `block` for panels and cards, and `text` for paragraphs or metadata lines.
+- Motion: Displays a shimmer animation. The shimmer stops when reduced motion is preferred.
+
+### Page header
+
+Use page headers to introduce views and provide page-level actions.
+
+- Purpose: Anchor the top of a page with titles, explanations, and key buttons.
+- Structure: Page title (`h1`), optional uppercase eyebrow, optional description, and optional action row.
+
+### Field
+
+Use fields to wrap form controls with accessible metadata.
+
+- Purpose: Connect labels, inputs, hints, and validation errors.
+- Structure: Visible label, input or control, optional hint, and optional error message.
+- Accessibility: Links controls, hints, and errors with `aria-describedby` and `htmlFor`. Uses `border-strong` for control edges and keeps the 44 px touch height.
+
+### Stat tile
+
+Use stat tiles to show compact metrics and price figures.
+
+- Purpose: Display short label and value pairs in listing cards and summary sections.
+- Structure: Label (`label` style) and value (`price` style with tabular numbers). Replaces the legacy `tile`, `tileLabel`, and `tileValue` classes.
 
 ### Listing card
 

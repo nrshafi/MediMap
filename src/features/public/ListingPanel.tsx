@@ -21,7 +21,7 @@ import {
   formatReviewDate,
 } from './format';
 import type { LivePosition } from './useLivePosition';
-import { StatusBadge } from './ListingCard';
+import { StatusBadge } from '../../ui/Badge';
 
 const linkRow = `${ui.link} inline-flex min-h-touch items-center gap-1`;
 

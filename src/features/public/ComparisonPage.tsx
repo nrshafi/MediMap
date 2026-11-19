@@ -6,7 +6,7 @@ import { dayHoursLabel, openingStatus } from '../providers/hours';
 import { PageShell } from '../../ui/PageShell';
 import { ui } from '../../ui/styles';
 import { formatBdt, formatKm, formatReviewDate } from './format';
-import { StatusBadge } from './ListingCard';
+import { StatusBadge } from '../../ui/Badge';
 
 function routeLabel(result: Awaited<ReturnType<typeof publicRoute>> | undefined) {
   if (!result) return 'Not requested yet';

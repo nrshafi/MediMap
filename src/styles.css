@@ -21,6 +21,7 @@
   --color-unknown: #506b69;
   --color-unknown-soft: #eef3f2;
   --color-error: #b3261e;
+  --color-error-strong: #9c1f18;
   --color-error-soft: #fce8e6;
 
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -76,6 +77,14 @@
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --animate-shimmer: shimmer 1.5s infinite;
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 @layer base {

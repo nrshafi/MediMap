@@ -19,7 +19,8 @@ test('Button renders variants with required touch target and styles', () => {
 
   const danger = renderToStaticMarkup(<Button variant="danger">Delete</Button>);
   assert.match(danger, /bg-error/);
-  assert.match(danger, /text-white/);
+  assert.match(danger, /text-on-primary/);
+  assert.match(danger, /hover:bg-error-strong/);
 });
 
 test('Button supports default and small sizes while preserving min-h-touch', () => {
@@ -46,22 +47,22 @@ test('Button handles explicit disabled state', () => {
   assert.match(markup, /disabled:cursor-not-allowed/);
 });
 
-test('Button renders link variant when href is provided or via ButtonLink', () => {
-  const viaProp = renderToStaticMarkup(
-    <Button href="/find" variant="primary">
+test('ButtonLink renders navigation anchor with button styling and attributes', () => {
+  const primaryLink = renderToStaticMarkup(
+    <ButtonLink href="/find" variant="primary">
       Find services
-    </Button>,
+    </ButtonLink>,
   );
-  assert.match(viaProp, /<a /);
-  assert.match(viaProp, /href="\/find"/);
-  assert.match(viaProp, /bg-primary/);
+  assert.match(primaryLink, /<a /);
+  assert.match(primaryLink, /href="\/find"/);
+  assert.match(primaryLink, /bg-primary/);
 
-  const viaComponent = renderToStaticMarkup(
+  const secondaryLink = renderToStaticMarkup(
     <ButtonLink href="/compare" variant="secondary">
       Compare
     </ButtonLink>,
   );
-  assert.match(viaComponent, /<a /);
-  assert.match(viaComponent, /href="\/compare"/);
-  assert.match(viaComponent, /border-border-strong/);
+  assert.match(secondaryLink, /<a /);
+  assert.match(secondaryLink, /href="\/compare"/);
+  assert.match(secondaryLink, /border-border-strong/);
 });

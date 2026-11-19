@@ -247,6 +247,8 @@ The earlier pass raised one shared border token to 3:1. That made every decorati
 | `primary` on `primary-soft` | 4.85:1 | 4.5:1 body | Pass |
 | `on-primary` on `primary` | 5.63:1 | 4.5:1 body | Pass |
 | `on-primary` on `primary-strong` | 7.20:1 | 4.5:1 body | Pass |
+| `on-primary` on `error` | 6.54:1 | 4.5:1 body | Pass |
+| `on-primary` on `error-strong` | 8.01:1 | 4.5:1 body | Pass |
 | `error` on `error-soft` | 5.55:1 | 4.5:1 body | Pass |
 | `error` on `surface` | 6.54:1 | 4.5:1 body | Pass |
 | `verified` on `verified-soft` | 5.74:1 | 4.5:1 body | Pass |

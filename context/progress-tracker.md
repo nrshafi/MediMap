@@ -4,10 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-19 17:53:30 +06:00`.
+Last updated: `2026-11-19 19:07:00 +06:00`.
 
 ## Current phase
 
+Shared component library created in `src/ui/` with tests and DESIGN.md documentation. Steps 3 to 6 will adopt these components across feature pages.
 UI audit, design tokens, and web fonts are applied to the shared foundation. Page-level follow-ups are listed in [ui-audit.md](../docs/ui-audit.md).
 Dependency update and node_modules sync with Bun 1.4.5 completed and fully verified.
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
@@ -52,6 +53,31 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Shared component library (2026-11-19 18:32:30 +06:00)
+
+- Implemented standard reusable components in `src/ui/`:
+  - `Button` and `ButtonLink`: primary, secondary, ghost, and danger variants, default and small sizes, pending state with spinner and `aria-busy` for `Button`, and `ButtonLink` for navigation.
+  - `Card`: default, raised (with `shadow-card` and interactive hover `shadow-lift`), and sunken variants.
+  - `Badge` and `StatusBadge`: categorical tone badges and diagnostic price verification badges. Moved `StatusBadge` out of `ListingCard.tsx` and imported it directly across callers.
+  - `Notice`: unified contextual feedback boxes for info, warning, and error kinds.
+  - `EmptyState`: centered state indicators with icon, heading, single-line description, and optional action controls.
+  - `Skeleton`: block and multi-line text placeholders with a shimmer animation that halts under `prefers-reduced-motion: reduce`.
+  - `PageHeader`: structured view header with title, optional eyebrow, description, and action controls.
+  - `Field`: form field wrapper linking label, control, hint, and validation error with `htmlFor` and `aria-describedby`.
+  - `StatTile`: compact label-and-value tile replacing legacy `tile`, `tileLabel`, and `tileValue` styles.
+- Updated `src/ui/styles.ts` with descriptive comments indicating legacy classes replaced by the new components.
+- Added comprehensive unit test suites in `src/ui/__tests__/` covering variants, interactive states, pending states, and accessible link associations.
+- Documented all component purposes, variants, and invariants in `DESIGN.md`.
+- Step 2a fixes:
+  - Task 1: moved `@keyframes shimmer` into the `@theme` block in `src/styles.css` and added `--animate-shimmer` so Tailwind CSS 4 emits the `before:animate-shimmer` utility; removed the plain `.animate-shimmer` class; verified `before:animate-shimmer` in built assets with reduced-motion suppression preserved.
+  - Task 2: added `--color-error-strong: #9c1f18` to `src/styles.css` and `DESIGN.md` front matter; changed `Button` danger variant to `bg-error text-on-primary hover:bg-error-strong`; verified white text on `error-strong` meets 8.01:1 contrast and recorded the ratio in `docs/ui-audit.md`.
+  - Task 3: removed the `href` prop from `Button` and enforced `ButtonLink` for link navigation; updated unit tests and the `DESIGN.md` "Components" section.
+  - Task 4: removed the `StatusBadge` re-export from `src/features/public/ListingCard.tsx` and updated all callers (`ComparisonPage.tsx` and `ListingPanel.tsx`) to import directly from `src/ui/Badge.tsx`.
+- Verification: `bun run typecheck`, `bun run lint`, `bun run format:check`, and `bun test` passed (338 tests passing across 47 files); `bun run test:database` passed (108 tests); `bun run test:browser` passed (96 tests across desktop and mobile); `bunx vite build` generated `before:animate-shimmer` in production CSS.
+- Open items:
+  1. Migrate existing page layouts in steps 3 to 6 to use the new shared components.
+  2. Implement remaining follow-ups identified in `docs/ui-audit.md`.
 
 ### UI audit, design tokens, and web fonts (2026-11-19 17:53:30 +06:00)
 

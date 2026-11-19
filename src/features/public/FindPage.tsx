@@ -416,7 +416,7 @@ export function FindPage({
             </section>
           )}
           <div className="hidden lg:block">
-            <SiteFooter maps />
+            <SiteFooter />
           </div>
         </div>
 
@@ -471,7 +471,7 @@ export function FindPage({
         </section>
       </main>
       <div className="lg:hidden">
-        <SiteFooter maps />
+        <SiteFooter />
       </div>
     </div>
   );

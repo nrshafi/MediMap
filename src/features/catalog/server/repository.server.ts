@@ -7,8 +7,11 @@ import {
   record,
   type Branch,
   type BranchService,
+  type CoveredHospitalItem,
   type CurrentPrice,
+  type LandingPageData,
   type Page,
+  type PopularServiceItem,
   type Service,
   type Source,
 } from '../contracts';
@@ -303,6 +306,76 @@ export class CatalogRepository {
       service: service(row),
       branch: branch(row),
       price: price(row),
+    };
+  }
+
+  async getLandingData(): Promise<LandingPageData> {
+    const [popularServicesResult, hospitalRowsResult] = await this.db.batch<
+      Record<string, unknown>
+    >([
+      this.db.prepare(
+        `SELECT
+           s.id,
+           s.name,
+           c.name AS category_name,
+           COUNT(bs.id) AS listing_count
+         FROM services s
+         JOIN categories c ON c.id = s.category_id AND c.active = 1
+         JOIN branch_services bs ON bs.service_id = s.id AND bs.active = 1
+         JOIN branches b ON b.id = bs.branch_id AND b.active = 1
+         JOIN providers p ON p.id = b.provider_id AND p.active = 1
+         WHERE s.active = 1
+         GROUP BY s.id, s.name, c.name
+         ORDER BY
+           listing_count DESC,
+           s.name ASC
+         LIMIT 8`,
+      ),
+      this.db.prepare(
+        `SELECT
+           p.id AS provider_id,
+           p.name AS provider_name,
+           b.id AS branch_id,
+           b.name AS branch_name
+         FROM providers p
+         JOIN branches b ON b.provider_id = p.id AND b.active = 1
+         WHERE p.active = 1
+         ORDER BY p.name ASC, b.name ASC`,
+      ),
+    ]);
+
+    const popularServices: PopularServiceItem[] = popularServicesResult.results.map((row) => ({
+      id: storedId(row.id),
+      name: text(row.name),
+      category: text(row.category_name),
+      listingCount:
+        typeof row.listing_count === 'number' ? row.listing_count : Number(row.listing_count),
+    }));
+
+    const hospitalsMap = new Map<string, CoveredHospitalItem>();
+    for (const rawRow of hospitalRowsResult.results) {
+      const pId = storedId(rawRow.provider_id);
+      const pName = text(rawRow.provider_name);
+      const bId = storedId(rawRow.branch_id);
+      const bName = text(rawRow.branch_name);
+
+      let item = hospitalsMap.get(pId);
+      if (!item) {
+        item = {
+          id: pId,
+          name: pName,
+          branchCount: 0,
+          branches: [],
+        };
+        hospitalsMap.set(pId, item);
+      }
+      item.branches.push({ id: bId, name: bName });
+      item.branchCount = item.branches.length;
+    }
+
+    return {
+      popularServices,
+      hospitals: Array.from(hospitalsMap.values()),
     };
   }
 }

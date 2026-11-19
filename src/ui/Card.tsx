@@ -1,22 +1,24 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 
 export type CardVariant = 'default' | 'raised' | 'sunken';
 
 export interface CardProps extends HTMLAttributes<HTMLElement> {
   variant?: CardVariant;
   interactive?: boolean;
-  as?: 'article' | 'section' | 'div';
+  as?: 'article' | 'section' | 'div' | 'a';
+  href?: string;
   children?: ReactNode;
 }
 
 export function Card({
   variant = 'default',
   interactive = false,
-  as: Component = 'div',
+  as = 'div',
   className = '',
   children,
   ...props
 }: CardProps) {
+  const Component = as as ElementType;
   const base = 'rounded-md';
 
   let variantStyle = '';

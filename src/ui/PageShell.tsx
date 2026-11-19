@@ -14,12 +14,12 @@ export function FindNavLink() {
   );
 }
 
-export function PageShell({ children, maps = false }: { children: ReactNode; maps?: boolean }) {
+export function PageShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
       {children}
-      <SiteFooter maps={maps} />
+      <SiteFooter />
     </div>
   );
 }

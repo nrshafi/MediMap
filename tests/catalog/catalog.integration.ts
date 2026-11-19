@@ -259,6 +259,149 @@ test('catalog foundation against real local D1', async (t) => {
       },
     );
 
+    await t.test(
+      'landing data repository read excludes inactive entities, orders by count and name, and returns hospital branches',
+      async () => {
+        // Setup additional entities to verify filtering and ordering
+        await db.batch([
+          // Active provider with multiple branches (2 active, 1 inactive)
+          db.prepare(
+            "INSERT INTO providers(id, name, search_key, active) VALUES ('test-provider-beta', 'Beta Hospital', 'beta hospital', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branches(id, provider_id, name, address, search_key, active) VALUES ('test-branch-b1', 'test-provider-beta', 'Beta Dhanmondi', 'Dhanmondi', 'beta dhanmondi', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branches(id, provider_id, name, address, search_key, active) VALUES ('test-branch-b2', 'test-provider-beta', 'Beta Uttara', 'Uttara', 'beta uttara', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branches(id, provider_id, name, address, search_key, active) VALUES ('test-branch-b-inactive', 'test-provider-beta', 'Beta Inactive Branch', 'Mirpur', 'beta inactive branch', 0)",
+          ),
+
+          // Inactive provider with an active branch
+          db.prepare(
+            "INSERT INTO providers(id, name, search_key, active) VALUES ('test-provider-inactive', 'Inactive Hospital', 'inactive hospital', 0)",
+          ),
+          db.prepare(
+            "INSERT INTO branches(id, provider_id, name, address, search_key, active) VALUES ('test-branch-in1', 'test-provider-inactive', 'Inactive Branch', 'Gulshan', 'inactive branch', 1)",
+          ),
+
+          // Services for ordering check:
+          // S-Alpha: 3 active listings
+          // Complete Blood Count: already has 1, add 1 -> 2 active listings
+          // S-Zeta: 2 active listings (tie with CBC, but Zeta > Complete alphabetically)
+          // S-Inactive: 1 active listing on active branch -> must be excluded
+          db.prepare(
+            "INSERT INTO services(id, category_id, name, search_key, active) VALUES ('test-service-alpha', 'hematology', 'Alpha Hemogram', 'alpha hemogram', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO services(id, category_id, name, search_key, active) VALUES ('test-service-zeta', 'hematology', 'Zeta Blood Test', 'zeta blood test', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO services(id, category_id, name, search_key, active) VALUES ('test-service-inactive', 'hematology', 'Inactive Service', 'inactive service', 0)",
+          ),
+
+          // Listings for S-Alpha (3 active listings)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-alpha-1', 'addin-moghbazar', 'test-service-alpha', 'Alpha 1', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-alpha-2', 'test-branch-b1', 'test-service-alpha', 'Alpha 2', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-alpha-3', 'test-branch-b2', 'test-service-alpha', 'Alpha 3', 1)",
+          ),
+
+          // Additional listing for Complete Blood Count (to make 2 active listings)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-cbc-2', 'test-branch-b1', 'complete-blood-count', 'CBC Beta', 1)",
+          ),
+
+          // Listings for S-Zeta:
+          // 2 active listings
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-zeta-1', 'test-branch-b1', 'test-service-zeta', 'Zeta 1', 1)",
+          ),
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-zeta-2', 'test-branch-b2', 'test-service-zeta', 'Zeta 2', 1)",
+          ),
+          // 1 inactive listing on S-Zeta (should NOT be counted)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-zeta-inactive', 'addin-moghbazar', 'test-service-zeta', 'Zeta Inactive', 0)",
+          ),
+          // 1 listing on inactive branch (should NOT be counted)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-zeta-on-in-branch', 'test-branch-b-inactive', 'test-service-zeta', 'Zeta On Inactive Branch', 1)",
+          ),
+          // 1 listing on inactive provider (should NOT be counted)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-zeta-on-in-provider', 'test-branch-in1', 'test-service-zeta', 'Zeta On Inactive Provider', 1)",
+          ),
+
+          // Listing for inactive service (should NOT appear in popular services)
+          db.prepare(
+            "INSERT INTO branch_services(id, branch_id, service_id, provider_service_name, active) VALUES ('test-bs-inactive-service', 'addin-moghbazar', 'test-service-inactive', 'Inactive Service Listing', 1)",
+          ),
+        ]);
+
+        const landingData = await repository.getLandingData();
+
+        // 1. Inactive service is excluded
+        assert.equal(
+          landingData.popularServices.some((s) => s.id === 'test-service-inactive'),
+          false,
+        );
+
+        // 2. Order is by listing count descending, then name ascending
+        // Alpha has 3 listings -> index 0
+        assert.equal(landingData.popularServices[0].id, 'test-service-alpha');
+        assert.equal(landingData.popularServices[0].name, 'Alpha Hemogram');
+        assert.equal(landingData.popularServices[0].listingCount, 3);
+        assert.equal(landingData.popularServices[0].category, 'Hematology');
+
+        // Complete Blood Count and Zeta Blood Test each have 2 listings (tie-break by name ascending)
+        // 'Complete Blood Count' < 'Zeta Blood Test'
+        assert.equal(landingData.popularServices[1].id, 'complete-blood-count');
+        assert.equal(landingData.popularServices[1].listingCount, 2);
+
+        assert.equal(landingData.popularServices[2].id, 'test-service-zeta');
+        assert.equal(landingData.popularServices[2].listingCount, 2);
+
+        // 3. Hospital branches check:
+        // Inactive provider 'test-provider-inactive' must be excluded
+        assert.equal(
+          landingData.hospitals.some((h) => h.id === 'test-provider-inactive'),
+          false,
+        );
+
+        // Beta Hospital has 2 active branches ('Beta Dhanmondi', 'Beta Uttara'); inactive branch excluded
+        const betaHospital = landingData.hospitals.find((h) => h.id === 'test-provider-beta');
+        assert.ok(betaHospital);
+        assert.equal(betaHospital.name, 'Beta Hospital');
+        assert.equal(betaHospital.branchCount, 2);
+        assert.deepEqual(betaHospital.branches, [
+          { id: 'test-branch-b1', name: 'Beta Dhanmondi' },
+          { id: 'test-branch-b2', name: 'Beta Uttara' },
+        ]);
+
+        // Ad-din hospital has 1 branch ('Moghbazar')
+        const addinHospital = landingData.hospitals.find(
+          (h) => h.id === 'addin-medical-college-hospital',
+        );
+        assert.ok(addinHospital);
+        assert.equal(addinHospital.branchCount, 1);
+        assert.deepEqual(addinHospital.branches, [{ id: 'addin-moghbazar', name: 'Moghbazar' }]);
+
+        // Cleanup test data
+        await db.batch([
+          db.prepare("DELETE FROM branch_services WHERE id LIKE 'test-bs-%'"),
+          db.prepare("DELETE FROM services WHERE id LIKE 'test-service-%'"),
+          db.prepare("DELETE FROM branches WHERE id LIKE 'test-branch-%'"),
+          db.prepare("DELETE FROM providers WHERE id LIKE 'test-provider-%'"),
+        ]);
+      },
+    );
+
     await t.test('invalid server requests fail before queries and cannot inject SQL', async () => {
       for (const request of [
         null,

@@ -49,6 +49,30 @@ export type BranchService = {
   price: CurrentPrice | null;
 };
 
+export type PopularServiceItem = {
+  id: string;
+  name: string;
+  category: string;
+  listingCount: number;
+};
+
+export type CoveredHospitalBranch = {
+  id: string;
+  name: string;
+};
+
+export type CoveredHospitalItem = {
+  id: string;
+  name: string;
+  branchCount: number;
+  branches: CoveredHospitalBranch[];
+};
+
+export type LandingPageData = {
+  popularServices: PopularServiceItem[];
+  hospitals: CoveredHospitalItem[];
+};
+
 export type Page<T> = { items: T[]; nextCursor: string | null };
 export type CatalogQuery = { after?: string; limit: number };
 export type ListingQuery = CatalogQuery & { serviceId?: string; branchId?: string };

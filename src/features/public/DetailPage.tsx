@@ -71,7 +71,7 @@ export function DetailPage({
     );
   const isBranch = 'address' in entity;
   return (
-    <PageShell maps={isBranch}>
+    <PageShell>
       <main className={`${ui.page} flex flex-col gap-6`}>
         <div className="flex flex-col gap-2">
           <a className={linkRow} href="/find">

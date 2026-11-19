@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 import { MapPin, Menu, Scale, Search, UserRound, X } from 'lucide-react';
 
@@ -48,10 +48,9 @@ export function useCurrentPath(explicitPath?: string): string {
 
 export interface SiteHeaderProps {
   currentPath?: string;
-  children?: ReactNode;
 }
 
-export function SiteHeader({ currentPath: explicitPath, children }: SiteHeaderProps) {
+export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const currentPath = useCurrentPath(explicitPath);
@@ -96,7 +95,6 @@ export function SiteHeader({ currentPath: explicitPath, children }: SiteHeaderPr
         aria-label="Site"
         className="hidden sm:flex sm:items-center sm:gap-1 text-small font-semibold"
       >
-        {children}
         {MAIN_NAV_ITEMS.map((item) => {
           const isActive = item.matches(currentPath);
           const Icon = item.icon;
@@ -140,7 +138,6 @@ export function SiteHeader({ currentPath: explicitPath, children }: SiteHeaderPr
           className="absolute left-0 right-0 top-full z-50 flex flex-col border-b border-border bg-ink p-4 shadow-overlay sm:hidden"
         >
           <nav aria-label="Mobile navigation links" className="flex flex-col gap-2">
-            {children}
             {MAIN_NAV_ITEMS.map((item) => {
               const isActive = item.matches(currentPath);
               const Icon = item.icon;
@@ -168,10 +165,7 @@ export function SiteHeader({ currentPath: explicitPath, children }: SiteHeaderPr
   );
 }
 
-export function SiteFooter({ maps = false }: { maps?: boolean } = {}) {
-  // maps is kept as an optional parameter for API compatibility;
-  // all pages render the same compact footer block with terms and emergency notice.
-  void maps;
+export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-surface px-4 py-4 text-small text-muted">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

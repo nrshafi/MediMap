@@ -21,7 +21,7 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
   const [busy, setBusy] = useState(false);
   const maxPrice = Math.max(1, ...items.map((i) => i.listing.price?.amountBdt ?? 0));
   return (
-    <PageShell maps>
+    <PageShell>
       <main className={`${ui.page} flex flex-col gap-6`}>
         <div className="flex flex-col gap-2">
           <a className={linkRow} href={`/find?service=${items[0].listing.service.id}`}>

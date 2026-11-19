@@ -262,7 +262,7 @@ Disabled controls use reduced opacity. WCAG does not require disabled controls t
 ## Open items
 
 1. Add an `h1` to `/discovery` and align its header and footer with `PageShell`.
-2. Add a compact "Find services" link for 375 px headers.
+2. (Completed) Add a compact "Find services" link for 375 px headers: mobile menu now includes Find services, Compare, and Account with keyboard/Escape handling.
 3. Reduce duplicate fact and action rows on `/find` when the detail panel is open.
 4. Merge the report submission hints and reduce stacked notices.
 5. Move `CatalogManager` and `CatalogInspector` record titles to the shared heading tokens.

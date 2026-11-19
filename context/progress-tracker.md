@@ -4,11 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-19 19:07:00 +06:00`.
+Last updated: `2026-11-19 21:02:00 +06:00`.
 
 ## Current phase
 
-Shared component library created in `src/ui/` with tests and DESIGN.md documentation. Steps 3 to 6 will adopt these components across feature pages.
+Responsive site chrome and landing page sections with real catalog data implemented in `src/ui/SiteChrome.tsx`, `src/features/landing/LandingView.tsx`, and `src/features/public/landing.functions.ts`. Step 3a fixes applied: removed prices without provenance, ordered popular services by listing count and name, linked hospital cards to branch pages, made popular service cards unified accessible links, corrected landing copy and removed redundant eyebrows, moved landing SQL into `CatalogRepository`, and removed unused props from site chrome.
+Shared component library created in `src/ui/` with tests and DESIGN.md documentation. Steps 4 to 6 will continue adopting these components across remaining feature pages.
 UI audit, design tokens, and web fonts are applied to the shared foundation. Page-level follow-ups are listed in [ui-audit.md](../docs/ui-audit.md).
 Dependency update and node_modules sync with Bun 1.4.5 completed and fully verified.
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
@@ -53,6 +54,41 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Responsive site chrome and landing page sections (2026-11-19 20:16:00 +06:00)
+
+- Implemented responsive `SiteHeader` and unified compact `SiteFooter` in `src/ui/SiteChrome.tsx`:
+  - Header brand link with MediMap accessible name and location mark.
+  - Desktop main navigation with "Find services", "Compare", and "Account" links, marking the current page with `aria-current="page"`.
+  - Mobile navigation drawer button (`aria-expanded`, `aria-controls`, `aria-label`) opening a panel containing "Find services", "Compare", and "Account" links.
+  - Keyboard and focus management: Escape key closes the mobile panel and returns focus to the menu trigger button.
+  - Compact footer with required emergency exclusion ("MediMap is not for emergencies and does not give medical advice") and links to Google Maps End User Additional Terms and Google Privacy Policy.
+  - Unified header and footer across all application views (`PageShell`, `FindPage`, `AccountView`, `ReportView`).
+- Implemented landing page catalog sections in `src/features/landing/LandingView.tsx` and `src/features/public/landing.functions.ts`:
+  - Hero with headline, descriptive sentence, soft radial teal gradient band, and the canonical test search form.
+  - "How it works" section with 3 procedural steps using `Card` components.
+  - "Popular services" section with service cards reading live catalog data from D1, displaying branch counts, category tags, and links to `/find?service=<id>`.
+  - "Why you can trust the prices" section detailing official sources, review dates, and dispute reporting link to `/report`.
+  - "Hospitals covered" section displaying participating provider names and active branch counts from D1.
+  - Final call-to-action block linking to `/find`.
+  - Responsive layout verified at 375 px with zero horizontal overflow.
+- Step 3a fixes:
+  - Task 1: Removed prices from popular service cards and from the landing data query in `LandingView.tsx` and `repository.server.ts`; retained service name, category tag, and branch count in compliance with DESIGN.md price transparency rules.
+  - Task 2: Removed hard-coded service list ordering; popular services are ordered by listing count descending, then service name ascending.
+  - Task 3: Replaced the `/find?q=<hospital name>` search link with active provider branches (id and name) linking directly to `/branches/<id>` while keeping the branch count.
+  - Task 4: Made each popular service card a single interactive link to `/find?service=<id>` with an accessible name (`Find <service name>`), removed the inner link, and preserved a single visible focus outline on the card.
+  - Task 5: Rewrote misleading landing copy to match `project-overview.md` facts ("Hospitals with published prices in MediMap"; status, official source, and review date shown beside each price; administrator review of reports; real review date retained for older prices); removed redundant uppercase eyebrow labels ("Simple process", "Active catalog", "Evidence-based", "Covered providers").
+  - Task 6: Moved landing SQL queries from `landing.functions.ts` into `getLandingData()` in `CatalogRepository` (`src/features/catalog/server/repository.server.ts`) to keep the server function thin; added integration tests in `tests/catalog/catalog.integration.ts` verifying exclusion of inactive entities, correct ordering, and hospital branch mapping.
+  - Task 7: Removed unused `children` prop from `SiteHeader` and unused `maps` prop from `SiteFooter` in `src/ui/SiteChrome.tsx`; updated callers in `FindPage.tsx`, `PageShell.tsx`, `ComparisonPage.tsx`, and `DetailPage.tsx`; updated component tests.
+- Verification results:
+  - `bun run typecheck`: clean (0 type errors in 238 application files and 27 tooling files).
+  - `oxlint . --deny-warnings`: clean (0 warnings and 0 errors across 250 files).
+  - `bun run format:check`: all 260 files formatted.
+  - `bun test`: 348 unit/component tests passing across 49 files.
+  - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1 (1 new integration test for landing repository reads).
+  - `bun run test:browser`: 104 browser tests passing (2 skipped) across desktop and mobile (1280 px and 375 px).
+- Open items:
+  - Coordinate owner billing decision for production Google Maps Platform key before release.
 
 ### Shared component library (2026-11-19 18:32:30 +06:00)
 

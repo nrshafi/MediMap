@@ -41,4 +41,13 @@ test('Card renders custom semantic element through as prop', () => {
 
   const section = renderToStaticMarkup(<Card as="section">Section Card</Card>);
   assert.match(section, /^<section/);
+
+  const link = renderToStaticMarkup(
+    <Card as="a" href="/find?service=cbc" aria-label="Find CBC">
+      Link Card
+    </Card>,
+  );
+  assert.match(link, /^<a\s/);
+  assert.match(link, /href="\/find\?service=cbc"/);
+  assert.match(link, /aria-label="Find CBC"/);
 });

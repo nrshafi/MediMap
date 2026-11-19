@@ -62,7 +62,7 @@ function RouteLine({ path }: { path: Coordinates[] }) {
       path: points,
       strokeColor:
         getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() ||
-        '#117c73',
+        '#0f746b',
       strokeOpacity: 1,
       strokeWeight: 5,
       clickable: false,
@@ -181,7 +181,7 @@ export function GoogleMapView({
               title="Your current position"
               zIndex={4}
             >
-              <div className="size-4 rounded-full border-2 border-on-primary bg-primary shadow-[0_0_0_6px_rgb(17_124_115/0.25)]" />
+              <div className="size-4 rounded-full border-2 border-on-primary bg-primary shadow-[0_0_0_6px_rgb(15_116_107/0.25)]" />
             </AdvancedMarker>
           )}
           {showUser && (
@@ -216,7 +216,7 @@ export function GoogleMapView({
         </Map>
       </APIProvider>
       {onPickLocation && !picked && (
-        <p className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-2 text-xs font-semibold text-on-ink shadow-[0_8px_24px_rgb(20_61_60/0.16)]">
+        <p className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-2 text-xs font-semibold text-on-ink shadow-overlay">
           Click the map to choose your search location
         </p>
       )}

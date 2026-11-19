@@ -5,19 +5,19 @@ export const admin = {
   form: 'grid gap-4',
   input: ui.input,
   textarea: `${ui.input} min-h-24 resize-y py-2`,
-  check: 'flex min-h-touch items-start gap-3 text-sm font-normal leading-snug text-ink',
+  check: 'flex min-h-touch items-start gap-3 text-small font-normal leading-snug text-ink',
   checkbox: 'mt-0.5 size-5 shrink-0 accent-primary',
-  hint: 'text-sm leading-snug text-muted',
+  hint: 'text-small leading-snug text-muted',
   twoColumns: 'grid gap-4 lg:grid-cols-2',
   card: 'min-w-0 rounded-md border border-border bg-surface p-5 [overflow-wrap:anywhere]',
-  cardTitle: 'mb-4 text-lg font-bold leading-snug text-ink',
+  cardTitle: `mb-4 ${ui.heading3}`,
   link: 'inline-flex min-h-touch items-center font-medium text-primary underline-offset-2 hover:underline',
   list: 'divide-y divide-border',
   listRow: 'flex min-w-0 items-center justify-between gap-4 py-1',
   stack: 'grid gap-4',
   prose: 'whitespace-pre-wrap [overflow-wrap:anywhere]',
   fieldset: 'grid min-w-0 gap-3 rounded-sm border border-border p-4',
-  legend: 'px-2 text-sm font-semibold text-ink',
+  legend: 'px-2 text-small font-semibold text-ink',
   filter: 'flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-4',
   dt: 'text-xs font-semibold text-muted',
   dd: 'mt-1 text-sm leading-snug text-ink [overflow-wrap:anywhere]',
@@ -48,7 +48,7 @@ export function Notice({ children, role }: { children: ReactNode; role?: 'status
       role={role}
       className={
         role === 'alert'
-          ? 'rounded-sm border border-error/30 bg-error-soft p-3 text-sm text-error'
+          ? 'rounded-sm border border-error/40 bg-error-soft p-3 text-small text-error'
           : ui.notice
       }
     >

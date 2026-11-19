@@ -8,13 +8,14 @@
   --bg-surface: #ffffff;
   --text-primary: #143d3c;
   --text-muted: #506b69;
-  --accent-primary: #117c73;
-  --accent-hover: #0e675f;
-  --accent-subtle: #e6f4f2;
+  --accent-primary: #0f746b;
+  --accent-hover: #0d625b;
+  --accent-subtle: #e3f1ef;
   --border-default: #cddedb;
-  --border-focus: #117c73;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-display: Georgia, 'Times New Roman', serif;
+  --border-strong: #557d78;
+  --border-focus: #0f746b;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 .medimap-discovery-page {
@@ -62,14 +63,14 @@
 
 .medimap-discovery-brand-text {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
 .medimap-discovery-tagline {
-  font-size: 13.5px;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
@@ -97,7 +98,7 @@
   border: 1px solid var(--border-default);
   border-radius: 10px;
   padding: 16px 20px;
-  box-shadow: 0 2px 8px rgba(20, 61, 60, 0.04);
+  box-shadow: var(--shadow-card);
 }
 
 .medimap-preset-header {
@@ -116,13 +117,13 @@
 
 .medimap-preset-title {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .medimap-preset-hint {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
@@ -140,19 +141,22 @@
   min-height: 44px;
   padding: 0 16px;
   background-color: var(--bg-base);
-  border: 1.5px solid var(--border-default);
+  border: 1.5px solid var(--border-strong);
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
   user-select: none;
 }
 
 .medimap-preset-btn:hover {
-  background-color: #e4f0ed;
+  background-color: var(--accent-subtle);
   border-color: var(--accent-primary);
 }
 
@@ -184,7 +188,7 @@
   border: 1px solid var(--border-default);
   border-radius: 8px;
   padding: 12px 18px;
-  box-shadow: 0 2px 6px rgba(20, 61, 60, 0.03);
+  box-shadow: var(--shadow-card);
 }
 
 .medimap-active-filters-left {
@@ -200,7 +204,7 @@
   gap: 6px;
   padding: 4px 10px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 0.875rem;
   background-color: var(--bg-base);
   color: var(--text-primary);
   border: 1px solid var(--border-default);
@@ -208,25 +212,25 @@
 
 .medimap-filter-chip-service {
   background-color: var(--accent-subtle);
-  border-color: #b5d7d3;
+  border-color: var(--border-default);
   color: var(--accent-hover);
   font-weight: 600;
 }
 
 .medimap-filter-chip-radius {
-  background-color: #f7faf9;
+  background-color: var(--color-surface-sunken);
   border-color: var(--border-default);
   font-weight: 500;
 }
 
 .medimap-filter-chip-location {
-  background-color: #f7faf9;
+  background-color: var(--color-surface-sunken);
   border-color: var(--border-default);
   font-weight: 500;
 }
 
 .medimap-active-filters-count {
-  font-size: 13.5px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--accent-primary);
 }
@@ -256,17 +260,18 @@
 .medimap-empty-state-title {
   margin: 0 0 8px 0;
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
 }
 
 .medimap-empty-state-desc {
   margin: 0 auto 24px;
   max-width: 520px;
-  font-size: 14.5px;
+  font-size: 0.875rem;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .medimap-empty-state-actions {
@@ -288,10 +293,12 @@
   border: none;
   border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
 }
 
 .medimap-empty-action-btn:hover {
@@ -335,7 +342,7 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
@@ -374,7 +381,7 @@
   .medimap-preset-btn {
     min-width: 0;
     padding: 0 8px;
-    font-size: 12.5px;
+    font-size: 0.875rem;
   }
 
   .medimap-active-filters-bar {
@@ -403,8 +410,8 @@
 
 .medimap-location-hint {
   color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
 .medimap-location-actions {
@@ -427,7 +434,7 @@
   flex-direction: column;
   gap: 6px;
   min-width: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .medimap-coordinate-form input {
@@ -435,7 +442,7 @@
   width: 100%;
   min-height: 44px;
   padding: 8px;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   background: var(--bg-surface);
   color: var(--text-primary);
@@ -449,8 +456,8 @@
 
 .medimap-location-status {
   margin-bottom: 0;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
 .medimap-location-status:empty {

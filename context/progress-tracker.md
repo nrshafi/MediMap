@@ -4,11 +4,12 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-18 18:28:46 +06:00`.
+Last updated: `2026-11-19 17:53:30 +06:00`.
 
 ## Current phase
 
-Reviewed and repaired Red01s commits `1c089e8` through `f16000a`, compared with `88caff9`.
+UI audit, design tokens, and web fonts are applied to the shared foundation. Page-level follow-ups are listed in [ui-audit.md](../docs/ui-audit.md).
+Dependency update and node_modules sync with Bun 1.4.5 completed and fully verified.
 The discovery route is a sample-data demonstration. Earlier milestones do not establish real price verification or production readiness.
 Search, radius filtering, routing fallback, and map/list interactions have regression coverage.
 Local D1 migrations, server reads, and a read-only catalog inspector are implemented and verified.
@@ -51,6 +52,43 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### UI audit, design tokens, and web fonts (2026-11-19 17:53:30 +06:00)
+
+- Audited every public route and six administration pages at 375 px and 1280 px. Captured 36 screenshots in `.bun-tmp/ui-audit/` and recorded findings in `docs/ui-audit.md`.
+- Added `display`, `h1`, `h2`, `h3`, `body`, `small`, and `label` type tokens, two-layer ink-tinted shadows, motion durations, and one easing curve in `src/styles.css`. Motion is removed under `prefers-reduced-motion: reduce`.
+- Loaded Plus Jakarta Sans 600/700/800 and Inter 400/500/600 with two `preconnect` links and one Google Fonts `css2` link in `src/routes/__root.tsx`. Kept the system fallback stack.
+- Applied the tokens to shared classes, the home hero, header and footer, admin surfaces, report notices, comparison headings, map styles, and the discovery stylesheet.
+- Changed `primary` and `focus` to `#0f746b`. Restored decorative `border` to `#cddedb` for card outlines, dividers, table rules, and panel edges. Kept `border-strong` at `#557d78` (measuring 4.57:1 on surface and over 3.9:1 across all touched surfaces) for controls whose border is the only visual cue.
+- Step 1a fixes:
+  - Task 1: kept and verified the dependency updates in `package.json` and `bun.lock`.
+  - Task 2: restored light `#cddedb` decorative borders under WCAG 2.2 SC 1.4.11; kept `#557d78` control boundaries at 3:1+; moved control boundaries across `src/` to `border-strong`; lightened alert borders in admin and report views to `border-error/40`; and updated `docs/ui-audit.md`, `DESIGN.md`, and `context/ui-context.md`.
+  - Task 3: added `* text=auto eol=lf` as the first line of `.gitattributes` to force LF line endings across all text files.
+- Restored the footer label "Google Maps End User Additional Terms". Kept the Google Privacy Policy link, price source links, verification dates, and the non-emergency scope.
+- Kept the legacy `:root` aliases because `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, and `discoveryView.css` still use them. Their values now match the theme.
+- Updated `DESIGN.md` and `context/ui-context.md` so the token source and feature rules agree.
+- Verification: `bun run typecheck` passed (0 errors in 214 application and 27 tooling files); `bun run lint` passed (0 errors and 0 warnings across 226 files); `bun run format:check` passed (236 files formatted); `bun test` passed (313 tests across 38 files); `bun run test:database` passed (108 integration tests); and `bun run test:browser` passed (96 tests across desktop and mobile).
+
+### Dependency updates and node_modules synchronization (2026-11-19 16:03:15 +06:00)
+
+- Executed `bun install` and `bun update` to update `node_modules` and package dependencies within approved semver ranges.
+- Synchronized dependencies in `package.json` and `bun.lock`:
+  - `@tanstack/react-router` updated from `^1.170.44` to `^1.170.46`.
+  - `@tanstack/react-start` updated from `^1.169.1` to `^1.169.5`.
+  - `react` and `react-dom` updated from `^19.3.0` to `^19.3.1`.
+  - `@types/node` updated from `^26.6.5` to `^26.6.6`.
+  - `@vitejs/plugin-react` updated from `^6.1.2` to `^6.3.0`.
+  - `happy-dom` updated from `^21.0.1` to `^21.0.4`.
+  - `vite` updated from `^8.3.4` to `^8.3.8`.
+- Transitive dependencies resolved and refreshed in lockfile.
+- Verification:
+  - `bun install`: Verified 176 installs across 313 packages cleanly.
+  - `bun run typecheck`: Passed with 0 errors across 214 application files and 27 tooling files.
+  - `oxlint`: Passed with 0 errors and 0 warnings across 226 files.
+  - `bun test`: All 313 tests passed across 38 files.
+  - `bun run test:database`: All 108 D1 integration tests passed.
+  - `bun run build`: Vite production client and SSR build succeeded without errors.
+- No commit or push performed, preserving the local working tree.
 
 ### In-app driving route on `/find` (2026-11-18 18:28:46 +06:00)
 

@@ -45,7 +45,7 @@ function Notice({
     <section
       role={role}
       className={`grid gap-1 rounded-md border p-4 text-sm leading-relaxed [overflow-wrap:anywhere] ${
-        alert ? 'border-error/30 bg-error-soft text-error' : 'border-border bg-surface text-ink'
+        alert ? 'border-error/40 bg-error-soft text-error' : 'border-border bg-surface text-ink'
       }`}
     >
       <h2 className="text-base font-bold">{title}</h2>

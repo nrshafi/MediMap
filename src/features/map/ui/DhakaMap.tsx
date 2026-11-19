@@ -231,7 +231,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, BURIGANGA_RIVER)}
               fill="none"
-              stroke="#b5d6d2"
+              stroke="var(--accent-subtle)"
               strokeWidth="14"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -241,7 +241,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, TURAG_RIVER)}
               fill="none"
-              stroke="#b5d6d2"
+              stroke="var(--accent-subtle)"
               strokeWidth="10"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -251,7 +251,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, HATIRJHEEL_LAKE)}
               fill="none"
-              stroke="#b5d6d2"
+              stroke="var(--accent-subtle)"
               strokeWidth="8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -270,10 +270,9 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   y={pt.y}
                   textAnchor="middle"
                   fill="var(--text-muted)"
-                  fontSize="11"
+                  fontSize="12"
                   fontWeight="500"
                   fontStyle="italic"
-                  opacity="0.6"
                 >
                   {item.name}
                 </text>
@@ -293,7 +292,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   cx={centerPoint.x}
                   cy={centerPoint.y}
                   r={radiusCirclePx}
-                  fill="rgba(17, 124, 115, 0.05)"
+                  fill="rgb(15 116 107 / 0.05)"
                   stroke="var(--accent-primary)"
                   strokeWidth="1.5"
                   strokeDasharray="6 4"
@@ -376,7 +375,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                           : 'var(--bg-surface)'
                     }
                     stroke={
-                      isSelected ? '#ffffff' : isHovered ? '#ffffff' : 'var(--accent-primary)'
+                      isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--accent-primary)'
                     }
                     strokeWidth={isSelected || isHovered ? 2.5 : 2}
                   />
@@ -386,9 +385,11 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                     x={pt.x}
                     y={pt.y + 4}
                     textAnchor="middle"
-                    fontSize={isSelected ? '12' : '11'}
+                    fontSize="12"
                     fontWeight="700"
-                    fill={isSelected || isHovered ? '#ffffff' : 'var(--text-primary)'}
+                    fill={
+                      isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--text-primary)'
+                    }
                     pointerEvents="none"
                   >
                     {badgeNumber}
@@ -408,20 +409,34 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             >
               <rect
                 x="-80"
-                y="-32"
+                y="-40"
                 width="160"
-                height="32"
+                height="40"
                 rx="6"
                 fill="var(--text-primary)"
                 opacity="0.95"
               />
               <polygon points="0,0 -6,-6 6,-6" fill="var(--text-primary)" opacity="0.95" />
-              <text x="0" y="-18" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="600">
+              <text
+                x="0"
+                y="-25"
+                textAnchor="middle"
+                fill="var(--color-on-primary)"
+                fontSize="12"
+                fontWeight="600"
+              >
                 {activeBranch.providerName.length > 20
                   ? `${activeBranch.providerName.slice(0, 19)}…`
                   : activeBranch.providerName}
               </text>
-              <text x="0" y="-6" textAnchor="middle" fill="#a3e3db" fontSize="9" fontWeight="700">
+              <text
+                x="0"
+                y="-9"
+                textAnchor="middle"
+                fill="var(--accent-subtle)"
+                fontSize="12"
+                fontWeight="700"
+              >
                 {activeBranch.basePriceBdt === null
                   ? 'Price unavailable'
                   : `BDT ${activeBranch.basePriceBdt.toLocaleString('en-US')}`}

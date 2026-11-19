@@ -176,7 +176,7 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
               const route = routes[l.id];
               return (
                 <article key={l.id} className={`${ui.card} flex flex-col gap-3`}>
-                  <h3 className="font-bold">
+                  <h3 className={ui.heading3}>
                     {l.branch.provider.name}, {l.branch.name}
                   </h3>
                   <label className="flex flex-col gap-1 text-sm font-semibold">

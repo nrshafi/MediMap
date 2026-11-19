@@ -455,9 +455,6 @@ export function FindPage({
                 distanceKm={distanceOf(open)}
                 route={routes[open.id]}
                 onRoute={(result) => setRoutes((previous) => ({ ...previous, [open.id]: result }))}
-                compared={comparison.includes(open.id)}
-                compareDisabled={comparison.length >= 4}
-                onToggleCompare={() => toggleCompare(open.id)}
                 onClose={closePanel}
                 live={browserKey !== null && !mapFailed ? live : undefined}
                 onShowMap={

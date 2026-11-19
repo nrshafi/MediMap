@@ -31,7 +31,11 @@ test('public catalog, details, unknown locations and URL filters use persisted d
     'true',
   );
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole('link', { name: 'Branch details', exact: true }).first().click();
+  const firstCard = page.locator('[data-select-listing]').first();
+  await firstCard.click();
+  const listingPanel = page.getByRole('region', { name: 'Listing details' });
+  await expect(listingPanel).toBeVisible();
+  await listingPanel.getByRole('link', { name: 'Branch details', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Moghbazar', exact: true })).toBeVisible();
   await expect(page.getByText('Opening hours:', { exact: false })).toContainText('Unknown');
   await expect(page.getByRole('button', { name: 'Show on map' })).toBeVisible();
@@ -66,7 +70,7 @@ test('find page shows listing details, controls meet touch size and the map fall
     page.getByRole('button', { name: 'Find address' }),
     page.getByRole('button', { name: 'Verified prices only' }),
     page.getByRole('button', { name: '3 km', exact: true }),
-    page.getByRole('button', { name: 'Show details' }).first(),
+    page.getByRole('button', { name: 'Select for comparison' }).first(),
   ]) {
     const bounds = await control.boundingBox();
     expect(bounds?.height).toBeGreaterThanOrEqual(44);
@@ -85,7 +89,7 @@ test('find page shows listing details, controls meet touch size and the map fall
   const notice = page.getByText('Map unavailable');
   if (await notice.count()) await expect(notice).toBeVisible();
   if (mobile) await page.getByRole('button', { name: 'List', exact: true }).click();
-  await page.getByRole('button', { name: 'Show details' }).first().click();
+  await page.locator('[data-select-listing]').first().click();
   const panel = page.getByRole('region', { name: 'Listing details' });
   await expect(panel).toBeVisible();
   await expect(panel).toContainText('BDT 400.00');
@@ -278,4 +282,55 @@ test('comparison preserves unknown values and displays the same selected branche
       expect(result.headers().location).toContain('code=saved');
     }
   }
+});
+
+test('find page removes repeated facts and actions while keeping source and panel actions', async ({
+  page,
+}) => {
+  await page.goto('/find?service=complete-blood-count&radius=10');
+  if (test.info().project.name === 'mobile') {
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+  }
+  const card = page.locator('[data-select-listing]').first();
+  await expect(card).toBeVisible();
+
+  // Card still shows status, review date and source
+  await expect(card.getByText(/Verified|Price unknown|Disputed/)).toBeVisible();
+  await expect(card.getByText(/2026|Unknown/)).toBeVisible();
+  await expect(card.getByRole('link', { name: 'Source' })).toBeVisible();
+
+  // Card no longer shows branch, review and report links
+  await expect(card.getByRole('link', { name: 'Branch details' })).toHaveCount(0);
+  await expect(card.getByRole('link', { name: 'Service reviews' })).toHaveCount(0);
+  await expect(card.getByRole('link', { name: 'Report incorrect information' })).toHaveCount(0);
+
+  // Card keeps one action button: Select for comparison
+  await expect(card.getByRole('button', { name: 'Select for comparison' })).toBeVisible();
+
+  // Clicking the card opens the panel
+  await card.click();
+  const panel = page.getByRole('region', { name: 'Listing details' });
+  await expect(panel).toBeVisible();
+
+  // Each panel action appears once
+  await expect(panel.getByRole('button', { name: 'Show route' })).toHaveCount(1);
+  await expect(panel.getByRole('link', { name: 'Open directions in Google Maps' })).toHaveCount(1);
+  await expect(panel.getByRole('link', { name: 'Branch details' })).toHaveCount(1);
+  await expect(panel.getByRole('link', { name: 'Service reviews' })).toHaveCount(1);
+  await expect(panel.getByRole('link', { name: 'Report incorrect information' })).toHaveCount(1);
+
+  // Road time in panel is not duplicated in a tile
+  await expect(panel.locator('dt').filter({ hasText: /^Road travel time$/ })).toHaveCount(0);
+
+  // Driving route request keeps one Google Maps route attribution
+  await panel.getByRole('button', { name: 'Show route' }).click();
+  await expect(panel.getByRole('status')).toContainText(
+    /unavailable|failed|Route from Google Maps/,
+  );
+  expect(
+    await panel.getByText(/Route from Google Maps|Directions from Google Maps/).count(),
+  ).toBeLessThanOrEqual(1);
+
+  // No horizontal scroll at 375 px and desktop
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

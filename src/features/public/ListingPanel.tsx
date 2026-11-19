@@ -1,13 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Check,
-  ExternalLink,
-  LocateFixed,
-  Map as MapIcon,
-  Navigation,
-  Plus,
-  X,
-} from 'lucide-react';
+import { ExternalLink, LocateFixed, Map as MapIcon, Navigation, X } from 'lucide-react';
 import type { Coordinates } from '../map/types';
 import type { BranchService } from '../catalog/contracts';
 import { ui } from '../../ui/styles';
@@ -89,7 +81,6 @@ function RouteEstimate({
               </li>
             ))}
           </ol>
-          <p className="mt-2 text-xs text-muted">Directions from Google Maps.</p>
         </details>
       )}
     </section>
@@ -102,9 +93,6 @@ export function ListingPanel({
   distanceKm,
   route,
   onRoute,
-  compared,
-  compareDisabled,
-  onToggleCompare,
   onClose,
   live,
   onShowMap,
@@ -114,9 +102,6 @@ export function ListingPanel({
   distanceKm: number | null;
   route: RouteResult | undefined;
   onRoute: (value: RouteResult) => void;
-  compared: boolean;
-  compareDisabled: boolean;
-  onToggleCompare: () => void;
   onClose: () => void;
   live?: LivePosition;
   /** Shows the map view on narrow screens. Absent when the map is already visible. */
@@ -153,20 +138,18 @@ export function ListingPanel({
       <p className={ui.muted}>{l.branch.address}</p>
       <div className="flex flex-col gap-1">
         <p className={ui.price}>{l.price ? formatBdt(l.price.amountBdt) : 'Price unknown'}</p>
-        <div className="flex flex-wrap items-center gap-x-3 text-sm">
+        <div className="flex flex-wrap items-center gap-x-2 text-sm">
           <StatusBadge price={l.price} />
-          <span className="text-muted">
-            Website review: {formatReviewDate(l.price?.verifiedAt)}
-          </span>
+          <span className="text-muted">{formatReviewDate(l.price?.verifiedAt)}</span>
+          {l.price?.source && (
+            <a className={linkRow} href={l.price.source.url} target="_blank" rel="noreferrer">
+              Source
+              <ExternalLink aria-hidden size={14} />
+            </a>
+          )}
         </div>
-        {l.price?.source && (
-          <a className={linkRow} href={l.price.source.url} target="_blank" rel="noreferrer">
-            Official price source
-            <ExternalLink aria-hidden size={14} />
-          </a>
-        )}
       </div>
-      <dl className="grid grid-cols-2 gap-2">
+      <dl className="grid grid-cols-1 gap-2">
         <div className={ui.tile}>
           <dt className={ui.tileLabel}>Straight-line distance</dt>
           <dd className={ui.tileValue}>
@@ -174,17 +157,7 @@ export function ListingPanel({
               ? distanceKm === null
                 ? 'Not calculated'
                 : formatKm(distanceKm)
-              : 'Location not recorded'}
-          </dd>
-        </div>
-        <div className={ui.tile}>
-          <dt className={ui.tileLabel}>Road travel time</dt>
-          <dd className={ui.tileValue}>
-            {route?.available
-              ? `${Math.round(route.minutes)} min`
-              : route
-                ? 'Unavailable'
-                : 'Not requested'}
+              : 'Unknown'}
           </dd>
         </div>
       </dl>
@@ -237,17 +210,7 @@ export function ListingPanel({
         <ExternalLink aria-hidden size={16} />
         Open directions in Google Maps
       </a>
-      <button
-        type="button"
-        aria-pressed={compared}
-        disabled={compareDisabled && !compared}
-        className={ui.buttonSecondary}
-        onClick={onToggleCompare}
-      >
-        {compared ? <Check aria-hidden size={16} /> : <Plus aria-hidden size={16} />}
-        {compared ? 'Remove from comparison' : 'Select for comparison'}
-      </button>
-      <p className="flex flex-wrap gap-x-4 text-sm">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-3 text-sm">
         <a className={linkRow} href={`/branches/${l.branch.id}`}>
           Branch details
         </a>
@@ -257,7 +220,7 @@ export function ListingPanel({
         <a className={linkRow} href={`/report?target=listing&id=${l.id}`}>
           Report incorrect information
         </a>
-      </p>
+      </div>
     </section>
   );
 }

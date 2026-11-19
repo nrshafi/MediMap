@@ -81,7 +81,7 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
   }, [isOpen]);
 
   return (
-    <header className="relative flex min-h-header items-center justify-between gap-4 bg-ink px-4 text-on-ink">
+    <header className="relative z-40 flex min-h-header items-center justify-between gap-4 bg-ink px-4 text-on-ink">
       <a
         href="/"
         className="inline-flex min-h-touch items-center gap-2 font-display text-h3 font-bold text-on-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"

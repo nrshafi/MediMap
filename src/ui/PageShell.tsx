@@ -17,9 +17,7 @@ export function FindNavLink() {
 export function PageShell({ children, maps = false }: { children: ReactNode; maps?: boolean }) {
   return (
     <div className="flex min-h-svh flex-col">
-      <SiteHeader>
-        <FindNavLink />
-      </SiteHeader>
+      <SiteHeader />
       {children}
       <SiteFooter maps={maps} />
     </div>

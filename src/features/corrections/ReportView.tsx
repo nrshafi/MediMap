@@ -133,14 +133,7 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
     : undefined;
   return (
     <div className="flex min-h-svh flex-col">
-      <SiteHeader>
-        <a
-          href="/find"
-          className="inline-flex min-h-touch items-center rounded-sm px-3 hover:bg-white/10"
-        >
-          Find services
-        </a>
-      </SiteHeader>
+      <SiteHeader />
       <main
         id="main-content"
         className="mx-auto grid w-full max-w-3xl flex-1 content-start gap-5 px-4 py-6 sm:px-6"

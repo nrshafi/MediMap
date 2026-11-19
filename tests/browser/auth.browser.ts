@@ -16,6 +16,10 @@ test('anonymous account pages explain Google setup and public discovery remains 
     path: `.bun-tmp/sign-in-${test.info().project.name}.png`,
     fullPage: true,
   });
+  const menuButton = page.getByRole('button', { name: /navigation menu/i });
+  if (await menuButton.isVisible()) {
+    await menuButton.click();
+  }
   await page.getByRole('link', { name: 'Find services' }).click();
   await expect(page).toHaveURL(/\/find/);
   await expect(page.getByLabel('Service name or abbreviation')).toBeVisible();

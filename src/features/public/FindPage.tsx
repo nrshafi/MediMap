@@ -5,7 +5,6 @@ import type { Service, BranchService } from '../catalog/contracts';
 import { resolveDiagnosticQuery } from '../search/resolutionEngine';
 import { calculateHaversineDistanceKm } from '../map/haversine';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
-import { FindNavLink } from '../../ui/PageShell';
 import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
 import { formatBdt, type RouteResult } from './format';
@@ -195,9 +194,7 @@ export function FindPage({
 
   return (
     <div className="flex min-h-svh flex-col lg:h-svh">
-      <SiteHeader>
-        <FindNavLink />
-      </SiteHeader>
+      <SiteHeader />
       <main className="flex flex-1 flex-col lg:min-h-0 lg:flex-row">
         <div
           className={`flex flex-col gap-4 p-4 lg:w-sidebar lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-border ${open && view === 'list' ? 'pb-[55svh] lg:pb-4' : ''}`}

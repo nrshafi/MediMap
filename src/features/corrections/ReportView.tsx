@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import {
   issueLabels,
   targetIssues,
@@ -10,7 +9,11 @@ import {
 } from './contracts';
 import { weekDays, dayHoursLabel } from '../providers/hours';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
-import { ui } from '../../ui/styles';
+import { PageHeader } from '../../ui/PageHeader';
+import { Card } from '../../ui/Card';
+import { Button, ButtonLink } from '../../ui/Button';
+import { Notice } from '../../ui/Notice';
+import { Field, fieldControlStyles } from '../../ui/Field';
 
 export type ReportPageData = {
   target: ReportTarget | null;
@@ -19,39 +22,9 @@ export type ReportPageData = {
   error: keyof typeof reportMessages | null;
 };
 
-const panel = `grid min-w-0 gap-3 rounded-md border border-border bg-surface p-5 text-sm leading-relaxed [overflow-wrap:anywhere]`;
-const panelTitle = ui.heading2;
-const prose = 'report-prose whitespace-pre-wrap [overflow-wrap:anywhere]';
-const link = 'inline-flex min-h-touch items-center font-medium text-primary hover:underline';
-const hint = 'text-sm text-muted';
-const textarea = `${ui.input} resize-y py-2`;
-
 function priceLabel(minor: number): string {
   const value = BigInt(minor);
   return `BDT ${value / 100n}.${String(value % 100n).padStart(2, '0')}`;
-}
-
-function Notice({
-  title,
-  role,
-  children,
-}: {
-  title: string;
-  role?: 'alert' | 'status';
-  children: ReactNode;
-}) {
-  const alert = role === 'alert';
-  return (
-    <section
-      role={role}
-      className={`grid gap-1 rounded-md border p-4 text-sm leading-relaxed [overflow-wrap:anywhere] ${
-        alert ? 'border-error/40 bg-error-soft text-error' : 'border-border bg-surface text-ink'
-      }`}
-    >
-      <h2 className="text-base font-bold">{title}</h2>
-      {children}
-    </section>
-  );
 }
 
 export function TargetDetails({
@@ -64,12 +37,12 @@ export function TargetDetails({
   headingId?: string;
 }) {
   return (
-    <section className={panel} aria-labelledby={headingId}>
-      <h2 id={headingId} className={panelTitle}>
+    <Card as="section" aria-labelledby={headingId} className="flex flex-col gap-3 text-small">
+      <h2 id={headingId} className="font-display text-h2 font-bold text-ink">
         {receipt ? 'Details at submission' : 'Selected record'}
       </h2>
-      <p>
-        <strong className="font-semibold">{target.providerName}</strong>
+      <p className="leading-relaxed">
+        <strong className="font-semibold text-ink">{target.providerName}</strong>
         {target.branchName && (
           <>
             <br />
@@ -83,42 +56,47 @@ export function TargetDetails({
           </>
         )}
       </p>
-      {target.providerServiceName && <p>Provider label: {target.providerServiceName}</p>}
-      {target.address && <p>{target.address}</p>}
+      {target.providerServiceName && (
+        <p className="text-muted">Provider label: {target.providerServiceName}</p>
+      )}
+      {target.address && <p className="text-muted">{target.address}</p>}
       {target.kind === 'listing' && (
-        <p>
+        <p className="text-muted">
           {receipt ? 'Reported price' : 'Current price'}:{' '}
-          {target.price
-            ? `${priceLabel(target.price.amountMinor)} · ${target.price.status}`
-            : 'Unknown'}
+          <span className="font-medium text-ink">
+            {target.price
+              ? `${priceLabel(target.price.amountMinor)} · ${target.price.status}`
+              : 'Unknown'}
+          </span>
         </p>
       )}
       {target.kind !== 'listing' && (
-        <p>
+        <p className="text-muted">
           Telephone: {target.phone ?? 'Unknown'}
           <br />
           Website: {target.website ?? 'Unknown'}
         </p>
       )}
       {target.kind === 'branch' && (
-        <details>
-          <summary className="min-h-touch cursor-pointer py-2.5 font-semibold text-primary">
+        <details className="mt-1">
+          <summary className="flex min-h-touch cursor-pointer items-center font-semibold text-primary">
             Usual weekly hours · Asia/Dhaka
           </summary>
           {target.openingHours ? (
-            <ul>
+            <ul className="mt-1 space-y-0.5 text-muted">
               {weekDays.map((day) => (
                 <li key={day}>
-                  {day}: {dayHoursLabel(target.openingHours?.days[day] ?? null)}
+                  <span className="font-medium text-ink">{day}:</span>{' '}
+                  {dayHoursLabel(target.openingHours?.days[day] ?? null)}
                 </li>
               ))}
             </ul>
           ) : (
-            <p>Opening hours unknown.</p>
+            <p className="mt-1 text-muted">Opening hours unknown.</p>
           )}
         </details>
       )}
-    </section>
+    </Card>
   );
 }
 
@@ -131,105 +109,126 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
     ? (targetIssues[target.kind].find((issue) => issue === draft.issue) ??
       targetIssues[target.kind][0])
     : undefined;
+
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
       <main
         id="main-content"
-        className="mx-auto grid w-full max-w-3xl flex-1 content-start gap-5 px-4 py-6 sm:px-6"
+        className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6"
       >
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Data corrections
-          </p>
-          <h1 className={`${ui.heading1} mt-1`}>Report incorrect information</h1>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            Describe an issue with the published provider, branch, or diagnostic listing so an
-            administrator can review it.
-          </p>
-        </div>
-        {data.error && (
+        <PageHeader
+          title="Report incorrect information"
+          description="Describe an issue with the published provider, branch, or diagnostic listing so an administrator can review it."
+        />
+
+        {data.receipt ? (
+          <Notice kind="info" role="status" title="Report submitted">
+            <p>Reference: {data.receipt.id}</p>
+            <p>Status: {data.receipt.status}</p>
+            <p>
+              {data.receipt.issue === 'price' && data.receipt.status === 'pending'
+                ? data.receipt.target.price
+                  ? 'The reported price is disputed while this report is pending. It does not qualify for default price statistics.'
+                  : 'The price remains unknown while this report is pending. It does not qualify for default price statistics.'
+                : data.receipt.status === 'accepted'
+                  ? 'An administrator accepted this report after review. The original submitted details remain below.'
+                  : data.receipt.status === 'rejected'
+                    ? 'An administrator reviewed and rejected this report. The original submitted details remain below.'
+                    : 'An administrator reviews the report before changing the published details.'}
+            </p>
+          </Notice>
+        ) : data.error ? (
           <Notice
+            kind="error"
             role="alert"
             title={data.error === 'not_found' ? 'Record unavailable' : 'Your report was not saved'}
           >
             <p>{reportMessages[data.error]}</p>
           </Notice>
-        )}
-        {data.receipt ? (
-          <>
-            <Notice role="status" title="Report submitted">
-              <p>Reference: {data.receipt.id}</p>
-              <p>Status: {data.receipt.status}</p>
+        ) : data.access === 'sign_in' || data.access === 'expired' ? (
+          <Notice
+            kind="warning"
+            role="status"
+            title={data.access === 'expired' ? 'Session expired' : 'Sign in to submit a report'}
+          >
+            <p>Use your account to submit this correction.</p>
+            <div className="pt-2">
+              <ButtonLink
+                variant="primary"
+                href={`/sign-in?returnTo=${encodeURIComponent(returnTo)}&reason=${data.access === 'expired' ? 'expired' : 'required'}`}
+              >
+                Sign in with Google
+              </ButtonLink>
+            </div>
+          </Notice>
+        ) : (
+          data.access === 'unavailable' && (
+            <Notice kind="error" role="alert" title="Reporting unavailable">
               <p>
-                {data.receipt.issue === 'price' && data.receipt.status === 'pending'
-                  ? data.receipt.target.price
-                    ? 'The reported price is disputed while this report is pending. It does not qualify for default price statistics.'
-                    : 'The price remains unknown while this report is pending. It does not qualify for default price statistics.'
-                  : data.receipt.status === 'accepted'
-                    ? 'An administrator accepted this report after review. The original submitted details remain below.'
-                    : data.receipt.status === 'rejected'
-                      ? 'An administrator reviewed and rejected this report. The original submitted details remain below.'
-                      : 'An administrator reviews the report before changing the published details.'}
+                Reporting is unavailable. Your typed details remain below if you need to copy them.
               </p>
             </Notice>
-            <TargetDetails target={data.receipt.target} receipt />
-            <section className={panel}>
-              <h2 className={panelTitle}>Your submitted information</h2>
-              <p>{issueLabels[data.receipt.issue]}</p>
-              <p className={prose}>{data.receipt.details}</p>
-              {data.receipt.suggestedCorrection && (
-                <p className={prose}>Suggested correction: {data.receipt.suggestedCorrection}</p>
-              )}
-              {data.receipt.evidenceUrl && (
-                <a
-                  className={link}
-                  href={data.receipt.evidenceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Your evidence link
-                </a>
-              )}
-            </section>
-          </>
-        ) : (
+          )
+        )}
+
+        {data.receipt ? (
           <>
-            {target && <TargetDetails target={target} />}
-            {data.access === 'sign_in' || data.access === 'expired' ? (
-              <Notice
-                title={data.access === 'expired' ? 'Session expired' : 'Sign in to submit a report'}
-              >
-                <p>Use your account to submit this correction.</p>
-                <a
-                  className={link}
-                  href={`/sign-in?returnTo=${encodeURIComponent(returnTo)}&reason=${data.access === 'expired' ? 'expired' : 'required'}`}
-                >
-                  Sign in with Google
-                </a>
-              </Notice>
-            ) : (
-              data.access === 'unavailable' && (
-                <p className={ui.notice}>
-                  Reporting is unavailable. Your typed details remain below if you need to copy
-                  them.
+            <TargetDetails target={data.receipt.target} receipt />
+            <Card as="section" className="flex flex-col gap-3">
+              <h2 className="font-display text-h2 font-bold text-ink">
+                Your submitted information
+              </h2>
+              <div className="flex flex-col gap-2 text-small">
+                <p className="text-muted">
+                  <strong className="font-semibold text-ink">Issue:</strong>{' '}
+                  {issueLabels[data.receipt.issue]}
                 </p>
-              )
-            )}
-            {target ? (
-              <section className={panel} aria-labelledby="report-form-title">
-                <h2 id="report-form-title" className={panelTitle}>
-                  Report details
-                </h2>
-                <form method="post" action="/report/submit" className="grid gap-4">
-                  <input type="hidden" name="target" value={target.kind} />
-                  <input type="hidden" name="id" value={target.id} />
-                  <input type="hidden" name="observedRevision" value={target.revision} />
-                  <input type="hidden" name="observedPriceId" value={target.price?.id ?? ''} />
-                  <div className={ui.label}>
-                    <label htmlFor="report-issue">Issue type</label>
+                <div>
+                  <strong className="font-semibold text-ink">Details:</strong>
+                  <p className="report-prose mt-1 whitespace-pre-wrap rounded-sm bg-surface-sunken p-3 text-ink [overflow-wrap:anywhere]">
+                    {data.receipt.details}
+                  </p>
+                </div>
+                {data.receipt.suggestedCorrection && (
+                  <p className="report-prose [overflow-wrap:anywhere]">
+                    <strong className="font-semibold text-ink">Suggested correction:</strong>{' '}
+                    {data.receipt.suggestedCorrection}
+                  </p>
+                )}
+                {data.receipt.evidenceUrl && (
+                  <p>
+                    <a
+                      className="inline-flex min-h-touch items-center gap-1 font-medium text-primary hover:underline"
+                      href={data.receipt.evidenceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Your evidence link
+                    </a>
+                  </p>
+                )}
+              </div>
+            </Card>
+          </>
+        ) : target ? (
+          <>
+            <TargetDetails target={target} />
+            <Card as="section" aria-labelledby="report-form-title" className="flex flex-col gap-4">
+              <h2 id="report-form-title" className="font-display text-h2 font-bold text-ink">
+                Report details
+              </h2>
+              <form method="post" action="/report/submit" className="flex flex-col gap-4">
+                <input type="hidden" name="target" value={target.kind} />
+                <input type="hidden" name="id" value={target.id} />
+                <input type="hidden" name="observedRevision" value={target.revision} />
+                <input type="hidden" name="observedPriceId" value={target.price?.id ?? ''} />
+                <Field
+                  id="report-issue"
+                  label="Issue type"
+                  control={
                     <select
-                      className={ui.input}
+                      className={fieldControlStyles}
                       id="report-issue"
                       name="issue"
                       defaultValue={selectedIssue}
@@ -240,11 +239,16 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div className={ui.label}>
-                    <label htmlFor="report-details">What is incorrect?</label>
+                  }
+                />
+                <Field
+                  id="report-details"
+                  label="What is incorrect?"
+                  hint="Use 20 to 2,000 characters. Describe the incorrect public information and how you found the issue."
+                  required
+                  control={
                     <textarea
-                      className={textarea}
+                      className={`${fieldControlStyles} min-h-32 resize-y py-2`}
                       id="report-details"
                       name="details"
                       defaultValue={draft.details ?? ''}
@@ -253,26 +257,28 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
                       maxLength={2000}
                       rows={6}
                     />
-                    <p className={`${hint} font-normal`}>
-                      Use 20 to 2,000 characters. Describe the incorrect public information and how
-                      you found the issue.
-                    </p>
-                  </div>
-                  <div className={ui.label}>
-                    <label htmlFor="report-correction">Suggested correction (optional)</label>
+                  }
+                />
+                <Field
+                  id="report-correction"
+                  label="Suggested correction (optional)"
+                  control={
                     <textarea
-                      className={textarea}
+                      className={`${fieldControlStyles} min-h-20 resize-y py-2`}
                       id="report-correction"
                       name="suggestedCorrection"
                       defaultValue={draft.suggestedCorrection ?? ''}
                       maxLength={500}
                       rows={3}
                     />
-                  </div>
-                  <div className={ui.label}>
-                    <label htmlFor="report-evidence">Evidence link (optional)</label>
+                  }
+                />
+                <Field
+                  id="report-evidence"
+                  label="Evidence link (optional)"
+                  control={
                     <input
-                      className={ui.input}
+                      className={fieldControlStyles}
                       id="report-evidence"
                       name="evidenceUrl"
                       type="url"
@@ -280,54 +286,64 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
                       maxLength={2048}
                       defaultValue={draft.evidenceUrl ?? ''}
                     />
-                  </div>
-                  <label className="flex min-h-touch items-start gap-3 text-sm leading-snug">
-                    <input
-                      className="mt-0.5 size-5 shrink-0 accent-primary"
-                      type="checkbox"
-                      name="confirmReport"
-                      value="yes"
-                      required
-                    />
-                    <span>I am reporting an issue with this specific record.</span>
-                  </label>
-                  <p className={hint}>
-                    You can submit five reports per rolling 24 hours, with one pending report per
-                    record and issue.
-                  </p>
-                  <p className={hint}>
-                    A price report immediately marks the current price disputed. Other public
-                    details change only after administrator review.
-                  </p>
-                  <button
-                    className={`${ui.buttonPrimary} sm:w-fit`}
-                    type="submit"
-                    disabled={data.access !== 'allowed'}
-                  >
-                    Submit report
-                  </button>
-                </form>
-              </section>
-            ) : (
-              <section className={panel}>
-                <h2 className={panelTitle}>Choose a record to report</h2>
-                <p>Use the report link for a published provider, branch, or service listing.</p>
-                <a className={link} href="/discovery">
-                  Browse services
-                </a>
-                {draft.details && (
-                  <>
-                    <h3 className="font-bold text-ink">Your report text</h3>
-                    <p className={prose}>{draft.details}</p>
-                  </>
-                )}
-                {draft.suggestedCorrection && (
-                  <p className={prose}>Suggested correction: {draft.suggestedCorrection}</p>
-                )}
-                {draft.evidenceUrl && <p className={prose}>Evidence link: {draft.evidenceUrl}</p>}
-              </section>
-            )}
+                  }
+                />
+                <label className="flex min-h-touch items-start gap-3 text-small leading-snug">
+                  <input
+                    className="mt-0.5 size-5 shrink-0 accent-primary"
+                    type="checkbox"
+                    name="confirmReport"
+                    value="yes"
+                    required
+                  />
+                  <span className="text-ink">
+                    I am reporting an issue with this specific record.
+                  </span>
+                </label>
+                <p className="text-small text-muted">
+                  You can submit five reports per rolling 24 hours, with one pending report per
+                  record and issue. A price report immediately marks the current price disputed,
+                  while other details change after administrator review.
+                </p>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="sm:w-fit"
+                  disabled={data.access !== 'allowed'}
+                >
+                  Submit report
+                </Button>
+              </form>
+            </Card>
           </>
+        ) : (
+          <Card as="section" className="flex flex-col gap-3">
+            <h2 className="font-display text-h2 font-bold text-ink">Choose a record to report</h2>
+            <p className="text-small text-muted">
+              Use the report link for a published provider, branch, or service listing.
+            </p>
+            <ButtonLink href="/find" variant="primary" className="self-start">
+              Browse services
+            </ButtonLink>
+            {draft.details && (
+              <>
+                <h3 className="font-display text-h3 font-semibold text-ink">Your report text</h3>
+                <p className="report-prose whitespace-pre-wrap rounded-sm bg-surface-sunken p-3 text-small text-ink [overflow-wrap:anywhere]">
+                  {draft.details}
+                </p>
+              </>
+            )}
+            {draft.suggestedCorrection && (
+              <p className="report-prose text-small text-ink [overflow-wrap:anywhere]">
+                Suggested correction: {draft.suggestedCorrection}
+              </p>
+            )}
+            {draft.evidenceUrl && (
+              <p className="report-prose text-small text-ink [overflow-wrap:anywhere]">
+                Evidence link: {draft.evidenceUrl}
+              </p>
+            )}
+          </Card>
         )}
       </main>
       <SiteFooter />

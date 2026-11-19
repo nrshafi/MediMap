@@ -45,10 +45,10 @@ export function formatMeters(value: number) {
   return value < 1000 ? `${Math.round(value)} m` : `${(value / 1000).toFixed(1)} km`;
 }
 
-export function formatReviewDate(value: string | null | undefined) {
+export function formatReviewDate(value: string | number | null | undefined): string {
   if (!value) return 'Unknown';
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
+  if (Number.isNaN(date.getTime())) return String(value);
   return date.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',

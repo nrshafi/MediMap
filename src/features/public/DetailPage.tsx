@@ -161,9 +161,6 @@ export function DetailPage({
             ) : (
               <Notice kind="info">Map location unavailable. Branch coordinates are unknown.</Notice>
             )}
-            <p className="text-small text-muted">
-              Provider: <span className="font-medium text-ink">{entity.provider.name}</span>
-            </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               {entity.phone ? (
                 <a
@@ -247,7 +244,12 @@ export function DetailPage({
           {data.listings.length ? (
             <div className="grid gap-3 md:grid-cols-2">
               {data.listings.map((l) => (
-                <ListingCard key={l.id} listing={l} area={area} />
+                <ListingCard
+                  key={l.id}
+                  listing={l}
+                  area={area}
+                  showBranchLink={data.kind === 'service'}
+                />
               ))}
             </div>
           ) : (

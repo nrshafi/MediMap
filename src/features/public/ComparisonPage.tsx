@@ -41,7 +41,8 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
         />
 
         <div
-          className="w-full max-w-full overflow-x-auto rounded-md border border-border bg-surface"
+          tabIndex={0}
+          className="w-full max-w-full overflow-x-auto rounded-md border border-border bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           role="region"
           aria-label="Branch comparison table"
         >

@@ -227,6 +227,9 @@ test.describe('native reporting form', () => {
       info.project.name === 'mobile' ? 'report-nojs-mobile' : 'report-nojs-desktop',
     );
     await page.goto(reportUrl('branch', branch, 'phone'));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
     await expect(page.getByLabel('Issue type')).toHaveValue('phone');
     await expect(page.getByLabel('Issue type').locator('option')).toHaveCount(3);
     await page.getByLabel('What is incorrect?').fill(details);

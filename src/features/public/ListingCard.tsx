@@ -17,6 +17,7 @@ export function ListingCard({
   selected,
   compared,
   compareDisabled,
+  showBranchLink,
   onSelect,
   onToggleCompare,
 }: {
@@ -27,6 +28,7 @@ export function ListingCard({
   selected?: boolean;
   compared?: boolean;
   compareDisabled?: boolean;
+  showBranchLink?: boolean;
   onSelect?: () => void;
   onToggleCompare?: () => void;
 }) {
@@ -121,6 +123,21 @@ export function ListingCard({
           </a>
         )}
       </div>
+      {!onSelect && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-small">
+          {showBranchLink && (
+            <a className={linkRow} href={`/branches/${l.branch.id}`}>
+              Branch details
+            </a>
+          )}
+          <a className={linkRow} href={`/reviews?listing=${l.id}`}>
+            Service reviews
+          </a>
+          <a className={linkRow} href={`/report?target=listing&id=${l.id}`}>
+            Report incorrect information
+          </a>
+        </div>
+      )}
       {onToggleCompare && (
         <div className="flex flex-wrap gap-2">
           <Chip

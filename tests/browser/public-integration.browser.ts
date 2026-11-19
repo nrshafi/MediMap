@@ -44,6 +44,12 @@ test('public catalog, details, unknown locations and URL filters use persisted d
     'href',
     /destination=/,
   );
+  const branchCard = page.locator('article[id^="listing-"]').first();
+  await expect(branchCard.getByRole('link', { name: 'Service reviews' })).toBeVisible();
+  await expect(
+    branchCard.getByRole('link', { name: 'Report incorrect information' }),
+  ).toBeVisible();
+  await expect(branchCard.getByRole('link', { name: 'Branch details' })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/services/complete-blood-count?lat=23.75&lng=90.4&radius=5');
   await expect(page.getByText('Selected area:', { exact: false })).toContainText(
@@ -55,6 +61,12 @@ test('public catalog, details, unknown locations and URL filters use persisted d
   ).toHaveAttribute('href', /radius=5/);
   await expect(
     page.getByRole('heading', { name: 'Complete Blood Count', exact: true }),
+  ).toBeVisible();
+  const serviceCard = page.locator('article[id^="listing-"]').first();
+  await expect(serviceCard.getByRole('link', { name: 'Branch details' })).toBeVisible();
+  await expect(serviceCard.getByRole('link', { name: 'Service reviews' })).toBeVisible();
+  await expect(
+    serviceCard.getByRole('link', { name: 'Report incorrect information' }),
   ).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({
@@ -133,6 +145,7 @@ test('signed-in reviews, abuse reports and moderation change public summaries', 
     test.info().project.name === 'mobile' ? 'review-mobile' : 'review-desktop',
   );
   await page.goto('/reviews?listing=addin-moghbazar-complete-blood-count');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const form = page.locator('form[action="/reviews/write"]');
   for (const name of [
     'Service quality',
@@ -147,7 +160,10 @@ test('signed-in reviews, abuse reports and moderation change public summaries', 
     .getByLabel('Written review, optional')
     .fill(`Synthetic public flow ${test.info().project.name}`);
   await form.getByRole('button', { name: 'Save review' }).click();
-  await expect(page.getByText(/service reviews · 4.00/)).toBeVisible();
+  await expect(page.getByText(/1 service review/)).toBeVisible();
+  const reviewCard = page.locator('section[aria-label="Published reviews"] article').first();
+  await expect(reviewCard.getByRole('heading', { name: 'Service experience' })).toHaveCount(0);
+  await expect(reviewCard.getByText(/^Updated /)).toBeVisible();
   await page.getByText('Report this review', { exact: true }).first().click();
   const report = page.locator('form[action="/reviews/report"]').first();
   const reviewId = await report.locator('input[name="review"]').inputValue();
@@ -256,6 +272,17 @@ test('comparison preserves unknown values and displays the same selected branche
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
+    if (test.info().project.name === 'mobile') {
+      const region = page.getByRole('region', { name: 'Branch comparison table' });
+      await page.getByRole('link', { name: 'Change selection' }).focus();
+      await page.keyboard.press('Tab');
+      await expect(region).toBeFocused();
+      const initialScroll = await region.evaluate((el) => el.scrollLeft);
+      expect(initialScroll).toBe(0);
+      await page.keyboard.press('ArrowRight');
+      const scrolled = await region.evaluate((el) => el.scrollLeft);
+      expect(scrolled).toBeGreaterThan(0);
+    }
     await page.screenshot({
       path: `.bun-tmp/public-comparison-${test.info().project.name}.png`,
       fullPage: true,

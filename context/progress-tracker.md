@@ -4,10 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-19 23:14:00 +06:00`.
+Last updated: `2026-11-20 01:05:00 +06:00`.
 
 ## Current phase
 
+Service, branch, compare, reviews, and report pages polished with shared components (`PageHeader`, `Card`, `Button`, `ButtonLink`, `Notice`, `Field`, `EmptyState`, `StatTile`, `StatusBadge`). Redundancy and stacked notices removed per `docs/ui-audit.md`. Native forms and accessibility verified across 375 px and desktop widths.
 Find page refactored and polished (`src/features/public/FindPage.tsx`, `ListingCard.tsx`, `ListingPanel.tsx`, `LocationPanel.tsx`, `AreaStatistics.tsx`, `GoogleMapView.tsx`). Removed redundancy per `docs/ui-audit.md` and adopted shared design system components (`Card`, `StatTile`, `Field`, `Notice`, `EmptyState`, `Skeleton`, `StatusBadge`).
 Responsive site chrome and landing page sections with real catalog data implemented in `src/ui/SiteChrome.tsx`, `src/features/landing/LandingView.tsx`, and `src/features/public/landing.functions.ts`. Step 3a fixes applied: removed prices without provenance, ordered popular services by listing count and name, linked hospital cards to branch pages, made popular service cards unified accessible links, corrected landing copy and removed redundant eyebrows, moved landing SQL into `CatalogRepository`, and removed unused props from site chrome.
 Shared component library created in `src/ui/` with tests and DESIGN.md documentation. Steps 4 to 6 will continue adopting these components across remaining feature pages.
@@ -56,6 +57,51 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Completed milestones
 
+### Service, branch, compare, reviews, and report pages polish (2026-11-20 00:26:00 +06:00)
+
+- Polished service and branch pages in `src/features/public/DetailPage.tsx`:
+  - Added PageHeader with service and branch names, key facts, and clear navigation actions.
+  - Grouped contact details, opening schedule, Dhaka opening status, and report link in a structured Card.
+  - Implemented Show on map action using shared Button, loading Google Maps only after user selection.
+  - Rendered price list as a clean card grid using ListingCard, with EmptyState for empty results.
+  - Replaced legacy text sizes with design system typography tokens (`text-small`, `text-label`, `text-h1` to `text-h3`).
+- Polished comparison page in `src/features/public/ComparisonPage.tsx` and `src/routes/compare.tsx`:
+  - Added PageHeader with service name and Change selection action.
+  - Confined table horizontal scrolling to its container (`overflow-x-auto`) without page overflow, removing container focusability.
+  - Preserved "Not requested yet" and "Driving estimate unavailable" labels.
+  - Adopted shared StatusBadge, tabular figures for BDT prices, and shared Button with pending state for driving calculations.
+  - Standardized branch charts inside Card articles with progress indicators.
+  - Implemented EmptyState with ButtonLink for unavailable comparisons.
+- Polished reviews page in `src/features/reviews/ReviewPage.tsx`:
+  - Added rating summary Card displaying mean rating and review count, with reserved slot for step 14 rating chart.
+  - Grouped the six rating dimensions into an accessible fieldset with visible legend and Field components.
+  - Added a clear sign-in prompt Card with ButtonLink for unauthenticated visitors.
+  - Rendered reviews as Card articles with subratings displayed using StatTile components.
+  - Preserved native form submissions for reviews and abuse reports without JavaScript.
+- Polished report page in `src/features/corrections/ReportView.tsx`:
+  - Replaced local Notice function with shared Notice from `src/ui/Notice.tsx`, adding heading support for notice titles.
+  - Removed uppercase eyebrow label and introduced PageHeader.
+  - Wrapped form controls in Field components with shared control styling.
+  - Enforced single page-level notice display, preventing stacked error and access notices.
+  - Merged the two redundant hint paragraphs into one concise hint block under the form.
+  - Formatted submitted report receipts as a clear success Card state.
+  - Preserved native form submissions and validation without JavaScript.
+- Step 5a fixes:
+  - Task 1: Restored 23 missing lines in "Current phase" and restored the step 4 milestone heading in `context/progress-tracker.md`. Removed the retired Google Maps Platform billing decision open item from step 4 and step 5 milestones.
+  - Task 2: Restored secondary links on `ListingCard` when `onSelect` is not provided ("Service reviews", "Report incorrect information", and conditional "Branch details" via `showBranchLink` on the service page only). Added browser tests verifying links on service and branch pages, absence of self-linking branch details on branch pages, and absence of secondary links on find cards.
+  - Task 3: Restored `tabIndex={0}` and focus outline (`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus`) on the comparison table scroll container for WCAG 2.1.1 keyboard accessibility. Added a 375 px browser test verifying Tab focus and ArrowRight horizontal scrolling.
+  - Task 4: Removed duplicate mean from review count summary line in `ReviewPage.tsx`. Removed repeated "Service experience" heading and made formatted review date the first line of review cards. Formatted review update timestamps in Asia/Dhaka time. Removed duplicate provider name from branch contact card. Added unit tests in `src/features/public/format.test.ts`. Updated browser test assertions.
+- Automated tests and verification:
+  - Added 375 px no-horizontal-scroll checks for branch, reviews, and report pages.
+  - `bun run typecheck`: clean (0 errors in 241 application files and 27 tooling files).
+  - `oxlint . --deny-warnings`: clean (0 warnings and 0 errors across 253 files).
+  - `bun run format:check`: all 263 files formatted.
+  - `bun test`: 360 unit tests passing across 51 files.
+  - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1.
+  - `bun run test:browser`: 110 browser tests passing (2 skipped) across desktop and mobile viewports.
+- Open items:
+  - Step 14 rating chart implementation (Codra21).
+
 ### Find page redundancy removal and design system polish (2026-11-19 22:15:00 +06:00)
 
 - Refactored `/find` to eliminate duplicate facts and repeated actions recorded in `docs/ui-audit.md`:
@@ -92,7 +138,6 @@ These are confirmed constraints for later feature implementation. Full details a
   - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1.
   - `bun run test:browser`: 110 browser tests passing (2 skipped) across desktop and mobile.
 - Open items:
-  - Owner billing decision for production Google Maps Platform key before release.
   - Steps 5 and 6 component migrations for remaining comparison, reviews, and administration screens.
 
 ### Responsive site chrome and landing page sections (2026-11-19 20:16:00 +06:00)

@@ -385,6 +385,37 @@ Under `prefers-reduced-motion: reduce`, remove transitions and animations, and s
 
 ## Components
 
+### Button
+
+Use buttons to trigger actions or navigate to routes.
+
+- Purpose: Execute user commands or open internal paths.
+- Variants: `primary` for primary actions, `secondary` for secondary actions, `ghost` for subtle actions, and `danger` for destructive actions.
+- Sizes: `default` and `small`. Both sizes keep the 44 px touch height.
+- States: Normal, hover, focus, disabled, and pending with a spinner and `aria-busy`. Link variant renders an `<a>` element with button appearance.
+
+### Card
+
+Use cards to group related information on one surface.
+
+- Purpose: Container for grouped content, metrics, or records.
+- Variants: `default` with a decorative edge, `raised` with `shadow-card`, and `sunken` with a sunken background.
+- Interaction: A raised card lifts to `shadow-lift` on hover only when interactive.
+
+### Badge and StatusBadge
+
+Use badges to display compact labels and verification states.
+
+- Purpose: Show categorical tags and diagnostic price verification status.
+- Variants: Badge provides `verified`, `disputed`, `unknown`, `error`, and `neutral` tones. StatusBadge displays verified, disputed, or unknown price states.
+
+### Notice
+
+Use notices to display contextual messages and system feedback.
+
+- Purpose: Present important messages, operational status, or system errors.
+- Variants: `info` with a status role, `warning` with a status role, and `error` with an alert role.
+
 ### Listing card
 
 A listing card represents one branch-service listing. It contains, in this order:

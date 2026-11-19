@@ -1,12 +1,10 @@
 import { Check, ExternalLink, Plus } from 'lucide-react';
 import type { BranchService } from '../catalog/contracts';
-import { statusBadge, ui } from '../../ui/styles';
-import { formatBdt, formatKm, priceStatus, type RouteResult, formatReviewDate } from './format';
+import { ui } from '../../ui/styles';
+import { StatusBadge } from '../../ui/Badge';
+import { formatBdt, formatKm, type RouteResult, formatReviewDate } from './format';
 
-export function StatusBadge({ price }: { price: BranchService['price'] }) {
-  const status = priceStatus(price);
-  return <span className={statusBadge[status.tone]}>{status.label}</span>;
-}
+export { StatusBadge };
 
 const linkRow = `${ui.link} inline-flex min-h-touch items-center`;
 

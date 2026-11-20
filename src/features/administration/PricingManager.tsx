@@ -2,8 +2,13 @@ import { AdminLayout } from './AdminLayout';
 import { SourceForm, ListingForm, PriceForm, ClearPriceForm, decimalBdt } from './PricingForms';
 import { pricingMessages, pricingHref } from '../pricing/contracts';
 import type { readPricing } from '../pricing/operations.server';
-import { admin, Notice, PageTitle, Section, StateCard } from './adminUi';
+import { admin, Notice, Section, StateCard } from './adminUi';
 import { ui } from '../../ui/styles';
+import { PageHeader } from '../../ui/PageHeader';
+import { Card } from '../../ui/Card';
+import { Button } from '../../ui/Button';
+import { Badge } from '../../ui/Badge';
+import { fieldControlStyles } from '../../ui/Field';
 
 export function PricingManager({
   result,
@@ -21,10 +26,10 @@ export function PricingManager({
     : undefined;
   return (
     <AdminLayout activeHref="/admin/prices">
-      <PageTitle eyebrow="Prices and evidence" title="Manage branch prices">
-        Maintain diagnostic availability, standard BDT prices, and retained official source
-        evidence.
-      </PageTitle>
+      <PageHeader
+        title="Manage branch prices"
+        description="Maintain diagnostic availability, standard BDT prices, and retained official source evidence."
+      />
       {!result.ok ? (
         <StateCard
           title={
@@ -59,7 +64,10 @@ export function PricingManager({
         data && (
           <>
             {feedback && (
-              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice
+                kind={search.code === 'saved' ? 'info' : 'error'}
+                role={search.code === 'saved' ? 'status' : 'alert'}
+              >
                 <p>{feedback}</p>
                 {search.code !== 'saved' && (
                   <a className={admin.link} href={pricingHref()}>
@@ -68,17 +76,17 @@ export function PricingManager({
                 )}
               </Notice>
             )}
-            <Notice>
+            <Notice kind="info" role="none">
               Price corrections retain history. Unknown prices stay unknown. Disputed prices are
               excluded from default statistics, and prices do not expire by age.
             </Notice>
             <form method="get" action="/admin/prices" className={admin.filter}>
               <div className="grid min-w-0 flex-1 gap-1 sm:max-w-md">
-                <label className="text-sm font-semibold text-ink" htmlFor="pricing-provider">
+                <label className="text-small font-semibold text-ink" htmlFor="pricing-provider">
                   Provider filter
                 </label>
                 <select
-                  className={admin.input}
+                  className={fieldControlStyles}
                   id="pricing-provider"
                   name="provider"
                   defaultValue={data.provider?.id ?? ''}
@@ -95,9 +103,7 @@ export function PricingManager({
                   ))}
                 </select>
               </div>
-              <button className={ui.buttonPrimary} type="submit">
-                Apply provider
-              </button>
+              <Button type="submit">Apply provider</Button>
             </form>
             {data.providers.nextCursor && (
               <a
@@ -112,22 +118,76 @@ export function PricingManager({
               </a>
             )}
             <Section id="price-listings" title="Branch-service listings">
-              <ul className={admin.list}>
-                {data.listings.items.map((item) => (
-                  <li key={item.id} className="py-1">
-                    <a className={admin.link} href={pricingHref({ listing: item.id })}>
-                      {item.serviceName} at {item.providerName}, {item.branchName}
-                    </a>
-                    <p className="text-sm text-muted">
-                      {item.active ? 'Active listing' : 'Inactive listing'} ·{' '}
-                      {item.price
-                        ? `BDT ${decimalBdt(item.price.amountMinor)} · ${item.price.status}`
-                        : 'Price unknown'}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              {!data.listings.items.length && <p>No listings on this page.</p>}
+              {data.listings.items.length ? (
+                <div
+                  className="min-w-0 max-h-96 overflow-auto rounded-sm border border-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Branch-service listings table"
+                >
+                  <table className={`${ui.table} min-w-[640px]`}>
+                    <thead className="sticky top-0 z-10 border-b border-border bg-surface">
+                      <tr>
+                        <th scope="col" className="p-2 font-semibold text-ink">
+                          Listing
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink">
+                          Availability
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink text-right">
+                          Standard price
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink text-right">
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {data.listings.items.map((item) => (
+                        <tr
+                          key={item.id}
+                          className="hover:bg-primary-soft/40 transition-colors duration-fast"
+                        >
+                          <td className="p-2">
+                            <a className={admin.link} href={pricingHref({ listing: item.id })}>
+                              {item.serviceName} at {item.providerName}, {item.branchName}
+                            </a>
+                          </td>
+                          <td className="p-2">
+                            <Badge tone={item.active ? 'verified' : 'neutral'}>
+                              {item.active ? 'Active listing' : 'Inactive listing'}
+                            </Badge>
+                          </td>
+                          <td className="p-2 text-right tabular-nums font-semibold text-ink">
+                            {item.price
+                              ? `BDT ${decimalBdt(item.price.amountMinor)}`
+                              : 'Price unknown'}
+                          </td>
+                          <td className="p-2 text-right">
+                            {item.price ? (
+                              <Badge
+                                tone={
+                                  item.price.status === 'verified'
+                                    ? 'verified'
+                                    : item.price.status === 'disputed'
+                                      ? 'disputed'
+                                      : 'neutral'
+                                }
+                              >
+                                {item.price.status}
+                              </Badge>
+                            ) : (
+                              <span className="text-muted">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p>No listings on this page.</p>
+              )}
               {data.listings.nextCursor && (
                 <a
                   className={admin.link}
@@ -141,17 +201,23 @@ export function PricingManager({
                 </a>
               )}
             </Section>
-            {search.listing && !data.selected && <Notice role="alert">Listing not found.</Notice>}
+            {search.listing && !data.selected && (
+              <Notice kind="error" role="alert">
+                Listing not found.
+              </Notice>
+            )}
             {data.provider && (
               <>
                 <Section id="source-snapshots" title="Official source snapshots">
                   {sources.length ? (
                     sources.map((source) => (
-                      <article
+                      <Card
+                        as="article"
+                        variant="default"
                         key={source.id}
-                        className="grid gap-1 rounded-sm border border-border bg-surface-sunken p-4 text-sm"
+                        className="grid gap-1 bg-surface-sunken p-4 text-small"
                       >
-                        <h3 className="text-base font-bold text-ink">{source.id}</h3>
+                        <h3 className={ui.heading3}>{source.id}</h3>
                         <a
                           className={admin.link}
                           href={source.url}
@@ -177,7 +243,7 @@ export function PricingManager({
                           SHA-256: <code>{source.sha256}</code>
                         </p>
                         {source.notes && <p>{source.notes}</p>}
-                      </article>
+                      </Card>
                     ))
                   ) : (
                     <p>No source snapshots on this page.</p>
@@ -196,7 +262,7 @@ export function PricingManager({
                   )}
                 </Section>
                 <Section id="new-source" title="Add source snapshot">
-                  <p className="text-sm">
+                  <p className="text-small">
                     Record actual collection details. Create a new snapshot to correct evidence. A
                     URL alone does not establish a verified price.
                   </p>
@@ -240,7 +306,7 @@ export function PricingManager({
                   />
                 </Section>
                 <Section id="new-price" title="New price revision">
-                  <p className="text-sm">
+                  <p className="text-small">
                     {data.selected.serviceName} at {data.selected.branchName}.{' '}
                     {data.selected.price
                       ? `Current price: BDT ${decimalBdt(data.selected.price.amountMinor)} · ${data.selected.price.status}`
@@ -263,12 +329,14 @@ export function PricingManager({
                 </Section>
                 <Section id="price-history" title="Retained price revisions">
                   {data.history.items.map((price) => (
-                    <article
+                    <Card
+                      as="article"
+                      variant="default"
                       key={price.id}
-                      className="grid gap-1 rounded-sm border border-border bg-surface-sunken p-4 text-sm"
+                      className="grid gap-1 bg-surface-sunken p-4 text-small"
                       aria-label={`Price revision ${price.id}`}
                     >
-                      <h3 className="text-base font-bold text-ink">
+                      <h3 className={ui.heading3}>
                         BDT {decimalBdt(price.amountMinor)} · {price.status}
                       </h3>
                       <p>
@@ -288,7 +356,7 @@ export function PricingManager({
                         {price.sourceRow ?? 'unknown'}
                       </p>
                       {price.notes && <p>{price.notes}</p>}
-                    </article>
+                    </Card>
                   ))}
                   {!data.history.items.length && <p>No retained prices yet.</p>}
                   {data.history.nextCursor && (

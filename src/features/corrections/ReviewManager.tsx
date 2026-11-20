@@ -4,8 +4,12 @@ import { TargetDetails } from './ReportView';
 import { issueLabels } from './contracts';
 import { resolutionMessages, reviewHref, type ResolutionDraft } from './review-contracts';
 import type { readReview } from './review-operations.server';
-import { admin, Notice, PageTitle, Section, StateCard } from '../administration/adminUi';
+import { admin, Notice, Section, StateCard } from '../administration/adminUi';
 import { ui } from '../../ui/styles';
+import { PageHeader } from '../../ui/PageHeader';
+import { Button } from '../../ui/Button';
+import { Badge } from '../../ui/Badge';
+import { fieldControlStyles } from '../../ui/Field';
 
 export function ReviewManager({
   result,
@@ -31,10 +35,10 @@ export function ReviewManager({
   };
   return (
     <AdminLayout activeHref="/admin/reports">
-      <PageTitle eyebrow="Information corrections" title="Review reports">
-        Compare retained submissions with current records. Record the evidence and reason for each
-        decision.
-      </PageTitle>
+      <PageHeader
+        title="Review reports"
+        description="Compare retained submissions with current records. Record the evidence and reason for each decision."
+      />
       {!result.ok ? (
         <StateCard
           title={
@@ -68,12 +72,15 @@ export function ReviewManager({
         data && (
           <>
             {feedback && (
-              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice
+                kind={search.code === 'saved' ? 'info' : 'error'}
+                role={search.code === 'saved' ? 'status' : 'alert'}
+              >
                 <p>{feedback}</p>
               </Notice>
             )}
             {draft.reason && selected?.report.status !== 'pending' && (
-              <Notice>
+              <Notice kind="info">
                 <h2 className="font-bold">Your unsaved reason</h2>
                 <p className={`report-prose ${admin.prose}`}>{draft.reason}</p>
               </Notice>
@@ -81,11 +88,11 @@ export function ReviewManager({
             <form method="get" action="/admin/reports" className={admin.filter}>
               <input type="hidden" name="limit" value={data.query.limit} />
               <div>
-                <label className="text-sm font-semibold text-ink" htmlFor="review-status">
+                <label className="text-small font-semibold text-ink" htmlFor="review-status">
                   Report status
                 </label>
                 <select
-                  className={admin.input}
+                  className={fieldControlStyles}
                   id="review-status"
                   name="status"
                   defaultValue={data.query.status}
@@ -96,37 +103,73 @@ export function ReviewManager({
                   <option value="all">All reports</option>
                 </select>
               </div>
-              <button className={ui.buttonPrimary} type="submit">
-                Filter reports
-              </button>
+              <Button type="submit">Filter reports</Button>
             </form>
             <Section id="report-queue-title" title="Report queue">
               <p className={admin.hint}>Oldest submissions first.</p>
               {data.queue.items.length ? (
-                <ul className={admin.list}>
-                  {data.queue.items.map((item) => (
-                    <li
-                      key={item.id}
-                      className="flex flex-col gap-1 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-                    >
-                      <div className="min-w-0 text-sm">
-                        <strong className="font-semibold">{item.providerName}</strong>
-                        <p>
-                          {issueLabels[item.issue]} · {item.status}
-                        </p>
-                        <p className={admin.hint}>
-                          {item.targetType} · {item.targetId}
-                        </p>
-                      </div>
-                      <a
-                        className={admin.link}
-                        href={reviewHref({ ...savedSearch, report: item.id })}
-                      >
-                        Review {item.id}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <div
+                  className="min-w-0 max-h-96 overflow-auto rounded-sm border border-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Report queue table"
+                >
+                  <table className={`${ui.table} min-w-[600px]`}>
+                    <thead className="sticky top-0 z-10 border-b border-border bg-surface">
+                      <tr>
+                        <th scope="col" className="p-2 font-semibold text-ink">
+                          Provider / Target
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink">
+                          Issue
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink">
+                          Status
+                        </th>
+                        <th scope="col" className="p-2 font-semibold text-ink text-right">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {data.queue.items.map((item) => (
+                        <tr
+                          key={item.id}
+                          className="hover:bg-primary-soft/40 transition-colors duration-fast"
+                        >
+                          <td className="p-2 text-small">
+                            <strong className="font-semibold text-ink">{item.providerName}</strong>
+                            <p className="text-label text-muted">
+                              {item.targetType} · {item.targetId}
+                            </p>
+                          </td>
+                          <td className="p-2 text-small">{issueLabels[item.issue]}</td>
+                          <td className="p-2">
+                            <Badge
+                              tone={
+                                item.status === 'accepted'
+                                  ? 'verified'
+                                  : item.status === 'rejected'
+                                    ? 'error'
+                                    : 'disputed'
+                              }
+                            >
+                              {item.status}
+                            </Badge>
+                          </td>
+                          <td className="p-2 text-right">
+                            <a
+                              className={admin.link}
+                              href={reviewHref({ ...savedSearch, report: item.id })}
+                            >
+                              Review {item.id}
+                            </a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               ) : (
                 <p>No reports match this status.</p>
               )}
@@ -227,7 +270,7 @@ export function ReviewManager({
                         decision.
                       </p>
                       {selected.report.issue === 'price' ? (
-                        <Notice>
+                        <Notice kind="info" role="none">
                           A fresh official-source review is required, including rejection. Other
                           pending price reports keep the reviewed price disputed.
                         </Notice>
@@ -241,7 +284,7 @@ export function ReviewManager({
                         Official evidence is restricted to this provider. Source collection and
                         review dates remain separate.
                       </p>
-                      <ul className="grid gap-2 text-sm">
+                      <ul className="grid gap-2 text-small">
                         {sources.map((source) => (
                           <li key={source.id} className="grid min-w-0 gap-0.5">
                             <a
@@ -292,7 +335,7 @@ export function ReviewManager({
                               <label className={ui.label}>
                                 Price outcome
                                 <select
-                                  className={admin.input}
+                                  className={fieldControlStyles}
                                   name="priceAction"
                                   defaultValue={
                                     draft.priceAction ??
@@ -308,7 +351,7 @@ export function ReviewManager({
                               <label className={ui.label}>
                                 Reviewed standard price (BDT)
                                 <input
-                                  className={admin.input}
+                                  className={fieldControlStyles}
                                   name="amount"
                                   inputMode="decimal"
                                   pattern="(?:0|[1-9][0-9]*)(?:\.[0-9]{1,2})?"
@@ -323,7 +366,7 @@ export function ReviewManager({
                               <label className={ui.label}>
                                 Provider effective date (optional)
                                 <input
-                                  className={admin.input}
+                                  className={fieldControlStyles}
                                   type="date"
                                   name="effectiveDate"
                                   defaultValue={
@@ -357,7 +400,7 @@ export function ReviewManager({
                           <label className={ui.label}>
                             Resolution decision
                             <select
-                              className={admin.input}
+                              className={fieldControlStyles}
                               name="outcome"
                               defaultValue={draft.outcome ?? 'rejected'}
                             >
@@ -379,7 +422,7 @@ export function ReviewManager({
                           <label className={ui.label}>
                             Reviewed official source
                             <select
-                              className={admin.input}
+                              className={fieldControlStyles}
                               name="sourceId"
                               required
                               defaultValue={
@@ -397,7 +440,7 @@ export function ReviewManager({
                           <label className={ui.label}>
                             Evidence row (optional for non-price issues)
                             <input
-                              className={admin.input}
+                              className={fieldControlStyles}
                               name="sourceRow"
                               inputMode="numeric"
                               pattern="[1-9][0-9]*"
@@ -419,9 +462,7 @@ export function ReviewManager({
                             />
                             <span>I reviewed this official source and the current target now.</span>
                           </label>
-                          <button className={ui.buttonPrimary} type="submit">
-                            Save resolution
-                          </button>
+                          <Button type="submit">Save resolution</Button>
                         </form>
                       }
                     </Section>

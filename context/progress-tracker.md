@@ -4,10 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-20 01:05:00 +06:00`.
+Last updated: `2026-11-20 19:28:00 +06:00`.
 
 ## Current phase
 
+Sign-in, account, and administration pages polished with shared design system components (`Card`, `PageHeader`, `Button`, `ButtonLink`, `Notice`, `Badge`, `fieldControlStyles`). Dense tables enhanced with sticky headers, row hover, and right-aligned tabular figures. Native form submissions and accessibility verified across 375 px and desktop widths. Review moderation link exposed across all administration views with regression tests.
 Service, branch, compare, reviews, and report pages polished with shared components (`PageHeader`, `Card`, `Button`, `ButtonLink`, `Notice`, `Field`, `EmptyState`, `StatTile`, `StatusBadge`). Redundancy and stacked notices removed per `docs/ui-audit.md`. Native forms and accessibility verified across 375 px and desktop widths.
 Find page refactored and polished (`src/features/public/FindPage.tsx`, `ListingCard.tsx`, `ListingPanel.tsx`, `LocationPanel.tsx`, `AreaStatistics.tsx`, `GoogleMapView.tsx`). Removed redundancy per `docs/ui-audit.md` and adopted shared design system components (`Card`, `StatTile`, `Field`, `Notice`, `EmptyState`, `Skeleton`, `StatusBadge`).
 Responsive site chrome and landing page sections with real catalog data implemented in `src/ui/SiteChrome.tsx`, `src/features/landing/LandingView.tsx`, and `src/features/public/landing.functions.ts`. Step 3a fixes applied: removed prices without provenance, ordered popular services by listing count and name, linked hospital cards to branch pages, made popular service cards unified accessible links, corrected landing copy and removed redundant eyebrows, moved landing SQL into `CatalogRepository`, and removed unused props from site chrome.
@@ -56,6 +57,35 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Polish sign-in, account and administration pages (2026-11-20 19:28:00 +06:00)
+
+- Polished sign-in and account pages in `src/features/authentication/AccountView.tsx`:
+  - Implemented centered card layout for sign-in with MediMap logo, title, description, and primary Button for Google sign-in.
+  - Added marked slot for second sign-in method with divider text "or", styled to remain hidden until content is added in step 16.
+  - Implemented structured account card displaying signed-in email, role, reserved "Sign-in method" row, Asia/Dhaka session expiration time, and secondary sign-out Button.
+  - Preserved administrator workspace shortcut link and marked slot for step 16 change-password section.
+- Polished administration layout and navigation in `src/features/administration/AdminLayout.tsx` and `src/features/administration/navigation.ts`:
+  - Added `/admin/reviews` ("Review moderation") to `coreAdministrationNavigation`, making review moderation accessible from every admin page.
+  - Added responsive navigation: desktop sidebar and mobile horizontal top menu with `aria-current="page"` indicator.
+  - Added metadata `head` with `robots: noindex` to `src/routes/admin.reviews.tsx`.
+- Polished admin management pages with shared components and tokens:
+  - Added `PageHeader` across all six admin pages without uppercase eyebrow labels.
+  - Adopted shared `Card`, `Field` (`fieldControlStyles`), `Button` (including danger variant for clearing prices), `Badge`, and shared `Notice` (`src/ui/Notice.tsx`).
+  - Implemented readable dense tables with sticky headers, row hover styles, and right-aligned tabular numbers in `PricingManager.tsx` and `ReviewManager.tsx`.
+  - Moved record titles in `CatalogManager.tsx` and `CatalogInspector.tsx` to shared heading tokens per `docs/ui-audit.md` open item 5.
+  - Removed replaced class strings in `src/features/administration/adminUi.tsx` and exported shared `Notice`.
+- Preserved native form submissions without JavaScript across all administration forms.
+- Added browser test verifying every admin page renders a link to "Review moderation" and clicking it navigates to `/admin/reviews`.
+- Automated tests and verification:
+  - `bun run typecheck`: clean (0 errors in 241 application files and 27 tooling files).
+  - `oxlint . --deny-warnings`: clean (0 warnings and 0 errors across 253 files).
+  - `bun run format:check`: all 263 files formatted.
+  - `bun test`: 360 unit and integration tests passing across 51 files.
+  - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1.
+  - `bun run test:browser`: 112 browser tests passing (2 skipped) across desktop and mobile viewports.
+- Open items:
+  - Step 16 email/password sign-in and password management form implementation (nrshafi).
 
 ### Service, branch, compare, reviews, and report pages polish (2026-11-20 00:26:00 +06:00)
 

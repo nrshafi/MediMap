@@ -2,7 +2,8 @@ import { AdminLayout } from './AdminLayout';
 import { ProviderForm, BranchForm } from './ProviderForms';
 import { providerMessages, providersHref } from '../providers/contracts';
 import type { readProviders } from '../providers/operations.server';
-import { admin, ActiveBadge, Notice, PageTitle, Section, StateCard } from './adminUi';
+import { admin, ActiveBadge, Notice, Section, StateCard } from './adminUi';
+import { PageHeader } from '../../ui/PageHeader';
 
 export function ProviderManager({
   result,
@@ -20,10 +21,10 @@ export function ProviderManager({
     : undefined;
   return (
     <AdminLayout activeHref="/admin/providers">
-      <PageTitle eyebrow="Provider administration" title="Manage providers and branches">
-        Keep provider identity separate from each branch. Record known contacts, coordinates, and
-        usual weekly hours.
-      </PageTitle>
+      <PageHeader
+        title="Manage providers and branches"
+        description="Keep provider identity separate from each branch. Record known contacts, coordinates, and usual weekly hours."
+      />
       {!result.ok ? (
         <StateCard
           title={
@@ -59,7 +60,10 @@ export function ProviderManager({
         data && (
           <>
             {message && (
-              <Notice role={search.code === 'saved' ? 'status' : 'alert'}>
+              <Notice
+                kind={search.code === 'saved' ? 'info' : 'error'}
+                role={search.code === 'saved' ? 'status' : 'alert'}
+              >
                 <p>{message}</p>
                 {search.code !== 'saved' && (
                   <a className={admin.link} href={providersHref()}>
@@ -68,7 +72,7 @@ export function ProviderManager({
                 )}
               </Notice>
             )}
-            <Notice>
+            <Notice kind="info" role="none">
               Deactivation hides a provider or branch from public reads and keeps its listing and
               price history. Blank fields remain unknown.
             </Notice>
@@ -133,8 +137,16 @@ export function ProviderManager({
                 )}
               </Section>
             </div>
-            {search.provider && !data.provider && <Notice role="alert">Provider not found.</Notice>}
-            {search.branch && !data.branch && <Notice role="alert">Branch not found.</Notice>}
+            {search.provider && !data.provider && (
+              <Notice kind="error" role="alert">
+                Provider not found.
+              </Notice>
+            )}
+            {search.branch && !data.branch && (
+              <Notice kind="error" role="alert">
+                Branch not found.
+              </Notice>
+            )}
             {data.provider && (
               <>
                 <Section id="edit-provider" title="Edit provider">
@@ -149,7 +161,7 @@ export function ProviderManager({
                     does not verify a coordinate, telephone number, or schedule.
                   </p>
                   {sources.length ? (
-                    <ul className="grid gap-1 text-sm">
+                    <ul className="grid gap-1 text-small">
                       {sources.map((source) => (
                         <li key={source.id} className={admin.listRow}>
                           <a

@@ -1,6 +1,8 @@
 import { useId, type ReactNode } from 'react';
 import { admin } from './adminUi';
 import { ui } from '../../ui/styles';
+import { Button } from '../../ui/Button';
+import { fieldControlStyles } from '../../ui/Field';
 import type { Choice, ListingRecord, SourceRecord } from '../pricing/contracts';
 
 function Input({
@@ -24,7 +26,7 @@ function Input({
     <label className={ui.label}>
       {label}
       <input
-        className={admin.input}
+        className={fieldControlStyles}
         name={name}
         defaultValue={value}
         required={required}
@@ -50,7 +52,7 @@ function Select({
   return (
     <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select className={admin.input} id={id} name={name} defaultValue={value}>
+      <select className={fieldControlStyles} id={id} name={name} defaultValue={value}>
         {children}
       </select>
     </div>
@@ -112,7 +114,7 @@ export function SourceForm({ provider }: { provider: Choice }) {
     <form className={admin.form} method="post" action="/admin/prices/write">
       <input name="entity" type="hidden" value="source" />
       <input name="providerId" type="hidden" value={provider.id} />
-      <p className="text-sm font-semibold">Provider: {provider.name}</p>
+      <p className="text-small font-semibold">Provider: {provider.name}</p>
       <Id />
       <Input
         name="url"
@@ -149,9 +151,7 @@ export function SourceForm({ provider }: { provider: Choice }) {
       <Check name="confirmSource">
         These are the actual details of a reviewed official source snapshot.
       </Check>
-      <button className={ui.buttonPrimary} type="submit">
-        Create source snapshot
-      </button>
+      <Button type="submit">Create source snapshot</Button>
     </form>
   );
 }
@@ -171,7 +171,7 @@ export function ListingForm({
       {existing ? (
         <>
           <Revision listing={existing} />
-          <p className="text-sm">
+          <p className="text-small">
             {existing.serviceName} at {existing.branchName}
           </p>
         </>
@@ -209,9 +209,9 @@ export function ListingForm({
       <Check name="confirmMapping">
         The provider label refers to this canonical diagnostic service and variant.
       </Check>
-      <button className={ui.buttonPrimary} type="submit">
+      <Button type="submit">
         {existing ? 'Save availability' : 'Create branch-service listing'}
-      </button>
+      </Button>
     </form>
   );
 }
@@ -276,9 +276,7 @@ export function PriceForm({
         This is a standard base price without a promotion or discount.
       </Check>
       <Notes label="Revision notes" />
-      <button className={ui.buttonPrimary} type="submit">
-        Save new price revision
-      </button>
+      <Button type="submit">Save new price revision</Button>
     </form>
   );
 }
@@ -291,9 +289,9 @@ export function ClearPriceForm({ listing }: { listing: ListingRecord }) {
       <Check name="confirmClear">
         Set the current price to unknown and retain all previous revisions.
       </Check>
-      <button className={ui.buttonPrimary} type="submit">
+      <Button variant="danger" type="submit">
         Set current price to unknown
-      </button>
+      </Button>
     </form>
   );
 }

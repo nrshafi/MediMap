@@ -1,11 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { readModeration } from '../features/reviews/moderation.functions';
 import { AdminLayout } from '../features/administration/AdminLayout';
-import { admin, PageTitle, Section } from '../features/administration/adminUi';
+import { admin, Section } from '../features/administration/adminUi';
 import { SiteFooter, SiteHeader } from '../ui/SiteChrome';
-import { statusBadge, ui } from '../ui/styles';
+import { ui } from '../ui/styles';
+import { PageHeader } from '../ui/PageHeader';
+import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
+import { ButtonLink } from '../ui/Button';
+import { Badge } from '../ui/Badge';
+import { fieldControlStyles } from '../ui/Field';
 
 export const Route = createFileRoute('/admin/reviews')({
+  head: () => ({
+    meta: [{ title: 'Review moderation | MediMap' }, { name: 'robots', content: 'noindex' }],
+  }),
   validateSearch: (s: Record<string, unknown>) => ({
     after: typeof s.after === 'string' ? s.after : undefined,
   }),
@@ -20,10 +29,12 @@ export const Route = createFileRoute('/admin/reviews')({
         className="mx-auto grid w-full max-w-3xl flex-1 content-start gap-4 px-4 py-8"
       >
         <h1 className={ui.heading1}>Review moderation unavailable</h1>
-        <p className="text-sm text-muted">Sign in with administrator access, or try again later.</p>
-        <a className={`${ui.buttonPrimary} w-fit`} href="/sign-in">
+        <p className="text-small text-muted">
+          Sign in with administrator access, or try again later.
+        </p>
+        <ButtonLink className="w-fit" href="/sign-in">
           Sign in
-        </a>
+        </ButtonLink>
       </main>
       <SiteFooter />
     </div>
@@ -33,30 +44,26 @@ export const Route = createFileRoute('/admin/reviews')({
 function Page() {
   const data = Route.useLoaderData();
   return (
-    <AdminLayout
-      activeHref="/admin/reviews"
-      navigation={[{ href: '/admin/reviews', label: 'Review moderation' }]}
-    >
-      <PageTitle eyebrow="Community reviews" title="Review moderation" />
+    <AdminLayout activeHref="/admin/reviews">
+      <PageHeader
+        title="Review moderation"
+        description="Moderate user reviews and inspect pending abuse reports."
+      />
       <Section id="pending-reports" title="Pending abuse reports">
         {data.reports.map((r) => (
-          <article key={r.id} className="grid gap-1 rounded-sm bg-surface-sunken p-3 text-sm">
-            <p className="font-semibold">Review {r.review_id}</p>
+          <Card as="article" variant="sunken" key={r.id} className="grid gap-1 text-small">
+            <p className="font-semibold text-ink">Review {r.review_id}</p>
             <p>{r.reason}</p>
-          </article>
+          </Card>
         ))}
         {!data.reports.length && <p className={ui.muted}>No pending review reports.</p>}
       </Section>
       {data.reviews.map((r) => (
-        <article key={r.id} className={`${admin.card} grid gap-3`}>
-          <h2 className="text-base font-bold text-ink">{r.id}</h2>
+        <Card as="article" variant="default" key={r.id} className="grid gap-3">
+          <h2 className={ui.heading3}>{r.id}</h2>
           <p className={admin.prose}>{r.body}</p>
-          <p className="flex flex-wrap items-center gap-2 text-sm text-muted">
-            <span
-              className={r.visibility === 'visible' ? statusBadge.verified : statusBadge.unknown}
-            >
-              {r.visibility}
-            </span>
+          <p className="flex flex-wrap items-center gap-2 text-small text-muted">
+            <Badge tone={r.visibility === 'visible' ? 'verified' : 'unknown'}>{r.visibility}</Badge>
             <span aria-hidden>·</span>
             <span>Revision {r.revision}</span>
           </p>
@@ -66,7 +73,7 @@ function Page() {
               <input type="hidden" name="revision" value={r.revision} />
               <label className={ui.label}>
                 Action
-                <select className={admin.input} name="action">
+                <select className={fieldControlStyles} name="action">
                   {r.visibility === 'visible' ? (
                     <option value="hide">Hide</option>
                   ) : (
@@ -78,17 +85,19 @@ function Page() {
               <label className={ui.label}>
                 Reason
                 <textarea
-                  className={admin.textarea}
+                  className={`${admin.textarea} min-h-24`}
                   name="reason"
                   minLength={20}
                   maxLength={1000}
                   required
                 />
               </label>
-              <button className={`${ui.buttonPrimary} sm:w-fit`}>Save moderation decision</button>
+              <Button type="submit" variant="primary" className="sm:w-fit">
+                Save moderation decision
+              </Button>
             </form>
           )}
-        </article>
+        </Card>
       ))}
       {data.next && (
         <a className={admin.link} href={`/admin/reviews?after=${data.next}`}>

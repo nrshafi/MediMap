@@ -76,6 +76,31 @@ test('catalog inspector has empty and invalid-request states', async ({ page }) 
   await expect(page.getByRole('article')).toHaveCount(1);
 });
 
+test('every admin page links to review moderation', async ({ page }) => {
+  const adminPaths = [
+    '/admin/catalog',
+    '/admin/catalog/manage',
+    '/admin/providers',
+    '/admin/prices',
+    '/admin/reports',
+    '/admin/reviews',
+  ];
+  for (const path of adminPaths) {
+    await page.goto(path);
+    const nav = page.getByRole('navigation', { name: 'Administration' });
+    const reviewLink = nav.getByRole('link', { name: 'Review moderation' });
+    await expect(reviewLink).toBeVisible();
+    await expect(reviewLink).toHaveAttribute('href', '/admin/reviews');
+  }
+  await page.goto('/admin/catalog');
+  await page
+    .getByRole('navigation', { name: 'Administration' })
+    .getByRole('link', { name: 'Review moderation' })
+    .click();
+  await expect(page).toHaveURL(/\/admin\/reviews/);
+  await expect(page.getByRole('heading', { name: 'Review moderation', exact: true })).toBeVisible();
+});
+
 test.describe('server-rendered catalog', () => {
   test.use({ javaScriptEnabled: false });
 

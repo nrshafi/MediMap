@@ -8,8 +8,12 @@ import {
   type AliasRecord,
 } from '../catalog/administration/contracts';
 import type { readManagement } from '../catalog/administration/operations.server';
-import { admin, ActiveBadge, Notice, PageTitle, Section, StateCard } from './adminUi';
+import { admin, ActiveBadge, Notice, Section, StateCard } from './adminUi';
 import { ui } from '../../ui/styles';
+import { PageHeader } from '../../ui/PageHeader';
+import { Card } from '../../ui/Card';
+import { Button } from '../../ui/Button';
+import { fieldControlStyles } from '../../ui/Field';
 
 type FormRecord = CategoryRecord | ServiceRecord | AliasRecord;
 function SelectField({
@@ -29,7 +33,13 @@ function SelectField({
   return (
     <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select className={admin.input} id={id} name={name} defaultValue={value} required={required}>
+      <select
+        className={fieldControlStyles}
+        id={id}
+        name={name}
+        defaultValue={value}
+        required={required}
+      >
         {children}
       </select>
     </div>
@@ -50,7 +60,7 @@ function TextField({
     <label className={ui.label}>
       {label}
       <input
-        className={admin.input}
+        className={fieldControlStyles}
         name={name}
         defaultValue={value}
         required
@@ -105,9 +115,7 @@ function EditForm({
           <span>This correction keeps the same diagnostic meaning.</span>
         </label>
       )}
-      <button className={ui.buttonPrimary} type="submit">
-        {submit}
-      </button>
+      <Button type="submit">{submit}</Button>
     </form>
   );
 }
@@ -147,7 +155,7 @@ function Feedback({ code }: { code?: string }) {
   if (!code || !Object.hasOwn(editMessages, code)) return null;
   const message = Object.entries(editMessages).find(([key]) => key === code)?.[1];
   return (
-    <Notice role={code === 'saved' ? 'status' : 'alert'}>
+    <Notice kind={code === 'saved' ? 'info' : 'error'} role={code === 'saved' ? 'status' : 'alert'}>
       <p>{message}</p>
       {code !== 'saved' && (
         <a className={admin.link} href={managementHref()}>
@@ -198,10 +206,10 @@ export function CatalogManager({
   }
   return (
     <AdminLayout activeHref="/admin/catalog/manage">
-      <PageTitle eyebrow="Catalog administration" title="Manage diagnostic catalog">
-        Maintain categories, canonical services, and English or Bangla aliases. Keep different
-        diagnostic variants as separate services.
-      </PageTitle>
+      <PageHeader
+        title="Manage diagnostic catalog"
+        description="Maintain categories, canonical services, and English or Bangla aliases. Keep different diagnostic variants as separate services."
+      />
       {!result.ok ? (
         <StateCard
           title={
@@ -235,7 +243,7 @@ export function CatalogManager({
       ) : (
         <>
           <Feedback code={code} />
-          <Notice>
+          <Notice kind="info" role="none">
             Deactivation hides a record from public catalog reads and keeps its relationships.
             Inactive terms remain reserved.
           </Notice>
@@ -302,7 +310,7 @@ export function CatalogManager({
             </Section>
           </div>
           {search.category && !result.data.category && (
-            <Notice role="alert">
+            <Notice kind="error" role="alert">
               Category not found.{' '}
               <a className={ui.link} href={managementHref()}>
                 Reload catalog management
@@ -320,7 +328,7 @@ export function CatalogManager({
             </Section>
           )}
           {search.service && !result.data.service && (
-            <Notice role="alert">
+            <Notice kind="error" role="alert">
               Service not found.{' '}
               <a className={ui.link} href={managementHref()}>
                 Reload catalog management
@@ -343,7 +351,7 @@ export function CatalogManager({
                 </a>
               </Section>
               <Section id="new-alias" title="Add alias">
-                <p className="text-sm">
+                <p className="text-small">
                   For {result.data.service.name}. Add only names that refer to this diagnostic
                   service.
                 </p>
@@ -356,12 +364,14 @@ export function CatalogManager({
                 {!result.data.aliases.items.length && <p>No aliases on this page.</p>}
                 <div className={admin.twoColumns}>
                   {result.data.aliases.items.map((item) => (
-                    <section
+                    <Card
+                      as="section"
+                      variant="default"
                       key={item.id}
-                      className="grid min-w-0 gap-3 rounded-sm border border-border p-4"
+                      className="grid min-w-0 gap-3"
                       aria-label={`Edit alias ${item.name}`}
                     >
-                      <h3 className="text-base font-bold text-ink" lang={item.language}>
+                      <h3 className={ui.heading3} lang={item.language}>
                         {item.name}
                       </h3>
                       <EditForm
@@ -373,7 +383,7 @@ export function CatalogManager({
                         <input type="hidden" name="serviceId" value={item.serviceId} />
                         <LanguageField value={item.language} />
                       </EditForm>
-                    </section>
+                    </Card>
                   ))}
                 </div>
                 {result.data.aliases.nextCursor && (

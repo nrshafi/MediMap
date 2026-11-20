@@ -1,6 +1,8 @@
 import { useId, type ReactNode } from 'react';
 import { admin } from './adminUi';
 import { ui } from '../../ui/styles';
+import { Button } from '../../ui/Button';
+import { fieldControlStyles } from '../../ui/Field';
 import type { ProviderRecord, BranchRecord, ContactSource } from '../providers/contracts';
 import { dayHoursInput, weekDays } from '../providers/hours';
 
@@ -31,7 +33,7 @@ function Field({
     <label className={ui.label}>
       {label}
       <input
-        className={admin.input}
+        className={fieldControlStyles}
         name={name}
         defaultValue={value}
         required={required}
@@ -60,7 +62,7 @@ function Select({
   return (
     <div className={ui.label}>
       <label htmlFor={id}>{label}</label>
-      <select className={admin.input} id={id} name={name} defaultValue={value}>
+      <select className={fieldControlStyles} id={id} name={name} defaultValue={value}>
         {children}
       </select>
     </div>
@@ -116,9 +118,7 @@ export function ProviderForm({ existing }: { existing?: ProviderRecord }) {
       <Field name="name" label="Provider name" value={existing?.name} required />
       <Contacts existing={existing} />
       <Status existing={existing} />
-      <button className={ui.buttonPrimary} type="submit">
-        {existing ? 'Save provider' : 'Create provider'}
-      </button>
+      <Button type="submit">{existing ? 'Save provider' : 'Create provider'}</Button>
     </form>
   );
 }
@@ -136,7 +136,7 @@ export function BranchForm({
       <input type="hidden" name="entity" value="branch" />
       <input type="hidden" name="mode" value={existing ? 'update' : 'create'} />
       <input type="hidden" name="providerId" value={provider.id} />
-      <p className="text-sm font-semibold">Provider: {provider.name}</p>
+      <p className="text-small font-semibold">Provider: {provider.name}</p>
       <Identity existing={existing} />
       <Field name="name" label="Branch name" value={existing?.name} required />
       <Field name="address" label="Address" value={existing?.address} required maxLength={500} />
@@ -214,9 +214,7 @@ export function BranchForm({
         branches inactive. Leave unknown contacts and hours blank.
       </p>
       <Status existing={existing} />
-      <button className={ui.buttonPrimary} type="submit">
-        {existing ? 'Save branch' : 'Create branch'}
-      </button>
+      <Button type="submit">{existing ? 'Save branch' : 'Create branch'}</Button>
     </form>
   );
 }

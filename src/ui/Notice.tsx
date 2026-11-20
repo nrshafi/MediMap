@@ -2,11 +2,11 @@ import type { HTMLAttributes, ReactNode } from 'react';
 
 export type NoticeKind = 'info' | 'warning' | 'error';
 
-export interface NoticeProps extends HTMLAttributes<HTMLDivElement> {
+export interface NoticeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'role'> {
   kind?: NoticeKind;
   title?: string;
   titleAs?: 'h2' | 'h3' | 'div';
-  role?: 'status' | 'alert';
+  role?: 'status' | 'alert' | 'none';
   children: ReactNode;
 }
 
@@ -17,7 +17,7 @@ const noticeKindStyles: Record<NoticeKind, string> = {
 };
 
 export function Notice({
-  kind = 'info',
+  kind,
   title,
   titleAs = 'h2',
   role,
@@ -25,14 +25,16 @@ export function Notice({
   children,
   ...props
 }: NoticeProps) {
-  const resolvedRole = role ?? (kind === 'error' ? 'alert' : 'status');
+  const resolvedRole =
+    role === 'none' ? undefined : (role ?? (kind === 'error' ? 'alert' : 'status'));
+  const resolvedKind = kind ?? (resolvedRole === 'alert' ? 'error' : 'info');
   const base = 'rounded-sm border p-3 text-small';
   const TitleTag = titleAs;
 
   return (
     <div
       role={resolvedRole}
-      className={`${base} ${noticeKindStyles[kind]} ${className}`.trim()}
+      className={`${base} ${noticeKindStyles[resolvedKind]} ${className}`.trim()}
       {...props}
     >
       {title && <TitleTag className="mb-1 font-semibold">{title}</TitleTag>}

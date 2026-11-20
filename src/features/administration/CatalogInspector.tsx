@@ -1,10 +1,15 @@
 import type { ReactNode } from 'react';
 import type { BranchService, CatalogResult, Page, Service } from '../catalog/contracts';
 import { AdminLayout } from './AdminLayout';
-import { admin, Notice, PageTitle, StateCard } from './adminUi';
+import { admin, Notice, StateCard } from './adminUi';
 import type { authFailure } from '../authentication/server/access.server';
 import { dayHoursLabel, weekDays } from '../providers/hours';
-import { statusBadge, ui } from '../../ui/styles';
+import { ui } from '../../ui/styles';
+import { PageHeader } from '../../ui/PageHeader';
+import { Card } from '../../ui/Card';
+import { Button } from '../../ui/Button';
+import { Badge } from '../../ui/Badge';
+import { fieldControlStyles } from '../../ui/Field';
 
 export type InspectorData = {
   catalog: Page<Service>;
@@ -32,16 +37,19 @@ function Fact({ label, children }: { label: string; children: ReactNode }) {
 function Listing({ listing }: { listing: BranchService }) {
   const { branch, price, service } = listing;
   return (
-    <article className={admin.record} aria-label={`${service.name} at ${branch.provider.name}`}>
+    <Card
+      as="article"
+      variant="default"
+      className="p-0 overflow-hidden"
+      aria-label={`${service.name} at ${branch.provider.name}`}
+    >
       <div className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            {service.category.name}
-          </p>
+          <p className="text-label font-semibold text-primary">{service.category.name}</p>
           <h2 className={`${ui.heading2} mt-1`}>{service.name}</h2>
           <p className={`${ui.muted} mt-1`}>Provider label: {listing.providerServiceName}</p>
         </div>
-        <div className="catalog-price shrink-0 text-xl font-bold tabular-nums text-ink sm:text-right">
+        <div className="catalog-price shrink-0 text-price font-bold tabular-nums text-ink sm:text-right">
           {price
             ? new Intl.NumberFormat('en-BD', {
                 style: 'currency',
@@ -49,7 +57,7 @@ function Listing({ listing }: { listing: BranchService }) {
                 maximumFractionDigits: 2,
               }).format(price.amountBdt)
             : 'Price unknown'}
-          <span className="block text-xs font-normal text-muted">Standard price</span>
+          <span className="block text-label font-normal text-muted">Standard price</span>
         </div>
       </div>
       <dl className="grid gap-x-8 gap-y-4 p-5 sm:grid-cols-2">
@@ -60,11 +68,11 @@ function Listing({ listing }: { listing: BranchService }) {
         </Fact>
         <Fact label="Address">{branch.address}</Fact>
         <Fact label="Price status">
-          <span className={statusBadge[price?.status ?? 'unknown'] ?? statusBadge.unknown}>
+          <Badge tone={price?.status === 'verified' ? 'verified' : 'unknown'}>
             {price?.status === 'verified'
               ? 'Verified on official website'
               : (price?.status ?? 'Unknown')}
-          </span>
+          </Badge>
         </Fact>
         <Fact label="Last website review">{dateLabel(price?.verifiedAt ?? null)}</Fact>
         <Fact label="Tariff effective date">{dateLabel(price?.effectiveDate ?? null)}</Fact>
@@ -111,8 +119,8 @@ function Listing({ listing }: { listing: BranchService }) {
         {branch.provider.phone && <Fact label="Provider telephone">{branch.provider.phone}</Fact>}
       </dl>
       <div className="grid gap-1 border-t border-border bg-surface-sunken p-5">
-        <h3 className="text-sm font-bold text-ink">Source evidence</h3>
-        <p className="text-sm">
+        <h3 className={ui.heading3}>Source evidence</h3>
+        <p className="text-small">
           {price?.source ? (
             <a className={ui.link} href={price.source.url} target="_blank" rel="noreferrer">
               Official tariff · row {price.sourceRow ?? 'unknown'}
@@ -121,7 +129,7 @@ function Listing({ listing }: { listing: BranchService }) {
             'Price source unknown'
           )}
         </p>
-        <p className="text-sm">
+        <p className="text-small">
           {branch.contactSource ? (
             <a className={ui.link} href={branch.contactSource.url} target="_blank" rel="noreferrer">
               Official branch contact page
@@ -135,7 +143,7 @@ function Listing({ listing }: { listing: BranchService }) {
           availability.
         </p>
       </div>
-    </article>
+    </Card>
   );
 }
 
@@ -152,10 +160,13 @@ export function CatalogInspector({
 }) {
   return (
     <AdminLayout activeHref="/admin/catalog">
-      <PageTitle eyebrow="Source-backed records" title="Catalog inspector">
-        Inspect published services, branch details, and the evidence behind each current price.
-      </PageTitle>
-      <Notice>Read-only catalog. Use the source links to check the published details.</Notice>
+      <PageHeader
+        title="Catalog inspector"
+        description="Inspect published services, branch details, and the evidence behind each current price."
+      />
+      <Notice kind="info" role="none">
+        Read-only catalog. Use the source links to check the published details.
+      </Notice>
       {!result.ok && ['unauthenticated', 'expired', 'forbidden'].includes(result.code) ? (
         <StateCard
           title={
@@ -193,11 +204,11 @@ export function CatalogInspector({
         <>
           <form className={admin.filter} method="get" action="/admin/catalog">
             <div className="grid min-w-0 flex-1 gap-1 sm:max-w-md">
-              <label className="text-sm font-semibold text-ink" htmlFor="catalog-service">
+              <label className="text-small font-semibold text-ink" htmlFor="catalog-service">
                 Canonical service
               </label>
               <select
-                className={admin.input}
+                className={fieldControlStyles}
                 id="catalog-service"
                 name="service"
                 defaultValue={serviceId}
@@ -221,9 +232,7 @@ export function CatalogInspector({
                 ))}
               </select>
             </div>
-            <button className={ui.buttonPrimary} type="submit">
-              Apply service
-            </button>
+            <Button type="submit">Apply service</Button>
           </form>
           {catalogMoreHref && (
             <p>
@@ -236,7 +245,7 @@ export function CatalogInspector({
             <StateCard title="Selected canonical service" label="Selected catalog record">
               <p>{result.data.selectedService.name}</p>
               <p className={ui.muted}>Stable ID: {result.data.selectedService.id}</p>
-              <ul className="list-inside list-disc text-sm">
+              <ul className="list-inside list-disc text-small">
                 {result.data.selectedService.aliases.map((alias) => (
                   <li key={`${alias.language}-${alias.name}`} lang={alias.language}>
                     {alias.name} · {alias.language === 'bn' ? 'Bangla' : 'English'}

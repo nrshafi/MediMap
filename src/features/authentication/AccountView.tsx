@@ -1,8 +1,10 @@
 import type { readAccount } from './auth.functions';
 import { safeReturnTo } from './contracts';
-import { LogIn, LogOut, ShieldCheck } from 'lucide-react';
+import { LogIn, LogOut, MapPin, ShieldCheck } from 'lucide-react';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
-import { ui } from '../../ui/styles';
+import { Button, ButtonLink } from '../../ui/Button';
+import { Card } from '../../ui/Card';
+import { Notice } from '../../ui/Notice';
 
 export type AccountData = Awaited<ReturnType<typeof readAccount>>;
 const reasons: Record<string, string> = {
@@ -31,103 +33,134 @@ export function AccountView({
       : Object.hasOwn(reasons, reason)
         ? reasons[reason]
         : undefined;
+
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
       <main
         id="main-content"
-        className="mx-auto grid w-full max-w-md flex-1 content-start gap-5 px-4 py-8 sm:py-12"
+        className="mx-auto flex w-full max-w-md flex-1 items-center justify-center px-4 py-8 sm:py-12"
       >
-        <section className={`${ui.card} grid gap-4 p-6`}>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-              Your MediMap account
-            </p>
-            <h1 className={`${ui.heading1} mt-1`}>{signedIn ? 'Your account' : 'Sign in'}</h1>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Browse services without an account. Use Google to sign in for account features.
-            </p>
-          </div>
-          {message && (
-            <p className={ui.notice} role="status">
-              {message}
-            </p>
-          )}
-          {signedIn ? (
-            <>
-              <dl className="grid gap-3 rounded-sm bg-surface-sunken p-3">
-                <div>
-                  <dt className="text-xs font-semibold text-muted">Signed in as</dt>
-                  <dd className="mt-0.5 text-sm font-semibold [overflow-wrap:anywhere]">
-                    {signedIn.user.email}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold text-muted">Account access</dt>
-                  <dd className="mt-0.5 text-sm font-semibold">
-                    {signedIn.user.isAdministrator ? 'Administrator' : 'Member'}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold text-muted">Session ends</dt>
-                  <dd className="mt-0.5 text-sm font-semibold">
-                    {new Intl.DateTimeFormat('en-GB', {
-                      dateStyle: 'long',
-                      timeStyle: 'short',
-                      timeZone: 'Asia/Dhaka',
-                    }).format(new Date(signedIn.expiresAt))}{' '}
-                    · Dhaka time
-                  </dd>
-                </div>
-              </dl>
-              <p className="text-sm text-muted">
-                Sessions last seven days. Sign in again after this session ends.
+        {signedIn ? (
+          <Card variant="default" className="grid w-full gap-4 p-6">
+            <div>
+              <h1 className="font-display text-h1 font-bold text-ink">Your account</h1>
+              <p className="mt-2 text-small leading-relaxed text-muted">
+                Manage your MediMap session and account access.
               </p>
-              {signedIn.user.isAdministrator && (
-                <a
-                  className={ui.buttonPrimary}
-                  href={
-                    safeReturnTo(returnTo) === '/account'
-                      ? '/admin/catalog'
-                      : safeReturnTo(returnTo)
-                  }
-                >
-                  <ShieldCheck aria-hidden size={18} />
-                  Open administration
-                </a>
-              )}
-              <form method="post" action="/auth/sign-out" className="grid">
-                <button className={ui.buttonSecondary} type="submit">
-                  <LogOut aria-hidden size={18} />
-                  Sign out
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              {result.ok && !result.signInAvailable && (
-                <p className={ui.notice} role="status">
-                  Google sign-in is not configured yet. Public browsing is available.
-                </p>
-              )}
-              <form method="post" action="/auth/google/start" className="grid">
-                <input type="hidden" name="returnTo" value={safeReturnTo(returnTo)} />
-                <button
-                  className={ui.buttonPrimary}
-                  type="submit"
-                  disabled={!result.ok || !result.signInAvailable}
-                >
-                  <LogIn aria-hidden size={18} />
-                  Sign in with Google
-                </button>
-              </form>
-              <p className="text-sm text-muted">
-                MediMap requests your Google account identity and verified email address. Signing in
-                does not grant administrator access.
+            </div>
+            {message && (
+              <Notice kind={reason === 'signed-out' ? 'info' : 'warning'}>{message}</Notice>
+            )}
+            <dl className="grid gap-3 rounded-sm bg-surface-sunken p-3">
+              <div>
+                <dt className="text-label font-semibold text-muted">Signed in as</dt>
+                <dd className="mt-0.5 text-small font-semibold [overflow-wrap:anywhere]">
+                  {signedIn.user.email}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-label font-semibold text-muted">Account access</dt>
+                <dd className="mt-0.5 text-small font-semibold">
+                  {signedIn.user.isAdministrator ? 'Administrator' : 'Member'}
+                </dd>
+              </div>
+              {/* Sign-in method row (step 16 will expand this) */}
+              <div>
+                <dt className="text-label font-semibold text-muted">Sign-in method</dt>
+                <dd className="mt-0.5 text-small font-semibold">Google</dd>
+              </div>
+              <div>
+                <dt className="text-label font-semibold text-muted">Session ends</dt>
+                <dd className="mt-0.5 text-small font-semibold">
+                  {new Intl.DateTimeFormat('en-GB', {
+                    dateStyle: 'long',
+                    timeStyle: 'short',
+                    timeZone: 'Asia/Dhaka',
+                  }).format(new Date(signedIn.expiresAt))}{' '}
+                  · Dhaka time
+                </dd>
+              </div>
+            </dl>
+            {/* Change password section slot for step 16 */}
+            <div id="change-password-slot">
+              {/* Step 16: nrshafi adds change password section here */}
+            </div>
+            <p className="text-small text-muted">
+              Sessions last seven days. Sign in again after this session ends.
+            </p>
+            {signedIn.user.isAdministrator && (
+              <ButtonLink
+                variant="primary"
+                href={
+                  safeReturnTo(returnTo) === '/account' ? '/admin/catalog' : safeReturnTo(returnTo)
+                }
+                icon={<ShieldCheck aria-hidden size={18} />}
+                className="w-full"
+              >
+                Open administration
+              </ButtonLink>
+            )}
+            <form method="post" action="/auth/sign-out" className="grid">
+              <Button
+                type="submit"
+                variant="secondary"
+                icon={<LogOut aria-hidden size={18} />}
+                className="w-full"
+              >
+                Sign out
+              </Button>
+            </form>
+          </Card>
+        ) : (
+          <Card variant="default" className="grid w-full gap-4 p-6">
+            <div className="flex justify-center" aria-hidden="true">
+              <span className="inline-flex items-center gap-2 font-display text-h3 font-bold text-ink">
+                <MapPin size={22} className="text-primary" />
+                MediMap
+              </span>
+            </div>
+            <div>
+              <h1 className="text-center font-display text-h1 font-bold text-ink">Sign in</h1>
+              <p className="mt-2 text-center text-small leading-relaxed text-muted">
+                Browse services without an account, or sign in to access account features.
               </p>
-            </>
-          )}
-        </section>
+            </div>
+            {message && (
+              <Notice kind={reason === 'signed-out' ? 'info' : 'warning'}>{message}</Notice>
+            )}
+            {result.ok && !result.signInAvailable && (
+              <Notice kind="info">
+                Google sign-in is not configured yet. Public browsing is available.
+              </Notice>
+            )}
+            <form method="post" action="/auth/google/start" className="grid">
+              <input type="hidden" name="returnTo" value={safeReturnTo(returnTo)} />
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={!result.ok || !result.signInAvailable}
+                icon={<LogIn aria-hidden size={18} />}
+                className="w-full"
+              >
+                Sign in with Google
+              </Button>
+            </form>
+            {/* Marked slot for second sign-in method (step 16 adds email and password form here) */}
+            <div className="group/second-auth">
+              <div className="hidden group-has-[[data-slot=second-auth]:not(:empty)]:flex items-center gap-3 my-4 text-small text-muted before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
+                <span>or</span>
+              </div>
+              <div data-slot="second-auth">
+                {/* Step 16: nrshafi adds email and password form here */}
+              </div>
+            </div>
+            <p className="text-center text-small text-muted">
+              MediMap requests your Google account identity and verified email address. Signing in
+              does not grant administrator access.
+            </p>
+          </Card>
+        )}
       </main>
       <SiteFooter />
     </div>

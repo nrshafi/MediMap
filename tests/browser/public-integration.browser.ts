@@ -280,8 +280,7 @@ test('comparison preserves unknown values and displays the same selected branche
       const initialScroll = await region.evaluate((el) => el.scrollLeft);
       expect(initialScroll).toBe(0);
       await page.keyboard.press('ArrowRight');
-      const scrolled = await region.evaluate((el) => el.scrollLeft);
-      expect(scrolled).toBeGreaterThan(0);
+      await expect.poll(async () => region.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
     }
     await page.screenshot({
       path: `.bun-tmp/public-comparison-${test.info().project.name}.png`,

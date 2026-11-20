@@ -8,6 +8,7 @@ import { EmptyState } from '../../ui/EmptyState';
 import { Field, fieldControlStyles } from '../../ui/Field';
 import { Button, ButtonLink } from '../../ui/Button';
 import { Chip } from '../../ui/Chip';
+import { Link } from '../../ui/Link';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
 import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
@@ -79,6 +80,10 @@ export function FindPage({
   }, []);
 
   useEffect(() => {
+    setQuery(initialQuery ?? '');
+  }, [initialQuery, service]);
+
+  useEffect(() => {
     const url = JSON.stringify(initial);
     if (initial && previousUrl.current !== url) {
       previousUrl.current = url;
@@ -100,6 +105,7 @@ export function FindPage({
     radius,
     sort,
     verified,
+    onContextChange,
   ]);
   useEffect(() => {
     setComparison([]);
@@ -237,20 +243,25 @@ export function FindPage({
             {matches && (
               <section aria-label="Service suggestions" className="flex flex-col">
                 {matches.matches.map((m) => (
-                  <a
+                  <Link
                     key={m.canonicalService.id}
                     className={`${ui.link} flex min-h-touch items-center`}
-                    href={serviceHref(m.canonicalService.id)}
+                    to={serviceHref(m.canonicalService.id)}
+                    onClick={() => setQuery('')}
                   >
                     {m.canonicalService.name}
-                  </a>
+                  </Link>
                 ))}
                 {matches.typoSuggestions?.map((m) => (
                   <p key={m.canonicalService.id} className="flex min-h-touch items-center gap-1">
                     Did you mean{' '}
-                    <a className={ui.link} href={serviceHref(m.canonicalService.id)}>
+                    <Link
+                      className={ui.link}
+                      to={serviceHref(m.canonicalService.id)}
+                      onClick={() => setQuery('')}
+                    >
                       {m.canonicalService.name}
-                    </a>
+                    </Link>
                     ?
                   </p>
                 ))}
@@ -266,12 +277,13 @@ export function FindPage({
               <ul className="flex flex-col">
                 {services.map((s) => (
                   <li key={s.id}>
-                    <a
+                    <Link
                       className={`${ui.link} flex min-h-touch items-center`}
-                      href={serviceHref(s.id)}
+                      to={serviceHref(s.id)}
+                      onClick={() => setQuery('')}
                     >
                       {s.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -346,7 +358,7 @@ export function FindPage({
               </label>
               <select
                 id="sort-listings"
-                className="min-h-touch rounded-sm border border-border-strong bg-surface px-2.5 py-1 text-small text-ink focus-visible:outline-focus"
+                className={`${fieldControlStyles} w-auto`}
                 value={sort}
                 onChange={(e) => setSort(e.target.value as PublicSort)}
               >

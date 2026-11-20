@@ -24,7 +24,7 @@ export function StatTile({
       <div className={container} {...props}>
         <div className={labelClass}>{label}</div>
         <div className={valueClass}>{value}</div>
-        {subtext && <div className="mt-0.5 text-xs text-muted">{subtext}</div>}
+        {subtext && <div className="mt-0.5 text-label text-muted">{subtext}</div>}
       </div>
     );
   }
@@ -33,7 +33,7 @@ export function StatTile({
     <div className={container} {...props}>
       <dt className={labelClass}>{label}</dt>
       <dd className={valueClass}>{value}</dd>
-      {subtext && <dd className="mt-0.5 text-xs text-muted">{subtext}</dd>}
+      {subtext && <dd className="mt-0.5 text-label text-muted">{subtext}</dd>}
     </div>
   );
 }

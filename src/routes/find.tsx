@@ -3,8 +3,6 @@ import { sortChoices } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
 import { publicMapsConfig } from '../features/public/maps.functions';
 import { FindPage } from '../features/public/FindPage';
-import { PageShell } from '../ui/PageShell';
-import { ui } from '../ui/styles';
 export const Route = createFileRoute('/find')({
   validateSearch: (s: Record<string, unknown>) => ({
     service: typeof s.service === 'string' ? s.service : undefined,
@@ -22,21 +20,12 @@ export const Route = createFileRoute('/find')({
   },
   head: () => ({ meta: [{ title: 'Find diagnostic services | MediMap' }] }),
   component: Page,
-  errorComponent: () => (
-    <PageShell>
-      <main className={ui.page}>
-        <h1 className={ui.heading1}>Catalog unavailable</h1>
-        <p className={ui.muted}>Try again later.</p>
-      </main>
-    </PageShell>
-  ),
 });
 function Page() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   return (
     <FindPage
-      key={search.service}
       {...Route.useLoaderData()}
       service={search.service}
       initialQuery={search.q}
@@ -44,7 +33,10 @@ function Page() {
       onContextChange={(context) => {
         void navigate({
           to: '/find',
-          search: { ...search, ...context },
+          search: ((prev: Record<string, unknown>) => ({
+            ...prev,
+            ...context,
+          })) as unknown as typeof search,
           replace: true,
           resetScroll: false,
         });

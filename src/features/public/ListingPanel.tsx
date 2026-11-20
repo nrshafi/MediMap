@@ -7,6 +7,7 @@ import { Notice } from '../../ui/Notice';
 import { Skeleton } from '../../ui/Skeleton';
 import { StatTile } from '../../ui/StatTile';
 import { StatusBadge } from '../../ui/Badge';
+import { Link } from '../../ui/Link';
 import { publicRoute } from './catalog.functions';
 import {
   directionsUrl,
@@ -247,15 +248,15 @@ export function ListingPanel({
       </ButtonLink>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-3 text-small">
-        <a className={linkRow} href={`/branches/${l.branch.id}`}>
+        <Link className={linkRow} to={`/branches/${l.branch.id}`}>
           Branch details
-        </a>
-        <a className={linkRow} href={`/reviews?listing=${l.id}`}>
+        </Link>
+        <Link className={linkRow} to={`/reviews?listing=${l.id}`}>
           Service reviews
-        </a>
-        <a className={linkRow} href={`/report?target=listing&id=${l.id}`}>
+        </Link>
+        <Link className={linkRow} to={`/report?target=listing&id=${l.id}`}>
           Report incorrect information
-        </a>
+        </Link>
       </div>
     </section>
   );

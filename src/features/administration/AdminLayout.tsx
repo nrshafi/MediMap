@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { SiteHeader } from '../../ui/SiteChrome';
+import { Link } from '../../ui/Link';
 import { coreAdministrationNavigation, type AdministrationNavItem } from './navigation';
 
 export function AdminLayout({
@@ -23,8 +24,8 @@ export function AdminLayout({
               const isCurrent = activeHref === item.href;
               return (
                 <li key={item.href} className="shrink-0 lg:shrink">
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={`flex min-h-touch items-center whitespace-nowrap rounded-sm px-3 text-small font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none lg:whitespace-normal ${
                       isCurrent
@@ -33,7 +34,7 @@ export function AdminLayout({
                     }`}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               );
             })}

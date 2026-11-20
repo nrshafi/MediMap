@@ -277,24 +277,9 @@ Use two border tokens. The choice depends on whether the edge carries informatio
 
 Hovered cards may use `border-strong` as a state cue. Selected cards use `primary` and an outline, not a heavier neutral edge. Alert notices use a light `error` edge at 40% opacity; the role, heading, and text color identify the notice.
 
-### Legacy token aliases
+### Token migration and CSS properties
 
-Existing stylesheets use these custom properties. Keep them as aliases until each stylesheet is migrated. `src/styles.css` defines the aliases once. `src/features/map/ui/mapUi.css`, `src/features/search/ui/searchUi.css`, and `src/features/search/ui/discoveryView.css` also declare `:root` alias blocks, so keep those files in sync with the values above.
-
-| Legacy property | DESIGN.md token |
-| --- | --- |
-| `--bg-base` | `colors.background` |
-| `--bg-surface` | `colors.surface` |
-| `--text-primary` | `colors.ink` |
-| `--text-muted` | `colors.muted` |
-| `--accent-primary` | `colors.primary` |
-| `--accent-hover` | `colors.primary-strong` |
-| `--accent-subtle` | `colors.primary-soft` |
-| `--border-default` | `colors.border` |
-| `--border-strong` (stylesheet-local) | `colors.border-strong` |
-| `--border-focus` | `colors.focus` |
-
-`grep` still finds uses of these properties in `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, and `discoveryView.css`. Do not remove the aliases until those uses are migrated.
+All components and stylesheets use modern `@theme` custom properties (`--color-background`, `--color-surface`, `--color-ink`, `--color-muted`, `--color-primary`, `--color-primary-strong`, `--color-primary-soft`, `--color-border`, `--color-border-strong`, `--color-focus`). Legacy alias variables (`--bg-base`, `--bg-surface`, `--text-primary`, `--text-muted`, `--accent-primary`, `--border-default`) were migrated across `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, `discoveryView.css`, and `src/styles.css`. Grep verification confirms zero occurrences of legacy names in source files.
 
 ## Typography
 
@@ -508,6 +493,39 @@ When the map cannot load (no key, a rejected key, a used-up daily limit, or a ne
 ### Icons
 
 Use `lucide-react` icons at 16px or 20px, with `stroke-width` 2, in `currentColor`. Use icons beside text labels, not in place of them. Mark decorative icons with `aria-hidden="true"`. Do not use sparkle, siren, ambulance, helicopter, or alert-triangle icons for ordinary content.
+
+### PageShell and PageMain
+
+Use `PageShell` and `PageMain` for consistent layout structure across routes.
+
+- Purpose: `PageShell` provides the unified `SiteHeader`, page content, and `SiteFooter` frame with a minimum full-viewport height (`min-h-svh`).
+- Layout container: `PageMain` enforces standard container constraints, horizontal centering, responsive padding (16 px mobile, 24 px desktop), vertical spacing (24 px gap), and maximum width.
+- Width variants:
+  - `default`: `max-w-5xl` for comparison, branch details, service details, and standard listings.
+  - `narrow`: `max-w-3xl` for focused single-column workflows including user reviews and correction reports.
+- Redundancy removal: Replaces duplicate ad-hoc container class strings and the retired `ui.page` utility across all pages.
+
+### Link and ButtonLink
+
+Use `Link` from `src/ui/Link.tsx` for client-side navigation between application routes.
+
+- Purpose: Wraps TanStack Router `Link` to ensure client-side navigation without full document reload.
+- Graceful fallback: Automatically renders standard HTML `<a href>` when executed outside an active router context, in static testing environments, or for external URLs, authentication routes (`/auth/*`), and server endpoints (`.ts`).
+- Button navigation: `ButtonLink` supports router-driven navigation while retaining button visual hierarchy and touch targets.
+
+### Not-found and error handling
+
+Use global router error boundaries configured in `src/router.tsx`.
+
+- Not found: `defaultNotFoundComponent` renders `NotFoundPage` within `PageShell`, delivering an `h1` heading, explanation, HTTP 404 response status in SSR, and links to `/` and `/find`.
+- Application error: `defaultErrorComponent` renders `ErrorPage` within `PageShell`, delivering an `h1` heading, clear explanation, and recovery links.
+- Local overrides: Specialized views (`/compare`, `/admin/reviews`) retain localized empty and authorization boundaries where domain-specific empty states are required.
+
+### Redundancy and repetition rules
+
+- Diagnostic prices: Retain status badges, review dates, and official source links directly beside every price figure across cards, panels, and tables. This repetition is required for regulatory and clinical transparency.
+- Record actions: Per-record actions ("View branch", "Service reviews", "Report incorrect information") repeat per item and remain distinct from global site navigation.
+- Container unification: Standardize page containers on `PageMain` to remove repeated class declarations.
 
 ## Do's and Don'ts
 

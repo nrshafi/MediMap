@@ -7,11 +7,13 @@ import {
   Search,
   ShieldCheck,
 } from 'lucide-react';
+import { useRouter } from '@tanstack/react-router';
 import type { LandingPageData } from '../public/landing.functions';
 import { Badge } from '../../ui/Badge';
 import { Button, ButtonLink } from '../../ui/Button';
 import { Card } from '../../ui/Card';
 import { Field, fieldControlStyles } from '../../ui/Field';
+import { Link } from '../../ui/Link';
 import { Notice } from '../../ui/Notice';
 import { PageShell } from '../../ui/PageShell';
 import { ui } from '../../ui/styles';
@@ -21,6 +23,7 @@ export interface LandingViewProps {
 }
 
 export function LandingView({ data }: LandingViewProps) {
+  const router = useRouter({ warn: false });
   const popularServices = data?.popularServices ?? [];
   const hospitals = data?.hospitals ?? [];
 
@@ -53,6 +56,17 @@ export function LandingView({ data }: LandingViewProps) {
               action="/find"
               method="get"
               role="search"
+              onSubmit={(e) => {
+                if (router) {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const q = new FormData(form).get('q')?.toString() || '';
+                  void router.navigate({
+                    to: '/find',
+                    search: (q ? () => ({ q }) : undefined) as never,
+                  });
+                }
+              }}
               className="flex flex-col gap-3 rounded-md bg-surface p-4 shadow-card border border-border sm:flex-row sm:items-end"
             >
               <div className="flex-1 text-left">
@@ -143,8 +157,8 @@ export function LandingView({ data }: LandingViewProps) {
                 {popularServices.map((service) => (
                   <Card
                     key={service.id}
-                    as="a"
-                    href={`/find?service=${service.id}`}
+                    as={Link}
+                    to={`/find?service=${service.id}`}
                     aria-label={`Find ${service.name}`}
                     variant="default"
                     interactive
@@ -153,7 +167,7 @@ export function LandingView({ data }: LandingViewProps) {
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center justify-between gap-2">
                         <Badge tone="neutral">{service.category}</Badge>
-                        <span className="text-xs text-muted">
+                        <span className="text-label text-muted">
                           {service.listingCount}{' '}
                           {service.listingCount === 1 ? 'branch' : 'branches'}
                         </span>
@@ -218,12 +232,12 @@ export function LandingView({ data }: LandingViewProps) {
                   administrator reviews each report against the official source.
                 </p>
                 <div className="mt-auto pt-2">
-                  <a
-                    href="/report"
+                  <Link
+                    to="/report"
                     className="inline-flex min-h-touch items-center text-small font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     Report incorrect data
-                  </a>
+                  </Link>
                 </div>
               </Card>
             </div>
@@ -268,13 +282,13 @@ export function LandingView({ data }: LandingViewProps) {
                       </div>
                       <div className="flex flex-col gap-1">
                         {hospital.branches.map((branch) => (
-                          <a
+                          <Link
                             key={branch.id}
-                            href={`/branches/${branch.id}`}
+                            to={`/branches/${branch.id}`}
                             className="inline-flex min-h-touch items-center gap-1 text-small font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                           >
                             {branch.name} <ArrowRight aria-hidden="true" size={16} />
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>

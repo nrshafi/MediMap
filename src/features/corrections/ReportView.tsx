@@ -8,7 +8,7 @@ import {
   type ReportTarget,
 } from './contracts';
 import { weekDays, dayHoursLabel } from '../providers/hours';
-import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
+import { PageShell, PageMain } from '../../ui/PageShell';
 import { PageHeader } from '../../ui/PageHeader';
 import { Card } from '../../ui/Card';
 import { Button, ButtonLink } from '../../ui/Button';
@@ -111,12 +111,8 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
     : undefined;
 
   return (
-    <div className="flex min-h-svh flex-col">
-      <SiteHeader />
-      <main
-        id="main-content"
-        className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6"
-      >
+    <PageShell>
+      <PageMain id="main-content" width="narrow">
         <PageHeader
           title="Report incorrect information"
           description="Describe an issue with the published provider, branch, or diagnostic listing so an administrator can review it."
@@ -345,8 +341,7 @@ export function ReportView({ data, draft = {} }: { data: ReportPageData; draft?:
             )}
           </Card>
         )}
-      </main>
-      <SiteFooter />
-    </div>
+      </PageMain>
+    </PageShell>
   );
 }

@@ -4,6 +4,7 @@ import { Card } from '../../ui/Card';
 import { Chip } from '../../ui/Chip';
 import { StatTile } from '../../ui/StatTile';
 import { StatusBadge } from '../../ui/Badge';
+import { Link } from '../../ui/Link';
 import { formatBdt, formatKm, type RouteResult, formatReviewDate } from './format';
 
 const linkRow =
@@ -71,13 +72,13 @@ export function ListingCard({
           )}
         </h3>
         <p className="text-small text-muted">
-          <a
+          <Link
             className="font-medium text-primary underline-offset-2 hover:underline"
-            href={serviceHref}
+            to={serviceHref}
             onClick={(event) => event.stopPropagation()}
           >
             {l.service.name}
-          </a>
+          </Link>
           {l.providerServiceName !== l.service.name && (
             <> · listed by the provider as {l.providerServiceName}</>
           )}
@@ -126,16 +127,16 @@ export function ListingCard({
       {!onSelect && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-small">
           {showBranchLink && (
-            <a className={linkRow} href={`/branches/${l.branch.id}`}>
+            <Link className={linkRow} to={`/branches/${l.branch.id}`}>
               Branch details
-            </a>
+            </Link>
           )}
-          <a className={linkRow} href={`/reviews?listing=${l.id}`}>
+          <Link className={linkRow} to={`/reviews?listing=${l.id}`}>
             Service reviews
-          </a>
-          <a className={linkRow} href={`/report?target=listing&id=${l.id}`}>
+          </Link>
+          <Link className={linkRow} to={`/report?target=listing&id=${l.id}`}>
             Report incorrect information
-          </a>
+          </Link>
         </div>
       )}
       {onToggleCompare && (

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 import { MapPin, Menu, Scale, Search, UserRound, X } from 'lucide-react';
+import { Link } from './Link';
 
 export interface NavItem {
   label: string;
@@ -48,9 +49,10 @@ export function useCurrentPath(explicitPath?: string): string {
 
 export interface SiteHeaderProps {
   currentPath?: string;
+  className?: string;
 }
 
-export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) {
+export function SiteHeader({ currentPath: explicitPath, className = '' }: SiteHeaderProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const currentPath = useCurrentPath(explicitPath);
@@ -81,14 +83,16 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
   }, [isOpen]);
 
   return (
-    <header className="relative z-40 flex min-h-header items-center justify-between gap-4 bg-ink px-4 text-on-ink">
-      <a
-        href="/"
+    <header
+      className={`relative z-40 flex min-h-header items-center justify-between gap-4 bg-ink px-4 text-on-ink ${className}`.trim()}
+    >
+      <Link
+        to="/"
         className="inline-flex min-h-touch items-center gap-2 font-display text-h3 font-bold text-on-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         <MapPin aria-hidden="true" size={20} className="shrink-0 text-primary-soft" />
         MediMap
-      </a>
+      </Link>
 
       {/* Desktop main links */}
       <nav
@@ -99,9 +103,9 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
           const isActive = item.matches(currentPath);
           const Icon = item.icon;
           return (
-            <a
+            <Link
               key={item.href}
-              href={item.href}
+              to={item.href}
               aria-current={isActive ? 'page' : undefined}
               className={`inline-flex min-h-touch items-center gap-2 rounded-sm px-3 py-2 transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none ${
                 isActive
@@ -111,7 +115,7 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
             >
               <Icon aria-hidden="true" size={18} />
               {item.label}
-            </a>
+            </Link>
           );
         })}
       </nav>
@@ -142,9 +146,9 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
               const isActive = item.matches(currentPath);
               const Icon = item.icon;
               return (
-                <a
+                <Link
                   key={item.href}
-                  href={item.href}
+                  to={item.href}
                   aria-current={isActive ? 'page' : undefined}
                   onClick={() => setIsOpen(false)}
                   className={`inline-flex min-h-touch items-center gap-2 rounded-sm px-3 py-2 text-small font-semibold transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none ${
@@ -155,7 +159,7 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
                 >
                   <Icon aria-hidden="true" size={18} />
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -165,9 +169,11 @@ export function SiteHeader({ currentPath: explicitPath }: SiteHeaderProps = {}) 
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ className = '' }: { className?: string } = {}) {
   return (
-    <footer className="border-t border-border bg-surface px-4 py-4 text-small text-muted">
+    <footer
+      className={`border-t border-border bg-surface px-4 py-4 text-small text-muted ${className}`.trim()}
+    >
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p>MediMap is not for emergencies and does not give medical advice.</p>
         <p className="flex flex-wrap gap-x-4 gap-y-1">

@@ -19,10 +19,7 @@ test('catalog failure stays explicit without records or sample prices', () => {
 
 test('administration layout accepts separate navigation extensions', () => {
   const markup = renderToStaticMarkup(
-    <AdminLayout
-      activeHref="/admin/reviews"
-      navigation={[{ href: '/admin/reviews', label: 'Review moderation' }]}
-    >
+    <AdminLayout activeHref="/admin/reviews">
       <h1>Review moderation</h1>
     </AdminLayout>,
   );

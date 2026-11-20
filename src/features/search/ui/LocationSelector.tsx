@@ -90,10 +90,10 @@ export function LocationSelector({ center, onSelect, variant = 'full' }: Locatio
   }
 
   const button =
-    'medimap-preset-btn inline-flex min-h-touch items-center justify-center rounded-sm border border-border-strong bg-surface px-3 text-sm font-semibold text-ink hover:bg-primary-soft disabled:cursor-wait disabled:opacity-60 aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-on-primary';
+    'medimap-preset-btn inline-flex min-h-touch items-center justify-center rounded-sm border border-border-strong bg-surface px-3 text-small font-semibold text-ink hover:bg-primary-soft disabled:cursor-wait disabled:opacity-60 aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-on-primary';
   const field =
     'min-h-touch w-full rounded-sm border border-border-strong bg-surface px-2.5 text-base text-ink aria-[invalid=true]:border-error';
-  const labelClass = 'flex flex-1 flex-col gap-1 text-sm font-semibold';
+  const labelClass = 'flex flex-1 flex-col gap-1 text-small font-semibold';
   const presets = (
     <div
       className="medimap-preset-buttons grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
@@ -202,12 +202,12 @@ export function LocationSelector({ center, onSelect, variant = 'full' }: Locatio
     </form>
   );
   const bounds = (
-    <p id={`${id}-bounds`} className="medimap-location-hint text-sm text-muted">
+    <p id={`${id}-bounds`} className="medimap-location-hint text-small text-muted">
       Latitude: -90 to 90. Longitude: -180 to 180.
     </p>
   );
   const privacy = (
-    <p id={`${id}-privacy`} className="medimap-location-hint text-sm text-muted">
+    <p id={`${id}-privacy`} className="medimap-location-hint text-small text-muted">
       Choose an area, use your browser location, or enter coordinates. Coordinates appear in this
       page&apos;s URL and any link you share.
     </p>
@@ -218,7 +218,7 @@ export function LocationSelector({ center, onSelect, variant = 'full' }: Locatio
       role="status"
       aria-live="polite"
       aria-atomic="true"
-      className="medimap-location-status text-sm empty:hidden"
+      className="medimap-location-status text-small empty:hidden"
     >
       {message}
     </p>
@@ -229,7 +229,7 @@ export function LocationSelector({ center, onSelect, variant = 'full' }: Locatio
       <section className="flex flex-col gap-3" aria-label="Search center location">
         {actions}
         <details className="rounded-md border border-border bg-surface-sunken">
-          <summary className="flex min-h-touch cursor-pointer items-center px-3 text-sm font-semibold text-primary">
+          <summary className="flex min-h-touch cursor-pointer items-center px-3 text-small font-semibold text-primary">
             More location options
           </summary>
           <div className="flex flex-col gap-3 px-3 pb-3">
@@ -247,7 +247,7 @@ export function LocationSelector({ center, onSelect, variant = 'full' }: Locatio
       className="medimap-preset-selector flex flex-col gap-3 rounded-md border border-border bg-surface p-4"
       aria-label="Search center location"
     >
-      <h3 className="medimap-preset-title text-sm font-semibold text-ink">
+      <h3 className="medimap-preset-title text-small font-semibold text-ink">
         Select center location
       </h3>
       {privacy}

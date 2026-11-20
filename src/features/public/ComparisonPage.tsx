@@ -3,10 +3,11 @@ import { ArrowLeft, Navigation } from 'lucide-react';
 import type { readComparison } from './comparison.functions';
 import { publicRoute } from './catalog.functions';
 import { dayHoursLabel, openingStatus } from '../providers/hours';
-import { PageShell } from '../../ui/PageShell';
+import { PageShell, PageMain } from '../../ui/PageShell';
 import { PageHeader } from '../../ui/PageHeader';
 import { Card } from '../../ui/Card';
 import { Button, ButtonLink } from '../../ui/Button';
+import { Link } from '../../ui/Link';
 import { ui } from '../../ui/styles';
 import { formatBdt, formatKm, formatReviewDate } from './format';
 import { StatusBadge } from '../../ui/Badge';
@@ -25,7 +26,7 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
 
   return (
     <PageShell>
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6">
+      <PageMain>
         <PageHeader
           title={`Compare ${items[0].listing.service.name}`}
           description="Selected branches only. These charts do not represent area-wide price statistics."
@@ -76,12 +77,12 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
               {items.map(({ listing: l, rating }) => (
                 <tr key={l.id}>
                   <th scope="row" className="px-3 py-3 text-left font-semibold">
-                    <a
+                    <Link
                       className="font-semibold text-primary hover:underline"
-                      href={`/branches/${l.branch.id}`}
+                      to={`/branches/${l.branch.id}`}
                     >
                       {l.branch.provider.name}, {l.branch.name}
-                    </a>
+                    </Link>
                   </th>
                   <td className="px-3 py-3">
                     <span className="font-bold text-price tabular-nums text-ink">
@@ -255,7 +256,7 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
             })}
           </div>
         </section>
-      </main>
+      </PageMain>
     </PageShell>
   );
 }

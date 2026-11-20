@@ -3,28 +3,13 @@
    Conforms to context/ui-context.md clinical teal palette and typography tokens
    ========================================================================== */
 
-:root {
-  --bg-base: #f2f8f7;
-  --bg-surface: #ffffff;
-  --text-primary: #143d3c;
-  --text-muted: #506b69;
-  --accent-primary: #0f746b;
-  --accent-hover: #0d625b;
-  --accent-subtle: #e3f1ef;
-  --border-default: #cddedb;
-  --border-strong: #557d78;
-  --border-focus: #0f746b;
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-}
-
 .medimap-discovery-page {
   box-sizing: border-box;
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-base);
+  background-color: var(--color-background);
   font-family: var(--font-sans);
-  color: var(--text-primary);
+  color: var(--color-ink);
   display: flex;
   flex-direction: column;
 }
@@ -32,8 +17,8 @@
 /* Header Navbar */
 .medimap-discovery-header {
   box-sizing: border-box;
-  background-color: var(--bg-surface);
-  border-bottom: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   padding: 16px 24px;
 }
 
@@ -51,13 +36,13 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-discovery-brand-icon {
   width: 28px;
   height: 28px;
-  color: var(--accent-primary);
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -66,12 +51,12 @@
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-discovery-tagline {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 /* Page Main Container */
@@ -94,8 +79,8 @@
 
 /* Location Preset Selector Bar */
 .medimap-preset-selector {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 16px 20px;
   box-shadow: var(--shadow-card);
@@ -111,7 +96,7 @@
 .medimap-preset-icon {
   width: 18px;
   height: 18px;
-  color: var(--accent-primary);
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -119,12 +104,12 @@
   margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-preset-hint {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-preset-buttons {
@@ -140,13 +125,13 @@
   justify-content: center;
   min-height: 44px;
   padding: 0 16px;
-  background-color: var(--bg-base);
-  border: 1.5px solid var(--border-strong);
+  background-color: var(--color-background);
+  border: 1.5px solid var(--color-border-strong);
   border-radius: 6px;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-ink);
   cursor: pointer;
   transition:
     color var(--duration-fast) var(--ease-standard),
@@ -156,25 +141,25 @@
 }
 
 .medimap-preset-btn:hover {
-  background-color: var(--accent-subtle);
-  border-color: var(--accent-primary);
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
 }
 
 .medimap-preset-btn:focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .medimap-preset-btn.is-active {
-  background-color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
   color: #ffffff;
   font-weight: 600;
 }
 
 .medimap-preset-btn.is-active:hover {
-  background-color: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background-color: var(--color-primary-strong);
+  border-color: var(--color-primary-strong);
 }
 
 /* Active Context & Filters Bar */
@@ -184,8 +169,8 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 12px 18px;
   box-shadow: var(--shadow-card);
@@ -205,40 +190,40 @@
   padding: 4px 10px;
   border-radius: 4px;
   font-size: 0.875rem;
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-background);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
 }
 
 .medimap-filter-chip-service {
-  background-color: var(--accent-subtle);
-  border-color: var(--border-default);
-  color: var(--accent-hover);
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-border);
+  color: var(--color-primary-strong);
   font-weight: 600;
 }
 
 .medimap-filter-chip-radius {
   background-color: var(--color-surface-sunken);
-  border-color: var(--border-default);
+  border-color: var(--color-border);
   font-weight: 500;
 }
 
 .medimap-filter-chip-location {
   background-color: var(--color-surface-sunken);
-  border-color: var(--border-default);
+  border-color: var(--color-border);
   font-weight: 500;
 }
 
 .medimap-active-filters-count {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--accent-primary);
+  color: var(--color-primary);
 }
 
 /* Empty State Card */
 .medimap-discovery-empty-state {
-  background-color: var(--bg-surface);
-  border: 1px dashed var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
   border-radius: 12px;
   padding: 48px 24px;
   text-align: center;
@@ -252,8 +237,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: var(--accent-subtle);
-  color: var(--accent-primary);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
   margin-bottom: 16px;
 }
 
@@ -263,14 +248,14 @@
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.015em;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-empty-state-desc {
   margin: 0 auto 24px;
   max-width: 520px;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
   line-height: 1.45;
 }
 
@@ -288,7 +273,7 @@
   justify-content: center;
   min-height: 44px;
   padding: 0 18px;
-  background-color: var(--accent-primary);
+  background-color: var(--color-primary);
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -302,22 +287,22 @@
 }
 
 .medimap-empty-action-btn:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--color-primary-strong);
 }
 
 .medimap-empty-action-btn:focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .medimap-empty-action-btn-secondary {
   background-color: transparent;
-  color: var(--accent-primary);
-  border: 1.5px solid var(--accent-primary);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
 }
 
 .medimap-empty-action-btn-secondary:hover {
-  background-color: var(--accent-subtle);
+  background-color: var(--color-primary-soft);
 }
 
 /* Results Content Section */
@@ -328,8 +313,8 @@
 /* Footer */
 .medimap-discovery-footer {
   box-sizing: border-box;
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
   padding: 20px 24px;
   margin-top: auto;
 }
@@ -343,7 +328,7 @@
   gap: 16px;
   flex-wrap: wrap;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-footer-invariants {
@@ -402,14 +387,14 @@
 }
 .medimap-sample-notice {
   padding: 1rem;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
-  color: var(--text-primary);
-  background: var(--bg-surface);
+  color: var(--color-ink);
+  background: var(--color-surface);
 }
 
 .medimap-location-hint {
-  color: var(--text-muted);
+  color: var(--color-muted);
   font-size: 0.875rem;
   line-height: 1.45;
 }
@@ -442,15 +427,15 @@
   width: 100%;
   min-height: 44px;
   padding: 8px;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--color-border-strong);
   border-radius: 6px;
-  background: var(--bg-surface);
-  color: var(--text-primary);
+  background: var(--color-surface);
+  color: var(--color-ink);
   font: inherit;
 }
 
 .medimap-coordinate-form input:focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 

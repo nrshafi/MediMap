@@ -110,7 +110,7 @@ export function LocationPanel({
           {pending ? 'Finding address…' : 'Find address'}
         </Button>
       </form>
-      <div data-testid="address-message" className="empty:hidden" aria-live="polite">
+      <div data-testid="address-message" className="empty:hidden">
         {notice && <Notice kind={notice.kind}>{notice.text}</Notice>}
       </div>
       {suggestions.length > 0 && (

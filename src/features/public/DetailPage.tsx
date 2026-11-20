@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ClientOnly } from '@tanstack/react-router';
 import { ArrowLeft, ExternalLink, Map as MapIcon, Phone } from 'lucide-react';
-import { PageShell } from '../../ui/PageShell';
+import { PageShell, PageMain } from '../../ui/PageShell';
 import { PageHeader } from '../../ui/PageHeader';
 import { Card } from '../../ui/Card';
 import { Button, ButtonLink } from '../../ui/Button';
@@ -66,7 +66,7 @@ export function DetailPage({
   if (!entity)
     return (
       <PageShell>
-        <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6">
+        <PageMain>
           <EmptyState
             title="Record not found"
             description="This record is unavailable or inactive."
@@ -76,7 +76,7 @@ export function DetailPage({
               </ButtonLink>
             }
           />
-        </main>
+        </PageMain>
       </PageShell>
     );
 
@@ -84,7 +84,7 @@ export function DetailPage({
 
   return (
     <PageShell>
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6">
+      <PageMain>
         {'category' in entity ? (
           <PageHeader
             title={entity.name}
@@ -259,7 +259,7 @@ export function DetailPage({
             />
           )}
         </section>
-      </main>
+      </PageMain>
     </PageShell>
   );
 }

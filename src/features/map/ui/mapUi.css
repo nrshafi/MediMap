@@ -3,22 +3,6 @@
    Strict clinical palette conforming to context/ui-context.md
    ========================================================================== */
 
-:root {
-  --bg-base: #f2f8f7;
-  --bg-surface: #ffffff;
-  --text-primary: #143d3c;
-  --text-muted: #506b69;
-  --accent-primary: #0f746b;
-  --accent-hover: #0d625b;
-  --accent-subtle: #e3f1ef;
-  --border-default: #cddedb;
-  --border-strong: #557d78;
-  --border-focus: #0f746b;
-  --danger: #b3261e;
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-}
-
 /* Accessibility: Screen-reader-only utility */
 .medimap-sr-only {
   position: absolute;
@@ -42,14 +26,14 @@
   margin: 0 auto;
   padding: 1.5rem 1rem;
   font-family: var(--font-sans);
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 /* Mobile Segmented Toggle Bar */
 .medimap-mobile-toggle-bar {
   display: flex;
   align-items: center;
-  background-color: var(--accent-subtle);
+  background-color: var(--color-primary-soft);
   border-radius: 10px;
   padding: 4px;
   margin-bottom: 1rem;
@@ -67,7 +51,7 @@
   border: none;
   border-radius: 8px;
   background-color: transparent;
-  color: var(--text-muted);
+  color: var(--color-muted);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -78,17 +62,17 @@
 }
 
 .medimap-mobile-tab-btn:hover {
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-mobile-tab-btn.is-active {
-  background-color: var(--bg-surface);
-  color: var(--accent-primary);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
   box-shadow: var(--shadow-card);
 }
 
 .medimap-mobile-tab-btn:focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -121,14 +105,14 @@
 
 .medimap-branch-list-header {
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .medimap-branch-count-heading {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--color-ink);
   letter-spacing: -0.01em;
 }
 
@@ -146,15 +130,15 @@
   justify-content: center;
   text-align: center;
   padding: 3rem 1.5rem;
-  background-color: var(--bg-surface);
-  border: 1px dashed var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
   border-radius: 12px;
 }
 
 .medimap-empty-icon {
   width: 48px;
   height: 48px;
-  color: var(--text-muted);
+  color: var(--color-muted);
   margin-bottom: 1rem;
 }
 
@@ -169,13 +153,13 @@
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-empty-desc {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
   max-width: 380px;
 }
 
@@ -184,8 +168,8 @@
    -------------------------------------------------------------------------- */
 .medimap-branch-card {
   box-sizing: border-box;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.125rem;
   display: flex;
@@ -202,19 +186,19 @@
 .medimap-branch-card:hover,
 .medimap-branch-card.is-hovered,
 .medimap-branch-card.branch-card--hovered {
-  border-color: var(--accent-primary);
+  border-color: var(--color-primary);
   box-shadow: var(--shadow-lift);
 }
 
 .medimap-branch-card.is-selected,
 .medimap-branch-card.branch-card--selected {
-  border: 2px solid var(--accent-primary);
+  border: 2px solid var(--color-primary);
   background-color: var(--color-surface-sunken);
   box-shadow: var(--shadow-lift);
 }
 
 .medimap-branch-card:focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
@@ -238,14 +222,14 @@
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: var(--color-ink);
   line-height: 1.3;
 }
 
 .medimap-branch-name {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-branch-price-block {
@@ -261,13 +245,13 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-branch-price-value {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--color-ink);
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
@@ -278,7 +262,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-branch-area {
@@ -286,19 +270,19 @@
   align-items: center;
   gap: 4px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-card-icon {
   width: 14px;
   height: 14px;
-  color: var(--accent-primary);
+  color: var(--color-primary);
 }
 
 .medimap-branch-address {
   display: inline-block;
   padding-left: 0.5rem;
-  border-left: 1px solid var(--border-default);
+  border-left: 1px solid var(--color-border);
 }
 
 .medimap-branch-metrics-grid {
@@ -316,18 +300,18 @@
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
-  background-color: var(--bg-base);
-  border: 1px solid var(--border-default);
-  color: var(--text-primary);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
 }
 
 .medimap-metric-label {
-  color: var(--text-muted);
+  color: var(--color-muted);
   font-weight: 500;
 }
 
 .medimap-metric-value.medimap-metric-unavailable {
-  color: var(--text-muted);
+  color: var(--color-muted);
   font-style: italic;
   font-weight: 500;
 }
@@ -337,7 +321,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 0.625rem;
-  border-top: 1px solid var(--border-default);
+  border-top: 1px solid var(--color-border);
 }
 
 .medimap-verification-badge {
@@ -351,15 +335,15 @@
 }
 
 .medimap-verification-badge.is-verified {
-  background-color: var(--accent-subtle);
-  color: var(--accent-primary);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
 }
 
 .medimap-verification-badge.is-unverified {
   background-color: var(--color-surface-sunken);
-  color: var(--text-muted);
-  border: 1px solid var(--border-default);
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
 }
 
 .medimap-badge-icon {
@@ -373,9 +357,9 @@
   font-size: 0.875rem;
   font-weight: 600;
   border-radius: 8px;
-  border: 1px solid var(--border-strong);
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
   cursor: pointer;
   transition:
     color var(--duration-fast) var(--ease-standard),
@@ -384,20 +368,20 @@
 }
 
 .medimap-card-select-btn:hover {
-  background-color: var(--accent-primary);
+  background-color: var(--color-primary);
   color: #ffffff;
-  border-color: var(--accent-primary);
+  border-color: var(--color-primary);
 }
 
 .medimap-card-select-btn:focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
 .medimap-branch-card.is-selected .medimap-card-select-btn {
-  background-color: var(--accent-primary);
+  background-color: var(--color-primary);
   color: #ffffff;
-  border-color: var(--accent-primary);
+  border-color: var(--color-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -423,13 +407,13 @@
   height: 100%;
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid var(--border-default);
-  background-color: var(--bg-base);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
   box-shadow: var(--shadow-card);
 }
 
 .medimap-dhaka-map-section:focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
@@ -454,8 +438,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 4px;
   box-shadow: var(--shadow-card);
@@ -473,7 +457,7 @@
   border: none;
   border-radius: 6px;
   background-color: transparent;
-  color: var(--text-primary);
+  color: var(--color-ink);
   font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
@@ -483,8 +467,8 @@
 }
 
 .medimap-control-btn:hover:not(:disabled) {
-  background-color: var(--bg-base);
-  color: var(--accent-primary);
+  background-color: var(--color-background);
+  color: var(--color-primary);
 }
 
 .medimap-control-btn:disabled {
@@ -493,7 +477,7 @@
 }
 
 .medimap-control-btn:focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: -2px;
 }
 
@@ -504,8 +488,8 @@
   bottom: 12px;
   left: 12px;
   right: 12px;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-default);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 12px 14px;
   box-shadow: var(--shadow-overlay);
@@ -532,13 +516,13 @@
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: var(--color-ink);
 }
 
 .medimap-floating-subtitle {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--color-muted);
 }
 
 .medimap-floating-metrics {
@@ -551,14 +535,14 @@
 .medimap-floating-price {
   font-size: 1rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--color-ink);
   font-variant-numeric: tabular-nums;
 }
 
 .medimap-floating-dist {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--accent-primary);
+  color: var(--color-primary);
 }
 
 .medimap-floating-actions {
@@ -572,7 +556,7 @@
   padding: 8px 14px;
   font-size: 0.875rem;
   font-weight: 600;
-  background-color: var(--accent-primary);
+  background-color: var(--color-primary);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -587,9 +571,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-strong);
-  background-color: var(--bg-surface);
-  color: var(--text-muted);
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-surface);
+  color: var(--color-muted);
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;

@@ -156,7 +156,12 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
           preserveAspectRatio="xMidYMid meet"
         >
           {/* Map canvas background */}
-          <rect width="800" height="600" fill="var(--bg-base)" className="medimap-map-canvas-bg" />
+          <rect
+            width="800"
+            height="600"
+            fill="var(--color-background)"
+            className="medimap-map-canvas-bg"
+          />
 
           {/* Coordinate grid lines */}
           <g className="medimap-map-grid" role="presentation">
@@ -165,7 +170,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="0"
               x2="100"
               y2="600"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -174,7 +179,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="0"
               x2="300"
               y2="600"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -183,7 +188,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="0"
               x2="500"
               y2="600"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -192,7 +197,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="0"
               x2="700"
               y2="600"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -201,7 +206,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="150"
               x2="800"
               y2="150"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -210,7 +215,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="300"
               x2="800"
               y2="300"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -219,7 +224,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
               y1="450"
               x2="800"
               y2="450"
-              stroke="var(--border-default)"
+              stroke="var(--color-border)"
               strokeWidth="0.8"
               strokeDasharray="4 4"
             />
@@ -231,7 +236,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, BURIGANGA_RIVER)}
               fill="none"
-              stroke="var(--accent-subtle)"
+              stroke="var(--color-primary-soft)"
               strokeWidth="14"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -241,7 +246,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, TURAG_RIVER)}
               fill="none"
-              stroke="var(--accent-subtle)"
+              stroke="var(--color-primary-soft)"
               strokeWidth="10"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -251,7 +256,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
             <path
               d={coordsToPath(projector, HATIRJHEEL_LAKE)}
               fill="none"
-              stroke="var(--accent-subtle)"
+              stroke="var(--color-primary-soft)"
               strokeWidth="8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -269,7 +274,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   x={pt.x}
                   y={pt.y}
                   textAnchor="middle"
-                  fill="var(--text-muted)"
+                  fill="var(--color-muted)"
                   fontSize="12"
                   fontWeight="500"
                   fontStyle="italic"
@@ -293,7 +298,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                   cy={centerPoint.y}
                   r={radiusCirclePx}
                   fill="rgb(15 116 107 / 0.05)"
-                  stroke="var(--accent-primary)"
+                  stroke="var(--color-primary)"
                   strokeWidth="1.5"
                   strokeDasharray="6 4"
                 />
@@ -304,12 +309,12 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 cy={centerPoint.y}
                 r="10"
                 fill="none"
-                stroke="var(--accent-primary)"
+                stroke="var(--color-primary)"
                 strokeWidth="1.5"
                 opacity="0.5"
               />
               {/* Center point pin */}
-              <circle cx={centerPoint.x} cy={centerPoint.y} r="4.5" fill="var(--accent-primary)" />
+              <circle cx={centerPoint.x} cy={centerPoint.y} r="4.5" fill="var(--color-primary)" />
             </g>
           )}
 
@@ -356,7 +361,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                       cy={pt.y}
                       r={20}
                       fill="none"
-                      stroke="var(--accent-primary)"
+                      stroke="var(--color-primary)"
                       strokeWidth="3"
                       opacity="0.85"
                     />
@@ -369,13 +374,13 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                     r={isSelected ? 16 : isHovered ? 15 : 13}
                     fill={
                       isSelected
-                        ? 'var(--text-primary)'
+                        ? 'var(--color-ink)'
                         : isHovered
-                          ? 'var(--accent-primary)'
-                          : 'var(--bg-surface)'
+                          ? 'var(--color-primary)'
+                          : 'var(--color-surface)'
                     }
                     stroke={
-                      isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--accent-primary)'
+                      isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--color-primary)'
                     }
                     strokeWidth={isSelected || isHovered ? 2.5 : 2}
                   />
@@ -387,9 +392,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                     textAnchor="middle"
                     fontSize="12"
                     fontWeight="700"
-                    fill={
-                      isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--text-primary)'
-                    }
+                    fill={isSelected || isHovered ? 'var(--color-on-primary)' : 'var(--color-ink)'}
                     pointerEvents="none"
                   >
                     {badgeNumber}
@@ -413,10 +416,10 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 width="160"
                 height="40"
                 rx="6"
-                fill="var(--text-primary)"
+                fill="var(--color-ink)"
                 opacity="0.95"
               />
-              <polygon points="0,0 -6,-6 6,-6" fill="var(--text-primary)" opacity="0.95" />
+              <polygon points="0,0 -6,-6 6,-6" fill="var(--color-ink)" opacity="0.95" />
               <text
                 x="0"
                 y="-25"
@@ -433,7 +436,7 @@ export const DhakaMap: React.FC<DhakaMapProps> = ({
                 x="0"
                 y="-9"
                 textAnchor="middle"
-                fill="var(--accent-subtle)"
+                fill="var(--color-primary-soft)"
                 fontSize="12"
                 fontWeight="700"
               >

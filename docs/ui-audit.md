@@ -259,11 +259,11 @@ The earlier pass raised one shared border token to 3:1. That made every decorati
 
 Disabled controls use reduced opacity. WCAG does not require disabled controls to meet contrast. Placeholder text now uses full `muted` opacity and meets 4.5:1 on white.
 
-## Open items
+## Audit items status
 
-1. Add an `h1` to `/discovery` and align its header and footer with `PageShell`.
-2. (Completed) Add a compact "Find services" link for 375 px headers: mobile menu now includes Find services, Compare, and Account with keyboard/Escape handling.
-3. Reduce duplicate fact and action rows on `/find` when the detail panel is open.
-4. Merge the report submission hints and reduce stacked notices.
-5. Move `CatalogManager` and `CatalogInspector` record titles to the shared heading tokens.
-6. Migrate `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, and `discoveryView.css` off the legacy aliases, then remove the aliases.
+1. (Completed) Add an `h1` to `/discovery` and align its header and footer with `PageShell`: added `h1` naming the demonstration and integrated `SiteHeader` and `SiteFooter`.
+2. (Completed) Add a compact "Find services" link for 375 px headers: mobile menu includes Find services, Compare, and Account with keyboard/Escape handling.
+3. (Open) Reduce duplicate fact and action rows on `/find` when the detail panel is open: intentionally retained because product and regulatory guidelines require verification status, review date, and source beside every price on both cards and detail panels.
+4. (Open) Merge the report submission hints and reduce stacked notices: preserved distinct submission limits and dispute behavior hints for clarity.
+5. (Completed) Move `CatalogManager` and `CatalogInspector` record titles to the shared heading tokens: all section titles and record headings use `ui.heading3`.
+6. (Completed) Migrate `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, and `discoveryView.css` off the legacy aliases, then remove the aliases: all files moved to `@theme` `--color-*` tokens; legacy aliases removed from `src/styles.css` and local stylesheets; verified 0 remaining occurrences.

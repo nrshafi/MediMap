@@ -4,9 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-20 19:28:00 +06:00`.
+Last updated: `2026-11-20 23:45:00 +06:00`.
 
 ## Current phase
+
+Visual QA checks, design system documentation, and UI audit completion. Added automated Playwright checks for horizontal scroll, accessible images/buttons, single h1, 404 responses, and internal routing across 375 px and 1280 px viewports. Shared `PageMain`, `NotFoundPage`, and `ErrorPage` integrated; legacy CSS variables and obsolete style helpers removed.
 
 Sign-in, account, and administration pages polished with shared design system components (`Card`, `PageHeader`, `Button`, `ButtonLink`, `Notice`, `Badge`, `fieldControlStyles`). Dense tables enhanced with sticky headers, row hover, and right-aligned tabular figures. Native form submissions and accessibility verified across 375 px and desktop widths. Review moderation link exposed across all administration views with regression tests.
 Service, branch, compare, reviews, and report pages polished with shared components (`PageHeader`, `Card`, `Button`, `ButtonLink`, `Notice`, `Field`, `EmptyState`, `StatTile`, `StatusBadge`). Redundancy and stacked notices removed per `docs/ui-audit.md`. Native forms and accessibility verified across 375 px and desktop widths.
@@ -57,6 +59,39 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Visual QA checks, design system completion, and client routing (2026-11-20 23:45:00 +06:00)
+
+- Added comprehensive visual QA browser test suite in `tests/browser/visual-qa.browser.ts`:
+  - Verified 10 public routes and 404 page across 375 px (mobile) and 1280 px (desktop) viewports.
+  - Checked absence of horizontal document overflow, presence of exactly one `h1` per page, and accessible names on all images and icon buttons.
+  - Verified 404 HTTP status and shared not-found layout for unknown routes.
+- Executed visual QA test script against `bun run dev` taking 36 route screenshots and generated contact sheet artifact at `.bun-tmp/visual-qa/contact-sheet.png`.
+- Verified keyboard accessibility (logical tab sequence and visible focus outlines across `/`, `/find`, `/compare`, `/reviews`, and `/admin/catalog`).
+- Verified reduced motion compliance in Playwright (`reducedMotion: 'reduce'`) ensuring zero running animations or transitions.
+- Completed remaining open items from `docs/ui-audit.md`:
+  - Added `h1` and shared `PageShell` header and footer to `/discovery` (`DiscoveryView.tsx`), keeping sample-data badge.
+  - Pruned unused keys from `src/ui/styles.ts` (`buttonPrimary`, `buttonSecondary`, `buttonGhost`, `input`, `card`, `alertError`, `notice`, `tile`, `tileLabel`, `tileValue`, `statusBadge`, `page`), retaining `ui.label` for admin forms.
+  - Migrated `DhakaMap.tsx`, `mapUi.css`, `searchUi.css`, `discoveryView.css`, and `styles.css` to `@theme` tokens; eliminated legacy `:root` aliases with zero remaining occurrences.
+- Implemented shared router error and not-found components in `src/ui/PageShell.tsx` (`NotFoundPage`, `ErrorPage`) and registered them in `src/router.tsx`. Removed redundant generic `errorComponent` from `src/routes/find.tsx`.
+- Replaced plain `<a>` internal page navigation with TanStack Router `Link` (`src/ui/Link.tsx`) while preserving plain `<a>` for external links, tel/mailto, `/auth/*`, and `.ts` endpoints.
+- Added `as` prop support to `ButtonLink` in `src/ui/Button.tsx`.
+- Introduced shared `PageMain` container component in `src/ui/PageShell.tsx` and applied it across `DetailPage.tsx`, `ComparisonPage.tsx`, `ReviewPage.tsx`, `ReportView.tsx`, and `src/routes/compare.tsx`.
+- Resolved small items from steps 4a and 6:
+  - Removed duplicate `navigation` prop from `CatalogInspector.test.tsx`.
+  - Removed duplicate `min-h-24` from `src/routes/admin.reviews.tsx`.
+  - Replaced custom class string on sort select in `FindPage.tsx` with `${fieldControlStyles} w-auto`.
+  - Removed nested `aria-live` attribute from `LocationPanel.tsx`.
+- Updated `DESIGN.md` and `context/ui-context.md` with final tokens, components, page layouts, and redundancy removal rules; marked resolved findings in `docs/ui-audit.md`.
+- Automated tests and verification:
+  - `bun run typecheck`: clean (0 type errors in 243 files + 27 tooling files).
+  - `bun run lint`: clean (0 warnings and 0 errors across 255 files).
+  - `bun run format:check`: clean (All 265 files formatted).
+  - `bun test`: 360 unit and integration tests passing across 51 files.
+  - `bun run test:database`: 109 integration tests passing across 9 suites against local Miniflare D1.
+  - `bun run test:browser`: 134 browser tests passing (2 skipped) across desktop and mobile viewports, including all 22 visual QA assertions.
+- Open items:
+  - Step 16 email/password sign-in and password management form implementation (nrshafi).
 
 ### Polish sign-in, account and administration pages (2026-11-20 19:28:00 +06:00)
 

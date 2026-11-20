@@ -1,5 +1,5 @@
 import { ArrowLeft, Star } from 'lucide-react';
-import { PageShell } from '../../ui/PageShell';
+import { PageShell, PageMain } from '../../ui/PageShell';
 import { PageHeader } from '../../ui/PageHeader';
 import { Card } from '../../ui/Card';
 import { Button, ButtonLink } from '../../ui/Button';
@@ -15,7 +15,8 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
   if (!data.listing)
     return (
       <PageShell>
-        <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 sm:px-6">
+        <PageMain width="narrow">
+          <PageHeader title="Service reviews" />
           <EmptyState
             title="Listing not found"
             description="The requested branch-service listing could not be found or is inactive."
@@ -25,7 +26,7 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
               </ButtonLink>
             }
           />
-        </main>
+        </PageMain>
       </PageShell>
     );
 
@@ -34,7 +35,7 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
 
   return (
     <PageShell>
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 sm:px-6">
+      <PageMain width="narrow">
         <PageHeader
           title={`Reviews for ${data.listing.service.name}`}
           description={
@@ -218,7 +219,7 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
             </ButtonLink>
           )}
         </section>
-      </main>
+      </PageMain>
     </PageShell>
   );
 }

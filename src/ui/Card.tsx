@@ -5,8 +5,9 @@ export type CardVariant = 'default' | 'raised' | 'sunken';
 export interface CardProps extends HTMLAttributes<HTMLElement> {
   variant?: CardVariant;
   interactive?: boolean;
-  as?: 'article' | 'section' | 'div' | 'a';
+  as?: ElementType;
   href?: string;
+  to?: string;
   children?: ReactNode;
 }
 

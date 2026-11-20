@@ -16,6 +16,7 @@ import {
 import { DiagnosticSearchBox } from './DiagnosticSearchBox';
 import { LocationSelector } from './LocationSelector';
 import type { SearchSelection } from './types';
+import { SiteHeader, SiteFooter } from '../../../ui/SiteChrome';
 import './discoveryView.css';
 
 export interface DiscoveryViewProps {
@@ -146,33 +147,13 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
 
   return (
     <div className={`medimap-discovery-page ${className}`.trim()}>
-      {/* Header bar */}
-      <header className="medimap-discovery-header" role="banner">
-        <div className="medimap-discovery-nav">
-          <div className="medimap-discovery-brand">
-            <svg
-              className="medimap-discovery-brand-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M12 21s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 7.2c0 7.3-8 11.8-8 11.8z" />
-              <circle cx="12" cy="9" r="3" />
-            </svg>
-            <span className="medimap-discovery-brand-text">MediMap</span>
-          </div>
-          <span className="medimap-discovery-tagline">
-            Dhaka diagnostic service discovery preview
-          </span>
-        </div>
-      </header>
+      <SiteHeader className="medimap-discovery-header" />
 
       {/* Main content body */}
       <main className="medimap-discovery-main" role="main">
+        <h1 className="font-display text-h1 font-bold text-ink">
+          Diagnostic service discovery preview
+        </h1>
         <p className="medimap-sample-notice" role="note">
           Demonstration with sample data. Prices, availability, and branch details have not been
           verified. Road estimates are unavailable until a routing provider is configured.
@@ -315,19 +296,7 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         )}
       </main>
 
-      {/* Footer with architecture invariants reference */}
-      <footer className="medimap-discovery-footer" role="contentinfo">
-        <div className="medimap-discovery-footer-content">
-          <span>MediMap discovery preview · Sample prices in BDT</span>
-          <div className="medimap-footer-invariants">
-            <span>Prices in BDT</span>
-            <span className="medimap-footer-dot">·</span>
-            <span>Straight-line radius eligibility</span>
-            <span className="medimap-footer-dot">·</span>
-            <span>Distinct road estimates</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter className="medimap-discovery-footer" />
     </div>
   );
 };

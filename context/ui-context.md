@@ -10,9 +10,9 @@ Use clear service-search navigation and explicit source coverage. Retain the cli
 ## Visual tokens
 
 `DESIGN.md` at the repository root is the visual source of truth. It defines colors, typography, layout, elevation, shapes, components, and icons. Do not copy its token values into this file.
-The Tailwind theme in `src/styles.css` mirrors these tokens. Legacy properties such as `--bg-base` remain as aliases until each stylesheet is migrated.
+The Tailwind theme in `src/styles.css` mirrors these tokens. All stylesheets and components consume modern `@theme` custom properties (`--color-*`). Legacy custom property aliases (`--bg-base`, etc.) are completely removed.
 Use `border` for decorative card outlines, dividers, table rules, panel edges, and notice boxes. Use `border-strong` for text inputs, selects, textareas, checkboxes, and any control whose border is the only visual cue. Alert notices use a light `error` edge; the role, heading, and text color identify them.
-The `/discovery` demonstration keeps its own CSS.
+The `/discovery` demonstration keeps its own scoped stylesheet, updated to consume `@theme` color tokens, and integrates `SiteHeader`, `SiteFooter`, and a page `h1`.
 
 ## Typography and layout
 
@@ -22,7 +22,10 @@ The `/discovery` demonstration keeps its own CSS.
 - Center the hero in the available page height. Keep the header and footer visually quiet.
 - Use the `display`, `h1`, `h2`, `h3`, `body`, `small`, and `label` type scale. Check the page at mobile widths.
 - Use an inline SVG for the decorative location mark. Hide decorative graphics from assistive technology.
-- Use Tailwind utilities and the shared class strings in `src/ui/styles.ts`. Use semantic React components. Use `lucide-react` icons beside text labels, and hide decorative icons from assistive technology.
+- Use `PageShell` and `PageMain` (`default` max-w-5xl, `narrow` max-w-3xl) for shared page layouts.
+- Use TanStack Router `Link` (via `src/ui/Link.tsx`) for internal page navigation without full-page reloads, while retaining standard `<a>` for external, auth, and server routes.
+- Use router-wide `defaultNotFoundComponent` (`NotFoundPage`) and `defaultErrorComponent` (`ErrorPage`) for consistent error boundaries with `h1` headings.
+- Use `lucide-react` icons beside text labels, and hide decorative icons from assistive technology.
 - Use the shared motion tokens for hover, focus, and selection only. Remove transitions and animations under `prefers-reduced-motion: reduce`.
 
 ## Discovery demonstration

@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { readComparison } from '../features/public/comparison.functions';
 import { ComparisonPage } from '../features/public/ComparisonPage';
-import { PageShell } from '../ui/PageShell';
+import { PageShell, PageMain } from '../ui/PageShell';
+import { PageHeader } from '../ui/PageHeader';
 import { EmptyState } from '../ui/EmptyState';
 import { ButtonLink } from '../ui/Button';
 
@@ -13,7 +14,8 @@ export const Route = createFileRoute('/compare')({
   head: () => ({ meta: [{ title: 'Compare diagnostic branches | MediMap' }] }),
   errorComponent: () => (
     <PageShell>
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6">
+      <PageMain>
+        <PageHeader title="Compare branches" />
         <EmptyState
           title="Comparison unavailable"
           description="Choose two to four active listings for the same diagnostic service."
@@ -23,7 +25,7 @@ export const Route = createFileRoute('/compare')({
             </ButtonLink>
           }
         />
-      </main>
+      </PageMain>
     </PageShell>
   ),
 });

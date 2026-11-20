@@ -114,20 +114,10 @@
   }
 }
 
-/* Legacy aliases. New code uses the @theme tokens above. */
 :root {
-  --bg-base: var(--color-background);
-  --bg-surface: var(--color-surface);
-  --text-primary: var(--color-ink);
-  --text-muted: var(--color-muted);
-  --accent-primary: var(--color-primary);
-  --accent-hover: var(--color-primary-strong);
-  --accent-subtle: var(--color-primary-soft);
-  --border-default: var(--color-border);
-  --border-focus: var(--color-focus);
   font-family: var(--font-sans);
-  color: var(--text-primary);
-  background: var(--bg-base);
+  color: var(--color-ink);
+  background: var(--color-background);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

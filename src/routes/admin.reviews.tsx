@@ -85,7 +85,7 @@ function Page() {
               <label className={ui.label}>
                 Reason
                 <textarea
-                  className={`${admin.textarea} min-h-24`}
+                  className={admin.textarea}
                   name="reason"
                   minLength={20}
                   maxLength={1000}

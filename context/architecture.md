@@ -40,7 +40,7 @@ A production map requires a billing account on the key or a new billing-enabled 
 
 - Send keys in the `X-Goog-Api-Key` header. Never place them in a URL.
 - Keep same-origin POST requests, the D1 request budget (`reserveMappingRequest`), a six-second timeout, a 65,536-byte response limit, and field validation.
-- Keep the budget at two requests per second and 600 per UTC day across address and route requests. Google publishes no Demo Key limit, so these values are local ceilings.
+- Keep the budget at four requests per second and 600 per UTC day across address and route requests. Google publishes no Demo Key limit, so these values are local ceilings.
 - Do not request traffic-aware routing, intermediate waypoints, two-wheeler mode, or the Place Details `displayName` field. These options move requests to higher billing tiers.
 - Start address lookup only after the user submits the address form. Do not send a request for each keystroke.
 - Generate the Places session token in the browser with `crypto.randomUUID()`. The server validates its format.

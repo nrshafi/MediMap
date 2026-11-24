@@ -14,9 +14,12 @@ export const Route = createFileRoute('/find')({
     sort: sortChoices.find((value) => value === s.sort) ?? 'price-asc',
     verified: s.verified === 'yes' ? 'yes' : 'all',
   }),
-  loaderDeps: ({ search }) => search,
+  loaderDeps: ({ search }) => ({ service: search.service }),
   loader: async ({ deps }) => {
-    const [catalog, maps] = await Promise.all([publicCatalog({ data: deps }), publicMapsConfig()]);
+    const [catalog, maps] = await Promise.all([
+      publicCatalog({ data: { service: deps.service } }),
+      publicMapsConfig(),
+    ]);
     return { ...catalog, browserKey: maps.browserKey };
   },
   head: () => ({ meta: [{ title: 'Find diagnostic services | MediMap' }] }),

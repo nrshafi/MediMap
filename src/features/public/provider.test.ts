@@ -1,6 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { providerJson, reserveMappingRequest } from './provider.server';
+import {
+  DAILY_MAPPING_LIMIT,
+  PER_SECOND_MAPPING_LIMIT,
+  providerJson,
+  reserveMappingRequest,
+} from './provider.server';
+
 test('mapping responses reject failed, malformed and oversized provider bodies', async () => {
   assert.deepEqual(await providerJson(new Response('{"ok":true}')), { ok: true });
   await assert.rejects(providerJson(new Response('bad', { status: 503 })));
@@ -8,20 +14,40 @@ test('mapping responses reject failed, malformed and oversized provider bodies',
   await assert.rejects(providerJson(new Response('x'.repeat(65537))));
 });
 
-type Bucket = { limit: number; key: 'day' | 'second' };
 function fakeDb(counts: { day: number; second: number }) {
-  return {
-    prepare: (sql: string) => {
-      if (sql.startsWith('DELETE')) return { bind: () => ({ run: async () => ({}) }) };
-      const day = sql.includes('requests<600');
-      return { bind: (): Bucket => ({ limit: day ? 600 : 2, key: day ? 'day' : 'second' }) };
-    },
-    batch: async (items: Bucket[]) =>
-      items.map((item) => ({ results: counts[item.key] < item.limit ? [{ requests: 1 }] : [] })),
-  } as unknown as D1Database;
+  const touched: string[] = [];
+  const prepare = ((sql: string) => {
+    if (sql.startsWith('DELETE')) return { bind: () => ({ run: async () => ({}) }) };
+    return {
+      bind: (bucket: string, _expires: number, limit: number) => ({
+        all: async () => {
+          const key = bucket.startsWith('day:') ? 'day' : 'second';
+          touched.push(key);
+          if (counts[key] < limit) {
+            counts[key] += 1;
+            return { results: [{ requests: counts[key] }] };
+          }
+          return { results: [] };
+        },
+      }),
+    };
+  }) as D1Database['prepare'];
+  return { db: { prepare }, touched };
 }
-test('mapping budget refuses requests when the daily or per-second ceiling is exhausted', async () => {
-  assert.equal(await reserveMappingRequest(fakeDb({ day: 0, second: 0 })), true);
-  assert.equal(await reserveMappingRequest(fakeDb({ day: 600, second: 0 })), false);
-  assert.equal(await reserveMappingRequest(fakeDb({ day: 0, second: 2 })), false);
+
+test('mapping budget allows four requests per second and preserves daily quota when per-second refuses', async () => {
+  assert.equal(DAILY_MAPPING_LIMIT, 600);
+  assert.equal(PER_SECOND_MAPPING_LIMIT, 4);
+
+  const ok = fakeDb({ day: 0, second: 3 });
+  assert.equal(await reserveMappingRequest(ok.db), true);
+  assert.deepEqual(ok.touched, ['second', 'day']);
+
+  const secondFull = fakeDb({ day: 10, second: 4 });
+  assert.equal(await reserveMappingRequest(secondFull.db), false);
+  assert.deepEqual(secondFull.touched, ['second']);
+
+  const dayFull = fakeDb({ day: 600, second: 0 });
+  assert.equal(await reserveMappingRequest(dayFull.db), false);
+  assert.deepEqual(dayFull.touched, ['second', 'day']);
 });

@@ -4,6 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { Miniflare } from 'miniflare';
 import { CatalogRepository } from '../../src/features/catalog/server/repository.server';
 import { catalogRead } from '../../src/features/catalog/server/reads.server';
+import { reserveMappingRequest } from '../../src/features/public/provider.server';
 
 test('catalog foundation against real local D1', async (t) => {
   const mf = new Miniflare({
@@ -442,6 +443,22 @@ test('catalog foundation against real local D1', async (t) => {
             "UPDATE sources SET retrieved_at = '2026-10-27T10:28:23.332Z' WHERE id = 'addin-hematology-20261027'",
           )
           .run();
+      },
+    );
+
+    await t.test(
+      'mapping budget allows four requests per second without consuming daily quota on refusal',
+      async () => {
+        const now = Date.parse('2026-11-22T10:00:00Z');
+        for (let i = 0; i < 4; i++) {
+          assert.equal(await reserveMappingRequest(db, now), true);
+        }
+        assert.equal(await reserveMappingRequest(db, now), false);
+        const dayRow = await db
+          .prepare('SELECT requests FROM mapping_budget WHERE bucket = ?')
+          .bind('day:2026-11-22')
+          .first<{ requests: number }>();
+        assert.equal(dayRow?.requests, 4);
       },
     );
 

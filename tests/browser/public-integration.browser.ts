@@ -479,3 +479,28 @@ test('custom radius field can be cleared, shows an error, and updates the URL wh
   await expect(page).toHaveURL(/radius=7/);
   await expect(radiusInput).not.toHaveAttribute('aria-invalid', 'true');
 });
+
+test('changing radius and sort on /find does not reload the catalog server function', async ({
+  page,
+}) => {
+  const serverFnRequests: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().includes('/_serverFn/')) serverFnRequests.push(request.url());
+  });
+  await page.goto('/find?service=complete-blood-count');
+  await expect(page.locator('[data-select-listing]').first()).toBeVisible();
+  const initialCount = serverFnRequests.length;
+
+  await page.getByRole('button', { name: '5 km', exact: true }).click();
+  await expect(page).toHaveURL(/radius=5/);
+  await page.getByLabel('Sort listings').selectOption('price-desc');
+  await expect(page).toHaveURL(/sort=price-desc/);
+  expect(serverFnRequests.length).toBe(initialCount);
+
+  await page.getByLabel('Service name or abbreviation').fill('CBC');
+  await page
+    .getByRole('region', { name: 'Service suggestions' })
+    .getByRole('link', { name: 'Complete Blood Count', exact: true })
+    .click();
+  await expect(page).toHaveURL(/service=complete-blood-count/);
+});

@@ -1,20 +1,25 @@
-export async function reserveMappingRequest(db: D1Database, now = Date.now()) {
+export const DAILY_MAPPING_LIMIT = 600;
+export const PER_SECOND_MAPPING_LIMIT = 4;
+
+export async function reserveMappingRequest(db: Pick<D1Database, 'prepare'>, now = Date.now()) {
   await db.prepare('DELETE FROM mapping_budget WHERE expires_at<=?').bind(now).run();
   const day = new Date(now).toISOString().slice(0, 10),
     second = Math.floor(now / 1000);
-  const results = await db.batch([
-    db
-      .prepare(
-        'INSERT INTO mapping_budget(bucket,requests,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET requests=requests+1 WHERE requests<600 RETURNING requests',
-      )
-      .bind(`day:${day}`, Date.parse(`${day}T00:00:00Z`) + 86400000),
-    db
-      .prepare(
-        'INSERT INTO mapping_budget(bucket,requests,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET requests=requests+1 WHERE requests<2 RETURNING requests',
-      )
-      .bind(`second:${second}`, (second + 1) * 1000),
-  ]);
-  return results.every((result) => result.results.length === 1);
+  const secondResult = await db
+    .prepare(
+      'INSERT INTO mapping_budget(bucket,requests,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET requests=requests+1 WHERE requests<? RETURNING requests',
+    )
+    .bind(`second:${second}`, (second + 1) * 1000, PER_SECOND_MAPPING_LIMIT)
+    .all<{ requests: number }>();
+  if (secondResult.results.length !== 1) return false;
+  // If the daily bucket refuses, the per-second increment stays and expires after one second.
+  const dayResult = await db
+    .prepare(
+      'INSERT INTO mapping_budget(bucket,requests,expires_at) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET requests=requests+1 WHERE requests<? RETURNING requests',
+    )
+    .bind(`day:${day}`, Date.parse(`${day}T00:00:00Z`) + 86400000, DAILY_MAPPING_LIMIT)
+    .all<{ requests: number }>();
+  return dayResult.results.length === 1;
 }
 export async function providerJson(response: Response): Promise<unknown> {
   if (!response.ok || !response.body) throw new Error('Provider unavailable');

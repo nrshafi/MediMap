@@ -138,6 +138,8 @@ test('service reviews retain ownership, history and public visibility in D1', as
     const now = Date.now();
     assert.equal(await reserveMappingRequest(db, now), true);
     assert.equal(await reserveMappingRequest(db, now), true);
+    assert.equal(await reserveMappingRequest(db, now), true);
+    assert.equal(await reserveMappingRequest(db, now), true);
     assert.equal(await reserveMappingRequest(db, now), false);
     const nextSecond = now + 1000;
     assert.equal(await reserveMappingRequest(db, nextSecond), true);

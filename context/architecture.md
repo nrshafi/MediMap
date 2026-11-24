@@ -343,6 +343,7 @@ Checked on 8 October 2026. These sources establish available integration options
 ## Location and search rules
 
 - Use straight-line distance to determine eligibility within the selected radius.
+- The default search radius is 10 km from the Dhaka center (23.8103, 90.4125), with 1 km, 3 km, 5 km, 10 km, and custom radius options.
 - Label radius filtering as straight-line distance. Display road distance and estimated travel time separately.
 - Prioritize exact canonical names, exact aliases, prefixes, and keywords in that order.
 - Offer typo suggestions. Require user selection when a match is ambiguous.

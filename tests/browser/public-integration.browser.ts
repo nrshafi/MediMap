@@ -445,3 +445,37 @@ test('mobile map view at 375 px does not cover the bottom 40 px of the map when 
     expect(panelBox.y).toBeGreaterThanOrEqual(mapBox.y + mapBox.height);
   }
 });
+
+test('find page defaults to 10 km radius and shows seeded listings without a radius parameter', async ({
+  page,
+}) => {
+  await page.goto('/find?service=complete-blood-count');
+  await expect(page.getByRole('button', { name: '10 km', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.locator('[data-select-listing]').first()).toBeVisible();
+});
+
+test('find page shows a typo suggestion only once', async ({ page }) => {
+  await page.goto('/find');
+  await page.getByLabel('Service name or abbreviation').fill('complete blod count');
+  const suggestions = page.getByRole('region', { name: 'Service suggestions' });
+  await expect(
+    suggestions.getByRole('link', { name: 'Complete Blood Count', exact: true }),
+  ).toHaveCount(1);
+});
+
+test('custom radius field can be cleared, shows an error, and updates the URL when valid', async ({
+  page,
+}) => {
+  await page.goto('/find?service=complete-blood-count');
+  await page.getByRole('button', { name: 'Custom', exact: true }).click();
+  const radiusInput = page.getByLabel('Straight-line radius in km');
+  await radiusInput.fill('');
+  await expect(radiusInput).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.getByText('Enter a radius from 0.1 to 100 km.')).toBeVisible();
+  await radiusInput.fill('7');
+  await expect(page).toHaveURL(/radius=7/);
+  await expect(radiusInput).not.toHaveAttribute('aria-invalid', 'true');
+});

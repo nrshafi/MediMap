@@ -12,6 +12,7 @@ import { Link } from '../../ui/Link';
 import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
 import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
+import { DEFAULT_CENTER, DEFAULT_RADIUS_KM, RADIUS_PRESETS, parseBoundedNumber } from './defaults';
 import { formatBdt, type RouteResult } from './format';
 import { GoogleMapView, MapPlaceholder, MapUnavailable, type MapPinData } from './GoogleMapView';
 import { ListingCard } from './ListingCard';
@@ -28,8 +29,7 @@ const sortLabels: Record<PublicSort, string> = {
   rating: 'Highest rated',
   'verification-date': 'Most recently reviewed',
 };
-const radiusPresets = [1, 3, 5] as const;
-const isPreset = (value: number) => radiusPresets.some((preset) => preset === value);
+const isPreset = (value: number) => RADIUS_PRESETS.some((preset) => preset === value);
 
 type Context = { lat: number; lng: number; radius: number; sort: PublicSort; verified: string };
 
@@ -56,12 +56,13 @@ export function FindPage({
   const [comparison, setComparison] = useState<string[]>([]);
   const [highlight, setHighlight] = useState<string>();
   const [center, setCenter] = useState({
-    latitude: initial?.lat ?? 23.8103,
-    longitude: initial?.lng ?? 90.4125,
+    latitude: initial?.lat ?? DEFAULT_CENTER.latitude,
+    longitude: initial?.lng ?? DEFAULT_CENTER.longitude,
   });
   const [centerLabel, setCenterLabel] = useState<string>();
-  const [radius, setRadius] = useState(initial?.radius ?? 3);
-  const [customRadius, setCustomRadius] = useState(!isPreset(initial?.radius ?? 3));
+  const [radius, setRadius] = useState(initial?.radius ?? DEFAULT_RADIUS_KM);
+  const [radiusDraft, setRadiusDraft] = useState(String(initial?.radius ?? DEFAULT_RADIUS_KM));
+  const [customRadius, setCustomRadius] = useState(!isPreset(initial?.radius ?? DEFAULT_RADIUS_KM));
   const [sort, setSort] = useState<PublicSort>(initial?.sort ?? 'price-asc');
   const [verified, setVerified] = useState(initial?.verified ?? 'all');
   const [routes, setRoutes] = useState<Record<string, RouteResult>>({});
@@ -89,6 +90,8 @@ export function FindPage({
       previousUrl.current = url;
       setCenter({ latitude: initial.lat, longitude: initial.lng });
       setRadius(initial.radius);
+      setRadiusDraft(String(initial.radius));
+      setCustomRadius(!isPreset(initial.radius));
       setSort(initial.sort);
       setVerified(initial.verified);
       return;
@@ -242,16 +245,18 @@ export function FindPage({
             </Field>
             {matches && (
               <section aria-label="Service suggestions" className="flex flex-col">
-                {matches.matches.map((m) => (
-                  <Link
-                    key={m.canonicalService.id}
-                    className={`${ui.link} flex min-h-touch items-center`}
-                    to={serviceHref(m.canonicalService.id)}
-                    onClick={() => setQuery('')}
-                  >
-                    {m.canonicalService.name}
-                  </Link>
-                ))}
+                {matches.matches
+                  .filter((m) => m.matchType !== 'typo_suggestion')
+                  .map((m) => (
+                    <Link
+                      key={m.canonicalService.id}
+                      className={`${ui.link} flex min-h-touch items-center`}
+                      to={serviceHref(m.canonicalService.id)}
+                      onClick={() => setQuery('')}
+                    >
+                      {m.canonicalService.name}
+                    </Link>
+                  ))}
                 {matches.typoSuggestions?.map((m) => (
                   <p key={m.canonicalService.id} className="flex min-h-touch items-center gap-1">
                     Did you mean{' '}
@@ -318,35 +323,51 @@ export function FindPage({
               className="flex flex-wrap items-center gap-1.5"
             >
               <span className="mr-1 text-label font-semibold text-muted">Radius:</span>
-              {radiusPresets.map((preset) => (
+              {RADIUS_PRESETS.map((preset) => (
                 <Chip
                   key={preset}
                   pressed={!customRadius && radius === preset}
                   onClick={() => {
                     setCustomRadius(false);
                     setRadius(preset);
+                    setRadiusDraft(String(preset));
                   }}
                 >
                   {preset} km
                 </Chip>
               ))}
-              <Chip pressed={customRadius} onClick={() => setCustomRadius(true)}>
+              <Chip
+                pressed={customRadius}
+                onClick={() => {
+                  setCustomRadius(true);
+                  setRadiusDraft(String(radius));
+                }}
+              >
                 Custom
               </Chip>
             </div>
 
             {customRadius && (
-              <Field label="Straight-line radius in km">
+              <Field
+                label="Straight-line radius in km"
+                error={
+                  parseBoundedNumber(radiusDraft, 0.1, 100) === undefined
+                    ? 'Enter a radius from 0.1 to 100 km.'
+                    : undefined
+                }
+              >
                 <input
                   className={fieldControlStyles}
                   type="number"
                   min="0.1"
                   max="100"
                   step="0.1"
-                  value={radius}
+                  value={radiusDraft}
                   onChange={(e) => {
-                    const n = Number(e.target.value);
-                    if (n >= 0.1 && n <= 100) setRadius(n);
+                    const next = e.target.value;
+                    setRadiusDraft(next);
+                    const parsed = parseBoundedNumber(next, 0.1, 100);
+                    if (parsed !== undefined) setRadius(parsed);
                   }}
                 />
               </Field>

@@ -2,14 +2,15 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { sortChoices } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
 import { publicMapsConfig } from '../features/public/maps.functions';
+import { DEFAULT_CENTER, parseCoordinate, parseRadius } from '../features/public/defaults';
 import { FindPage } from '../features/public/FindPage';
 export const Route = createFileRoute('/find')({
   validateSearch: (s: Record<string, unknown>) => ({
     service: typeof s.service === 'string' ? s.service : undefined,
     q: typeof s.q === 'string' ? s.q.slice(0, 256) : undefined,
-    lat: Number.isFinite(Number(s.lat)) && Math.abs(Number(s.lat)) <= 90 ? Number(s.lat) : 23.8103,
-    lng: Number.isFinite(Number(s.lng)) && Math.abs(Number(s.lng)) <= 180 ? Number(s.lng) : 90.4125,
-    radius: Number(s.radius) >= 0.1 && Number(s.radius) <= 100 ? Number(s.radius) : 3,
+    lat: parseCoordinate(s.lat, 90, DEFAULT_CENTER.latitude),
+    lng: parseCoordinate(s.lng, 180, DEFAULT_CENTER.longitude),
+    radius: parseRadius(s.radius),
     sort: sortChoices.find((value) => value === s.sort) ?? 'price-asc',
     verified: s.verified === 'yes' ? 'yes' : 'all',
   }),

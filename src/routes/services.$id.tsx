@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { publicDetail } from '../features/public/details.functions';
+import { DEFAULT_CENTER, parseCoordinate, parseRadius } from '../features/public/defaults';
 import { DetailPage } from '../features/public/DetailPage';
 export const Route = createFileRoute('/services/$id')({
   validateSearch: (s: Record<string, unknown>) => ({
-    lat: Number.isFinite(Number(s.lat)) && Math.abs(Number(s.lat)) <= 90 ? Number(s.lat) : 23.8103,
-    lng: Number.isFinite(Number(s.lng)) && Math.abs(Number(s.lng)) <= 180 ? Number(s.lng) : 90.4125,
-    radius: Number(s.radius) >= 0.1 && Number(s.radius) <= 100 ? Number(s.radius) : 3,
+    lat: parseCoordinate(s.lat, 90, DEFAULT_CENTER.latitude),
+    lng: parseCoordinate(s.lng, 180, DEFAULT_CENTER.longitude),
+    radius: parseRadius(s.radius),
   }),
   loader: ({ params }) => publicDetail({ data: { kind: 'service', id: params.id } }),
   component: () => <DetailPage data={Route.useLoaderData()} area={Route.useSearch()} />,

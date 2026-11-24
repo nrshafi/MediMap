@@ -27,7 +27,7 @@ These decisions, confirmed on 27 October 2026, replace the earlier ten-hospital 
 1. Search for a diagnostic service.
 2. Select the matching canonical service.
 3. Enter an address, share a current location, or select a map location. Dhaka presets and manual coordinates remain available.
-4. Choose a radius of 1 km, 3 km, 5 km, or a custom distance.
+4. Choose a radius of 1 km, 3 km, 5 km, 10 km (default), or a custom distance.
 5. Inspect relevant branches, base prices, and verification information.
 6. View price statistics and select branches for comparison.
 7. Compare prices, travel estimates, ratings, and available branch information.

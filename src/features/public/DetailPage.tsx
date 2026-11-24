@@ -9,6 +9,7 @@ import { Notice } from '../../ui/Notice';
 import { EmptyState } from '../../ui/EmptyState';
 import { dayHoursLabel, openingStatus } from '../providers/hours';
 import { AreaStatistics } from './AreaStatistics';
+import { DEFAULT_CENTER, DEFAULT_RADIUS_KM } from './defaults';
 import type { publicDetail } from './details.functions';
 import { directionsUrl } from './format';
 import { GoogleMapView, MapPlaceholder, MapUnavailable } from './GoogleMapView';
@@ -55,7 +56,7 @@ function BranchMap({
 
 export function DetailPage({
   data,
-  area = { lat: 23.8103, lng: 90.4125, radius: 3 },
+  area = { lat: DEFAULT_CENTER.latitude, lng: DEFAULT_CENTER.longitude, radius: DEFAULT_RADIUS_KM },
   browserKey = null,
 }: {
   data: Awaited<ReturnType<typeof publicDetail>>;

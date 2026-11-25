@@ -15,6 +15,7 @@ export const publicDetail = createServerFn({ method: 'GET' })
       data.kind === 'service'
         ? await repository.getService(data.id)
         : await repository.getBranch(data.id);
+    const now = new Date().toISOString();
     if (!entity)
       return {
         entity: null,
@@ -22,6 +23,7 @@ export const publicDetail = createServerFn({ method: 'GET' })
         kind: data.kind,
         branchRating: null,
         providerRating: null,
+        now,
       };
     const listings: BranchService[] = [];
     let after: string | undefined;
@@ -42,5 +44,6 @@ export const publicDetail = createServerFn({ method: 'GET' })
       branchRating: data.kind === 'branch' ? await reviews.aggregate('branch', entity.id) : null,
       providerRating:
         'provider' in entity ? await reviews.aggregate('provider', entity.provider.id) : null,
+      now,
     };
   });

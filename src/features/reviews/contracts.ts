@@ -27,3 +27,29 @@ export function reviewMean(scores: readonly number[]) {
     throw new Error('Invalid ratings');
   return scores.reduce((a, b) => a + b, 0) / 6;
 }
+
+export const reviewResultMessages = {
+  saved: 'Review saved.',
+  reported: 'Review report saved for administrator review.',
+} as const;
+export type ReviewResultCode = keyof typeof reviewResultMessages;
+
+export const reviewErrorMessages = {
+  write_failed:
+    'Review was not saved. Check sign-in, ratings, submission limits, and whether the review changed. Reload before trying again.',
+  report_failed:
+    'Review report was not saved. Check sign-in, the reason, duplicates, and submission limits.',
+} as const;
+export type ReviewErrorCode = keyof typeof reviewErrorMessages;
+
+export function parseReviewResult(value: unknown): ReviewResultCode | undefined {
+  return typeof value === 'string' && Object.hasOwn(reviewResultMessages, value)
+    ? (value as ReviewResultCode)
+    : undefined;
+}
+
+export function parseReviewError(value: unknown): ReviewErrorCode | undefined {
+  return typeof value === 'string' && Object.hasOwn(reviewErrorMessages, value)
+    ? (value as ReviewErrorCode)
+    : undefined;
+}

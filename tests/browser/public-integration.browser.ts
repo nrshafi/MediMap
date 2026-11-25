@@ -199,6 +199,7 @@ test('invalid public comparison and inactive records fail explicitly', async ({
 }) => {
   const write = await context.request.post('/reviews/write', {
     headers: { origin: 'http://127.0.0.1:3100', 'x-role': 'administrator' },
+    maxRedirects: 0,
     form: {
       listing: 'addin-moghbazar-complete-blood-count',
       body: '',
@@ -211,7 +212,10 @@ test('invalid public comparison and inactive records fail explicitly', async ({
       score5: '4',
     },
   });
-  expect(write.status()).toBe(400);
+  expect(write.status()).toBe(303);
+  expect(write.headers().location).toContain(
+    '/reviews?listing=addin-moghbazar-complete-blood-count&error=write_failed',
+  );
   await page.goto('/compare?ids=missing-one,missing-two');
   await expect(page.getByRole('heading', { name: 'Comparison unavailable' })).toBeVisible();
   await page.goto('/branches/missing-branch');
@@ -503,4 +507,61 @@ test('changing radius and sort on /find does not reload the catalog server funct
     .getByRole('link', { name: 'Complete Blood Count', exact: true })
     .click();
   await expect(page).toHaveURL(/service=complete-blood-count/);
+});
+
+test.describe('server-rendered review report form', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('submitting a review report without JavaScript redirects back with a Notice', async ({
+    page,
+    context,
+  }) => {
+    const role =
+      test.info().project.name === 'mobile' ? 'review-nojs-mobile' : 'review-nojs-desktop';
+    await useBrowserSession(context, role);
+    await page.goto('/reviews?listing=addin-moghbazar-complete-blood-count');
+    const writeForm = page.locator('form[action="/reviews/write"]');
+    for (const name of [
+      'Service quality',
+      'Staff behavior',
+      'Waiting time',
+      'Cleanliness',
+      'Value',
+      'Report-delivery experience',
+    ])
+      await writeForm.getByRole('combobox', { name, exact: true }).selectOption('4');
+    await writeForm.getByLabel('Written review, optional').fill(`No-JS review ${role}`);
+    await writeForm.getByRole('button', { name: 'Save review' }).click();
+    await expect(page).toHaveURL(/result=saved/);
+    await expect(page.getByRole('status')).toContainText('Review saved.');
+
+    await page.getByText('Report this review', { exact: true }).first().click();
+    const reportForm = page.locator('form[action="/reviews/report"]').first();
+    const reviewId = await reportForm.locator('input[name="review"]').inputValue();
+    await reportForm
+      .getByLabel('Reason', { exact: true })
+      .fill('Synthetic no-JavaScript abuse report to verify redirect notice.');
+    await reportForm.getByRole('button', { name: 'Report review', exact: true }).click();
+    await expect(page).toHaveURL(/result=reported/);
+    await expect(page.getByRole('status')).toContainText(
+      'Review report saved for administrator review.',
+    );
+
+    // Hide the review again. The other review tests count the visible reviews of this listing.
+    await useBrowserSession(context, 'admin');
+    await page.goto('/admin/reviews');
+    const article = page
+      .getByRole('article')
+      .filter({ has: page.getByRole('heading', { name: reviewId, exact: true }) });
+    await article.getByRole('combobox', { name: 'Action', exact: true }).selectOption('hide');
+    await article
+      .getByLabel('Reason', { exact: true })
+      .fill('Synthetic moderation reason to restore the review count.');
+    await article.getByRole('button', { name: 'Save moderation decision' }).click();
+    await expect(
+      page
+        .getByRole('article')
+        .filter({ has: page.getByRole('heading', { name: reviewId, exact: true }) }),
+    ).toContainText('hidden');
+  });
 });

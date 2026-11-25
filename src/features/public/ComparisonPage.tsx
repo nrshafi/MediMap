@@ -19,7 +19,13 @@ function routeLabel(result: Awaited<ReturnType<typeof publicRoute>> | undefined)
     : 'Driving estimate unavailable';
 }
 
-export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof readComparison>> }) {
+export function ComparisonPage({
+  items,
+  now,
+}: {
+  items: Awaited<ReturnType<typeof readComparison>>['items'];
+  now: string;
+}) {
   const [routes, setRoutes] = useState<Record<string, Awaited<ReturnType<typeof publicRoute>>>>({});
   const [busy, setBusy] = useState(false);
   const maxPrice = Math.max(1, ...items.map((i) => i.listing.price?.amountBdt ?? 0));
@@ -118,7 +124,7 @@ export function ComparisonPage({ items }: { items: Awaited<ReturnType<typeof rea
                   <td className="px-3 py-3">
                     <div className="flex flex-col gap-1 text-small">
                       <span className="font-medium text-ink">
-                        {openingStatus(l.branch.openingHours, new Date())}
+                        {openingStatus(l.branch.openingHours, new Date(now))}
                       </span>
                       <span className="text-muted">{l.branch.phone ?? 'Phone unknown'}</span>
                       <span className="text-muted">{l.branch.address}</span>

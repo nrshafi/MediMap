@@ -207,7 +207,7 @@ export function DetailPage({
             <p className="text-small text-muted">
               Current opening status in Dhaka:{' '}
               <span className="font-semibold text-ink">
-                {openingStatus(entity.openingHours, new Date())}
+                {openingStatus(entity.openingHours, new Date(data.now))}
               </span>
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-1">

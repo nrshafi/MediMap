@@ -10,7 +10,10 @@ export const Route = createFileRoute('/compare')({
   validateSearch: (s: Record<string, unknown>) => ({ ids: typeof s.ids === 'string' ? s.ids : '' }),
   loaderDeps: ({ search }) => search,
   loader: ({ deps }) => readComparison({ data: { ids: deps.ids.split(',') } }),
-  component: () => <ComparisonPage items={Route.useLoaderData()} />,
+  component: () => {
+    const data = Route.useLoaderData();
+    return <ComparisonPage items={data.items} now={data.now} />;
+  },
   head: () => ({ meta: [{ title: 'Compare diagnostic branches | MediMap' }] }),
   errorComponent: () => (
     <PageShell>

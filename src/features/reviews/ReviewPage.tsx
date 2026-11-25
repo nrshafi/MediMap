@@ -7,11 +7,25 @@ import { Notice } from '../../ui/Notice';
 import { EmptyState } from '../../ui/EmptyState';
 import { Field, fieldControlStyles } from '../../ui/Field';
 import { StatTile } from '../../ui/StatTile';
-import { ratingDimensions } from './contracts';
+import {
+  ratingDimensions,
+  reviewErrorMessages,
+  reviewResultMessages,
+  type ReviewErrorCode,
+  type ReviewResultCode,
+} from './contracts';
 import type { readReviews } from './reviews.functions';
 import { formatReviewDate } from '../public/format';
 
-export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readReviews>> }) {
+export function ReviewPage({
+  data,
+  result,
+  error,
+}: {
+  data: Awaited<ReturnType<typeof readReviews>>;
+  result?: ReviewResultCode;
+  error?: ReviewErrorCode;
+}) {
   if (!data.listing)
     return (
       <PageShell>
@@ -53,6 +67,13 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
             </ButtonLink>
           }
         />
+
+        {result && <Notice kind="info">{reviewResultMessages[result]}</Notice>}
+        {!result && error && (
+          <Notice kind="error" role="alert">
+            {reviewErrorMessages[error]}
+          </Notice>
+        )}
 
         <Card as="section" aria-label="Rating summary" className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -186,6 +207,7 @@ export function ReviewPage({ data }: { data: Awaited<ReturnType<typeof readRevie
                       className="flex flex-col gap-3 pt-3"
                     >
                       <input type="hidden" name="review" value={r.id} />
+                      <input type="hidden" name="listing" value={data.listing.id} />
                       <Field
                         id={`report-reason-${r.id}`}
                         label="Reason"

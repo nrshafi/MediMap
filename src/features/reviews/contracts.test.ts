@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { reviewInput, reviewMean } from './contracts';
+import { parseReviewError, parseReviewResult, reviewInput, reviewMean } from './contracts';
 test('six ratings preserve dimensions, reject invalid input, and allow optional text', () => {
   const value = {
     listing: 'test-listing',
@@ -19,4 +19,13 @@ test('six ratings preserve dimensions, reject invalid input, and allow optional 
     assert.throws(() => reviewInput({ ...value, score0 }));
   assert.throws(() => reviewInput({ ...value, body: 'x'.repeat(2001) }));
   assert.throws(() => reviewInput({ ...value, revision: '-1' }));
+});
+
+test('review result and error codes accept only fixed values', () => {
+  assert.equal(parseReviewResult('saved'), 'saved');
+  assert.equal(parseReviewResult('reported'), 'reported');
+  assert.equal(parseReviewResult('other'), undefined);
+  assert.equal(parseReviewError('write_failed'), 'write_failed');
+  assert.equal(parseReviewError('report_failed'), 'report_failed');
+  assert.equal(parseReviewError('other'), undefined);
 });

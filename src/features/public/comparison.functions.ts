@@ -25,5 +25,5 @@ export const readComparison = createServerFn({ method: 'GET' })
     );
     if (new Set(items.map((item) => item.listing.service.id)).size !== 1)
       throw new Error('Compare one diagnostic service at a time.');
-    return items;
+    return { items, now: new Date().toISOString() };
   });

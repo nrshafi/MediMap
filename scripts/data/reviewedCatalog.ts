@@ -92,6 +92,8 @@ const providerIds: Record<string, string> = {
   'addin-moghbazar': 'addin-medical-college-hospital',
   'mogh-kamalapur': 'monowara-orthopedic-general-hospital',
   'holy-family-eskatan': 'holy-family-red-crescent-hospital',
+  'icddrb-mohakhali': 'icddrb-laboratory-services',
+  'dcimch-shyamoli': 'dhaka-central-international-medical-college-hospital',
 };
 const baseReview = '2026-10-27T11:20:41Z';
 export function jsonHash(value: unknown): string {
@@ -170,11 +172,15 @@ export function decodeEvidence(value: unknown): EvidenceFile {
 // addin-moghbazar: "Bara Maghbazar, 2 Outer Circular Road, Dhaka 1217, Bangladesh"
 // holy-family-eskatan: "1 Eskaton Garden Rd, Dhaka 1000, Bangladesh"
 // mogh-kamalapur: "35 Kamalapur Rd, Dhaka, Bangladesh" from "35/7 Kamalapur Rd, Dhaka, Bangladesh"
+// icddrb-mohakhali (22 November 2026): "68 Shaheed Tajuddin Ahmed Ave, Dhaka 1212, Bangladesh" from "68, Shaheed Tajuddin Ahmed Sarani, Mohakhali, Dhaka 1212, Bangladesh"
+// dcimch-shyamoli (22 November 2026): "2 Ring Rd, Dhaka, Bangladesh" from "2/1, Ring Road, Shyamoli, Dhaka-1207, Bangladesh"
 // The branch row stores latitude and longitude only.
 const enteredCoordinates: Record<string, { latitude: number; longitude: number }> = {
   'addin-moghbazar': { latitude: 23.7483439, longitude: 90.4053762 },
   'holy-family-eskatan': { latitude: 23.7459184, longitude: 90.3996158 },
   'mogh-kamalapur': { latitude: 23.7321377, longitude: 90.4241833 },
+  'icddrb-mohakhali': { latitude: 23.7762949, longitude: 90.3997591 },
+  'dcimch-shyamoli': { latitude: 23.7734306, longitude: 90.3611292 },
 };
 
 export function buildReviewedCatalog(
@@ -346,7 +352,12 @@ export function buildReviewedCatalog(
       address: branch.address,
       contactSourceId:
         branch.id === 'addin-moghbazar' ? 'addin-contact-20261027' : `${contact.id}-20261028`,
-      phone: null,
+      phone:
+        branch.id === 'icddrb-mohakhali'
+          ? '+8801713116982'
+          : branch.id === 'dcimch-shyamoli'
+            ? '09610-910651'
+            : null,
       latitude: coordinates.latitude,
       longitude: coordinates.longitude,
     });

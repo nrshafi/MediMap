@@ -11,6 +11,8 @@ import {
   parseFarabi,
   parseMogh,
   parseAddin,
+  parseDcimch,
+  parseIcddrb,
   sourceUpdatedDate,
   type PublishedRow,
 } from './hospitalTariffs';
@@ -68,6 +70,41 @@ describe('hospital tariff extraction', () => {
     assert.throws(() =>
       parseAddin(html.replace('(Taka)', '(Discount)'), 'addin-biochemistry', 'Biochemistry'),
     );
+  });
+
+  it('reads icddr,b test detail pages with explicit BDT labels and preserves provider names', () => {
+    const html =
+      '<div class="section-heading"><h3>Hemogram/CBC</h3></div> <h6>Specimen Required </h6> EDTA Blood <h6>Test Price </h6> 400 BDT';
+    const result = parseIcddrb(html, 'icddrb-cbc', 'Clinical Hematology');
+    assert.equal(result.length, 1);
+    assert.equal(result[0]?.sourceRow, '1');
+    assert.equal(result[0]?.department, 'Clinical Hematology');
+    assert.equal(result[0]?.providerServiceName, 'Hemogram/CBC');
+    assert.equal(result[0]?.publishedPrice, '400 BDT');
+    assert.equal((parsePrice(result[0]?.publishedPrice ?? '') ?? 0) * 100, 40000);
+    assert.throws(() =>
+      parseIcddrb(html.replace('400 BDT', '400'), 'icddrb-cbc', 'Clinical Hematology'),
+    );
+    assert.throws(() => parseIcddrb('<p>Maintenance</p>', 'icddrb-cbc', 'Clinical Hematology'));
+  });
+
+  it('reads DCIMCH diagnostic rate tables with explicit taka symbols and numeric codes', () => {
+    const html = `<table><tbody>
+      <tr><td>31</td><td>FBS</td><td>Biochemistry</td><td>৳200</td><td>৳300</td><td>Same Day</td></tr>
+      <tr><td>91</td><td>APTT</td><td>Biochemistry</td><td>৳1,200</td><td>৳1,800</td><td>Same Day</td></tr>
+    </tbody></table>`;
+    const result = parseDcimch(html, 'dcimch-diagnostics');
+    assert.equal(result.length, 2);
+    assert.deepEqual(result[0], {
+      sourceId: 'dcimch-diagnostics',
+      sourceRow: '31',
+      department: 'Biochemistry',
+      providerServiceName: 'FBS',
+      publishedPrice: '৳200',
+    });
+    assert.equal((parsePrice(result[1]?.publishedPrice ?? '') ?? 0) * 100, 120000);
+    assert.throws(() => parseDcimch(html.replace('৳200', '200'), 'dcimch-diagnostics'));
+    assert.throws(() => parseDcimch('<p>Empty</p>', 'dcimch-diagnostics'));
   });
 
   it('records source update dates without inventing tariff effective dates', () => {

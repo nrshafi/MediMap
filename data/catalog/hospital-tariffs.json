@@ -297,6 +297,133 @@
       "providerEffectiveDate": null,
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-contact",
+      "url": "https://labservices.icddrb.org/contact-us",
+      "branchId": "icddrb-mohakhali",
+      "kind": "contact",
+      "retrievedAt": "2026-11-22T10:22:23.104Z",
+      "sha256": "69ef111f6d1d4925699a7074be7c57c378b60b62859cf34786360033036dbdc1",
+      "parsedRowCount": 0,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "not_applicable"
+    },
+    {
+      "id": "icddrb-cbc",
+      "url": "https://labservices.icddrb.org/test-details/78/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Hematology",
+      "retrievedAt": "2026-11-22T10:22:23.334Z",
+      "sha256": "040cb216b7ab11a97a5ba5c275fb73429efdef3451bedbff48b7dabe582eb2ce",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-glucose-f",
+      "url": "https://labservices.icddrb.org/test-details/181/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Biochemistry",
+      "retrievedAt": "2026-11-22T10:22:23.453Z",
+      "sha256": "4906e99e32127577026a5f215afed3825613e294ab80b4529905a577532682d7",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-lipid-profile",
+      "url": "https://labservices.icddrb.org/test-details/214/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Biochemistry",
+      "retrievedAt": "2026-11-22T10:22:23.565Z",
+      "sha256": "e68ac41310a73064a84db407bbf74b338bb85f9d230c37d06610f627a8b196b2",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-alt",
+      "url": "https://labservices.icddrb.org/test-details/219/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Biochemistry",
+      "retrievedAt": "2026-11-22T10:22:23.675Z",
+      "sha256": "26c760a06d828ab5b6c68689455d72b524686437df81b322f42917e58e48be92",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-tsh",
+      "url": "https://labservices.icddrb.org/test-details/241/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Biochemistry",
+      "retrievedAt": "2026-11-22T10:22:23.785Z",
+      "sha256": "0312940a516f00ecb744e59bf5d3fc26e0f63f9c523c5c52b5ed58901c53d478",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-urine-rme",
+      "url": "https://labservices.icddrb.org/test-details/308/",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Clinical Pathology",
+      "retrievedAt": "2026-11-22T10:22:23.902Z",
+      "sha256": "0178c48029fedfa85d5eb7305e5c68bfc79b259546f34b86705f22722cb4554d",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "icddrb-covid-rtpcr",
+      "url": "https://labservices.icddrb.org/test-details/529",
+      "branchId": "icddrb-mohakhali",
+      "kind": "icddrb",
+      "department": "Molecular Diagnostics",
+      "retrievedAt": "2026-11-22T10:22:24.012Z",
+      "sha256": "b47828537061f2634c7c4fa9b3d335585367a5d064ff77344f8bc1ea6b21c095",
+      "parsedRowCount": 1,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header"
+    },
+    {
+      "id": "dcimch-contact",
+      "url": "https://dcimch.com/contact",
+      "branchId": "dcimch-shyamoli",
+      "kind": "contact",
+      "retrievedAt": "2026-11-22T10:22:25.119Z",
+      "sha256": "150afd8ad636e4fd2da1bab7937db7fd1a337a9734d09d3f6708d22f0fed25e6",
+      "parsedRowCount": 0,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "not_applicable"
+    },
+    {
+      "id": "dcimch-diagnostics",
+      "url": "https://dcimch.com/diagnostics",
+      "branchId": "dcimch-shyamoli",
+      "kind": "dcimch",
+      "retrievedAt": "2026-11-22T10:22:25.524Z",
+      "sha256": "014ea16c982c787e53061def44f15b611badf388e57c54f78a566bc20d4740b2",
+      "parsedRowCount": 93,
+      "providerEffectiveDate": null,
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_symbol"
     }
   ],
   "branches": [
@@ -349,14 +476,34 @@
       "latitude": null,
       "longitude": null,
       "openingHours": null
+    },
+    {
+      "id": "icddrb-mohakhali",
+      "providerName": "icddr,b Laboratory Services",
+      "name": "Mohakhali",
+      "address": "68 Shaheed Tajuddin Ahmed Sarani, Mohakhali, Dhaka",
+      "contactSourceId": "icddrb-contact",
+      "latitude": null,
+      "longitude": null,
+      "openingHours": null
+    },
+    {
+      "id": "dcimch-shyamoli",
+      "providerName": "Dhaka Central International Medical College & Hospital",
+      "name": "Shyamoli",
+      "address": "2/1, Ring Road, Shyamoli, Dhaka-1207, Bangladesh",
+      "contactSourceId": "dcimch-contact",
+      "latitude": null,
+      "longitude": null,
+      "openingHours": null
     }
   ],
   "currency": "BDT",
   "summary": {
-    "parsedRows": 2301,
-    "acceptedListings": 2090,
-    "excludedRows": 201,
-    "duplicateRows": 10
+    "parsedRows": 2401,
+    "acceptedListings": 2188,
+    "excludedRows": 202,
+    "duplicateRows": 11
   },
   "listings": [
     {
@@ -35926,6 +36073,1676 @@
         {
           "sourceId": "addin-virology",
           "sourceRow": "27"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-cbc",
+      "sourceRow": "1",
+      "department": "Clinical Hematology",
+      "providerServiceName": "Hemogram/CBC",
+      "publishedPrice": "400 BDT",
+      "id": "research-866dbfe6f41584d21f5b",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-cbc",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-glucose-f",
+      "sourceRow": "1",
+      "department": "Clinical Biochemistry",
+      "providerServiceName": "Glucose (F)",
+      "publishedPrice": "160 BDT",
+      "id": "research-78571b6cbfc7b7ccce0d",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 160,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-glucose-f",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-lipid-profile",
+      "sourceRow": "1",
+      "department": "Clinical Biochemistry",
+      "providerServiceName": "Lipid Profile",
+      "publishedPrice": "1260 BDT",
+      "id": "research-016100a26b4db98cec37",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 1260,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-lipid-profile",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-alt",
+      "sourceRow": "1",
+      "department": "Clinical Biochemistry",
+      "providerServiceName": "ALT (SGPT)",
+      "publishedPrice": "320 BDT",
+      "id": "research-7922d7a2e54b49f41d5d",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 320,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-alt",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-tsh",
+      "sourceRow": "1",
+      "department": "Clinical Biochemistry",
+      "providerServiceName": "TSH",
+      "publishedPrice": "950 BDT",
+      "id": "research-42be4f0d9dbfd398ee70",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 950,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-tsh",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-urine-rme",
+      "sourceRow": "1",
+      "department": "Clinical Pathology",
+      "providerServiceName": "Urine RME",
+      "publishedPrice": "400 BDT",
+      "id": "research-2ee67189de5577b478a4",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-urine-rme",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "icddrb-covid-rtpcr",
+      "sourceRow": "1",
+      "department": "Molecular Diagnostics",
+      "providerServiceName": "Covid-19 Real Time RT PCR",
+      "publishedPrice": "3000 BDT",
+      "id": "research-652a4434fb8ff59162c8",
+      "branchId": "icddrb-mohakhali",
+      "priceBdt": 3000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "icddrb-covid-rtpcr",
+          "sourceRow": "1"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "2021",
+      "department": "Administration",
+      "providerServiceName": "Paracentesis",
+      "publishedPrice": "৳1,100",
+      "id": "research-f7fde423aa0ffb2ca49f",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "2021"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "77892",
+      "department": "Administration",
+      "providerServiceName": "Stone Fragment For Analysis",
+      "publishedPrice": "৳5,000",
+      "id": "research-2a5258e3794033e575b8",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 5000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "77892"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "324",
+      "department": "Biochemistry",
+      "providerServiceName": "1HR AFTER 75GM GLUCOSE",
+      "publishedPrice": "৳250",
+      "id": "research-a2b2296bfb0479db84fb",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 250,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "324"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "33",
+      "department": "Biochemistry",
+      "providerServiceName": "2HRS ABF",
+      "publishedPrice": "৳200",
+      "id": "research-229b568ff0951df81cf7",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "33"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "211",
+      "department": "Biochemistry",
+      "providerServiceName": "2HRS AFTER 75GM GLUCOSE",
+      "publishedPrice": "৳250",
+      "id": "research-3d2c1e0c13471189970e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 250,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "211"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "3355",
+      "department": "Biochemistry",
+      "providerServiceName": "2HRS AFTER P.P.B.S BLOOD",
+      "publishedPrice": "৳200",
+      "id": "research-7d169d893282790abbfa",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "3355"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "45",
+      "department": "Biochemistry",
+      "providerServiceName": "A/G RATIO (ALBUMIN & GLOBULIN) SERUM",
+      "publishedPrice": "৳900",
+      "id": "research-d56e6372d4d54fd7c5a2",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 900,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "45"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1566",
+      "department": "Biochemistry",
+      "providerServiceName": "ACID PHOSPHATASE NON-PROSTATIC SERUM",
+      "publishedPrice": "৳800",
+      "id": "research-63d358593ef12ba59f4d",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 800,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1566"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "430",
+      "department": "Biochemistry",
+      "providerServiceName": "ACID PHOSPHATE-PROSTATIC",
+      "publishedPrice": "৳800",
+      "id": "research-5535df64270240693c67",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 800,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "430"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "8888",
+      "department": "Biochemistry",
+      "providerServiceName": "ADA",
+      "publishedPrice": "৳1,400",
+      "id": "research-5ece34b5a1b6ddc1d493",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "8888"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "890",
+      "department": "Biochemistry",
+      "providerServiceName": "ALBUMIN CREATININE RATIO (ACR) - URINE",
+      "publishedPrice": "৳1,300",
+      "id": "research-7ace1cd5bab2131d71aa",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "890"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "41",
+      "department": "Biochemistry",
+      "providerServiceName": "ALT (SGPT) BLOOD",
+      "publishedPrice": "৳500",
+      "id": "research-1abb17567733d9bece1d",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "41"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1226",
+      "department": "Biochemistry",
+      "providerServiceName": "AMMONIA BLOOD",
+      "publishedPrice": "৳1,300",
+      "id": "research-5213f89ad22e27e1e047",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1226"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1791",
+      "department": "Biochemistry",
+      "providerServiceName": "AMPHETAMINES URINE",
+      "publishedPrice": "৳1,500",
+      "id": "research-70ed355cf53f354f8e05",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1791"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1508",
+      "department": "Biochemistry",
+      "providerServiceName": "AMYLASE URINE",
+      "publishedPrice": "৳1,100",
+      "id": "research-b9b2754db22465525484",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1508"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "91",
+      "department": "Biochemistry",
+      "providerServiceName": "APTT",
+      "publishedPrice": "৳1,200",
+      "id": "research-1dcd140d7828ca649cb5",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "91"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "164000",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR ADA",
+      "publishedPrice": "৳900",
+      "id": "research-fab4ddd90927f170c902",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 900,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "164000"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "140001",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR BIOCHEMISTRY",
+      "publishedPrice": "৳800",
+      "id": "research-27e30633ef7dcc664d14",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 800,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "140001"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1462",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR CHLORIDE",
+      "publishedPrice": "৳360",
+      "id": "research-4fa57e632dd81331bdd3",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 360,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1462"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1463",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR GLUCOSE",
+      "publishedPrice": "৳200",
+      "id": "research-bb9ab0d007996418c4d4",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1463"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1595",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR LDH",
+      "publishedPrice": "৳1,400",
+      "id": "research-9d4d345d1d0fbb86e657",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1595"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1461",
+      "department": "Biochemistry",
+      "providerServiceName": "ASCITIC FLUID FOR PROTEIN",
+      "publishedPrice": "৳600",
+      "id": "research-1ed395034de8e0576158",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 600,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1461"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "42",
+      "department": "Biochemistry",
+      "providerServiceName": "AST (SGOT) BLOOD",
+      "publishedPrice": "৳500",
+      "id": "research-1fdf10a63fece3b461ab",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "42"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1636",
+      "department": "Biochemistry",
+      "providerServiceName": "BAL FOR CHLORIDE",
+      "publishedPrice": "৳350",
+      "id": "research-d7e297c4f298792b72f2",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 350,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1636"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1634",
+      "department": "Biochemistry",
+      "providerServiceName": "BAL FOR LDH",
+      "publishedPrice": "৳850",
+      "id": "research-b3eca43c7e94e58d3efb",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 850,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1634"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1635",
+      "department": "Biochemistry",
+      "providerServiceName": "BAL FOR PROTEIN",
+      "publishedPrice": "৳450",
+      "id": "research-a22ca806de6430cb2273",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 450,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1635"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1637",
+      "department": "Biochemistry",
+      "providerServiceName": "BAL FOR SUGAR",
+      "publishedPrice": "৳200",
+      "id": "research-ddb80d72dc364612405e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1637"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "360",
+      "department": "Biochemistry",
+      "providerServiceName": "BENZODIAZEPINES URINE",
+      "publishedPrice": "৳1,500",
+      "id": "research-5cd350ea7941fd596537",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "360"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1798",
+      "department": "Biochemistry",
+      "providerServiceName": "BENZODIAZEPINES URINE (ICT)",
+      "publishedPrice": "৳700",
+      "id": "research-ec4609dbd3d35c5a244d",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1798"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "346",
+      "department": "Biochemistry",
+      "providerServiceName": "BICARBONATE BLOOD",
+      "publishedPrice": "৳300",
+      "id": "research-0f77a466a2ae25ede89a",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "346"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "40",
+      "department": "Biochemistry",
+      "providerServiceName": "BILIRUBIN TOTAL BLOOD",
+      "publishedPrice": "৳300",
+      "id": "research-1451a32bd093ec8a24eb",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "40"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "214",
+      "department": "Biochemistry",
+      "providerServiceName": "BILIRUBIN TOTAL/DIRECT/INDIRECT",
+      "publishedPrice": "৳500",
+      "id": "research-7af73c869f876dbf77a9",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "214"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "832",
+      "department": "Biochemistry",
+      "providerServiceName": "BLOOD GAS ANALYSIS ARTERIAL (ABG)",
+      "publishedPrice": "৳900",
+      "id": "research-d09f4ab7d44021caabe3",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 900,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "832"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "34",
+      "department": "Biochemistry",
+      "providerServiceName": "BUN",
+      "publishedPrice": "৳500",
+      "id": "research-68a1ce814cfe131c8be4",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "34"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "285",
+      "department": "Biochemistry",
+      "providerServiceName": "C3",
+      "publishedPrice": "৳1,500",
+      "id": "research-c276f09c9272c0323a97",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "285"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "286",
+      "department": "Biochemistry",
+      "providerServiceName": "C4",
+      "publishedPrice": "৳1,500",
+      "id": "research-bda263d015b8f3db0ba6",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "286"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1556",
+      "department": "Biochemistry",
+      "providerServiceName": "CALCIUM CREATININE RATIO",
+      "publishedPrice": "৳1,100",
+      "id": "research-32e1a60ae4837f22cece",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1556"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "49",
+      "department": "Biochemistry",
+      "providerServiceName": "CALCIUM URINE 24HRS",
+      "publishedPrice": "৳500",
+      "id": "research-ab3f2b7f10e73b0b73d2",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "49"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "2012",
+      "department": "Biochemistry",
+      "providerServiceName": "CALCIUM URINE SPOT",
+      "publishedPrice": "৳500",
+      "id": "research-5b7765d8b242a615f66f",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "2012"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1561",
+      "department": "Biochemistry",
+      "providerServiceName": "CALORIE DEPRIVATION TEST",
+      "publishedPrice": "৳1,100",
+      "id": "research-52e57f497a3e0d431424",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1561"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1628",
+      "department": "Biochemistry",
+      "providerServiceName": "CALORIE DEPRIVATION TEST - AFTER 48 HRS",
+      "publishedPrice": "৳700",
+      "id": "research-fa86d017bc12c1941dc6",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1628"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1627",
+      "department": "Biochemistry",
+      "providerServiceName": "CALORIE DEPRIVATION TEST - FASTING",
+      "publishedPrice": "৳700",
+      "id": "research-c944876a77095d962ca0",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1627"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "236",
+      "department": "Biochemistry",
+      "providerServiceName": "CANNABINOID URINE",
+      "publishedPrice": "৳1,500",
+      "id": "research-9be90ca30e1f75fd4fcf",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "236"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1797",
+      "department": "Biochemistry",
+      "providerServiceName": "CANNABINOID URINE (ICT)",
+      "publishedPrice": "৳700",
+      "id": "research-cf065c61b58b28a891d1",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1797"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "231",
+      "department": "Biochemistry",
+      "providerServiceName": "CARBAMAZEPINE",
+      "publishedPrice": "৳1,000",
+      "id": "research-71979625c016fec49056",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "231"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "563",
+      "department": "Biochemistry",
+      "providerServiceName": "CERULOPLASMIN BLOOD",
+      "publishedPrice": "৳1,400",
+      "id": "research-3ffc58a9aca0077db3b7",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "563"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "51",
+      "department": "Biochemistry",
+      "providerServiceName": "CHOLESTEROL",
+      "publishedPrice": "৳400",
+      "id": "research-8e2dfd4e2c12c32c493b",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 400,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "51"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1985",
+      "department": "Biochemistry",
+      "providerServiceName": "CK-MB SERUM (CCU)",
+      "publishedPrice": "৳800",
+      "id": "research-0840c42e542d3a0d986c",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 800,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1985"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "70",
+      "department": "Biochemistry",
+      "providerServiceName": "CORRESPONDING URINE SUGAR (CUS)",
+      "publishedPrice": "৳100",
+      "id": "research-787ed2db6a781c0b8c03",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "70"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1976",
+      "department": "Biochemistry",
+      "providerServiceName": "CREATININE - BODY FLUID",
+      "publishedPrice": "৳350",
+      "id": "research-0c8c55eed0bc608c6059",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 350,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1976"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "37",
+      "department": "Biochemistry",
+      "providerServiceName": "CREATININE CLEARANCE RATE (CCR)",
+      "publishedPrice": "৳1,100",
+      "id": "research-b82ed8e61db3f9dfb9eb",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "37"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1692",
+      "department": "Biochemistry",
+      "providerServiceName": "CREATININE SERUM (POST-DIALYSIS)",
+      "publishedPrice": "৳350",
+      "id": "research-dd31b07358e0f11150cd",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 350,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1692"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1691",
+      "department": "Biochemistry",
+      "providerServiceName": "CREATININE SERUM (PRE-DIALYSIS)",
+      "publishedPrice": "৳350",
+      "id": "research-6580059c4e4ec0cc6530",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 350,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1691"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "170",
+      "department": "Biochemistry",
+      "providerServiceName": "CRP (C-REACTIVE PROTEIN)",
+      "publishedPrice": "৳600",
+      "id": "research-f7a82778e3e50df93b11",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 600,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "170"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "433",
+      "department": "Biochemistry",
+      "providerServiceName": "CRP QUANTITATIVE",
+      "publishedPrice": "৳700",
+      "id": "research-0ff777c5c7102be5d8cb",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "433"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "65",
+      "department": "Biochemistry",
+      "providerServiceName": "CSF BIOCHEMISTRY",
+      "publishedPrice": "৳1,000",
+      "id": "research-a8d6febea8ed4521c411",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "65"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1453",
+      "department": "Biochemistry",
+      "providerServiceName": "CSF FOR CHLORIDE",
+      "publishedPrice": "৳350",
+      "id": "research-c37aa333c6aa86ca0f7e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 350,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1453"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1454",
+      "department": "Biochemistry",
+      "providerServiceName": "CSF FOR GLUCOSE",
+      "publishedPrice": "৳200",
+      "id": "research-7ab2257d7ec808e0e13e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1454"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1810",
+      "department": "Biochemistry",
+      "providerServiceName": "CSF FOR LDH",
+      "publishedPrice": "৳800",
+      "id": "research-f97395b26d42e0580841",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 800,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1810"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1452",
+      "department": "Biochemistry",
+      "providerServiceName": "CSF FOR PROTEIN",
+      "publishedPrice": "৳700",
+      "id": "research-afdce0ee52b202d15802",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1452"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1602",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1.5HRS AFTER 75GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-c9db876facd1f076c07f",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1602"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1608",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1HR ABF",
+      "publishedPrice": "৳100",
+      "id": "research-266b3d3f5cba82d7dec3",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1608"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1605",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1HR AFTER 100GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-e71ab5b19fc11961c6f8",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1605"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1606",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1HR AFTER 50GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-a02e241a68ee35f97b11",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1606"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1607",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1HR AFTER 75GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-6b0e5b8b1fe989ad938b",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1607"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1609",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 1HR AFTER LUNCH",
+      "publishedPrice": "৳100",
+      "id": "research-ec80750de0ad13193ba7",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1609"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1618",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2.5HRS AFTER 100GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-2d8078dbe41d144cd517",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1618"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1610",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS ABF",
+      "publishedPrice": "৳100",
+      "id": "research-d16328067cc9e51d22bd",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1610"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1611",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER 100GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-b78a448775dfebc03a35",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1611"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1612",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER 75GM GLUCOSE",
+      "publishedPrice": "৳100",
+      "id": "research-b7ee2a0771f5681d7c70",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1612"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1613",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER DINNER",
+      "publishedPrice": "৳100",
+      "id": "research-a11bbe37e9d99e690372",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1613"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1614",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER FOOD",
+      "publishedPrice": "৳100",
+      "id": "research-17d8b80557d476a65f2c",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1614"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1615",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER LUNCH",
+      "publishedPrice": "৳100",
+      "id": "research-1d3f24ace02b78a95919",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1615"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1616",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS AFTER MEAL",
+      "publishedPrice": "৳100",
+      "id": "research-8cae718845369cb5e4fd",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1616"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1617",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS 2HRS P.P.",
+      "publishedPrice": "৳100",
+      "id": "research-f44c61c5264d433a454e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1617"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1603",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒ",
+      "publishedPrice": "৳100",
+      "id": "research-76268de41e3c642256f8",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1603"
+        },
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1604"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1619",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS BEFORE DINNER",
+      "publishedPrice": "৳100",
+      "id": "research-1c57fe1ab3ed4b83a43a",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1619"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1620",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS BEFORE LUNCH",
+      "publishedPrice": "৳100",
+      "id": "research-9354dfff409b8e0ecc99",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1620"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1600",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS FASTING",
+      "publishedPrice": "৳100",
+      "id": "research-09a4cd09b015b46f2c0d",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1600"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1601",
+      "department": "Biochemistry",
+      "providerServiceName": "CUS RANDOM",
+      "publishedPrice": "৳100",
+      "id": "research-db5358e313ed90efb0c2",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1601"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "889",
+      "department": "Biochemistry",
+      "providerServiceName": "D-DIMER",
+      "publishedPrice": "৳1,500",
+      "id": "research-fb13721b59e7414f95a6",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "889"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1202",
+      "department": "Biochemistry",
+      "providerServiceName": "E-GFR (ESTIMATED G. FILTRATION RATE)",
+      "publishedPrice": "৳1,300",
+      "id": "research-659356af649ccad8f7b5",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1202"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1576",
+      "department": "Biochemistry",
+      "providerServiceName": "ELECTROLYTE 24 HRS URINE",
+      "publishedPrice": "৳1,000",
+      "id": "research-e13b9f4fa13931f3549e",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1576"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1790",
+      "department": "Biochemistry",
+      "providerServiceName": "ETHYL ALCOHOL",
+      "publishedPrice": "৳1,100",
+      "id": "research-3a3395691312b3d507db",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1100,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1790"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "31",
+      "department": "Biochemistry",
+      "providerServiceName": "FBS",
+      "publishedPrice": "৳200",
+      "id": "research-2509b835531b393dc12f",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "31"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "88",
+      "department": "Biochemistry",
+      "providerServiceName": "FIBRIN DEGRADATION PRODUCT (FDP)",
+      "publishedPrice": "৳1,300",
+      "id": "research-a3ea739534b6b8f5735f",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1300,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "88"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1567",
+      "department": "Biochemistry",
+      "providerServiceName": "FLUID (BIOCHEMISTRY)",
+      "publishedPrice": "৳700",
+      "id": "research-1095dfd0da66030fb401",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 700,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1567"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "1658",
+      "department": "Biochemistry",
+      "providerServiceName": "FLUID FOR ALBUMIN",
+      "publishedPrice": "৳500",
+      "id": "research-34fcb21b8706a43ed522",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 500,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "1658"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "290",
+      "department": "Biochemistry",
+      "providerServiceName": "GAMMA-GT (GGT)",
+      "publishedPrice": "৳1,200",
+      "id": "research-5dad88aefe3f7840b950",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "290"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "391",
+      "department": "Biochemistry",
+      "providerServiceName": "GLOBULIN",
+      "publishedPrice": "৳1,000",
+      "id": "research-fc0f67e208d67adf87bc",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 1000,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "391"
+        }
+      ]
+    },
+    {
+      "sourceId": "dcimch-diagnostics",
+      "sourceRow": "558",
+      "department": "Biochemistry",
+      "providerServiceName": "GLUCOSE 1.5HRS AFTER 75GM GLUCOSE BLOOD",
+      "publishedPrice": "৳200",
+      "id": "research-c03d06c671549e2a2f55",
+      "branchId": "dcimch-shyamoli",
+      "priceBdt": 200,
+      "canonicalServiceId": null,
+      "evidence": [
+        {
+          "sourceId": "dcimch-diagnostics",
+          "sourceRow": "558"
         }
       ]
     }

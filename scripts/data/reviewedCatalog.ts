@@ -144,9 +144,9 @@ export function decodeEvidence(value: unknown): EvidenceFile {
       )
         throw new Error('Source identity or hash mismatch');
       const expected =
-        definition?.kind === 'addin' || covid
+        definition?.kind === 'addin' || definition?.kind === 'icddrb' || covid
           ? 'explicit_taka_header'
-          : definition?.kind === 'mogh'
+          : definition?.kind === 'mogh' || definition?.kind === 'dcimch'
             ? 'explicit_taka_symbol'
             : null;
       if (row.currencyEvidence !== expected) throw new Error('Unsupported currency assignment');

@@ -15,7 +15,7 @@ interface SourceDefinition {
   id: string;
   url: string;
   branchId: string;
-  kind: 'holy-family' | 'bmu' | 'farabi' | 'mogh' | 'addin' | 'contact';
+  kind: 'holy-family' | 'bmu' | 'farabi' | 'mogh' | 'addin' | 'icddrb' | 'dcimch' | 'contact';
   department?: string;
 }
 
@@ -76,6 +76,26 @@ export const branches = [
     name: 'Bara Maghbazar',
     address: '2 Bara Maghbazar, Dhaka 1217',
     contactSourceId: 'addin-contact',
+    latitude: null,
+    longitude: null,
+    openingHours: null,
+  },
+  {
+    id: 'icddrb-mohakhali',
+    providerName: 'icddr,b Laboratory Services',
+    name: 'Mohakhali',
+    address: '68 Shaheed Tajuddin Ahmed Sarani, Mohakhali, Dhaka',
+    contactSourceId: 'icddrb-contact',
+    latitude: null,
+    longitude: null,
+    openingHours: null,
+  },
+  {
+    id: 'dcimch-shyamoli',
+    providerName: 'Dhaka Central International Medical College & Hospital',
+    name: 'Shyamoli',
+    address: '2/1, Ring Road, Shyamoli, Dhaka-1207, Bangladesh',
+    contactSourceId: 'dcimch-contact',
     latitude: null,
     longitude: null,
     openingHours: null,
@@ -176,6 +196,39 @@ export const sources: SourceDefinition[] = [
     kind: 'addin',
     department: page.department,
   })),
+  {
+    id: 'icddrb-contact',
+    url: 'https://labservices.icddrb.org/contact-us',
+    branchId: 'icddrb-mohakhali',
+    kind: 'contact',
+  },
+  ...[
+    { id: 'cbc', path: 'test-details/78/', department: 'Clinical Hematology' },
+    { id: 'glucose-f', path: 'test-details/181/', department: 'Clinical Biochemistry' },
+    { id: 'lipid-profile', path: 'test-details/214/', department: 'Clinical Biochemistry' },
+    { id: 'alt', path: 'test-details/219/', department: 'Clinical Biochemistry' },
+    { id: 'tsh', path: 'test-details/241/', department: 'Clinical Biochemistry' },
+    { id: 'urine-rme', path: 'test-details/308/', department: 'Clinical Pathology' },
+    { id: 'covid-rtpcr', path: 'test-details/529', department: 'Molecular Diagnostics' },
+  ].map((page): SourceDefinition => ({
+    id: `icddrb-${page.id}`,
+    url: `https://labservices.icddrb.org/${page.path}`,
+    branchId: 'icddrb-mohakhali',
+    kind: 'icddrb',
+    department: page.department,
+  })),
+  {
+    id: 'dcimch-contact',
+    url: 'https://dcimch.com/contact',
+    branchId: 'dcimch-shyamoli',
+    kind: 'contact',
+  },
+  {
+    id: 'dcimch-diagnostics',
+    url: 'https://dcimch.com/diagnostics',
+    branchId: 'dcimch-shyamoli',
+    kind: 'dcimch',
+  },
 ];
 
 export function clean(value: string): string {
@@ -353,6 +406,58 @@ export function parseAddin(html: string, sourceId: string, department: string): 
         publishedPrice: cells[2]!,
       };
     });
+}
+
+export function parseIcddrb(html: string, sourceId: string, department: string): PublishedRow[] {
+  const document = parseDocument(html);
+  const text = documentText(html);
+  const priceMatch = /Test Price\s+([\d,]+(?:\.\d{1,2})?\s*BDT)\b/i.exec(text);
+  if (!priceMatch) throw new Error(`Missing explicit BDT test price: ${sourceId}`);
+  const publishedPrice = clean(priceMatch[1]!);
+  if (parsePrice(publishedPrice) === null) throw new Error(`Invalid BDT test price: ${sourceId}`);
+  const headings = [...document.querySelectorAll('h1, h2, h3, h4, h5')]
+    .map((el) => clean(el.textContent))
+    .filter(
+      (value) =>
+        value.length > 0 &&
+        !/^(New Tests|Mostly Viewed|Quick Links|Find Us|Similar Tests|Specimen Required|Test Price|Test Preparation Needed|Available Days|Test Turn Around Time|Test Note|What is being tested\?)$/i.test(
+          value,
+        ),
+    );
+  const name = headings[0];
+  if (!name) throw new Error(`Missing icddr,b test heading: ${sourceId}`);
+  return [
+    {
+      sourceId,
+      sourceRow: '1',
+      department,
+      providerServiceName: name,
+      publishedPrice,
+    },
+  ];
+}
+
+export function parseDcimch(html: string, sourceId: string): PublishedRow[] {
+  const document = parseDocument(html);
+  const rows: PublishedRow[] = [];
+  for (const row of document.querySelectorAll('table tr')) {
+    const cells = [...row.querySelectorAll('td')].map((cell) => clean(cell.textContent));
+    if (cells.length < 4) continue;
+    const [code, name, department, price] = cells;
+    if (!code || !/^[1-9]\d*$/.test(code) || !name || !department || !price) continue;
+    if (!/৳/.test(price)) throw new Error(`Missing explicit taka symbol: ${sourceId} row ${code}`);
+    if (parsePrice(price) === null)
+      throw new Error(`Invalid DCIMCH price: ${sourceId} row ${code}`);
+    rows.push({
+      sourceId,
+      sourceRow: code,
+      department,
+      providerServiceName: name,
+      publishedPrice: price,
+    });
+  }
+  if (rows.length === 0) throw new Error(`Missing DCIMCH tariff rows: ${sourceId}`);
+  return rows;
 }
 
 export function sourceUpdatedDate(html: string): string | null {
@@ -546,7 +651,11 @@ export function readSnapshots(cache: string): {
               ? parseMogh(html, source.id)
               : source.kind === 'addin' && source.department
                 ? parseAddin(html, source.id, source.department)
-                : [];
+                : source.kind === 'icddrb' && source.department
+                  ? parseIcddrb(html, source.id, source.department)
+                  : source.kind === 'dcimch'
+                    ? parseDcimch(html, source.id)
+                    : [];
     if (source.kind !== 'contact' && parsed.length === 0)
       throw new Error(`Empty tariff: ${source.id}`);
     sourceRecords.push({
@@ -557,9 +666,9 @@ export function readSnapshots(cache: string): {
       providerEffectiveDate: null,
       sourceUpdatedDate: sourceUpdatedDate(html),
       currencyEvidence:
-        source.kind === 'addin'
+        source.kind === 'addin' || source.kind === 'icddrb'
           ? 'explicit_taka_header'
-          : source.kind === 'mogh'
+          : source.kind === 'mogh' || source.kind === 'dcimch'
             ? 'explicit_taka_symbol'
             : source.kind === 'contact'
               ? 'not_applicable'

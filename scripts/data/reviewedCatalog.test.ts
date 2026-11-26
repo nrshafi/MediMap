@@ -20,9 +20,9 @@ test('publication accounts for every research listing without admitting unconfir
   assert.equal(catalog.listings.length, 196);
   assert.equal(catalog.services.length, 136);
   assert.equal(catalog.branches.length, 3);
-  assert.equal(inventory.researchDecisions.length, 2090);
-  assert.equal(new Set(inventory.researchDecisions.map((item) => item.researchId)).size, 2090);
-  assert.equal(inventory.summary.heldResearchListings, 1894);
+  assert.equal(inventory.researchDecisions.length, 2188);
+  assert.equal(new Set(inventory.researchDecisions.map((item) => item.researchId)).size, 2188);
+  assert.equal(inventory.summary.heldResearchListings, 1992);
   assert.equal(inventory.summary.representedResearchListings, 196);
   assert.ok(
     !catalog.branches.some(

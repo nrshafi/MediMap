@@ -6,6 +6,8 @@ import {
   sources,
   clean,
   parseAddin,
+  parseDcimch,
+  parseIcddrb,
   parseBmu,
   parseFarabi,
   parseHolyFamily,
@@ -111,9 +113,13 @@ export async function captureEvidence(): Promise<EvidenceFile> {
                   ? parseBmu(html, definition.id)
                   : definition.kind === 'farabi'
                     ? parseFarabi(html, definition.id)
-                    : definition.kind === 'holy-covid'
-                      ? parseHolyCovid(html)
-                      : [];
+                    : definition.kind === 'icddrb' && definition.department
+                      ? parseIcddrb(html, definition.id, definition.department)
+                      : definition.kind === 'dcimch'
+                        ? parseDcimch(html, definition.id)
+                        : definition.kind === 'holy-covid'
+                          ? parseHolyCovid(html)
+                          : [];
         const address =
           definition.kind === 'contact'
             ? branches.find((branch) => branch.id === definition.branchId)?.address
@@ -131,9 +137,11 @@ export async function captureEvidence(): Promise<EvidenceFile> {
           sha256: createHash('sha256').update(bytes).digest('hex'),
           sourceUpdatedDate: sourceUpdatedDate(html),
           currencyEvidence:
-            definition.kind === 'addin' || definition.kind === 'holy-covid'
+            definition.kind === 'addin' ||
+            definition.kind === 'icddrb' ||
+            definition.kind === 'holy-covid'
               ? ('explicit_taka_header' as const)
-              : definition.kind === 'mogh'
+              : definition.kind === 'mogh' || definition.kind === 'dcimch'
                 ? ('explicit_taka_symbol' as const)
                 : null,
           currencyScope:
@@ -141,9 +149,13 @@ export async function captureEvidence(): Promise<EvidenceFile> {
               ? 'Only the two explicitly labelled Tk test rates; exclude the separate home-collection charge.'
               : definition.kind === 'addin'
                 ? 'Explicit Taka/Tk service-charge label.'
-                : definition.kind === 'mogh'
-                  ? 'Visible taka symbol on every item, matching directory metadata.'
-                  : 'No item-level currency confirmation.',
+                : definition.kind === 'icddrb'
+                  ? 'Explicit BDT label under Test Price on each official test detail page.'
+                  : definition.kind === 'dcimch'
+                    ? 'Explicit taka symbol (৳) on every Standard Rate row on the official diagnostics page.'
+                    : definition.kind === 'mogh'
+                      ? 'Visible taka symbol on every item, matching directory metadata.'
+                      : 'No item-level currency confirmation.',
           addressEvidence: address ?? null,
           rows,
         };

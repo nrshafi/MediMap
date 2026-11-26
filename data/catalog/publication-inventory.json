@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "catalogId": "reviewed-catalog-20261028",
-  "reviewedAt": "2026-10-28T14:00:54Z",
+  "reviewedAt": "2026-11-22T10:24:13Z",
   "summary": {
-    "researchListings": 2090,
+    "researchListings": 2188,
     "publishedListings": 196,
     "representedResearchListings": 196,
-    "heldResearchListings": 1894,
+    "heldResearchListings": 1992,
     "providers": 3,
     "branches": 3,
     "canonicalServices": 136
@@ -36,6 +36,16 @@
       "id": "addin-moghbazar",
       "publishedListings": 128,
       "heldResearchListings": 341
+    },
+    {
+      "id": "icddrb-mohakhali",
+      "publishedListings": 0,
+      "heldResearchListings": 7
+    },
+    {
+      "id": "dcimch-shyamoli",
+      "publishedListings": 0,
+      "heldResearchListings": 91
     }
   ],
   "researchDecisions": [
@@ -10488,6 +10498,496 @@
       "researchId": "research-2b67ad72e3a982c0f93e",
       "disposition": "published",
       "listingId": "addin-moghbazar-covid-19-rt-pcr"
+    },
+    {
+      "researchId": "research-866dbfe6f41584d21f5b",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-78571b6cbfc7b7ccce0d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-016100a26b4db98cec37",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-7922d7a2e54b49f41d5d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-42be4f0d9dbfd398ee70",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-2ee67189de5577b478a4",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-652a4434fb8ff59162c8",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-f7fde423aa0ffb2ca49f",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-2a5258e3794033e575b8",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a2b2296bfb0479db84fb",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-229b568ff0951df81cf7",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-3d2c1e0c13471189970e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-7d169d893282790abbfa",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-d56e6372d4d54fd7c5a2",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-63d358593ef12ba59f4d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5535df64270240693c67",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5ece34b5a1b6ddc1d493",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-7ace1cd5bab2131d71aa",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1abb17567733d9bece1d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5213f89ad22e27e1e047",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-70ed355cf53f354f8e05",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-b9b2754db22465525484",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1dcd140d7828ca649cb5",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-fab4ddd90927f170c902",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-27e30633ef7dcc664d14",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-4fa57e632dd81331bdd3",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-bb9ab0d007996418c4d4",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-9d4d345d1d0fbb86e657",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1ed395034de8e0576158",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1fdf10a63fece3b461ab",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-d7e297c4f298792b72f2",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-b3eca43c7e94e58d3efb",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a22ca806de6430cb2273",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-ddb80d72dc364612405e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5cd350ea7941fd596537",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-ec4609dbd3d35c5a244d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-0f77a466a2ae25ede89a",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1451a32bd093ec8a24eb",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-7af73c869f876dbf77a9",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-d09f4ab7d44021caabe3",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-68a1ce814cfe131c8be4",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-c276f09c9272c0323a97",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-bda263d015b8f3db0ba6",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-32e1a60ae4837f22cece",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-ab3f2b7f10e73b0b73d2",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5b7765d8b242a615f66f",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-52e57f497a3e0d431424",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-fa86d017bc12c1941dc6",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-c944876a77095d962ca0",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-9be90ca30e1f75fd4fcf",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-cf065c61b58b28a891d1",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-71979625c016fec49056",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-3ffc58a9aca0077db3b7",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-8e2dfd4e2c12c32c493b",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-0840c42e542d3a0d986c",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-787ed2db6a781c0b8c03",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-0c8c55eed0bc608c6059",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-b82ed8e61db3f9dfb9eb",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-dd31b07358e0f11150cd",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-6580059c4e4ec0cc6530",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-f7a82778e3e50df93b11",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-0ff777c5c7102be5d8cb",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a8d6febea8ed4521c411",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-c37aa333c6aa86ca0f7e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-7ab2257d7ec808e0e13e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-f97395b26d42e0580841",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-afdce0ee52b202d15802",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-c9db876facd1f076c07f",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-266b3d3f5cba82d7dec3",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-e71ab5b19fc11961c6f8",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a02e241a68ee35f97b11",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-6b0e5b8b1fe989ad938b",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-ec80750de0ad13193ba7",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-2d8078dbe41d144cd517",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-d16328067cc9e51d22bd",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-b78a448775dfebc03a35",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-b7ee2a0771f5681d7c70",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a11bbe37e9d99e690372",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-17d8b80557d476a65f2c",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1d3f24ace02b78a95919",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-8cae718845369cb5e4fd",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-f44c61c5264d433a454e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-76268de41e3c642256f8",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1c57fe1ab3ed4b83a43a",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-9354dfff409b8e0ecc99",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-09a4cd09b015b46f2c0d",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-db5358e313ed90efb0c2",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-fb13721b59e7414f95a6",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-659356af649ccad8f7b5",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-e13b9f4fa13931f3549e",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-3a3395691312b3d507db",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-2509b835531b393dc12f",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-a3ea739534b6b8f5735f",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-1095dfd0da66030fb401",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-34fcb21b8706a43ed522",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-5dad88aefe3f7840b950",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-fc0f67e208d67adf87bc",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
+    },
+    {
+      "researchId": "research-c03d06c671549e2a2f55",
+      "disposition": "held",
+      "reason": "canonical_mapping_review_required"
     }
   ],
   "holds": {

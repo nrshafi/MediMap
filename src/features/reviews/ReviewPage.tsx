@@ -16,6 +16,7 @@ import {
 } from './contracts';
 import type { readReviews } from './reviews.functions';
 import { formatReviewDate } from '../public/format';
+import { RatingChart } from './RatingChart';
 
 export function ReviewPage({
   data,
@@ -96,8 +97,13 @@ export function ReviewPage({
               </div>
             </div>
           </div>
-          {/* Space for rating chart: Codra21 adds the chart in step 14 */}
-          <div id="rating-chart-slot" aria-hidden="true" className="min-h-0" />
+          {data.dimensions && data.dimensions.count > 0 && (
+            <RatingChart
+              dimensions={data.dimensions.dimensions}
+              count={data.dimensions.count}
+              showCount={false}
+            />
+          )}
         </Card>
 
         {data.signedIn && own?.visibility !== 'removed' ? (

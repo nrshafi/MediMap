@@ -17,7 +17,15 @@ export const readReviews = createServerFn({ method: 'GET' })
     setResponseHeader('Cache-Control', 'private, no-store');
     const listing = await new CatalogRepository(env.DB).getBranchService(data.listing);
     if (!listing)
-      return { listing: null, items: [], summary: null, own: null, signedIn: false, next: null };
+      return {
+        listing: null,
+        items: [],
+        summary: null,
+        dimensions: null,
+        own: null,
+        signedIn: false,
+        next: null,
+      };
     const repository = new ReviewRepository(env.DB);
     let account: string | null = null;
     try {
@@ -25,13 +33,19 @@ export const readReviews = createServerFn({ method: 'GET' })
     } catch {
       account = null;
     }
-    const rows = await repository.list(data.listing, data.after);
+    const [rows, summary, dimensionMap, own] = await Promise.all([
+      repository.list(data.listing, data.after),
+      repository.summary(data.listing),
+      repository.dimensionSummaries([data.listing]),
+      account ? repository.own(data.listing, account) : Promise.resolve(null),
+    ]);
     return {
       listing,
       items: rows.slice(0, 20),
       next: rows.length > 20 ? rows[19].id : null,
-      summary: await repository.summary(data.listing),
-      own: account ? await repository.own(data.listing, account) : null,
+      summary,
+      dimensions: dimensionMap[data.listing] ?? null,
+      own,
       signedIn: account !== null,
     };
   });

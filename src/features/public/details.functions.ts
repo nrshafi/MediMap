@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { env } from 'cloudflare:workers';
 import { CatalogRepository } from '../catalog/server/repository.server';
-import { ReviewRepository } from '../reviews/repository.server';
+import { ReviewRepository, type DimensionSummary } from '../reviews/repository.server';
 import { catalogId, record, type BranchService } from '../catalog/contracts';
 export const publicDetail = createServerFn({ method: 'GET' })
   .validator((value: unknown) => {
@@ -23,6 +23,7 @@ export const publicDetail = createServerFn({ method: 'GET' })
         kind: data.kind,
         branchRating: null,
         providerRating: null,
+        listingDimensions: {} as Record<string, DimensionSummary>,
         now,
       };
     const listings: BranchService[] = [];
@@ -44,6 +45,10 @@ export const publicDetail = createServerFn({ method: 'GET' })
       branchRating: data.kind === 'branch' ? await reviews.aggregate('branch', entity.id) : null,
       providerRating:
         'provider' in entity ? await reviews.aggregate('provider', entity.provider.id) : null,
+      listingDimensions:
+        data.kind === 'branch'
+          ? await reviews.dimensionSummaries(listings.map((item) => item.id))
+          : ({} as Record<string, DimensionSummary>),
       now,
     };
   });

@@ -161,6 +161,9 @@ test('signed-in reviews, abuse reports and moderation change public summaries', 
     .fill(`Synthetic public flow ${test.info().project.name}`);
   await form.getByRole('button', { name: 'Save review' }).click();
   await expect(page.getByText(/1 service review/)).toBeVisible();
+  const chartTable = page.getByRole('table', { name: /Rating averages across six dimensions/ });
+  await expect(chartTable).toContainText('Service quality');
+  await expect(chartTable).toContainText('4.0');
   const reviewCard = page.locator('section[aria-label="Published reviews"] article').first();
   await expect(reviewCard.getByRole('heading', { name: 'Service experience' })).toHaveCount(0);
   await expect(reviewCard.getByText(/^Updated /)).toBeVisible();
@@ -191,6 +194,9 @@ test('signed-in reviews, abuse reports and moderation change public summaries', 
   await page.goto('/reviews?listing=addin-moghbazar-complete-blood-count');
   await expect(
     page.getByText(`Synthetic public flow ${test.info().project.name}`, { exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('table', { name: /Rating averages across six dimensions/ }),
   ).toHaveCount(0);
 });
 test('invalid public comparison and inactive records fail explicitly', async ({

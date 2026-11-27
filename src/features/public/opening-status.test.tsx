@@ -53,6 +53,7 @@ test('DetailPage computes the opening status from the server now prop', () => {
         kind: 'branch',
         branchRating: null,
         providerRating: null,
+        listingDimensions: {},
         now: openNow,
       }}
     />,
@@ -67,6 +68,7 @@ test('DetailPage computes the opening status from the server now prop', () => {
         kind: 'branch',
         branchRating: null,
         providerRating: null,
+        listingDimensions: {},
         now: closedNow,
       }}
     />,

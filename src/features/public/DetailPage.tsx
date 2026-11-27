@@ -13,6 +13,7 @@ import { DEFAULT_CENTER, DEFAULT_RADIUS_KM } from './defaults';
 import type { publicDetail } from './details.functions';
 import { directionsUrl } from './format';
 import { GoogleMapView, MapPlaceholder, MapUnavailable } from './GoogleMapView';
+import { RatingChart } from '../reviews/RatingChart';
 import { ListingCard } from './ListingCard';
 
 function BranchMap({
@@ -244,14 +245,19 @@ export function DetailPage({
           )}
           {data.listings.length ? (
             <div className="grid gap-3 md:grid-cols-2">
-              {data.listings.map((l) => (
-                <ListingCard
-                  key={l.id}
-                  listing={l}
-                  area={area}
-                  showBranchLink={data.kind === 'service'}
-                />
-              ))}
+              {data.listings.map((l) => {
+                const dim = data.kind === 'branch' ? data.listingDimensions[l.id] : undefined;
+                return (
+                  <div key={l.id} className="flex flex-col gap-2">
+                    <ListingCard listing={l} area={area} showBranchLink={data.kind === 'service'} />
+                    {dim && dim.count > 0 && (
+                      <Card className="p-3">
+                        <RatingChart dimensions={dim.dimensions} count={dim.count} compact />
+                      </Card>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <EmptyState

@@ -86,13 +86,14 @@ export class AuthStore {
     const emailNormalized = normalizeEmail(identity.email);
     // Resolve the account by subject inside the batch. Concurrent first sign-ins cannot create duplicate accounts.
     // A new subject with the email of another account stops at the unique index. Accounts are never linked.
+    // A disabled account keeps its email and last sign-in time. Its sign-in attempt changes nothing.
     const statements = [
       this.db
         .prepare(
           `INSERT INTO accounts(id, google_subject, email, email_normalized, created_at, last_signed_in_at)
         VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(google_subject) DO UPDATE SET
         email = excluded.email, email_normalized = excluded.email_normalized,
-        last_signed_in_at = excluded.last_signed_in_at`,
+        last_signed_in_at = excluded.last_signed_in_at WHERE accounts.active = 1`,
         )
         .bind(accountId, identity.subject, identity.email, emailNormalized, now, now),
       this.db

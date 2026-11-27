@@ -2,7 +2,7 @@
 
 The owner selected seven-day absolute sessions without automatic renewal and explicit owner-controlled administrator grants on 27 October 2026.
 The implementation uses `oauth4webapi` 3.8.8, Workers Web Crypto, and direct prepared D1 queries.
-Google sign-in creates ordinary accounts. It never grants administrator access or merges accounts by email address.
+Google sign-in and password sign-up create ordinary accounts. Neither grants administrator access or merges accounts by email address.
 
 ## Local Google configuration
 

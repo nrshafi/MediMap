@@ -49,6 +49,10 @@
     {
       "name": "0012_password_accounts.sql",
       "sha256": "ec2c43c7178834af1be731487e0603a8d108be292d33c2d963cba26a3d73a203"
+    },
+    {
+      "name": "0013_account_administration.sql",
+      "sha256": "9754b92c5cfab2ddf7b2e425e7fd110dce4a6dc904ba83aec5be528ead07f217"
     }
   ]
 }

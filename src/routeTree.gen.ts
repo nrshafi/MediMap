@@ -18,6 +18,7 @@ import { Route as ReportRouteImport } from './routes/report'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as AdminAccountsRouteImport } from './routes/admin.accounts'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminProvidersRouteImport } from './routes/admin.providers'
@@ -30,6 +31,7 @@ import { Route as ReviewsModerateRouteImport } from './routes/reviews_.moderate'
 import { Route as ReviewsReportRouteImport } from './routes/reviews_.report'
 import { Route as ReviewsWriteRouteImport } from './routes/reviews_.write'
 import { Route as ServicesIdRouteImport } from './routes/services.$id'
+import { Route as AdminAccountsWriteRouteImport } from './routes/admin.accounts_.write'
 import { Route as AdminCatalogManageRouteImport } from './routes/admin.catalog_.manage'
 import { Route as AdminCatalogWriteRouteImport } from './routes/admin.catalog_.write'
 import { Route as AdminPricesWriteRouteImport } from './routes/admin.prices_.write'
@@ -84,6 +86,11 @@ const SignInRoute = SignInRouteImport.update({
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAccountsRoute = AdminAccountsRouteImport.update({
+  id: '/admin/accounts',
+  path: '/admin/accounts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCatalogRoute = AdminCatalogRouteImport.update({
@@ -144,6 +151,11 @@ const ReviewsWriteRoute = ReviewsWriteRouteImport.update({
 const ServicesIdRoute = ServicesIdRouteImport.update({
   id: '/services/$id',
   path: '/services/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAccountsWriteRoute = AdminAccountsWriteRouteImport.update({
+  id: '/admin/accounts_/write',
+  path: '/admin/accounts/write',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCatalogManageRoute = AdminCatalogManageRouteImport.update({
@@ -207,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/admin/accounts': typeof AdminAccountsRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -219,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/reviews/report': typeof ReviewsReportRoute
   '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
+  '/admin/accounts/write': typeof AdminAccountsWriteRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
@@ -240,6 +254,7 @@ export interface FileRoutesByTo {
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/admin/accounts': typeof AdminAccountsRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -252,6 +267,7 @@ export interface FileRoutesByTo {
   '/reviews/report': typeof ReviewsReportRoute
   '/reviews/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
+  '/admin/accounts/write': typeof AdminAccountsWriteRoute
   '/admin/catalog/manage': typeof AdminCatalogManageRoute
   '/admin/catalog/write': typeof AdminCatalogWriteRoute
   '/admin/prices/write': typeof AdminPricesWriteRoute
@@ -274,6 +290,7 @@ export interface FileRoutesById {
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/admin/accounts': typeof AdminAccountsRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -286,6 +303,7 @@ export interface FileRoutesById {
   '/reviews_/report': typeof ReviewsReportRoute
   '/reviews_/write': typeof ReviewsWriteRoute
   '/services/$id': typeof ServicesIdRoute
+  '/admin/accounts_/write': typeof AdminAccountsWriteRoute
   '/admin/catalog_/manage': typeof AdminCatalogManageRoute
   '/admin/catalog_/write': typeof AdminCatalogWriteRoute
   '/admin/prices_/write': typeof AdminPricesWriteRoute
@@ -309,6 +327,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/sign-in'
     | '/sign-up'
+    | '/admin/accounts'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -321,6 +340,7 @@ export interface FileRouteTypes {
     | '/reviews/report'
     | '/reviews/write'
     | '/services/$id'
+    | '/admin/accounts/write'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
@@ -342,6 +362,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/sign-in'
     | '/sign-up'
+    | '/admin/accounts'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -354,6 +375,7 @@ export interface FileRouteTypes {
     | '/reviews/report'
     | '/reviews/write'
     | '/services/$id'
+    | '/admin/accounts/write'
     | '/admin/catalog/manage'
     | '/admin/catalog/write'
     | '/admin/prices/write'
@@ -375,6 +397,7 @@ export interface FileRouteTypes {
     | '/reviews'
     | '/sign-in'
     | '/sign-up'
+    | '/admin/accounts'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -387,6 +410,7 @@ export interface FileRouteTypes {
     | '/reviews_/report'
     | '/reviews_/write'
     | '/services/$id'
+    | '/admin/accounts_/write'
     | '/admin/catalog_/manage'
     | '/admin/catalog_/write'
     | '/admin/prices_/write'
@@ -409,6 +433,7 @@ export interface RootRouteChildren {
   ReviewsRoute: typeof ReviewsRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  AdminAccountsRoute: typeof AdminAccountsRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
   AdminPricesRoute: typeof AdminPricesRoute
   AdminProvidersRoute: typeof AdminProvidersRoute
@@ -421,6 +446,7 @@ export interface RootRouteChildren {
   ReviewsReportRoute: typeof ReviewsReportRoute
   ReviewsWriteRoute: typeof ReviewsWriteRoute
   ServicesIdRoute: typeof ServicesIdRoute
+  AdminAccountsWriteRoute: typeof AdminAccountsWriteRoute
   AdminCatalogManageRoute: typeof AdminCatalogManageRoute
   AdminCatalogWriteRoute: typeof AdminCatalogWriteRoute
   AdminPricesWriteRoute: typeof AdminPricesWriteRoute
@@ -496,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up'
       preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/accounts': {
+      id: '/admin/accounts'
+      path: '/admin/accounts'
+      fullPath: '/admin/accounts'
+      preLoaderRoute: typeof AdminAccountsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/catalog': {
@@ -582,6 +615,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/accounts_/write': {
+      id: '/admin/accounts_/write'
+      path: '/admin/accounts/write'
+      fullPath: '/admin/accounts/write'
+      preLoaderRoute: typeof AdminAccountsWriteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/catalog_/manage': {
       id: '/admin/catalog_/manage'
       path: '/admin/catalog/manage'
@@ -665,6 +705,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewsRoute: ReviewsRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  AdminAccountsRoute: AdminAccountsRoute,
   AdminCatalogRoute: AdminCatalogRoute,
   AdminPricesRoute: AdminPricesRoute,
   AdminProvidersRoute: AdminProvidersRoute,
@@ -677,6 +718,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewsReportRoute: ReviewsReportRoute,
   ReviewsWriteRoute: ReviewsWriteRoute,
   ServicesIdRoute: ServicesIdRoute,
+  AdminAccountsWriteRoute: AdminAccountsWriteRoute,
   AdminCatalogManageRoute: AdminCatalogManageRoute,
   AdminCatalogWriteRoute: AdminCatalogWriteRoute,
   AdminPricesWriteRoute: AdminPricesWriteRoute,

@@ -18,8 +18,9 @@ async function statementsOf(names: string[]): Promise<string[]> {
 async function database(mf: Miniflare) {
   const db = await mf.getD1Database('DB');
   const names = (await readdir('migrations')).filter((name) => name.endsWith('.sql')).sort();
-  assert.equal(names.at(-1), target);
-  const before = await statementsOf(names.slice(0, -1));
+  assert.ok(names.includes(target));
+  // Later migrations stay out. This suite checks the state just before and after the target.
+  const before = await statementsOf(names.filter((name) => name < target));
   await db.batch(before.map((sql) => db.prepare(sql)));
   const apply = async () => {
     const after = await statementsOf([target]);

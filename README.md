@@ -1,7 +1,7 @@
 # MediMap
 
 MediMap is a diagnostic-service discovery and price-comparison project for Dhaka, Bangladesh.
-The home page has a static "Coming soon" page. The `/discovery` route demonstrates search with unverified sample data.
+The home page shows popular services and hospitals from the reviewed catalog. `/find` searches that catalog. The `/discovery` route demonstrates search with unverified sample data.
 
 Built with React, TypeScript, TanStack Start, and Vite.
 
@@ -24,6 +24,9 @@ Application and tooling types use separate configurations to avoid browser and B
 | Inspect unit and component coverage                  | `bun run test:coverage`         |
 | Install the browser for browser tests                | `bun run test:browser:install`  |
 | Run desktop and mobile browser tests                 | `bun run test:browser`          |
+| Run real workerd and D1 integration tests            | `bun run test:database`         |
+| Reconcile the reviewed catalog with the file         | `bun run catalog:check`         |
+| Reconcile the reviewed catalog with the local D1     | `bun run db:catalog:check`      |
 | Check lint rules                                     | `bun run lint`                  |
 | Apply safe lint fixes                                | `bun run lint:fix`              |
 | Format source, tests, root configuration, and README | `bun run format`                |
@@ -78,17 +81,22 @@ The project pins Cloudflare Vite plugin 1.49.0, Wrangler 4.116.0, and Miniflare 
 These releases use stable Miniflare. The compatibility date matches their workerd runtime, 30 July 2026.
 Review runtime changes and update the compatibility date when upgrading this toolchain.
 
-## Google sign-in
+## Sign-in and accounts
 
 See the [Workers release runbook](docs/workers-release-runbook.md) for migration order, backup/recovery, bindings, workload assumptions, and remaining release requirements.
 
-Open `/sign-in` or `/account` for Google account access. Public discovery does not require sign-in.
+Open `/sign-in` or `/account` for account access. Public discovery does not require sign-in.
+Two sign-in methods exist. Use Google, or use an email and a password. Create a password account at `/sign-up`.
+A password needs 10 to 128 characters. It must not be on the common-password list or equal the email. MediMap sends no email, so there is no email check and no password reset. A signed-in password user can change the password on `/account`.
+Password sign-in needs no extra secret or setting. Only Google sign-in needs `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+This release has no sign-in rate limit. See [the security review](docs/security-review.md).
 Follow [authentication setup](docs/authentication.md) to configure the OAuth web client and local secrets.
-Copy `.dev.vars.example` to `.dev.vars` and provide `AUTH_ORIGIN`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET`.
+Copy `.dev.vars.example` to `.dev.vars` and provide `AUTH_ORIGIN`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET`. `AUTH_ORIGIN` is also the origin check for the password forms.
 The Google callback is `/auth/google/callback` on that exact origin.
 The sign-in button stays disabled until configuration is available.
 
-Sessions last seven days without automatic renewal. Google sign-in never grants administrator access.
+Sessions last seven days without automatic renewal. Neither sign-in method grants administrator access.
+An administrator opens `/admin/accounts` to search accounts by email, then disables or enables an account with a reason. Disabling deletes every session of the account. An administrator cannot disable their own account. Each change stays in `account_status_changes`.
 The setup document includes the separate owner-run grant procedure and server contracts for later features.
 Real Google login verification remains pending until OAuth credentials are configured.
 
@@ -123,6 +131,6 @@ Google Maps uses two keys. During development, set both in ignored `.dev.vars` t
 - `GOOGLE_MAPS_BROWSER_KEY` is a Worker variable for the browser map. It is public by design.
 - `GOOGLE_MAPS_SERVER_KEY` is a Worker secret for address search and driving estimates.
 
-The Maps Demo Key is for testing only and has no billing account. Without `GOOGLE_MAPS_BROWSER_KEY`, the map shows an unavailable notice. Without `GOOGLE_MAPS_SERVER_KEY`, address search and driving estimates are unavailable. Prices and lists still work.
+MediMap is for demonstrations only, so the deployed demo keeps the Maps Demo Key and has no billing account. Google states that the Demo Key is for testing and prototyping only. A public production launch needs a billing-enabled key first. Without `GOOGLE_MAPS_BROWSER_KEY`, the map shows an unavailable notice. Without `GOOGLE_MAPS_SERVER_KEY`, address search and driving estimates are unavailable. Prices and lists still work.
 Deploy the browser key as a Worker variable and the server key as a Worker secret.
 See [public integration](docs/public-integration.md) for contracts and [the verification checklist](docs/public-release-checklist.md) for results and remaining acceptance.

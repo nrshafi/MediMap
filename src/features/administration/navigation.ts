@@ -7,4 +7,5 @@ export const coreAdministrationNavigation: readonly AdministrationNavItem[] = [
   { href: '/admin/prices', label: 'Prices and sources' },
   { href: '/admin/reports', label: 'Correction reports' },
   { href: '/admin/reviews', label: 'Review moderation' },
+  { href: '/admin/accounts', label: 'Accounts' },
 ];

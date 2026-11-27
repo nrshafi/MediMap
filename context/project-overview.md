@@ -56,6 +56,7 @@ Incorrect-information reports also require sign-in. Limit each account to five r
 - Service-specific reviews linked to a provider, branch, and diagnostic service.
 - One active review per user and branch-service combination, with review editing.
 - Incorrect-information reports that administrators review before changing published data.
+- Account administration at `/admin/accounts`. An administrator searches accounts by email and disables or enables an account with a reason. Each change is kept in a history table. An administrator cannot disable their own account.
 - Administrative management of services, aliases, providers, branches, prices, reviews, and reports.
 - Review subratings, review reporting, and administrator moderation. Visit evidence is deferred from the required release.
 
@@ -116,7 +117,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Cloudflare free tiers are the intended hosting budget. The local pilot model is in `docs/workers-release-runbook.md`; production CPU and actual workload remain unverified.
 - Selected technologies: React with TanStack Start, one Cloudflare Workers application deployment, and Cloudflare D1 with direct SQL.
 - Accounts use Google sign-in or an email and password. Assign administrator access separately.
-- Email and password accounts need no email verification and have no password reset by email. MediMap sends no email. An administrator can disable an account.
+- Email and password accounts need no email verification and have no password reset by email. MediMap sends no email. An administrator can disable and enable an account at `/admin/accounts`. Disabling deletes the sessions of the account.
 - A sign-up with an email that already belongs to any account (Google or password) is refused. The message tells the user to sign in with the existing method. This message shows others that the email has an account. The owner accepted this on 27 November 2026.
 - Password rules: 10 to 128 characters after Unicode NFC normalization, not on a common-password list, and not equal to the email or the part before the @ sign.
 - This release has no sign-in rate limit. This is an open security risk.
@@ -125,11 +126,11 @@ Accessibility and performance targets remain open for the UI and implementation 
 
 ## Mapping and layout decisions
 
-- Google Maps Platform replaces Geoapify and OpenStreetMap tiles. The owner decided this on 11 November 2026.
+- Google Maps Platform is the mapping provider. The owner selected it on 11 November 2026.
 - The map uses the Maps JavaScript API. Driving estimates use the Routes API. Address search uses Places API (New).
 - The listing panel on `/find` shows the driving route on the map, with road distance, travel time, and written driving steps. The course teacher requested this on 18 November 2026. The route is a preview. MediMap does not give voice or turn-by-turn navigation. "Open directions in Google Maps" stays available.
 - After the route shows, the user can show their live browser position on the map. The position stays in the browser and does not request a new route.
-- The Maps Demo Key is the only key in use, and no billing account exists. The Demo Key is for testing only. A production map requires a later owner billing decision.
+- MediMap is used for demonstrations only. The owner decided this on 19 November 2026. It keeps the Maps Demo Key. There is no billing account and no production Google Maps key. The Demo Key is for testing and prototyping only, and Google can pause it at an unpublished daily limit. A public production launch needs a billing-enabled key first.
 - The release must work with the map unavailable. Prices, lists, and manual location input keep working.
 - MediMap is not an emergency or ambulance tool. Google's terms prohibit High Risk Activities.
 - The public layout follows `DESIGN.md`. On desktop, `/find` shows a sidebar list, a full-height map, and a floating detail panel. On mobile, it shows a List and Map switch with a bottom sheet.

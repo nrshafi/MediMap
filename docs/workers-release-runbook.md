@@ -31,12 +31,17 @@ They do not use the development database or real Google credentials.
 | `AUTH_ORIGIN` | Ignored `.dev.vars` | Exact HTTPS browser origin, without a path or trailing slash. Configure it as a non-secret Worker variable. |
 | `GOOGLE_CLIENT_ID` | Ignored `.dev.vars` | Google OAuth web-client identifier for that origin. Keep runtime configuration outside browser modules. |
 | `GOOGLE_CLIENT_SECRET` | Ignored `.dev.vars` | Worker secret. Never put the value in source, command arguments, logs, or this runbook. |
+| `GOOGLE_MAPS_BROWSER_KEY` | Ignored `.dev.vars` | Worker variable. The deployed demo uses the Maps Demo Key here. The value is public by design. |
+| `GOOGLE_MAPS_SERVER_KEY` | Ignored `.dev.vars` | Worker secret. The deployed demo uses the same Maps Demo Key here. |
 | `MEDIMAP_D1_STATE` | Optional local process variable | Local development/test state only. It is not a deployed binding. |
 
 Copy `.dev.vars.example` for local authentication setup.
 The exact callback is `<AUTH_ORIGIN>/auth/google/callback`.
 Follow [authentication setup](authentication.md) for real login acceptance and the separate owner-controlled administrator grant.
-Google sign-in never grants administrator access automatically.
+Neither sign-in method grants administrator access automatically.
+Password sign-in needs no new secret, variable or binding. It uses the `DB` binding, `AUTH_ORIGIN` and Web Crypto. Migrations `0012` and `0013` add tables and triggers only.
+
+MediMap is used for demonstrations only (owner decision of 19 November 2026). The deployed demo uses the Maps Demo Key as `GOOGLE_MAPS_BROWSER_KEY` and as `GOOGLE_MAPS_SERVER_KEY`. A public production launch needs a billing-enabled key first.
 No session-signing secret is required by the current opaque-token and hashed-session implementation.
 
 The Vite plugin selects Cloudflare environments during the build.
@@ -62,6 +67,7 @@ Those local secret files are not deployed as Worker secrets automatically.
 | `0010_review_moderation.sql` | Review-abuse reports and immutable administrator decisions |
 | `0011_mapping_budget.sql` | Shared provider-request reservations |
 | `0012_password_accounts.sql` | Nullable Google subject, unique normalized email, password credentials |
+| `0013_account_administration.sql` | Immutable account status history, with guards that disable or enable an account and delete its sessions |
 
 `release-migrations.json` records SHA-256 hashes of the reviewed migration text, normalized to LF.
 Both release commands reject a changed migration or an unexplained migration-file set.
@@ -152,7 +158,7 @@ Cloudflare documentation checked on 28 October 2026 gives these Free plan limits
 | D1 recovery | Seven days on Free | Capture a fresh recovery bookmark before an approved remote migration. |
 
 These are capacity assumptions, not a guarantee of free operation.
-Geoapify requests have a shared ceiling of two per second and 600 per UTC day. Live coverage and account usage require acceptance.
+Google Maps requests use the Demo Key. They share a request budget that the application enforces. Google can pause the Demo Key at an unpublished daily limit. The map and address search then stop, and prices and lists keep working.
 See [public integration](public-integration.md) for provider contracts and attribution.
 No paid service is enabled by these checks.
 
@@ -192,7 +198,8 @@ Before production acceptance, resolve these requirements:
 - Authorized real D1/account configuration, HTTPS origin, and deployed secret setup.
 - Live Google consent, callback, account creation, sign-out, and owner-granted administrator verification.
 - Production CPU/startup measurements and observed workload, including later public queries.
-- Live Geoapify configuration, Dhaka coverage, and account usage-budget verification.
+- Live Google Maps check with the Demo Key in Dhaka. The Demo Key daily limit is unpublished.
+- Password sign-in CPU time on the deployed Worker. See the first release blocker in [the security review](security-review.md).
 - Query-string redaction for automatic observability. OAuth callback codes and user locations occur in URLs.
 - Live public-flow acceptance with verified branch coordinates. Local public regression results are recorded in the [public release checklist](public-release-checklist.md).
 

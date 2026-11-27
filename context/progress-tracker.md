@@ -4,9 +4,11 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-27 19:21:22 +06:00`.
+Last updated: `2026-11-27 20:40:00 +06:00`.
 
 ## Current phase
+
+Release candidate checks. Account administration (`/admin/accounts`, migration `0013`) is done. The security review is in `docs/security-review.md`, and the ten success criteria passed in the browser at 375 px and 1280 px. The map is for demonstration only (owner decision of 19 November 2026). Release blockers: Google OAuth live check, password hash CPU time and iteration cap on the deployed Worker, no sign-in rate limit, and authorized production targets.
 
 Visual QA checks, design system documentation, and UI audit completion. Added automated Playwright checks for horizontal scroll, accessible images/buttons, single h1, 404 responses, and internal routing across 375 px and 1280 px viewports. Shared `PageMain`, `NotFoundPage`, and `ErrorPage` integrated; legacy CSS variables and obsolete style helpers removed.
 
@@ -29,7 +31,7 @@ Administrator correction resolution is implemented and locally verified. Fresh s
 The reviewed publication subset is implemented and reconciled locally with 196 listings, 136 canonical services, and three hospital branches.
 Local release preparation is verified, with migration hashes, a successful failure/restore rehearsal, dry-run packaging, and the release runbook.
 Production acceptance still requires real credentials, target bindings, CPU/workload checks, live mapping acceptance, and query redaction.
-Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Google Maps adapters (replaced Geoapify on 2026-11-17), service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
+Source-backed discovery at `/find`, public service/branch pages, geographic location selection, Google Maps adapters, service reviews, moderation, statistics, comparison, and functional home navigation are implemented and locally verified.
 The original `/discovery` route remains a labelled demonstration. Live provider acceptance requires configured credentials.
 The three reviewed branches now store coordinates entered on 18 November 2026.
 Official-site research now records five hospital locations and their published tariff rows in `data/catalog/`.
@@ -59,6 +61,26 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Account administration, security review and release check (2026-11-27 20:40:00 +06:00)
+
+- Added `/admin/accounts` (administrators only, in the admin navigation). It lists email, sign-in methods, administrator status, active status, created time and last sign-in time (Dhaka time), pages with a cursor of 20 rows, and searches by email. Migration `0013_account_administration.sql` adds `account_status_changes` with guard triggers: the actor must be an active administrator, an administrator cannot disable their own account, and a change must match the current state. One INSERT sets `accounts.active` and, for a disable, deletes every session of the account. The history is immutable. `POST /admin/accounts/write` needs the same origin, an administrator, a reason of 20 to 1000 characters and a confirmation box (a `details` form that works without JavaScript). The page shows no hash or token and has no way to set a password. Added the migration to `docs/release-migrations.json` and the runbook table.
+- Security review in `docs/security-review.md`. Fixed: a refused Google sign-in of a disabled account changed its email and last sign-in time (the upsert now updates only active accounts). Open: no sign-in rate limit (accepted), PBKDF2 CPU time on the Workers Free plan (release blocker), the unconfirmed production PBKDF2 iteration cap (release blocker), sign-up email enumeration (accepted), no size limit of its own on password forms, no CSP or frame-ancestors headers. Password sign-in needs no new secret, variable or binding (confirmed).
+- Demo-only map decision (owner, 19 November 2026) recorded in `context/architecture.md`, `context/project-overview.md`, `README.md`, `docs/google-maps-integration-plan.md`, `docs/public-integration.md` and `docs/workers-release-runbook.md`. The runbook now lists `GOOGLE_MAPS_BROWSER_KEY` and `GOOGLE_MAPS_SERVER_KEY` and says that the deployed demo uses the Demo Key for both. Request budget and Google requests are unchanged.
+- Removed stale text: the README "Coming soon" line, the architecture "Coming soon" line, and every Geoapify reference outside dated history in this file (README, docs, context). The release-package check still blocks the removed provider key name in browser files. Updated the README for sign-in methods, `/admin/accounts` and test commands.
+- Success criteria (`context/project-overview.md`), checked with a Playwright script against the dev server and the full reviewed catalog, at 375 px and 1280 px. Both widths gave the same result. The suite test `tests/browser/user-flow.browser.ts` also covers them in the isolated database.
+  1. Search "CBC" resolves to Complete Blood Count: pass.
+  2. Location and radius: the default 10 km shows listings, 3 km and 10 km buttons work: pass.
+  3. Listings show a BDT base price, a verification status and source text: pass.
+  4. Price statistics show on `/find` and two listings open in the comparison table: pass.
+  5. Branch page shows contact details and opening hours (hours show Unknown); the service review page opens: pass.
+  6. A new password account saved and then edited a review: pass.
+  7. The same account submitted an incorrect-information report and saw a receipt: pass.
+  8. With no map keys, the route is unavailable and the price and list stay visible: pass. The route request failure text is covered by the suite test.
+  9. Unknown opening hours show as Unknown, not as a value: pass.
+  10. No horizontal overflow on `/`, `/find`, `/compare`, the branch, review and report pages at either width: pass.
+- Verification: `bun run typecheck`, `bun run lint` and `bun run format:check` pass. `bun test`: 357 pass, 0 fail. `bun run test:database`: 133 pass, 0 fail (new: `tests/auth/account-administration.integration.ts`, 7 tests). `bun run test:browser`: 164 pass, 2 skipped (skips existed before; new: `tests/browser/accounts.browser.ts`). `bun run catalog:check`, `bun run db:catalog:check`, `bun run db:rehearse` (13 migrations) and `bun run release:package` pass. `tests/auth/password-accounts.integration.ts` now applies only migrations up to `0012` before its checks, because `0013` exists.
+- Open items and release blockers: Google OAuth live check; the map runs on the Maps Demo Key only (demonstration use); no sign-in rate limit; PBKDF2 CPU time and iteration cap on the deployed Worker; authorized production targets. The dev server run for the criteria check added test accounts and one review and report to the local development database only.
 
 ### Unused code, redundant tests, and stale files removed (2026-11-27 19:21:22 +06:00)
 
@@ -965,6 +987,7 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Open questions
 
+- Release blockers: Google OAuth live check, password hash CPU time and iteration cap on the deployed Worker (below), and authorized production targets.
 - Security risk: this release has no sign-in rate limit for password accounts. The owner accepted this on 27 November 2026. An attacker can guess passwords without a limit.
 - Production PBKDF2 iteration limit on Workers (reported as 100,000, not stated in the official docs) and CPU fit of the 100,000-iteration hash. The Workers Free plan allows 10 ms of CPU time per request. Local workerd measured about 60 ms.
 - Additional Dhaka hospitals and branches with verifiable service, standard-price, and location evidence. No fixed collection count applies.
@@ -972,9 +995,8 @@ These are confirmed constraints for later feature implementation. Full details a
 - Functional UI conventions and interaction states. The initial static page design is recorded.
 - Accessibility and performance acceptance targets.
 - Google OAuth client credentials for live login verification.
-- Live Geoapify Dhaka coverage and account usage acceptance. Superseded on 11 November 2026 by the Google Maps decision. Google Maps replaced Geoapify on 17 November 2026.
 - Maps Demo Key daily limit and referrer-restriction support. Server-side Routes and Places requests were verified on 11 November 2026.
-- Production map provision. The Demo Key is not for production; a live production map needs a later billing decision before the 29 November release candidate.
+- Production map. MediMap is used for demonstrations only (owner decision, 19 November 2026) and keeps the Maps Demo Key. A public production launch needs a billing-enabled key first.
 - Production CPU and actual workload fit. The local pilot capacity model is in `docs/workers-release-runbook.md`; live mapping-provider usage remains unverified.
 - Production acceptance of the implemented defaults: ascending price, two-to-four listing comparison, and six-dimension service review means.
 - Authorized production account/database/origin, protected backup storage, and migration execution approval. The reviewed local procedure is now documented.
@@ -982,8 +1004,8 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Next steps
 
-1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance.
+1. Configure the Google OAuth web client and verify the real login/callback/sign-out flow before closing authentication acceptance. On the first deployment, also measure the CPU time of password sign-in and confirm the PBKDF2 iteration cap (see `docs/security-review.md`, S3 and S4).
 2. Select authorized production targets and resolve the release runbook's remaining acceptance requirements before deployment.
 3. Add hospitals or branches when their diagnostic services, standard prices, and locations have verified official evidence.
-4. Run Phase 1 of `docs/google-maps-integration-plan.md`, then implement the Google Maps integration in the plan's phase order. Phase 0 is complete.
+4. Check the map live with the Maps Demo Key in Dhaka after deployment. The plan phases are implemented.
 5. Resolve open behavior in the relevant context files before implementing dependent features.

@@ -42,14 +42,14 @@ No review data was invented for the release dataset.
 
 ## Mapping provider
 
-Google Maps Platform provides the map, driving estimates, and address search. The owner selected it on 11 November 2026. It replaces the earlier Geoapify and OpenStreetMap design.
+Google Maps Platform provides the map, driving estimates, and address search. The owner selected it on 11 November 2026.
 
 - The browser map uses the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2 with `DEMO_MAP_ID`.
 - Driving estimates use Routes API Compute Routes with `TRAFFIC_UNAWARE` routing. The field mask is `routes.distanceMeters,routes.duration`.
 - The `/find` "Show route" request adds `routes.polyline.encodedPolyline`, `routes.legs.steps.distanceMeters`, and `routes.legs.steps.navigationInstruction`, with `languageCode: "en"`.
 - Address search uses Places API (New) Autocomplete and Place Details. Suggestions are restricted to the rectangle from 23.6 to 24.0 N and 90.2 to 90.6 E, with region code `bd`. Place Details requests `location,formattedAddress`.
 
-Set `GOOGLE_MAPS_BROWSER_KEY` as a Worker variable. Set `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.
+Set `GOOGLE_MAPS_BROWSER_KEY` as a Worker variable. Set `GOOGLE_MAPS_SERVER_KEY` as a Worker secret.
 All Google web-service calls run on the server through same-origin POST requests. The browser generates the Places session token with `crypto.randomUUID()`, and the server validates its format.
 Requests use a six-second timeout, a 65,536-byte response limit, and validated fields. The server sends each key in the `X-Goog-Api-Key` header.
 The application permits at most two provider requests per second and 600 per UTC day across address and route requests. Reservations are enforced in D1. Rejected or failed calls may consume a reservation, which keeps the ceiling conservative. Google publishes no Demo Key limit, so these values are local ceilings.
@@ -69,12 +69,12 @@ Provider failures leave catalog prices available and preserve the selected searc
 
 ### Maps Demo Key
 
-The Maps Demo Key is the only key in use. No billing account exists.
+MediMap is used for demonstrations only. The owner decided this on 19 November 2026. It keeps the Maps Demo Key. There is no billing account and no production Google Maps key.
 Google states that the Demo Key is "intended for testing and prototyping purposes only". It "is not designed for production use".
 Google publishes no numeric daily limit. At the limit, usage pauses until the next day with no risk of charges.
 The browser key is visible to every visitor. A third party that uses it can exhaust the limit and pause the map for all users.
 On 11 November 2026, server requests to Compute Routes, Places Autocomplete, and Place Details accepted the Demo Key.
-A production map requires a billing account on the key or a new billing-enabled key. The owner decides this later. The release must work with the map unavailable.
+A public production launch needs a billing-enabled key first. The app must work with the map unavailable.
 
 ### Map availability
 

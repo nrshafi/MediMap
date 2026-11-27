@@ -2,7 +2,7 @@
 
 Status: phases 0 to 5 implemented on 17 November 2026. Phase 6 manual checks of live address search and driving estimates remain. Prepared on 11 November 2026.
 
-This plan replaces the Geoapify and OpenStreetMap integration with Google Maps Platform. It also moves the public pages to the layout in [`DESIGN.md`](../DESIGN.md). The source material was an earlier emergency routing prototype that is not part of this repository.
+This plan moves the application to Google Maps Platform. It also moves the public pages to the layout in [`DESIGN.md`](../DESIGN.md). The source material was an earlier emergency routing prototype that is not part of this repository.
 
 ## Owner decisions
 
@@ -11,7 +11,7 @@ The owner made these decisions on 11 November 2026. They replace conflicting sta
 | Topic | Decision |
 | --- | --- |
 | Visual direction | Keep the clinical teal palette. Adopt the prototype layout: sidebar list, full-height map, cards, chips, and floating panel. |
-| Maps scope | Full swap to Google. Use the Maps JavaScript API for the map, the Routes API for driving estimates, and Places API (New) Autocomplete for address search. Remove Geoapify and the OpenStreetMap tiles. |
+| Maps scope | Full swap to Google. Use the Maps JavaScript API for the map, the Routes API for driving estimates, and Places API (New) Autocomplete for address search. Remove the earlier provider and the OpenStreetMap tiles. |
 | Billing | Use the Maps Demo Key only. Do not create a billing account. |
 | Styling | Adopt Tailwind CSS v4 and `lucide-react`. |
 
@@ -54,11 +54,11 @@ The [Maps Demo Key page](https://developers.google.com/maps/documentation/javasc
 - The owner must create it with a personal Google Account. Google Workspace accounts are not eligible.
 - It is "intended for testing and prototyping purposes only" and "is not designed for production use".
 - Google does not publish a numeric daily limit. At the limit, "usage is paused until the following day with no risk of charges".
-- Production use requires a billing account on the key or a new billing-enabled key.
+- Production use requires a billing account on the key or a new billing-enabled key. MediMap is used for demonstrations only. The owner decided this on 19 November 2026. It keeps the Maps Demo Key. There is no billing account and no production Google Maps key.
 
 Consequences for this plan:
 
-- The key cannot support a production release. The release candidate must work with the map unavailable. A production map requires a later owner decision on billing.
+- The key cannot support a public production launch. The release candidate must work with the map unavailable. A public production launch needs a billing-enabled key first.
 - The page does not say whether server requests to the Routes and Places web services accept a Demo Key. Phase 0 showed on 11 November 2026 that they do.
 - A Maps JavaScript key is visible to every visitor. If a third party uses the key, the daily limit can pause the map for all users. No charges result.
 - Use `DEMO_MAP_ID` for `AdvancedMarker`. A cloud Map ID needs a Google Cloud project.
@@ -106,7 +106,7 @@ If Phase 0 shows that server requests reject the Demo Key, use the Maps JavaScri
 | `GOOGLE_MAPS_BROWSER_KEY` | Worker variable | Maps JavaScript API in the browser. Public by design. |
 | `GOOGLE_MAPS_SERVER_KEY` | Worker secret | Routes and Places web-service requests. |
 
-With the Demo Key, both variables hold the same key. Two variables let a later production setup use separately restricted keys. `GEOAPIFY_API_KEY` is removed.
+With the Demo Key, both variables hold the same key. Two variables let a later production setup use separately restricted keys.
 
 No migration is required. `mapping_budget` from `0011_mapping_budget.sql` stays in use. Lower its daily ceiling of 600 if Phase 0 shows a smaller Demo Key limit.
 
@@ -127,13 +127,13 @@ Acceptance: the results of steps 3 and 4 are recorded in `context/progress-track
 
 ### Phase 1: Context and documentation
 
-1. Update `context/architecture.md`. Replace the Geoapify and OpenStreetMap decisions with this architecture and the terms constraints.
+1. Update `context/architecture.md`. Replace the earlier provider decisions with this architecture and the terms constraints.
 2. Update `context/project-overview.md`. Record Google Maps as the selected provider and the Demo Key production limit.
 3. Update `context/ui-context.md`. Point visual rules to `DESIGN.md` and keep the interaction rules.
 4. Update `context/code-standards.md`. Allow Tailwind CSS and `lucide-react`. Record that `DESIGN.md` tokens define the Tailwind theme.
 5. Update `.dev.vars.example` and the README setup section.
 
-Acceptance: no context file still names Geoapify or OpenStreetMap tiles as the selected provider.
+Acceptance: no context file still names the earlier provider or OpenStreetMap tiles as the selected provider.
 
 ### Phase 2: Tailwind foundation
 
@@ -156,8 +156,8 @@ Acceptance: build, type check, lint, and format checks pass. Existing pages look
 ### Phase 3: Server adapters
 
 1. Add `routes.server.ts` and `places.server.ts` in `src/integrations/mapping/google/`, with unit tests that mock `fetch`.
-2. Replace the Geoapify calls in `publicRoute` and `findLocation`. Add a server function for the selected place.
-3. Remove the Geoapify code, links, and environment variable.
+2. Replace the earlier provider calls in `publicRoute` and `findLocation`. Add a server function for the selected place.
+3. Remove the earlier provider code, links, and environment variable.
 
 Acceptance: tests cover a missing key, a non-OK status, a timeout, an oversized response, malformed fields, coordinates outside Dhaka, an exhausted budget, a cross-origin request, and `duration` parsing. A failure never removes a price or changes the selected location.
 
@@ -202,7 +202,7 @@ Acceptance: no horizontal page scroll at 375px. All controls are at least 44px h
 ## Risks and open items
 
 - **Branch pins use the 18 November 2026 coordinates.** Those values come from one Places lookup of each published official address. They are not a separate survey. A missing coordinate still leaves that branch off the map, and a failed route still leaves the price visible.
-- **No production map.** The Demo Key is for testing only. Before the 29 November release candidate, the owner must choose between approved billing and a release without a live map.
+- **No production map.** The owner decided on 19 November 2026 that MediMap is used for demonstrations only. It keeps the Demo Key, which is for testing and prototyping only. A public production launch needs a billing-enabled key first.
 - **Unknown daily limit.** Google does not publish the Demo Key limit. Phase 0 and the manual checks give the only evidence.
 - **`/discovery` page.** The demonstration route keeps its schematic map. The owner can retire it later to remove any question about non-Google maps in the same application.
 - **Tailwind migration scope.** This plan migrates only the public pages it changes. The administration pages keep their plain CSS until a separate task migrates them.

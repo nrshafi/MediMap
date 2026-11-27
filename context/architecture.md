@@ -5,11 +5,11 @@
 ### Public integration decisions
 
 Public source-backed discovery uses `/find`, separate from the existing labelled `/discovery` demonstration.
-Google Maps Platform is the mapping provider. The owner decided on 11 November 2026 that it replaces Geoapify and OpenStreetMap tiles.
+Google Maps Platform is the mapping provider. The owner selected it on 11 November 2026.
 Render the map with the Maps JavaScript API through `@vis.gl/react-google-maps` 1.10.2. Render it only in the browser, with `DEMO_MAP_ID`.
 Use Routes API Compute Routes for driving estimates and for the driving route on `/find`. Use Places API (New) Autocomplete and Place Details for address search.
 Run every Google web-service call on the server. Place the adapters in `src/integrations/mapping/google/` and the request handling in `src/features/public/catalog.functions.ts`.
-Use `GOOGLE_MAPS_BROWSER_KEY` as a public Worker variable. Use `GOOGLE_MAPS_SERVER_KEY` as a Worker secret. `GEOAPIFY_API_KEY` is removed.
+Use `GOOGLE_MAPS_BROWSER_KEY` as a public Worker variable. Use `GOOGLE_MAPS_SERVER_KEY` as a Worker secret.
 Missing provider configuration must retain core catalog results. A missing browser key, a rejected key, or a failed map load shows a "map unavailable" notice.
 Unknown branch coordinates remain unknown and cannot qualify a branch for geographic statistics.
 Review ratings use six required integer dimensions from one to five, with their arithmetic mean as the service-review score.
@@ -30,11 +30,11 @@ Link the Google Maps End User Additional Terms and the Google Privacy Policy in 
 
 ### Maps Demo Key
 
-The owner selected the Maps Demo Key only. No billing account exists. Google states that the Demo Key is "intended for testing and prototyping purposes only" and "is not designed for production use".
+MediMap is used for demonstrations only. The owner decided this on 19 November 2026. It keeps the Maps Demo Key. There is no billing account and no production Google Maps key. Google states that the Demo Key is "intended for testing and prototyping purposes only" and "is not designed for production use".
 Google publishes no numeric daily limit. At the limit, usage pauses until the next day with no risk of charges.
 The browser key is visible to every visitor. A third party that uses it can exhaust the limit and pause the map for all users.
 On 11 November 2026, server requests to Compute Routes, Places Autocomplete, and Place Details accepted the Demo Key. This result is recorded as Phase 0 in `docs/google-maps-integration-plan.md`. The server design is selected. The browser-side fallback is not used.
-A production map requires a billing account on the key or a new billing-enabled key. A later owner decision covers billing. The release must work with the map unavailable.
+A public production launch needs a billing-enabled key first. The app must work with the map unavailable.
 
 ### Google Maps request rules
 
@@ -84,7 +84,7 @@ Verify current official documentation and installed versions before later implem
 
 ## Initial application setup
 
-The first implementation is a static "Coming soon" page with React, strict TypeScript, TanStack Start, and Vite.
+The application uses React, strict TypeScript, TanStack Start, and Vite.
 Use stable Bun 1.4.4 for package management, local scripts, formatting, and strict TypeScript checking.
 Use `bun check --no-script` for type checking and Oxlint for linting. Bun's native linter remains canary-only in 1.4.4.
 Keep the existing lint rules and exclusions in `.oxlintrc.json`.
@@ -269,6 +269,14 @@ The last resolution can restore verified status only through that fresh review. 
 Explicit unknown outcomes retain a null current price. Rejection cannot clear a known amount or invent an amount for an unknown price.
 Apply resolution history, report status, listing audit, and selected price atomically through one guarded resolution insert.
 
+### Account administration
+
+Use `/admin/accounts` for account administration. The code is in `src/features/administration/` (`AccountManager.tsx`, `accounts.functions.ts`, `server/accounts.server.ts`). The route needs `requireAdministrator` on the server for the read and the write.
+The list shows email, sign-in methods (Google, email and password), administrator status, active status, created time and last sign-in time. It never selects a password hash, a Google subject or a session token. It pages with a cursor (`created_at.id`, 20 rows) and searches by normalized email. The search text is bound as a parameter, and `%`, `_` and the escape character match literally.
+`POST /admin/accounts/write` (`account`, `action`, `reason`, `confirm`) disables or enables one account. It checks the same origin, the administrator, a reason of 20 to 1000 characters and the confirmation box. The page shows the form inside a `details` element, so the step works without JavaScript. GET returns 405.
+Migration `0013_account_administration.sql` adds `account_status_changes` (account, actor, action, reason, time). One INSERT does the whole change. A guard trigger refuses a caller that is not an active administrator, refuses a self-disable, and refuses a change that does not match the current state (a stale form). An apply trigger sets `accounts.active` and, for a disable, deletes every session of the account. A failed check rolls back the statement. Update and delete triggers keep the history immutable.
+A disabled account cannot start a session by password or by Google. A Google sign-in attempt of a disabled account does not change its email or last sign-in time. An administrator can disable another administrator but not themselves. The app has no screen to set a password for a user and no screen that shows a hash or a token.
+
 ## Authentication and access
 
 - Browsing, service search, and comparison are public.
@@ -325,7 +333,7 @@ Apply resolution history, report status, listing audit, and selected price atomi
 
 Use free tiers first. Obtain explicit approval before enabling a paid service.
 Cloudflare free-tier suitability must be checked against the expected workload.
-Google Maps Platform runs on the Maps Demo Key without a billing account. A production map requires a later owner billing decision.
+Google Maps Platform runs on the Maps Demo Key without a billing account. This follows the demonstration-only decision of 19 November 2026.
 
 ## Documentation checked
 
@@ -352,7 +360,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - Need for Hono within the single application deployment.
 - Exact SQL repository paths and migration review rules. Use server-side repositories and versioned SQL migrations.
 - Live Google OAuth client configuration.
-- Live Google Maps acceptance with the Demo Key, and the later owner billing decision for production.
+- Live Google Maps acceptance with the Demo Key.
 - Live review-volume acceptance. Service ratings use the mean of six required dimensions; branch/provider summaries include visible reviews at active records.
 - Production workload verification. Default sorting is ascending price; comparison allows two to four active listings for one service.
 

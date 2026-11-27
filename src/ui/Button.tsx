@@ -1,9 +1,6 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentProps, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
-import { Link as RouterLink, useRouter } from '@tanstack/react-router';
 import { Link } from './Link';
-
-type RouterLinkTo = ComponentProps<typeof RouterLink>['to'];
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'default' | 'small';
@@ -40,7 +37,6 @@ export interface ButtonLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement>
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: ReactNode;
-  as?: 'a' | typeof RouterLink | typeof Link;
   to?: string;
 }
 
@@ -50,47 +46,15 @@ export function ButtonLink({
   className = '',
   children,
   icon,
-  as: Component,
   to,
   href,
   ...props
 }: ButtonLinkProps) {
-  const router = useRouter({ warn: false });
-  const target = to ?? href ?? '';
-  const styles = buttonStyles({ variant, size, className });
-
-  const shouldUseRouterLink =
-    (Component === RouterLink || Component === Link || to !== undefined) && Boolean(router);
-
-  if (shouldUseRouterLink) {
-    const [pathname, searchStr] = target.split('?');
-    const search = searchStr
-      ? Object.fromEntries(
-          Array.from(new URLSearchParams(searchStr).entries()).map(([k, v]) => {
-            const num = Number(v);
-            return [k, !isNaN(num) && v.trim() !== '' ? num : v];
-          }),
-        )
-      : undefined;
-
-    return (
-      <RouterLink
-        to={pathname as unknown as RouterLinkTo}
-        search={(search ? () => search : undefined) as never}
-        className={styles}
-        {...(props as unknown as ComponentProps<typeof RouterLink>)}
-      >
-        {icon}
-        {children}
-      </RouterLink>
-    );
-  }
-
   return (
-    <a href={target} className={styles} {...props}>
+    <Link to={to} href={href} className={buttonStyles({ variant, size, className })} {...props}>
       {icon}
       {children}
-    </a>
+    </Link>
   );
 }
 

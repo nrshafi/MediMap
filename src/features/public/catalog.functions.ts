@@ -18,6 +18,7 @@ import {
   type PlaceSuggestion,
   type SelectedPlace,
 } from '../../integrations/mapping/google/places.server';
+import { catalogId, record, type Service, type BranchService } from '../catalog/contracts';
 
 function serverKey(): string | null {
   const key: unknown = Reflect.get(env, 'GOOGLE_MAPS_SERVER_KEY');
@@ -68,7 +69,6 @@ export const publicRoute = createServerFn({ method: 'POST' })
       };
     }
   });
-import { catalogId, record, type Service, type BranchService } from '../catalog/contracts';
 
 export const publicCatalog = createServerFn({ method: 'GET' })
   .validator((value: unknown) => record(value))

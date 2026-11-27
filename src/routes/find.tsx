@@ -1,3 +1,4 @@
+import { useCallback, type ComponentProps } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { sortChoices } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
@@ -35,24 +36,30 @@ export const Route = createFileRoute('/find')({
 });
 function Page() {
   const search = Route.useSearch();
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/find' });
+  const onContextChange = useCallback<
+    NonNullable<ComponentProps<typeof FindPage>['onContextChange']>
+  >(
+    (context) => {
+      void navigate({
+        to: '/find',
+        search: (prev) => ({
+          ...prev,
+          ...context,
+        }),
+        replace: true,
+        resetScroll: false,
+      });
+    },
+    [navigate],
+  );
   return (
     <FindPage
       {...Route.useLoaderData()}
       service={search.service}
       initialQuery={search.q}
       initial={search}
-      onContextChange={(context) => {
-        void navigate({
-          to: '/find',
-          search: ((prev: Record<string, unknown>) => ({
-            ...prev,
-            ...context,
-          })) as unknown as typeof search,
-          replace: true,
-          resetScroll: false,
-        });
-      }}
+      onContextChange={onContextChange}
     />
   );
 }

@@ -515,6 +515,98 @@ test('changing radius and sort on /find does not reload the catalog server funct
   await expect(page).toHaveURL(/service=complete-blood-count/);
 });
 
+test('one radius change on /find updates the URL once', async ({ page }) => {
+  await page.addInitScript(() => {
+    let writes = 0;
+    const replace = history.replaceState.bind(history);
+    const push = history.pushState.bind(history);
+    const mark = () => {
+      writes += 1;
+      document.documentElement.dataset.urlWrites = String(writes);
+    };
+    history.replaceState = (...args: Parameters<History['replaceState']>) => {
+      mark();
+      replace(...args);
+    };
+    history.pushState = (...args: Parameters<History['pushState']>) => {
+      mark();
+      push(...args);
+    };
+  });
+  await page.goto('/find?service=complete-blood-count');
+  await expect(page.locator('[data-select-listing]').first()).toBeVisible();
+  const readWrites = () =>
+    page.evaluate(() => Number(document.documentElement.dataset.urlWrites ?? '0'));
+  const before = await readWrites();
+  await page.getByRole('button', { name: '5 km', exact: true }).click();
+  await expect(page).toHaveURL(/radius=5/);
+  await page.waitForFunction(
+    (start) => Number(document.documentElement.dataset.urlWrites ?? '0') >= start + 1,
+    before,
+  );
+  await page.waitForTimeout(400);
+  expect((await readWrites()) - before).toBe(1);
+});
+
+test('a client-side service change resets comparison, the selected listing, and the route', async ({
+  page,
+  context,
+}) => {
+  await useBrowserSession(context, 'admin');
+  const suffix = crypto.randomUUID();
+  await page.goto('/admin/catalog/manage');
+  const category = page.getByRole('region', { name: 'Add category', exact: true });
+  await category.getByLabel('Stable ID').fill(`category-find-${suffix}`);
+  await category.getByLabel('Name', { exact: true }).fill(`Category find ${suffix}`);
+  await category.getByRole('button', { name: 'Create category' }).click();
+  await expect(page.getByRole('status')).toContainText('Catalog change saved.');
+  const serviceForm = page.getByRole('region', { name: 'Add canonical service', exact: true });
+  await serviceForm.getByLabel('Stable ID').fill(`service-find-${suffix}`);
+  await serviceForm.getByLabel('Name', { exact: true }).fill(`Other diagnostic ${suffix}`);
+  await serviceForm.getByLabel('Category', { exact: true }).selectOption(`category-find-${suffix}`);
+  await serviceForm.getByRole('button', { name: 'Create service' }).click();
+  await expect(page.getByRole('status')).toContainText('Catalog change saved.');
+
+  await context.clearCookies();
+  await page.goto('/find?service=complete-blood-count');
+  const listing = page.locator('[data-select-listing]').first();
+  await expect(listing).toBeVisible();
+  const listingId = await listing.getAttribute('data-select-listing');
+  await listing.getByRole('button', { name: /Moghbazar/ }).click();
+  const panel = page.getByRole('region', { name: 'Listing details' });
+  await expect(panel).toBeVisible();
+  await listing.getByRole('button', { name: 'Select for comparison' }).click();
+  await expect(
+    page.getByText('1 of 4 selected for comparison. Select one more to compare.'),
+  ).toBeVisible();
+  await panel.getByRole('button', { name: 'Show route' }).click();
+  await expect(panel.getByRole('status')).not.toHaveText(
+    'The driving route has not been requested.',
+  );
+
+  const browse = page.locator('details').filter({ hasText: /Browse all \d+ services/ });
+  await browse.locator('summary').click();
+  await expect(browse).toHaveAttribute('open', '');
+  await browse.getByRole('link', { name: `Other diagnostic ${suffix}`, exact: true }).click();
+  await expect(page).not.toHaveURL(/service=complete-blood-count/);
+  await expect(page.getByRole('region', { name: 'Listing details' })).toHaveCount(0);
+  await expect(page.locator('[data-selected="true"]')).toHaveCount(0);
+  await expect(page.getByText(/of 4 selected/)).toHaveCount(0);
+
+  const browseAgain = page.locator('details').filter({ hasText: /Browse all \d+ services/ });
+  if ((await browseAgain.getAttribute('open')) === null)
+    await browseAgain.locator('summary').click();
+  await browseAgain.getByRole('link', { name: 'Complete Blood Count', exact: true }).click();
+  await expect(page).toHaveURL(/service=complete-blood-count/);
+  await page
+    .locator(`[data-select-listing="${listingId}"]`)
+    .getByRole('button', { name: /Moghbazar/ })
+    .click();
+  await expect(
+    page.getByRole('region', { name: 'Listing details' }).getByRole('status'),
+  ).toHaveText('The driving route has not been requested.');
+});
+
 test.describe('server-rendered review report form', () => {
   test.use({ javaScriptEnabled: false });
 

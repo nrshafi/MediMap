@@ -106,7 +106,7 @@ If Phase 0 shows that server requests reject the Demo Key, use the Maps JavaScri
 | `GOOGLE_MAPS_BROWSER_KEY` | Worker variable | Maps JavaScript API in the browser. Public by design. |
 | `GOOGLE_MAPS_SERVER_KEY` | Worker secret | Routes and Places web-service requests. |
 
-With the Demo Key, both variables hold the same key. Two variables let a later production setup use separately restricted keys. Remove `GEOAPIFY_API_KEY`. Update `.dev.vars.example`, then run `bun run cf:types`.
+With the Demo Key, both variables hold the same key. Two variables let a later production setup use separately restricted keys. `GEOAPIFY_API_KEY` is removed.
 
 No migration is required. `mapping_budget` from `0011_mapping_budget.sql` stays in use. Lower its daily ceiling of 600 if Phase 0 shows a smaller Demo Key limit.
 

@@ -108,10 +108,10 @@ export function FindPage({
     setQuery(initialQuery ?? '');
   }, [initialQuery, service]);
 
+  const initialKey = JSON.stringify(initial);
   useEffect(() => {
-    const url = JSON.stringify(initial);
-    if (initial && previousUrl.current !== url) {
-      previousUrl.current = url;
+    if (initial && previousUrl.current !== initialKey) {
+      previousUrl.current = initialKey;
       setCenter({ latitude: initial.lat, longitude: initial.lng });
       setRadius(initial.radius);
       setRadiusDraft(String(initial.radius));
@@ -136,14 +136,7 @@ export function FindPage({
       minRating,
     });
   }, [
-    initial?.lat,
-    initial?.lng,
-    initial?.radius,
-    initial?.sort,
-    initial?.verified,
-    initial?.minPrice,
-    initial?.maxPrice,
-    initial?.minRating,
+    initialKey,
     center.latitude,
     center.longitude,
     radius,
@@ -179,17 +172,20 @@ export function FindPage({
     setCenterLabel(label);
   }
 
-  const matches = query.trim()
-    ? resolveDiagnosticQuery(
-        query,
-        services.map((s) => ({
-          id: s.id,
-          name: s.name,
-          category: s.category.name,
-          aliases: s.aliases.map((a) => ({ alias: a.name, language: a.language })),
-        })),
-      )
-    : null;
+  const serviceCatalog = useMemo(
+    () =>
+      services.map((s) => ({
+        id: s.id,
+        name: s.name,
+        category: s.category.name,
+        aliases: s.aliases.map((a) => ({ alias: a.name, language: a.language })),
+      })),
+    [services],
+  );
+  const matches = useMemo(
+    () => (query.trim() ? resolveDiagnosticQuery(query, serviceCatalog) : null),
+    [query, serviceCatalog],
+  );
   const selected = services.find((s) => s.id === service);
   const travel = useMemo(
     () =>

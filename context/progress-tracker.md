@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-27 18:36:00 +06:00`.
+Last updated: `2026-11-27 19:21:22 +06:00`.
 
 ## Current phase
 
@@ -59,6 +59,34 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Unused code, redundant tests, and stale files removed (2026-11-27 19:21:22 +06:00)
+
+- Removed code that the application does not import. `/find` still uses Google routes. `/discovery` still uses `createUnavailableRouteResult`.
+- `FindPage` memoizes the mapped service list and `resolveDiagnosticQuery`. A service change still clears comparison, highlight, routes, and the listing panel. `onContextChange` is a stable callback. The URL sync effect depends on `JSON.stringify(initial)`, so a service or query change still updates local state. One radius change writes the URL once.
+- `ButtonLink` renders the shared `Link`. Targets that `isInternalPageRoute` rejects stay plain anchors. The not-found text is "The page does not exist." The error text is "The page did not load. Try again later."
+- Moved the `catalog.functions.ts` import to the top of the file.
+- Knip 6.48.0 ran once with `bunx`. It is not a project dependency. It reported integration tests, release scripts, and `miniflare` as unused because those files are loaded by path or imported from the test runner. Those files stay.
+- Removal table:
+
+| Path or name | Reason | Evidence |
+| --- | --- | --- |
+| `src/integrations/mapping/osrmAdapter.ts` | No application file imports the OSRM adapter. | `rg` found imports only in its test, `branchRouting.ts`, and `mapping/index.ts`. |
+| `src/integrations/mapping/__tests__/osrmAdapter.test.ts` | The test covers only the removed adapter. | The file imports `OsrmAdapter`. |
+| `src/integrations/mapping/branchRouting.ts` | No application file imports it. | `rg` found imports only in the mapping tests and `mapping/index.ts`. |
+| `src/integrations/mapping/__tests__/faultToleranceAndPricing.test.ts` | The test covers only the removed routing helpers. | The file imports `branchRouting` and `OsrmAdapter`. |
+| `src/integrations/mapping/index.ts` | Nothing imports the barrel. | `rg` found no import of `integrations/mapping` or `mapping/index`. |
+| Unused exports in `fallback.ts` and `types.ts` | Adapter helpers and adapter types had no remaining caller. | `discoveryData.ts` still imports `createUnavailableRouteResult`. Map tests still use the route result types. |
+| `ui.metric`, `ui.select`, `ui.floating`, `ui.price` | No file reads those keys. | `rg` for those keys returned no matches. |
+| `admin.stack` | No file reads that key. | `rg` for `admin.stack` returned no matches. |
+| `FindNavLink` in `PageShell.tsx` | No file imports it. | `rg` found only the definition. |
+| Nine unused classes in `discoveryView.css` | Each class name appears only in that stylesheet. | A class-name scan of `src` found one occurrence of each name. |
+| `GEOAPIFY_API_KEY` instructions in the runbook, the public release checklist, and the Google Maps plan | Those lines tell the reader to configure a removed provider. | `rg` of `GEOAPIFY_API_KEY` in `docs/`. |
+| Route fixture `source: 'osrm'` | The label named the removed provider. | The two map UI tests set that field and do not assert the word. |
+
+- Coverage before: 77.04% functions, 79.71% lines. Coverage after: 77.33% functions, 79.93% lines. `adminUi.tsx` line coverage moved from 91.38% to 91.23% because the deleted `stack` line was covered. The uncovered lines are still `ActiveBadge`.
+- Verification: `bun run typecheck`, `bun run lint`, and `bun run format:check` pass. `bun test` and `bun run test:coverage`: 351 pass, 0 fail. `bun run test:database`: 126 pass, 0 fail. `bun run test:browser`: 160 pass, 2 skipped. `bun run catalog:check`, `bun run db:catalog:check`, `bun run db:rehearse`, and `bun run release:package` pass.
+- Open items: `FindPage` keeps 19 `useState` values and syncs them from the URL with `JSON.stringify`. The URL could be the single source of truth after the release. Do not remove `/discovery` and its sample data, `.agents/`, migrations, `data/`, `seeds/`, or a docs file that `context/` or `README.md` cites, without owner approval. `docs/catalog-foundation-proposal.md` is one of those files. `context/architecture.md` cites the foundation proposal. `GEOAPIFY_API_KEY` remains in `context/architecture.md` and `docs/public-integration.md` as a removed key, and in the release-package secret check.
 
 ### Password sign-up, sign-in and account forms (2026-11-27 18:36:00 +06:00)
 

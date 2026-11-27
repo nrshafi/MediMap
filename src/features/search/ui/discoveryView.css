@@ -22,35 +22,11 @@
   padding: 16px 24px;
 }
 
-.medimap-discovery-nav {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
 .medimap-discovery-brand {
   display: flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: var(--color-ink);
-}
-
-.medimap-discovery-brand-icon {
-  width: 28px;
-  height: 28px;
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
-.medimap-discovery-brand-text {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
   color: var(--color-ink);
 }
 
@@ -86,30 +62,11 @@
   box-shadow: var(--shadow-card);
 }
 
-.medimap-preset-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.medimap-preset-icon {
-  width: 18px;
-  height: 18px;
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
 .medimap-preset-title {
   margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink);
-}
-
-.medimap-preset-hint {
-  font-size: 0.75rem;
-  color: var(--color-muted);
 }
 
 .medimap-preset-buttons {
@@ -317,29 +274,6 @@
   border-top: 1px solid var(--color-border);
   padding: 20px 24px;
   margin-top: auto;
-}
-
-.medimap-discovery-footer-content {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: 0.875rem;
-  color: var(--color-muted);
-}
-
-.medimap-footer-invariants {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.medimap-footer-dot {
-  opacity: 0.5;
 }
 
 /* Responsive adjustments */

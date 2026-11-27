@@ -45,7 +45,7 @@ const mockAvailableRoute: RouteAvailableResult = {
   travelDurationMinutes: 18.2,
   origin: { latitude: 23.7388, longitude: 90.3957 },
   destination: { latitude: 23.7533, longitude: 90.3816 },
-  source: 'osrm',
+  source: 'sample',
 };
 
 const mockUnavailableRoute: RouteUnavailableResult = {

@@ -32,7 +32,6 @@ They do not use the development database or real Google credentials.
 | `GOOGLE_CLIENT_ID` | Ignored `.dev.vars` | Google OAuth web-client identifier for that origin. Keep runtime configuration outside browser modules. |
 | `GOOGLE_CLIENT_SECRET` | Ignored `.dev.vars` | Worker secret. Never put the value in source, command arguments, logs, or this runbook. |
 | `MEDIMAP_D1_STATE` | Optional local process variable | Local development/test state only. It is not a deployed binding. |
-| `GEOAPIFY_API_KEY` | Ignored `.dev.vars` | Worker secret for server-side geocoding and driving estimates. Never expose it in browser code. |
 
 Copy `.dev.vars.example` for local authentication setup.
 The exact callback is `<AUTH_ORIGIN>/auth/google/callback`.

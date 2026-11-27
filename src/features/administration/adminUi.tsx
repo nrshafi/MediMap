@@ -16,7 +16,6 @@ export const admin = {
   link: 'inline-flex min-h-touch items-center font-medium text-primary underline-offset-2 hover:underline',
   list: 'divide-y divide-border',
   listRow: 'flex min-w-0 items-center justify-between gap-4 py-1',
-  stack: 'grid gap-4',
   prose: 'whitespace-pre-wrap [overflow-wrap:anywhere]',
   fieldset: 'grid min-w-0 gap-3 rounded-sm border border-border p-4',
   legend: 'px-2 text-small font-semibold text-ink',

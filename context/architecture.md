@@ -112,7 +112,7 @@ Keep sample records in a separate fixture module. Never assign verified status, 
 Show a sample-data notice and label sample prices. Preserve unknown prices and dates as null.
 Return no branch results for ambiguous, unmatched, or unconfirmed typo queries. Require explicit service selection.
 Use one radius range, 0.1 to 100 km, across URL validation, domain filtering, and controls.
-Show routing as unavailable until a selected provider supplies validated results. The OSRM adapter is an optional integration, not the default provider.
+Show routing as unavailable. The OSRM adapter is removed.
 The SVG map is a schematic preview with no Google content. The `/discovery` route keeps sample data and does not use address search or map-based location selection. These features apply to `/find`.
 
 ### Provider-independent location input

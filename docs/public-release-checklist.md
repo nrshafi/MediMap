@@ -22,7 +22,7 @@ The browser suite tests selected keyboard and layout behavior. It does not estab
 ## Required external acceptance
 
 - Configure the Google OAuth client and verify live consent, callback, sign-out, and owner-granted administrator access.
-- Configure `GEOAPIFY_API_KEY`. Check Dhaka address accuracy, driving estimates, attribution, account quotas, and failure behavior.
+- Check Google Maps address lookup, driving estimates, attribution, and failure behavior with the configured Maps keys. Keep published prices and the list when the map is unavailable.
 - Confirm the 18 November 2026 branch coordinates. They come from one Places lookup of each published official address, not from a separate survey.
 - Verify map pins, radius membership, and routing against those coordinates. Unknown locations must remain excluded from geographic statistics.
 - Confirm authorized account, D1 binding, HTTPS origin, secret storage, backup storage, and deployment approval.

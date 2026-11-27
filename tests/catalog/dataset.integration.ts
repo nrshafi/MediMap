@@ -70,12 +70,12 @@ test('reviewed hospital dataset against actual local D1', async (t) => {
         const audit = await auditReviewedCatalog(db, catalog);
         assert.equal(audit.issues.length, 0);
         assert.equal(audit.overrides.length, 0);
-        assert.equal(audit.expectedListings, 196);
-        assert.equal(audit.storedSeedPrices, 196);
-        assert.equal(audit.publicActiveListings, 196);
-        assert.equal(audit.verifiedCurrentListings, 196);
-        assert.equal(await db.prepare('SELECT COUNT(*) AS count FROM providers').first('count'), 3);
-        assert.equal(await db.prepare('SELECT COUNT(*) AS count FROM branches').first('count'), 3);
+        assert.equal(audit.expectedListings, 217);
+        assert.equal(audit.storedSeedPrices, 217);
+        assert.equal(audit.publicActiveListings, 217);
+        assert.equal(audit.verifiedCurrentListings, 217);
+        assert.equal(await db.prepare('SELECT COUNT(*) AS count FROM providers').first('count'), 5);
+        assert.equal(await db.prepare('SELECT COUNT(*) AS count FROM branches').first('count'), 5);
         assert.equal(
           await db.prepare('SELECT COUNT(*) AS count FROM services').first('count'),
           136,
@@ -96,7 +96,7 @@ test('reviewed hospital dataset against actual local D1', async (t) => {
           after = page.nextCursor ?? undefined;
         } while (after);
         assert.deepEqual(ids.sort(), catalog.listings.map((item) => item.id).sort());
-        assert.equal(new Set(ids).size, 196);
+        assert.equal(new Set(ids).size, 217);
         for (const branch of catalog.branches) {
           const actual = await repository.getBranch(branch.id);
           assert.equal(actual?.address, branch.address);
@@ -117,6 +117,10 @@ test('reviewed hospital dataset against actual local D1', async (t) => {
           'holy-family-eskatan-covid-19-rt-pcr',
           'holy-family-eskatan-covid-19-antigen-rapid',
           'mogh-kamalapur-complete-blood-count',
+          'icddrb-mohakhali-complete-blood-count',
+          'icddrb-mohakhali-thyroid-stimulating-hormone',
+          'dcimch-shyamoli-fasting-blood-sugar',
+          'dcimch-shyamoli-alt',
         ]) {
           const expected = catalog.listings.find((item) => item.id === id);
           assert.ok(expected);

@@ -10,14 +10,16 @@ It does not represent complete hospital coverage or confirm live appointment ava
 | --- | --- | --- |
 | Ad-din Medical College Hospital, Moghbazar | 128 | 341 |
 | Monowara Orthopedic and General Hospital, Kamalapur Road | 66 | 45 |
+| Dhaka Central International Medical College & Hospital, Shyamoli | 14 | 77 |
+| icddr,b Laboratory Services, Mohakhali | 7 | 0 |
 | Holy Family Red Crescent Medical College Hospital, Eskatan Garden Road | 2 | 582 |
 | BMU Super Specialized Hospital, Shahbag | 0 | 829 |
 | Farabi General Hospital, Dhanmondi | 0 | 97 |
-| Total | 196 | 1,894 |
+| Total | 217 | 1,971 |
 
-The reviewed subset has three providers, three branches, 136 canonical services, and 17 stored source records.
+The reviewed subset has five providers, five branches, 136 canonical services, and 27 stored source records.
 Every research listing has a published or held decision in `data/catalog/publication-inventory.json`.
-The 1,894 holds comprise 1,508 currency gaps, 379 mapping gaps, and seven specific review concerns.
+Update the DCIMCH held count and total held count above to match `data/catalog/publication-inventory.json` after live fetch and `bun run catalog:build`.
 The original parser's excluded rows and duplicate evidence remain in `data/catalog/tariff-review.json`.
 The broader research exports remain unchanged and retain `publicationReady: false`.
 

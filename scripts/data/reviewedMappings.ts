@@ -40,14 +40,19 @@ export const mappings: ServiceMapping[] = [
     'complete-blood-count',
     'Complete Blood Count',
     'Hematology',
-    [s(hem, 1, 'CBC'), s(mogh, 11, 'CBC (Govt Rate)')],
+    [s(hem, 1, 'CBC'), s(mogh, 11, 'CBC (Govt Rate)'), s('icddrb-cbc', 1, 'Hemogram/CBC')],
     ['CBC', 'Full Blood Count', 'FBC'],
   ),
   service(
     'fasting-blood-sugar',
     'Fasting Blood Sugar',
     'Biochemistry',
-    [s(bio, 1, 'FBS (Fasting Plasma Glucose)'), s(mogh, 7, 'Blood Sugar Fasting')],
+    [
+      s(bio, 1, 'FBS (Fasting Plasma Glucose)'),
+      s(mogh, 7, 'Blood Sugar Fasting'),
+      s('icddrb-glucose-f', 1, 'Glucose (F)'),
+      s('dcimch-diagnostics', 31, 'FBS'),
+    ],
     ['FBS', 'Fasting Blood Glucose'],
   ),
   service(
@@ -67,9 +72,11 @@ export const mappings: ServiceMapping[] = [
   service('glucose-2h-after-75g', 'Blood Glucose, 2 Hours After 75 g Glucose', 'Biochemistry', [
     s(bio, 71, '2 hrs after 75 gm Glucose'),
     s(mogh, 3, 'B. Sugar After 2 Hrs 75G Glucose'),
+    s('dcimch-diagnostics', 211, '2HRS AFTER 75GM GLUCOSE'),
   ]),
   service('glucose-1h-after-75g', 'Blood Glucose, 1 Hour After 75 g Glucose', 'Biochemistry', [
     s(bio, 70, '1 hrs after 75 gm Glucose'),
+    s('dcimch-diagnostics', 324, '1HR AFTER 75GM GLUCOSE'),
   ]),
   service('glucose-1h-after-100g', 'Blood Glucose, 1 Hour After 100 g Glucose', 'Biochemistry', [
     s(bio, 2, '1 hr after 100 gm Glucose'),
@@ -102,6 +109,7 @@ export const mappings: ServiceMapping[] = [
   ),
   service('fasting-lipid-profile', 'Fasting Lipid Profile', 'Biochemistry', [
     s(bio, 46, 'Fasting Lipid Profile'),
+    s('icddrb-lipid-profile', 1, 'Lipid Profile'),
   ]),
   service('serum-total-cholesterol', 'Serum Total Cholesterol', 'Biochemistry', [
     s(bio, 12, 'S. Cholesterol (Total)'),
@@ -119,7 +127,7 @@ export const mappings: ServiceMapping[] = [
     'blood-urea-nitrogen',
     'Blood Urea Nitrogen',
     'Biochemistry',
-    [s(bio, 9, 'BUN (Blood Urea Nitrogen)')],
+    [s(bio, 9, 'BUN (Blood Urea Nitrogen)'), s('dcimch-diagnostics', 34, 'BUN')],
     ['BUN'],
   ),
   service('uric-acid', 'Uric Acid', 'Biochemistry', [
@@ -129,6 +137,7 @@ export const mappings: ServiceMapping[] = [
   service('serum-bilirubin-total', 'Serum Bilirubin, Total', 'Biochemistry', [
     s(bio, 16, 'S. Bilirubin, Total'),
     s(mogh, 38, 'Serum Bilirubin (Total)'),
+    s('dcimch-diagnostics', 40, 'BILIRUBIN TOTAL BLOOD'),
   ]),
   service('bilirubin-direct', 'Bilirubin, Direct', 'Biochemistry', [
     s(bio, 17, 'Bilirubin, Direct'),
@@ -140,17 +149,32 @@ export const mappings: ServiceMapping[] = [
     'ast',
     'AST',
     'Biochemistry',
-    [s(bio, 20, 'SGOT (AST)'), s(mogh, 43, 'SGOT (AST)')],
+    [
+      s(bio, 20, 'SGOT (AST)'),
+      s(mogh, 43, 'SGOT (AST)'),
+      s('dcimch-diagnostics', 42, 'AST (SGOT) BLOOD'),
+    ],
     ['SGOT'],
   ),
   service(
     'alt',
     'ALT',
     'Biochemistry',
-    [s(bio, 21, 'SGPT (ALT)'), s(mogh, 44, 'SGPT (ALT)')],
+    [
+      s(bio, 21, 'SGPT (ALT)'),
+      s(mogh, 44, 'SGPT (ALT)'),
+      s('icddrb-alt', 1, 'ALT (SGPT)'),
+      s('dcimch-diagnostics', 41, 'ALT (SGPT) BLOOD'),
+    ],
     ['SGPT'],
   ),
-  service('gamma-gt', 'Gamma-GT', 'Biochemistry', [s(bio, 19, 'Gamma-GT (GGT)')], ['GGT']),
+  service(
+    'gamma-gt',
+    'Gamma-GT',
+    'Biochemistry',
+    [s(bio, 19, 'Gamma-GT (GGT)'), s('dcimch-diagnostics', 290, 'GAMMA-GT (GGT)')],
+    ['GGT'],
+  ),
   service('serum-alkaline-phosphatase', 'Serum Alkaline Phosphatase', 'Biochemistry', [
     s(bio, 22, 'S. Alkaline Phosphatase'),
   ]),
@@ -162,6 +186,7 @@ export const mappings: ServiceMapping[] = [
   service('albumin-globulin-ratio', 'Albumin/Globulin Ratio', 'Biochemistry', [
     s(bio, 26, 'A/G Ratio'),
     s(mogh, 28, 'Protein: A.G.Ratio'),
+    s('dcimch-diagnostics', 45, 'A/G RATIO (ALBUMIN & GLOBULIN) SERUM'),
   ]),
   service('serum-amylase', 'Serum Amylase', 'Biochemistry', [
     s(bio, 29, 'S. Amylase'),
@@ -195,12 +220,19 @@ export const mappings: ServiceMapping[] = [
     'crp',
     'C-Reactive Protein',
     'Biochemistry',
-    [s(bio, 82, 'CRP (C-Reactive Protein)'), s(mogh, 14, 'CRP (Govt Rate)')],
+    [
+      s(bio, 82, 'CRP (C-Reactive Protein)'),
+      s(mogh, 14, 'CRP (Govt Rate)'),
+      s('dcimch-diagnostics', 170, 'CRP (C-REACTIVE PROTEIN)'),
+    ],
     ['CRP'],
   ),
-  service('ceruloplasmin', 'Ceruloplasmin', 'Biochemistry', [s(bio, 83, 'Ceruloplasmin')]),
+  service('ceruloplasmin', 'Ceruloplasmin', 'Biochemistry', [
+    s(bio, 83, 'Ceruloplasmin'),
+    s('dcimch-diagnostics', 563, 'CERULOPLASMIN BLOOD'),
+  ]),
   service('fibrinogen', 'Fibrinogen', 'Hematology', [s(bio, 85, 'Fibrinogen')]),
-  service('aptt', 'APTT', 'Hematology', [s(bio, 84, 'APTT')]),
+  service('aptt', 'APTT', 'Hematology', [s(bio, 84, 'APTT'), s('dcimch-diagnostics', 91, 'APTT')]),
   service('factor-viii-assay', 'Factor VIII Assay', 'Hematology', [
     s(bio, 87, 'Factor VIII Assay'),
   ]),
@@ -230,7 +262,7 @@ export const mappings: ServiceMapping[] = [
     'thyroid-stimulating-hormone',
     'Thyroid Stimulating Hormone (TSH)',
     'Immunology',
-    [s(imm, 3, 'TSH'), s(mogh, 62, 'TSH')],
+    [s(imm, 3, 'TSH'), s(mogh, 62, 'TSH'), s('icddrb-tsh', 1, 'TSH')],
     ['TSH'],
   ),
   service('t3', 'T3', 'Immunology', [s(imm, 1, 'T3'), s(mogh, 58, 'T3')]),
@@ -302,13 +334,19 @@ export const mappings: ServiceMapping[] = [
   service('igg', 'IgG', 'Immunology', [s(imm, 35, 'S. IgG')]),
   service('iga', 'IgA', 'Immunology', [s(imm, 37, 'S. IgA')]),
   service('ige', 'IgE', 'Immunology', [s(imm, 38, 'S. IgE')]),
-  service('complement-c3', 'Complement C3', 'Immunology', [s(imm, 42, 'C3')]),
-  service('complement-c4', 'Complement C4', 'Immunology', [s(imm, 43, 'C4')]),
+  service('complement-c3', 'Complement C3', 'Immunology', [
+    s(imm, 42, 'C3'),
+    s('dcimch-diagnostics', 285, 'C3'),
+  ]),
+  service('complement-c4', 'Complement C4', 'Immunology', [
+    s(imm, 43, 'C4'),
+    s('dcimch-diagnostics', 286, 'C4'),
+  ]),
   service(
     'urine-routine',
     'Urine Routine Examination',
     'Clinical Pathology',
-    [s(path, 8, 'URINE R/M/E'), s(mogh, 95, 'Urine R/M/E')],
+    [s(path, 8, 'URINE R/M/E'), s(mogh, 95, 'Urine R/M/E'), s('icddrb-urine-rme', 1, 'Urine RME')],
     ['Urine R/M/E'],
   ),
   service('stool-routine', 'Stool Routine Examination', 'Clinical Pathology', [
@@ -464,6 +502,7 @@ export const mappings: ServiceMapping[] = [
   service('covid-19-rt-pcr', 'COVID-19 RT-PCR', 'PCR', [
     s('holy-family-covid', 1, 'RT-PCR TEST for Covid-19'),
     s(vir, 27, 'COVID-19-RT-PCR'),
+    s('icddrb-covid-rtpcr', 1, 'Covid-19 Real Time RT PCR'),
   ]),
   service('covid-19-antigen-rapid', 'COVID-19 Antigen Rapid Test', 'Serology', [
     s('holy-family-covid', 2, 'Covid-19 Rapid Antigen Test'),

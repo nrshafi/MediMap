@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "catalogId": "reviewed-catalog-20261028",
-  "reviewedAt": "2026-11-22T10:24:13Z",
+  "reviewedAt": "2026-11-22T10:28:59Z",
   "summary": {
     "researchListings": 2188,
-    "publishedListings": 196,
-    "representedResearchListings": 196,
-    "heldResearchListings": 1992,
-    "providers": 3,
-    "branches": 3,
+    "publishedListings": 217,
+    "representedResearchListings": 217,
+    "heldResearchListings": 1971,
+    "providers": 5,
+    "branches": 5,
     "canonicalServices": 136
   },
   "branches": [
@@ -39,13 +39,13 @@
     },
     {
       "id": "icddrb-mohakhali",
-      "publishedListings": 0,
-      "heldResearchListings": 7
+      "publishedListings": 7,
+      "heldResearchListings": 0
     },
     {
       "id": "dcimch-shyamoli",
-      "publishedListings": 0,
-      "heldResearchListings": 91
+      "publishedListings": 14,
+      "heldResearchListings": 77
     }
   ],
   "researchDecisions": [
@@ -10501,38 +10501,38 @@
     },
     {
       "researchId": "research-866dbfe6f41584d21f5b",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-complete-blood-count"
     },
     {
       "researchId": "research-78571b6cbfc7b7ccce0d",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-fasting-blood-sugar"
     },
     {
       "researchId": "research-016100a26b4db98cec37",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-fasting-lipid-profile"
     },
     {
       "researchId": "research-7922d7a2e54b49f41d5d",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-alt"
     },
     {
       "researchId": "research-42be4f0d9dbfd398ee70",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-thyroid-stimulating-hormone"
     },
     {
       "researchId": "research-2ee67189de5577b478a4",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-urine-routine"
     },
     {
       "researchId": "research-652a4434fb8ff59162c8",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "icddrb-mohakhali-covid-19-rt-pcr"
     },
     {
       "researchId": "research-f7fde423aa0ffb2ca49f",
@@ -10546,8 +10546,8 @@
     },
     {
       "researchId": "research-a2b2296bfb0479db84fb",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-glucose-1h-after-75g"
     },
     {
       "researchId": "research-229b568ff0951df81cf7",
@@ -10556,8 +10556,8 @@
     },
     {
       "researchId": "research-3d2c1e0c13471189970e",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-glucose-2h-after-75g"
     },
     {
       "researchId": "research-7d169d893282790abbfa",
@@ -10566,8 +10566,8 @@
     },
     {
       "researchId": "research-d56e6372d4d54fd7c5a2",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-albumin-globulin-ratio"
     },
     {
       "researchId": "research-63d358593ef12ba59f4d",
@@ -10591,8 +10591,8 @@
     },
     {
       "researchId": "research-1abb17567733d9bece1d",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-alt"
     },
     {
       "researchId": "research-5213f89ad22e27e1e047",
@@ -10611,8 +10611,8 @@
     },
     {
       "researchId": "research-1dcd140d7828ca649cb5",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-aptt"
     },
     {
       "researchId": "research-fab4ddd90927f170c902",
@@ -10646,8 +10646,8 @@
     },
     {
       "researchId": "research-1fdf10a63fece3b461ab",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-ast"
     },
     {
       "researchId": "research-d7e297c4f298792b72f2",
@@ -10686,8 +10686,8 @@
     },
     {
       "researchId": "research-1451a32bd093ec8a24eb",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-serum-bilirubin-total"
     },
     {
       "researchId": "research-7af73c869f876dbf77a9",
@@ -10701,18 +10701,18 @@
     },
     {
       "researchId": "research-68a1ce814cfe131c8be4",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-blood-urea-nitrogen"
     },
     {
       "researchId": "research-c276f09c9272c0323a97",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-complement-c3"
     },
     {
       "researchId": "research-bda263d015b8f3db0ba6",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-complement-c4"
     },
     {
       "researchId": "research-32e1a60ae4837f22cece",
@@ -10761,8 +10761,8 @@
     },
     {
       "researchId": "research-3ffc58a9aca0077db3b7",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-ceruloplasmin"
     },
     {
       "researchId": "research-8e2dfd4e2c12c32c493b",
@@ -10801,8 +10801,8 @@
     },
     {
       "researchId": "research-f7a82778e3e50df93b11",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-crp"
     },
     {
       "researchId": "research-0ff777c5c7102be5d8cb",
@@ -10956,8 +10956,8 @@
     },
     {
       "researchId": "research-2509b835531b393dc12f",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-fasting-blood-sugar"
     },
     {
       "researchId": "research-a3ea739534b6b8f5735f",
@@ -10976,8 +10976,8 @@
     },
     {
       "researchId": "research-5dad88aefe3f7840b950",
-      "disposition": "held",
-      "reason": "canonical_mapping_review_required"
+      "disposition": "published",
+      "listingId": "dcimch-shyamoli-gamma-gt"
     },
     {
       "researchId": "research-fc0f67e208d67adf87bc",

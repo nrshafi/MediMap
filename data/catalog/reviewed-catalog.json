@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "reviewed-catalog-20261028",
-  "reviewedAt": "2026-11-22T10:24:13Z",
+  "reviewedAt": "2026-11-22T10:28:59Z",
   "reviewer": "Codra21 official-website review",
   "evidenceSha256": "9f5143995020781bc0d50cf84cf4474c19170f16f5ddbbb1afeafb993a5150ab",
   "providers": [
@@ -16,6 +16,14 @@
     {
       "id": "addin-medical-college-hospital",
       "name": "Ad-din Medical College Hospital"
+    },
+    {
+      "id": "icddrb-laboratory-services",
+      "name": "icddr,b Laboratory Services"
+    },
+    {
+      "id": "dhaka-central-international-medical-college-hospital",
+      "name": "Dhaka Central International Medical College & Hospital"
     }
   ],
   "branches": [
@@ -48,6 +56,26 @@
       "phone": null,
       "latitude": 23.7483439,
       "longitude": 90.4053762
+    },
+    {
+      "id": "icddrb-mohakhali",
+      "providerId": "icddrb-laboratory-services",
+      "name": "Mohakhali",
+      "address": "68 Shaheed Tajuddin Ahmed Sarani, Mohakhali, Dhaka",
+      "contactSourceId": "icddrb-contact-20261028",
+      "phone": "+8801713116982",
+      "latitude": 23.7762949,
+      "longitude": 90.3997591
+    },
+    {
+      "id": "dcimch-shyamoli",
+      "providerId": "dhaka-central-international-medical-college-hospital",
+      "name": "Shyamoli",
+      "address": "2/1, Ring Road, Shyamoli, Dhaka-1207, Bangladesh",
+      "contactSourceId": "dcimch-contact-20261028",
+      "phone": "09610-910651",
+      "latitude": 23.7734306,
+      "longitude": 90.3611292
     }
   ],
   "services": [
@@ -1167,7 +1195,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-clinical-pathology-20261028",
@@ -1179,7 +1207,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-contact-20261028",
@@ -1191,7 +1219,7 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": null,
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-hematology-20261028",
@@ -1203,7 +1231,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-immunology-20261028",
@@ -1215,7 +1243,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-microbiology-20261028",
@@ -1227,7 +1255,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-radiology-20261028",
@@ -1239,7 +1267,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-serology-20261028",
@@ -1251,7 +1279,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-ultrasonography-20261028",
@@ -1263,7 +1291,7 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-virology-20261028",
@@ -1275,7 +1303,31 @@
       "sourceUpdatedDate": "2026-02-23",
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "dcimch-contact-20261028",
+      "providerId": "dhaka-central-international-medical-college-hospital",
+      "url": "https://dcimch.com/contact",
+      "kind": "official_contact",
+      "retrievedAt": "2026-11-22T10:23:35.255Z",
+      "sha256": "ef0678633b5e1be39cba8b05e1bc5dafbc7447a234c40ccad1374581073d5af5",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "dcimch-diagnostics-20261028",
+      "providerId": "dhaka-central-international-medical-college-hospital",
+      "url": "https://dcimch.com/diagnostics",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:35.748Z",
+      "sha256": "014ea16c982c787e53061def44f15b611badf388e57c54f78a566bc20d4740b2",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_symbol",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "holy-family-contact-20261028",
@@ -1287,7 +1339,7 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": null,
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "holy-family-covid-20261028",
@@ -1299,7 +1351,7 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": "explicit_taka_header",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "holy-family-pathology-20261028",
@@ -1311,7 +1363,103 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": null,
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-alt-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/219/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:33.942Z",
+      "sha256": "26c760a06d828ab5b6c68689455d72b524686437df81b322f42917e58e48be92",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-cbc-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/78/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:33.753Z",
+      "sha256": "040cb216b7ab11a97a5ba5c275fb73429efdef3451bedbff48b7dabe582eb2ce",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-contact-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/contact-us",
+      "kind": "official_contact",
+      "retrievedAt": "2026-11-22T10:23:33.536Z",
+      "sha256": "69ef111f6d1d4925699a7074be7c57c378b60b62859cf34786360033036dbdc1",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": null,
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-covid-rtpcr-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/529",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:34.264Z",
+      "sha256": "b47828537061f2634c7c4fa9b3d335585367a5d064ff77344f8bc1ea6b21c095",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-glucose-f-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/181/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:33.744Z",
+      "sha256": "4906e99e32127577026a5f215afed3825613e294ab80b4529905a577532682d7",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-lipid-profile-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/214/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:33.935Z",
+      "sha256": "e68ac41310a73064a84db407bbf74b338bb85f9d230c37d06610f627a8b196b2",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-tsh-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/241/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:34.131Z",
+      "sha256": "0312940a516f00ecb744e59bf5d3fc26e0f63f9c523c5c52b5ed58901c53d478",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
+    },
+    {
+      "id": "icddrb-urine-rme-20261028",
+      "providerId": "icddrb-laboratory-services",
+      "url": "https://labservices.icddrb.org/test-details/308/",
+      "kind": "official_tariff",
+      "retrievedAt": "2026-11-22T10:23:34.140Z",
+      "sha256": "0178c48029fedfa85d5eb7305e5c68bfc79b259546f34b86705f22722cb4554d",
+      "sourceUpdatedDate": null,
+      "currencyEvidence": "explicit_taka_header",
+      "collector": "Codra21 official-website review",
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "mogh-contact-20261028",
@@ -1323,7 +1471,7 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": null,
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "mogh-tests-20261028",
@@ -1335,7 +1483,7 @@
       "sourceUpdatedDate": null,
       "currencyEvidence": "explicit_taka_symbol",
       "collector": "Codra21 official-website review",
-      "recordedAt": "2026-11-22T10:24:13Z"
+      "recordedAt": "2026-11-22T10:28:59Z"
     },
     {
       "id": "addin-hematology-20261027",
@@ -1387,9 +1535,24 @@
       "amountMinor": 40000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 11,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f139e68fa38939cf08b2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-complete-blood-count",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "complete-blood-count",
+      "providerServiceName": "Hemogram/CBC",
+      "priceId": "reviewed-price-5ff4ce47f13d2e6de6a8-20261028",
+      "amountMinor": 40000,
+      "sourceId": "icddrb-cbc-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-866dbfe6f41584d21f5b"
       ],
       "corroboration": []
     },
@@ -1402,7 +1565,7 @@
       "amountMinor": 17000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 1,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-cb92c45b37bba8697a69"
       ],
@@ -1417,9 +1580,39 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f3a5c7cde433295c2361"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-fasting-blood-sugar",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "fasting-blood-sugar",
+      "providerServiceName": "Glucose (F)",
+      "priceId": "reviewed-price-4be8d8baf9f5a7bc6b52-20261028",
+      "amountMinor": 16000,
+      "sourceId": "icddrb-glucose-f-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-78571b6cbfc7b7ccce0d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-fasting-blood-sugar",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "fasting-blood-sugar",
+      "providerServiceName": "FBS",
+      "priceId": "reviewed-price-51905f4a9c276da569b1-20261028",
+      "amountMinor": 20000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 31,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-2509b835531b393dc12f"
       ],
       "corroboration": []
     },
@@ -1432,7 +1625,7 @@
       "amountMinor": 17000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 6,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a7cc9f36886166eb2199"
       ],
@@ -1447,7 +1640,7 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-1644b9e771e847caad76"
       ],
@@ -1462,7 +1655,7 @@
       "amountMinor": 17000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 5,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-783c8094e2dd9ae83e8f"
       ],
@@ -1477,7 +1670,7 @@
       "amountMinor": 19000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 71,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4c2b4a1983729634fc0d"
       ],
@@ -1492,9 +1685,24 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 3,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-47181658c616a5b3f2ad"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-glucose-2h-after-75g",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "glucose-2h-after-75g",
+      "providerServiceName": "2HRS AFTER 75GM GLUCOSE",
+      "priceId": "reviewed-price-f6d9f94efea8789e235c-20261028",
+      "amountMinor": 25000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 211,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-3d2c1e0c13471189970e"
       ],
       "corroboration": []
     },
@@ -1507,9 +1715,24 @@
       "amountMinor": 19000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 70,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-173c9aec48a920ec0141"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-glucose-1h-after-75g",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "glucose-1h-after-75g",
+      "providerServiceName": "1HR AFTER 75GM GLUCOSE",
+      "priceId": "reviewed-price-08a1d46f9b9a0c9e9568-20261028",
+      "amountMinor": 25000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 324,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-a2b2296bfb0479db84fb"
       ],
       "corroboration": []
     },
@@ -1522,7 +1745,7 @@
       "amountMinor": 19000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 2,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-fb5c0676a7e546969ddb"
       ],
@@ -1537,7 +1760,7 @@
       "amountMinor": 19000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 3,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-9d67b2f6f818e0f22033"
       ],
@@ -1552,7 +1775,7 @@
       "amountMinor": 19000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 4,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-32b811a1332e0e64ab88"
       ],
@@ -1567,7 +1790,7 @@
       "amountMinor": 35000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 76,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-47ce5de96176b15edf2f"
       ],
@@ -1582,7 +1805,7 @@
       "amountMinor": 48000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 77,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f1758d66ad6046a8e8d0"
       ],
@@ -1597,7 +1820,7 @@
       "amountMinor": 82000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 39,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-6c987d0b4e1590192476"
       ],
@@ -1612,7 +1835,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 20,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2fbe2309c6970965229d"
       ],
@@ -1627,7 +1850,7 @@
       "amountMinor": 82000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 41,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-dd8c15fc6f2805e11a5c"
       ],
@@ -1642,7 +1865,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 25,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ed21a3feea05a24166d8"
       ],
@@ -1657,9 +1880,24 @@
       "amountMinor": 82000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 46,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e8545e25cf7897d765d3"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-fasting-lipid-profile",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "fasting-lipid-profile",
+      "providerServiceName": "Lipid Profile",
+      "priceId": "reviewed-price-a9435bda78a68829a129-20261028",
+      "amountMinor": 126000,
+      "sourceId": "icddrb-lipid-profile-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-016100a26b4db98cec37"
       ],
       "corroboration": []
     },
@@ -1672,7 +1910,7 @@
       "amountMinor": 27000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 12,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b2d46480a13a68e96f96"
       ],
@@ -1687,7 +1925,7 @@
       "amountMinor": 40000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 40,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b3648c45285eb589209e"
       ],
@@ -1702,7 +1940,7 @@
       "amountMinor": 40000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 13,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-9531d91df4dced995ede"
       ],
@@ -1717,7 +1955,7 @@
       "amountMinor": 60000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 14,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-80787b8e479c03e8c74c"
       ],
@@ -1732,7 +1970,7 @@
       "amountMinor": 32000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 15,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-62be456d2a588477de9b"
       ],
@@ -1747,7 +1985,7 @@
       "amountMinor": 22000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-928a93b83ac6ed11f4fd"
       ],
@@ -1762,7 +2000,7 @@
       "amountMinor": 50000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 46,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e24d3534d3763a0d0fe5"
       ],
@@ -1777,9 +2015,24 @@
       "amountMinor": 22000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d53231eb4d5d558a8170"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-blood-urea-nitrogen",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "blood-urea-nitrogen",
+      "providerServiceName": "BUN",
+      "priceId": "reviewed-price-7e6fe771ecf042919663-20261028",
+      "amountMinor": 50000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 34,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-68a1ce814cfe131c8be4"
       ],
       "corroboration": []
     },
@@ -1792,7 +2045,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-82bc679e8b1aca0afe46"
       ],
@@ -1807,7 +2060,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 42,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-3611c3923b181ca895ae"
       ],
@@ -1822,7 +2075,7 @@
       "amountMinor": 28000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 16,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e080350c9e6f3fea884c"
       ],
@@ -1837,9 +2090,24 @@
       "amountMinor": 50000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 38,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4571381a3b7a1c4e11a2"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-serum-bilirubin-total",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "serum-bilirubin-total",
+      "providerServiceName": "BILIRUBIN TOTAL BLOOD",
+      "priceId": "reviewed-price-37c52951f7d358f15392-20261028",
+      "amountMinor": 30000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 40,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-1451a32bd093ec8a24eb"
       ],
       "corroboration": []
     },
@@ -1852,7 +2120,7 @@
       "amountMinor": 42000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 17,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-87b3a21d249683220bc7"
       ],
@@ -1867,7 +2135,7 @@
       "amountMinor": 39000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d4043a96a580e5777b19"
       ],
@@ -1882,7 +2150,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 20,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4ff2a2478d7d85cc68ce"
       ],
@@ -1897,9 +2165,24 @@
       "amountMinor": 50000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 43,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-1e4ab719bc9391dfa3be"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-ast",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "ast",
+      "providerServiceName": "AST (SGOT) BLOOD",
+      "priceId": "reviewed-price-10a6873320868c2e2876-20261028",
+      "amountMinor": 50000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 42,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-1fdf10a63fece3b461ab"
       ],
       "corroboration": []
     },
@@ -1912,7 +2195,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 21,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e7823bd647ea4df9cd52"
       ],
@@ -1927,9 +2210,39 @@
       "amountMinor": 70000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 44,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-5d728eebde73eaf663f4"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-alt",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "alt",
+      "providerServiceName": "ALT (SGPT)",
+      "priceId": "reviewed-price-716f7843aaca80a9a802-20261028",
+      "amountMinor": 32000,
+      "sourceId": "icddrb-alt-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-7922d7a2e54b49f41d5d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-alt",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "alt",
+      "providerServiceName": "ALT (SGPT) BLOOD",
+      "priceId": "reviewed-price-fb4f5b064f903daa15d0-20261028",
+      "amountMinor": 50000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 41,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-1abb17567733d9bece1d"
       ],
       "corroboration": []
     },
@@ -1942,9 +2255,24 @@
       "amountMinor": 66000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 19,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-6fa5ef0596e93cf6bd93"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-gamma-gt",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "gamma-gt",
+      "providerServiceName": "GAMMA-GT (GGT)",
+      "priceId": "reviewed-price-4f5d623074233e219607-20261028",
+      "amountMinor": 120000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 290,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-5dad88aefe3f7840b950"
       ],
       "corroboration": []
     },
@@ -1957,7 +2285,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 22,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a115a7c3aa5b58d761d5"
       ],
@@ -1972,7 +2300,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 23,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2d3d31a0398228f182d1"
       ],
@@ -1987,7 +2315,7 @@
       "amountMinor": 70000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 29,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ba8ee0b7719a34fefc5f"
       ],
@@ -2002,7 +2330,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 24,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0d7e5d0e9177168656ba"
       ],
@@ -2017,7 +2345,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 26,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a622f91823fb9dd0f868"
       ],
@@ -2032,9 +2360,24 @@
       "amountMinor": 100000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 28,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-fd4499991a70c9289d6d"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-albumin-globulin-ratio",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "albumin-globulin-ratio",
+      "providerServiceName": "A/G RATIO (ALBUMIN & GLOBULIN) SERUM",
+      "priceId": "reviewed-price-108fa21d6a98daaca304-20261028",
+      "amountMinor": 90000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 45,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-d56e6372d4d54fd7c5a2"
       ],
       "corroboration": []
     },
@@ -2047,7 +2390,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 29,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2a2b0a5835a6664f8e58"
       ],
@@ -2062,7 +2405,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 37,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-678d46771b00b4763200"
       ],
@@ -2077,7 +2420,7 @@
       "amountMinor": 76000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 56,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-c16fe669b1ccc303469d"
       ],
@@ -2092,7 +2435,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 31,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-43a9b0ce227b09cd7bf9"
       ],
@@ -2107,7 +2450,7 @@
       "amountMinor": 70000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 39,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-86c5607cf6b8837e208d"
       ],
@@ -2122,7 +2465,7 @@
       "amountMinor": 66000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 59,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0d7d6cf7611f7572db5e"
       ],
@@ -2137,7 +2480,7 @@
       "amountMinor": 66000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 60,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f4c5100db0b6ac0fd163"
       ],
@@ -2152,7 +2495,7 @@
       "amountMinor": 101000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 35,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-801b1dbd44a789cf1cb4"
       ],
@@ -2167,7 +2510,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 35,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-073728649470672bf58d"
       ],
@@ -2182,7 +2525,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 34,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e95033b969473e00be70"
       ],
@@ -2197,7 +2540,7 @@
       "amountMinor": 100000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 25,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-6ea494876e8116a4c481"
       ],
@@ -2212,7 +2555,7 @@
       "amountMinor": 61000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 28,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4c440e22f29355165032"
       ],
@@ -2227,7 +2570,7 @@
       "amountMinor": 76000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 57,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-088b6d97e6e5298acb04"
       ],
@@ -2242,7 +2585,7 @@
       "amountMinor": 151000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 58,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f525e2b0bc384b0c2c60"
       ],
@@ -2257,7 +2600,7 @@
       "amountMinor": 221000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 89,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ce06ddfbfc20a00168c6"
       ],
@@ -2272,7 +2615,7 @@
       "amountMinor": 350000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 63,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-93d0f0ac2f3873a580f7"
       ],
@@ -2287,7 +2630,7 @@
       "amountMinor": 61000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 82,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8f26128266a601a0e215"
       ],
@@ -2302,9 +2645,24 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 14,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-3225c9bbd253a4744378"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-crp",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "crp",
+      "providerServiceName": "CRP (C-REACTIVE PROTEIN)",
+      "priceId": "reviewed-price-9d87893ebdf176c96222-20261028",
+      "amountMinor": 60000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 170,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-f7a82778e3e50df93b11"
       ],
       "corroboration": []
     },
@@ -2317,9 +2675,24 @@
       "amountMinor": 87000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 83,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b3fdae3734afa097a713"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-ceruloplasmin",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "ceruloplasmin",
+      "providerServiceName": "CERULOPLASMIN BLOOD",
+      "priceId": "reviewed-price-e1d64699a494154083d0-20261028",
+      "amountMinor": 140000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 563,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-3ffc58a9aca0077db3b7"
       ],
       "corroboration": []
     },
@@ -2332,7 +2705,7 @@
       "amountMinor": 91000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 85,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-60f8f99830676b09a1fa"
       ],
@@ -2347,9 +2720,24 @@
       "amountMinor": 70000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 84,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4f48771bcb493567bcc5"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-aptt",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "aptt",
+      "providerServiceName": "APTT",
+      "priceId": "reviewed-price-2b16fac3f8936c8a3bf4-20261028",
+      "amountMinor": 120000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 91,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-1dcd140d7828ca649cb5"
       ],
       "corroboration": []
     },
@@ -2362,7 +2750,7 @@
       "amountMinor": 89000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 87,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a19e6cc36edbca88c7b2"
       ],
@@ -2377,7 +2765,7 @@
       "amountMinor": 89000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 88,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-932ff861df2f7262740f"
       ],
@@ -2392,7 +2780,7 @@
       "amountMinor": 46000,
       "sourceId": "addin-biochemistry-20261028",
       "sourceRow": 40,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d52fc0a5ad620fb71f9e"
       ],
@@ -2407,7 +2795,7 @@
       "amountMinor": 100000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 30,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-5af18469eb6d7d6bd3e5"
       ],
@@ -2422,7 +2810,7 @@
       "amountMinor": 13000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 2,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f18ee7b44ad23e57ae00"
       ],
@@ -2437,7 +2825,7 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 19,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-c3bb0d5563842b34e257"
       ],
@@ -2452,7 +2840,7 @@
       "amountMinor": 23000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 3,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a6474db48cbf02c52d2d"
       ],
@@ -2467,7 +2855,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 27,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d446cd87f2a786dfbece"
       ],
@@ -2482,7 +2870,7 @@
       "amountMinor": 23000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 4,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8e7455e05204e4615f48"
       ],
@@ -2497,7 +2885,7 @@
       "amountMinor": 21000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 6,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-daed234b931686d85163"
       ],
@@ -2512,7 +2900,7 @@
       "amountMinor": 21000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8b631af7e261096e8e06"
       ],
@@ -2527,7 +2915,7 @@
       "amountMinor": 21000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-6f8a3cf36483e5b091ce"
       ],
@@ -2542,7 +2930,7 @@
       "amountMinor": 13000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-dad7e33c40acaed4efbb"
       ],
@@ -2557,7 +2945,7 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d694bf559f52ea8e80e0"
       ],
@@ -2572,7 +2960,7 @@
       "amountMinor": 31000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0c1c5f6db83df623183c"
       ],
@@ -2587,7 +2975,7 @@
       "amountMinor": 21000,
       "sourceId": "addin-hematology-20261028",
       "sourceRow": 19,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8fa3a73f4091a40a7fdf"
       ],
@@ -2602,7 +2990,7 @@
       "amountMinor": 20000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 10,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-9359b5ca878290acdfe7"
       ],
@@ -2617,7 +3005,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 3,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-620052ae2dbfc3a964b4"
       ],
@@ -2632,9 +3020,24 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 62,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-519cc77035de8f78d654"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-thyroid-stimulating-hormone",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "thyroid-stimulating-hormone",
+      "providerServiceName": "TSH",
+      "priceId": "reviewed-price-6f0a53b59dfe730c673c-20261028",
+      "amountMinor": 95000,
+      "sourceId": "icddrb-tsh-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-42be4f0d9dbfd398ee70"
       ],
       "corroboration": []
     },
@@ -2647,7 +3050,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 1,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-c9d1e244fde51e05e818"
       ],
@@ -2662,7 +3065,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 58,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-794c6f6e17e5a0c7cbaf"
       ],
@@ -2677,7 +3080,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 2,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-bc2920afbd06d5e6e61e"
       ],
@@ -2692,7 +3095,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 60,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-862c6fd6ab86138fffe6"
       ],
@@ -2707,7 +3110,7 @@
       "amountMinor": 76000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 4,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-64eb54a836f823cb64f6"
       ],
@@ -2722,7 +3125,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 52,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b591ca22b49df16b3e26"
       ],
@@ -2737,7 +3140,7 @@
       "amountMinor": 76000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 5,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2616abb900ec0302c20f"
       ],
@@ -2752,7 +3155,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 53,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0aabb4f78c6f371b4a2a"
       ],
@@ -2767,7 +3170,7 @@
       "amountMinor": 171000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 6,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-607675467c2baf202e7f"
       ],
@@ -2782,7 +3185,7 @@
       "amountMinor": 240000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 59,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-93bce16255bafcb357f0"
       ],
@@ -2797,7 +3200,7 @@
       "amountMinor": 201000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e702fcd1ba009d6766a1"
       ],
@@ -2812,7 +3215,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-c9cb996da8189e21ee97"
       ],
@@ -2827,7 +3230,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 57,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-14f88d888fb2fa963bc5"
       ],
@@ -2842,7 +3245,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 10,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a5433c7333111fd501bd"
       ],
@@ -2857,7 +3260,7 @@
       "amountMinor": 100000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 61,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ca2d481b20ba4f310ab1"
       ],
@@ -2872,7 +3275,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 11,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-1c80cde044fb31ab4c8e"
       ],
@@ -2887,7 +3290,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 51,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-73ec6f800de8ef6e0556"
       ],
@@ -2902,7 +3305,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 12,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0f726b3f90781e33af91"
       ],
@@ -2917,7 +3320,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 54,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b947fc8ce1de5a26071b"
       ],
@@ -2932,7 +3335,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 13,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0728ecbcdd99638df278"
       ],
@@ -2947,7 +3350,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 55,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-5cdb63b8a35c692165bc"
       ],
@@ -2962,7 +3365,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 14,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-027259f65be79fbbf084"
       ],
@@ -2977,7 +3380,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 15,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-5b59e00462a9c64aff62"
       ],
@@ -2992,7 +3395,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 56,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-acc837e8becd7d4a8964"
       ],
@@ -3007,7 +3410,7 @@
       "amountMinor": 119000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 16,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-cf437d26aacc0d65df0c"
       ],
@@ -3022,7 +3425,7 @@
       "amountMinor": 119000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 17,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-36b0491f5f0a8e0e74d8"
       ],
@@ -3037,7 +3440,7 @@
       "amountMinor": 201000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-61c50a6c6ff4254d87e6"
       ],
@@ -3052,7 +3455,7 @@
       "amountMinor": 200000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 36,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8f896c658b01cec7e0ce"
       ],
@@ -3067,7 +3470,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 19,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f72fce96ed1abe30005d"
       ],
@@ -3082,7 +3485,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 20,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-17fdff092549efef2073"
       ],
@@ -3097,7 +3500,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 22,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-78292446f7fc95ab665f"
       ],
@@ -3112,7 +3515,7 @@
       "amountMinor": 76000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 45,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-788f441ec22a559103ef"
       ],
@@ -3127,7 +3530,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 23,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-227d982d761b4360e0f8"
       ],
@@ -3142,7 +3545,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 24,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-fd16c79a52f0f4529104"
       ],
@@ -3157,7 +3560,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 25,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-64b28e9aaf9b295d0d6a"
       ],
@@ -3172,7 +3575,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 46,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d77222ba0999841d9d46"
       ],
@@ -3187,7 +3590,7 @@
       "amountMinor": 91000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 47,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-89c59e64c9155c0e521f"
       ],
@@ -3202,7 +3605,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 36,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-eed043b5c5ffcfb88819"
       ],
@@ -3217,7 +3620,7 @@
       "amountMinor": 81000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 35,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-7bb458e5e2bc321915d5"
       ],
@@ -3232,7 +3635,7 @@
       "amountMinor": 84000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 37,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f36077003a277cd6f6b2"
       ],
@@ -3247,7 +3650,7 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 38,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4208d1f2959bd4373cc7"
       ],
@@ -3262,9 +3665,24 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 42,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-07d943acd90c0f995bda"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-complement-c3",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "complement-c3",
+      "providerServiceName": "C3",
+      "priceId": "reviewed-price-02042de476b2d7327e22-20261028",
+      "amountMinor": 150000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 285,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-c276f09c9272c0323a97"
       ],
       "corroboration": []
     },
@@ -3277,9 +3695,24 @@
       "amountMinor": 71000,
       "sourceId": "addin-immunology-20261028",
       "sourceRow": 43,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-c21ba9b0007bad3f4817"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "dcimch-shyamoli-complement-c4",
+      "branchId": "dcimch-shyamoli",
+      "serviceId": "complement-c4",
+      "providerServiceName": "C4",
+      "priceId": "reviewed-price-7d997257b97d926d3a7a-20261028",
+      "amountMinor": 150000,
+      "sourceId": "dcimch-diagnostics-20261028",
+      "sourceRow": 286,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-bda263d015b8f3db0ba6"
       ],
       "corroboration": []
     },
@@ -3292,7 +3725,7 @@
       "amountMinor": 17000,
       "sourceId": "addin-clinical-pathology-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-1a89977f30c950e55384"
       ],
@@ -3307,9 +3740,24 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 95,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-20d5c3e94ccec4ba5923"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-urine-routine",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "urine-routine",
+      "providerServiceName": "Urine RME",
+      "priceId": "reviewed-price-2b3f0202f9b574c87b81-20261028",
+      "amountMinor": 40000,
+      "sourceId": "icddrb-urine-rme-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-2ee67189de5577b478a4"
       ],
       "corroboration": []
     },
@@ -3322,7 +3770,7 @@
       "amountMinor": 17000,
       "sourceId": "addin-clinical-pathology-20261028",
       "sourceRow": 1,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ed1eff85f9d6865342a5"
       ],
@@ -3337,7 +3785,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 82,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-1a868a2596454ef76e93"
       ],
@@ -3352,7 +3800,7 @@
       "amountMinor": 31000,
       "sourceId": "addin-clinical-pathology-20261028",
       "sourceRow": 3,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-dc591418860c9393ab6a"
       ],
@@ -3367,7 +3815,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 81,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b396301cf97434260656"
       ],
@@ -3382,7 +3830,7 @@
       "amountMinor": 41000,
       "sourceId": "addin-clinical-pathology-20261028",
       "sourceRow": 17,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b128dba0e9febeea2fdf"
       ],
@@ -3397,7 +3845,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 79,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-39316318e0383b3e3704"
       ],
@@ -3412,7 +3860,7 @@
       "amountMinor": 26000,
       "sourceId": "addin-clinical-pathology-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-959f683ae39acd306a16"
       ],
@@ -3427,7 +3875,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 77,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-90f571f827fd79cf6587"
       ],
@@ -3442,7 +3890,7 @@
       "amountMinor": 20000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ad36fba7e4fe8f8458f4"
       ],
@@ -3457,7 +3905,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 94,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-caef04e0d17159482217"
       ],
@@ -3472,7 +3920,7 @@
       "amountMinor": 31000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 10,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-89fda61f715c7d994ad7"
       ],
@@ -3487,7 +3935,7 @@
       "amountMinor": 50000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 47,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ce0376009f58335ec47e"
       ],
@@ -3502,7 +3950,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 11,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-3172dd2fe670a9138622"
       ],
@@ -3517,7 +3965,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 45,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-219d53146be21f5a3ba6"
       ],
@@ -3532,7 +3980,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 12,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-827d17f974ee2ef9e3f3"
       ],
@@ -3547,7 +3995,7 @@
       "amountMinor": 50000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 48,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-160a816588cbac9066d2"
       ],
@@ -3562,7 +4010,7 @@
       "amountMinor": 61000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 5,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-6684ce2bad819f77ae02"
       ],
@@ -3577,7 +4025,7 @@
       "amountMinor": 37000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-89dd1248a989bf39b8f0"
       ],
@@ -3592,7 +4040,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 21,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-50ba681eccb5d0ee44c6"
       ],
@@ -3607,7 +4055,7 @@
       "amountMinor": 120000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 22,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d8875e998a6f5c5984b2"
       ],
@@ -3622,7 +4070,7 @@
       "amountMinor": 66000,
       "sourceId": "addin-virology-20261028",
       "sourceRow": 25,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f9e28527b20e24f6f55a"
       ],
@@ -3637,7 +4085,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 16,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f824533bf65ed763d551"
       ],
@@ -3652,7 +4100,7 @@
       "amountMinor": 56000,
       "sourceId": "addin-serology-20261028",
       "sourceRow": 21,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a698c222796b457d6748"
       ],
@@ -3667,7 +4115,7 @@
       "amountMinor": 85000,
       "sourceId": "addin-virology-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-58cbc331968efc545cf3"
       ],
@@ -3682,7 +4130,7 @@
       "amountMinor": 85000,
       "sourceId": "addin-virology-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-21cdc1ab9ea4708c0814"
       ],
@@ -3697,7 +4145,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 17,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-f1faa874c02aafd8183c"
       ],
@@ -3712,7 +4160,7 @@
       "amountMinor": 96000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b4007c867622a5b637b3"
       ],
@@ -3727,7 +4175,7 @@
       "amountMinor": 150000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 64,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-4ba02bce4ad2453bcbf0"
       ],
@@ -3742,7 +4190,7 @@
       "amountMinor": 96000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ff92fc65683c0fb3691a"
       ],
@@ -3757,7 +4205,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 10,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8131083f9ddefa79a37e"
       ],
@@ -3772,7 +4220,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 93,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-7c96d0ba5ebe29d056a7"
       ],
@@ -3787,7 +4235,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 11,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-40f3c406245790b4d149"
       ],
@@ -3802,7 +4250,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 80,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-380882180ea89d71b0cc"
       ],
@@ -3817,7 +4265,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 22,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-33245391929d6d31c703"
       ],
@@ -3832,7 +4280,7 @@
       "amountMinor": 80000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 67,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-cd0b41f3910db919ddf1"
       ],
@@ -3847,7 +4295,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 19,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8fadb70154929fc79d49"
       ],
@@ -3862,7 +4310,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 70,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-353c7ea800919a5e458a"
       ],
@@ -3877,7 +4325,7 @@
       "amountMinor": 51000,
       "sourceId": "addin-microbiology-20261028",
       "sourceRow": 6,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-3094f2157fbb54acae26"
       ],
@@ -3892,7 +4340,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 65,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2d9c8ce51e98393fa2d2"
       ],
@@ -3907,7 +4355,7 @@
       "amountMinor": 30000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 71,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-422a40ee3c9a3b0a3aca"
       ],
@@ -3922,7 +4370,7 @@
       "amountMinor": 150000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 5,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-ca51bdc223d8ec7c0c55"
       ],
@@ -3937,7 +4385,7 @@
       "amountMinor": 180000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 92,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-9e566c99c7d0fa037354"
       ],
@@ -3952,7 +4400,7 @@
       "amountMinor": 155000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 6,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-d58115f1e5bbe1081023"
       ],
@@ -3967,7 +4415,7 @@
       "amountMinor": 155000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 8,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e6982c5c9b2bc1328a0f"
       ],
@@ -3982,7 +4430,7 @@
       "amountMinor": 150000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 89,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a8cc3ab0c27243829669"
       ],
@@ -3997,7 +4445,7 @@
       "amountMinor": 150000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 7,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-478b2a06e867b919b7bf"
       ],
@@ -4012,7 +4460,7 @@
       "amountMinor": 180000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 90,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-da1d68b07fe03baec0b3"
       ],
@@ -4027,7 +4475,7 @@
       "amountMinor": 150000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 12,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-9f5086ca834bc9eb48fe"
       ],
@@ -4042,7 +4490,7 @@
       "amountMinor": 150000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 87,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-8e949506b12253dd290c"
       ],
@@ -4057,7 +4505,7 @@
       "amountMinor": 155000,
       "sourceId": "addin-ultrasonography-20261028",
       "sourceRow": 9,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-564ea87f94685ed80e76"
       ],
@@ -4072,7 +4520,7 @@
       "amountMinor": 200000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 91,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-be125314c20dbce3c851"
       ],
@@ -4087,7 +4535,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 98,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-b7e0223437f30ce7e941"
       ],
@@ -4102,7 +4550,7 @@
       "amountMinor": 42000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 49,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a4c47f69ead8e9e244b1"
       ],
@@ -4117,7 +4565,7 @@
       "amountMinor": 42000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 50,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-0432a3ca761ceaa4015c"
       ],
@@ -4132,7 +4580,7 @@
       "amountMinor": 60000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 103,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-e76d5ef9a83d6468bc9b"
       ],
@@ -4147,7 +4595,7 @@
       "amountMinor": 77000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 52,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-593b5e6053af10627112"
       ],
@@ -4162,7 +4610,7 @@
       "amountMinor": 100000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 96,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-a0ca06ae7784484f41dc"
       ],
@@ -4177,7 +4625,7 @@
       "amountMinor": 47000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 16,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-88751c11131eba024d02"
       ],
@@ -4192,7 +4640,7 @@
       "amountMinor": 100000,
       "sourceId": "mogh-tests-20261028",
       "sourceRow": 97,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-97826013c857762c985e"
       ],
@@ -4207,7 +4655,7 @@
       "amountMinor": 37000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 17,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-7e80d0026f80fdbbd56b"
       ],
@@ -4222,7 +4670,7 @@
       "amountMinor": 37000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 18,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-05de0f201df93aa96dc1"
       ],
@@ -4237,7 +4685,7 @@
       "amountMinor": 45000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 74,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-90ad2e9a43da6e6ecdb7"
       ],
@@ -4252,7 +4700,7 @@
       "amountMinor": 45000,
       "sourceId": "addin-radiology-20261028",
       "sourceRow": 75,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-acede24c4d7110147e8f"
       ],
@@ -4267,7 +4715,7 @@
       "amountMinor": 300000,
       "sourceId": "holy-family-covid-20261028",
       "sourceRow": 1,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-3da8b178f94687835bcc"
       ],
@@ -4287,9 +4735,24 @@
       "amountMinor": 250000,
       "sourceId": "addin-virology-20261028",
       "sourceRow": 27,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-2b67ad72e3a982c0f93e"
+      ],
+      "corroboration": []
+    },
+    {
+      "id": "icddrb-mohakhali-covid-19-rt-pcr",
+      "branchId": "icddrb-mohakhali",
+      "serviceId": "covid-19-rt-pcr",
+      "providerServiceName": "Covid-19 Real Time RT PCR",
+      "priceId": "reviewed-price-a9eca9870e8cb9f0e25c-20261028",
+      "amountMinor": 300000,
+      "sourceId": "icddrb-covid-rtpcr-20261028",
+      "sourceRow": 1,
+      "verifiedAt": "2026-11-22T10:28:59Z",
+      "researchIds": [
+        "research-652a4434fb8ff59162c8"
       ],
       "corroboration": []
     },
@@ -4302,7 +4765,7 @@
       "amountMinor": 70000,
       "sourceId": "holy-family-covid-20261028",
       "sourceRow": 2,
-      "verifiedAt": "2026-11-22T10:24:13Z",
+      "verifiedAt": "2026-11-22T10:28:59Z",
       "researchIds": [
         "research-67cedb56ad8269a3709f"
       ],

@@ -17,13 +17,19 @@ test('Holy Family item-specific Tk labels exclude the separate home-collection c
 });
 test('publication accounts for every research listing without admitting unconfirmed branches', async () => {
   const { catalog, inventory } = await readReviewedInputs();
-  assert.equal(catalog.listings.length, 196);
+  assert.equal(catalog.listings.length, 217);
   assert.equal(catalog.services.length, 136);
-  assert.equal(catalog.branches.length, 3);
-  assert.equal(inventory.researchDecisions.length, 2188);
-  assert.equal(new Set(inventory.researchDecisions.map((item) => item.researchId)).size, 2188);
-  assert.equal(inventory.summary.heldResearchListings, 1992);
-  assert.equal(inventory.summary.representedResearchListings, 196);
+  assert.equal(catalog.branches.length, 5);
+  assert.equal(
+    inventory.researchDecisions.length,
+    inventory.summary.representedResearchListings + inventory.summary.heldResearchListings,
+  );
+  assert.equal(
+    new Set(inventory.researchDecisions.map((item) => item.researchId)).size,
+    inventory.researchDecisions.length,
+  );
+  assert.equal(inventory.summary.heldResearchListings, 1971);
+  assert.equal(inventory.summary.representedResearchListings, 217);
   assert.ok(
     !catalog.branches.some(
       (branch) => branch.id === 'bmu-ssh-shahbag' || branch.id === 'farabi-dhanmondi',
@@ -32,6 +38,14 @@ test('publication accounts for every research listing without admitting unconfir
   assert.equal(
     catalog.listings.filter((listing) => listing.branchId === 'holy-family-eskatan').length,
     2,
+  );
+  assert.equal(
+    catalog.listings.filter((listing) => listing.branchId === 'icddrb-mohakhali').length,
+    7,
+  );
+  assert.equal(
+    catalog.listings.filter((listing) => listing.branchId === 'dcimch-shyamoli').length,
+    14,
   );
   for (const listing of catalog.listings) {
     const source = catalog.sources.find((source) => source.id === listing.sourceId);

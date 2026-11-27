@@ -4,7 +4,7 @@ import { authSettings, requireSameOriginPost } from './config.server';
 import { authCookie, readAuthCookie } from './cookies.server';
 import { GoogleSignIn, type OAuthFetch } from './google.server';
 
-function redirect(location: string, cookies: string[] = []): Response {
+export function redirect(location: string, cookies: string[] = []): Response {
   const headers = new Headers({
     Location: location,
     'Cache-Control': 'no-store',

@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-27 12:30:00 +06:00`.
+Last updated: `2026-11-27 18:36:00 +06:00`.
 
 ## Current phase
 
@@ -60,6 +60,17 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Completed milestones
 
+### Password sign-up, sign-in and account forms (2026-11-27 18:36:00 +06:00)
+
+- Added three POST-only endpoints: `/auth/password/sign-up`, `/auth/password/sign-in` and `/auth/password/change`. GET returns 405 with `Allow: POST`. Every response has `Cache-Control: no-store`. Each checks the same origin and returns 403 on failure. Handlers are in `src/features/authentication/server/passwordHttp.server.ts`. Error codes and messages are in `src/features/authentication/passwordForm.ts`. The architecture file lists them.
+- Added `AuthStore` methods: `createPasswordAccount` (account, credential and session in one D1 batch), `passwordCredential`, `startPasswordSession`, `passwordHashOf`, `hasPassword` and `changePassword`. `changePassword` updates the hash only if it is unchanged since verification, and deletes every other session of the account. Google and password sessions share one cleanup helper.
+- Sign-in runs one PBKDF2 derivation for every request. An unknown email and a Google-only account use the fixed `dummyPasswordHash`. They give the same error as a wrong password. An inactive account is refused only after a correct password.
+- `normalizeEmail` moved to `src/features/authentication/passwordForm.ts`. It is the one function for `accounts.email_normalized` on every write and lookup.
+- Session cleanup now removes only sessions that expired more than one day ago. Before, any sign-in removed every expired session, so the "Session expired" message disappeared for other users.
+- Forms: the email and password form on `/sign-in` (Google stays first, with an "or" divider and a "Create an account" link), the new `/sign-up` route, the "Sign-in method" row on `/account`, and the "Change password" form for password accounts. Errors show next to the field with `aria-describedby`. The first error field gets focus. The browser checks the rules and the confirmation before it submits, and shows the strength hint. The show and hide button needs JavaScript. All forms work without JavaScript.
+- Verification: `bun run typecheck`, `bun run lint` and `bun run format:check` pass. `bun test`: 396 pass, 0 fail. `bun run test:database`: 126 pass, 0 fail. `bun run test:browser`: 156 pass, 2 skipped (the skips existed before this step). New tests: `src/features/authentication/passwordForm.test.ts`, `SignUpView.test.tsx`, `server/passwordHttp.test.ts`, `tests/auth/password-endpoints.integration.ts` and `tests/browser/password.browser.ts` (desktop and mobile, with and without JavaScript, a second browser context for the signed-out session, and a review by a password user).
+- Open items: no sign-in rate limit (see Open questions). After a sign-in or sign-up error, the user types the email again, because the email is not put in a URL. The password forms have no "forgot password" path (the owner decision is no email reset). Production PBKDF2 limit and CPU fit are still unverified.
+
 ### Password account schema, hashing and rules (2026-11-27 12:30:00 +06:00)
 
 - Recorded the owner decisions in `context/project-overview.md` and `context/architecture.md`. Accounts use Google sign-in or an email and password. No email verification, no email reset, no email sent. A duplicate email is refused. The sign-in rate limit is absent and is listed under Open questions.
@@ -71,7 +82,7 @@ These are confirmed constraints for later feature implementation. Full details a
 - Hash time is about 60 ms in local workerd. The Workers Free plan allows 10 ms of CPU time, so the hash does not fit the Free plan.
 - Changed existing tests. The auth test now expects a refusal for a second Google subject with an existing email. The corrections and resolution tests apply `0012` before their first sign-in. The reviews test sets `email_normalized`.
 - Verification: `bun run typecheck`, `bun run lint` and `bun run format:check` pass. `bun test`: 385 pass, 0 fail. `bun run test:database`: 113 pass, 0 fail (3 new tests in `tests/auth/password-accounts.integration.ts`). `bun run test:browser`: 148 pass, 2 skipped. `bun run db:rehearse` passes with 12 migrations.
-- Open items: production PBKDF2 limit and CPU fit are unverified (see Open questions). The password endpoints and forms are not built (step 16).
+- Open items: production PBKDF2 limit and CPU fit are unverified (see Open questions). The password endpoints and forms are built in the next milestone.
 
 ### Visual QA checks, design system completion, and client routing (2026-11-20 23:45:00 +06:00)
 

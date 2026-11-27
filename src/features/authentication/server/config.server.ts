@@ -1,5 +1,7 @@
 import { AuthError } from '../contracts';
 
+export const sessionSeconds = 7 * 86400;
+
 export type AuthSettings = {
   origin: string;
   clientId: string;
@@ -34,7 +36,6 @@ export function authSettings(environment: object, request: Request): AuthSetting
   const origin = appOrigin(environment, request);
   const clientId = setting(environment, 'GOOGLE_CLIENT_ID');
   const clientSecret = setting(environment, 'GOOGLE_CLIENT_SECRET');
-  const sessionSeconds = 7 * 86400;
   if (!clientId.endsWith('.apps.googleusercontent.com') || !clientSecret) {
     throw new AuthError('unavailable');
   }

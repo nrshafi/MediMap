@@ -5,6 +5,8 @@ import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
 import { Button, ButtonLink } from '../../ui/Button';
 import { Card } from '../../ui/Card';
 import { Notice } from '../../ui/Notice';
+import { Link } from '../../ui/Link';
+import { ChangePasswordForm, PasswordSignInForm } from './PasswordForms';
 
 export type AccountData = Awaited<ReturnType<typeof readAccount>>;
 const reasons: Record<string, string> = {
@@ -13,17 +15,28 @@ const reasons: Record<string, string> = {
   failed: 'Google sign-in did not complete. Try again.',
   email_in_use: 'This email already has an account. Sign in with the existing method.',
   'signed-out': 'You are signed out.',
-  unavailable: 'Google sign-in is unavailable. Try again later.',
+  unavailable: 'Sign-in is unavailable. Try again later.',
 };
+
+function signUpLink(returnTo: string): string {
+  const target = safeReturnTo(returnTo);
+  return target === '/account'
+    ? '/sign-up'
+    : `/sign-up?${new URLSearchParams({ returnTo: target })}`;
+}
 
 export function AccountView({
   result,
   returnTo = '/account',
   reason = '',
+  error = '',
+  changed = false,
 }: {
   result: AccountData;
   returnTo?: string;
   reason?: string;
+  error?: string;
+  changed?: boolean;
 }) {
   const session = result.ok ? result.session : null;
   const signedIn = session?.status === 'authenticated' ? session : null;
@@ -66,10 +79,11 @@ export function AccountView({
                   {signedIn.user.isAdministrator ? 'Administrator' : 'Member'}
                 </dd>
               </div>
-              {/* Sign-in method row (step 16 will expand this) */}
               <div>
                 <dt className="text-label font-semibold text-muted">Sign-in method</dt>
-                <dd className="mt-0.5 text-small font-semibold">Google</dd>
+                <dd className="mt-0.5 text-small font-semibold">
+                  {result.ok && result.method === 'password' ? 'Email and password' : 'Google'}
+                </dd>
               </div>
               <div>
                 <dt className="text-label font-semibold text-muted">Session ends</dt>
@@ -83,10 +97,22 @@ export function AccountView({
                 </dd>
               </div>
             </dl>
-            {/* Change password section slot for step 16 */}
-            <div id="change-password-slot">
-              {/* Step 16: nrshafi adds change password section here */}
-            </div>
+            {result.ok && result.method === 'password' && (
+              <section aria-labelledby="change-password-heading" className="grid gap-3">
+                <h2
+                  id="change-password-heading"
+                  className="font-display text-h3 font-bold text-ink"
+                >
+                  Change password
+                </h2>
+                {changed && (
+                  <Notice kind="info">
+                    Your password is changed. Other devices are signed out.
+                  </Notice>
+                )}
+                <ChangePasswordForm email={signedIn.user.email} error={error} />
+              </section>
+            )}
             <p className="text-small text-muted">
               Sessions last seven days. Sign in again after this session ends.
             </p>
@@ -147,13 +173,25 @@ export function AccountView({
                 Sign in with Google
               </Button>
             </form>
-            {/* Marked slot for second sign-in method (step 16 adds email and password form here) */}
             <div className="group/second-auth">
               <div className="hidden group-has-[[data-slot=second-auth]:not(:empty)]:flex items-center gap-3 my-4 text-small text-muted before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
                 <span>or</span>
               </div>
               <div data-slot="second-auth">
-                {/* Step 16: nrshafi adds email and password form here */}
+                {result.ok && (
+                  <div className="grid gap-4">
+                    <PasswordSignInForm returnTo={safeReturnTo(returnTo)} error={error} />
+                    <p className="text-center text-small text-muted">
+                      No account yet?{' '}
+                      <Link
+                        href={signUpLink(returnTo)}
+                        className="font-semibold text-primary underline"
+                      >
+                        Create an account
+                      </Link>
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <p className="text-center text-small text-muted">

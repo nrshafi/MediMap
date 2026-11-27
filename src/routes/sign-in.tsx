@@ -8,6 +8,7 @@ export const Route = createFileRoute('/sign-in')({
   validateSearch: (input: Record<string, unknown>) => ({
     returnTo: safeReturnTo(input.returnTo),
     reason: typeof input.reason === 'string' ? input.reason : '',
+    error: typeof input.error === 'string' && input.error ? input.error : undefined,
   }),
   loader: () => readAccount(),
   component: SignInRoute,
@@ -16,6 +17,11 @@ export const Route = createFileRoute('/sign-in')({
 function SignInRoute() {
   const search = Route.useSearch();
   return (
-    <AccountView result={Route.useLoaderData()} returnTo={search.returnTo} reason={search.reason} />
+    <AccountView
+      result={Route.useLoaderData()}
+      returnTo={search.returnTo}
+      reason={search.reason}
+      error={search.error}
+    />
   );
 }

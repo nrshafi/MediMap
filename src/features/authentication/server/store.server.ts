@@ -1,5 +1,6 @@
 import { AuthError, type AuthenticatedUser, type SessionState } from '../contracts';
 import { randomToken, tokenHash, validToken } from './crypto.server';
+import { normalizeEmail } from '../passwordForm';
 import type { GoogleIdentity, OAuthAttempt } from './google.server';
 
 function storedRecord(value: unknown): Record<string, unknown> {
@@ -18,10 +19,6 @@ function storedTime(value: unknown): number {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 0)
     throw new AuthError('unavailable');
   return value;
-}
-
-export function normalizeEmail(email: string): string {
-  return email.trim().toLowerCase();
 }
 
 export class AuthStore {
@@ -105,13 +102,7 @@ export class AuthStore {
         )
         .bind(await tokenHash(token), now, expiresAt, identity.subject),
     ];
-    if (validToken(previousToken))
-      statements.push(
-        this.db
-          .prepare('DELETE FROM auth_sessions WHERE token_hash = ?')
-          .bind(await tokenHash(previousToken)),
-      );
-    statements.push(this.db.prepare('DELETE FROM auth_sessions WHERE expires_at <= ?').bind(now));
+    statements.push(...(await this.replacedSession(previousToken, now)));
     let results: Awaited<ReturnType<D1Database['batch']>>;
     try {
       results = await this.db.batch(statements);
@@ -121,6 +112,150 @@ export class AuthStore {
     }
     if (results[1].meta.changes !== 1) throw new AuthError('forbidden');
     return { token, expiresAt };
+  }
+
+  // Deletes the previous session token and every session that expired more than one day ago. A session that
+  // expired less than a day ago stays, so its owner still sees the expired-session message.
+  // Runs in the same batch as the new session.
+  private async replacedSession(
+    previousToken: string | null,
+    now: number,
+  ): Promise<ReturnType<D1Database['prepare']>[]> {
+    const statements: ReturnType<D1Database['prepare']>[] = [];
+    if (validToken(previousToken))
+      statements.push(
+        this.db
+          .prepare('DELETE FROM auth_sessions WHERE token_hash = ?')
+          .bind(await tokenHash(previousToken)),
+      );
+    statements.push(
+      this.db.prepare('DELETE FROM auth_sessions WHERE expires_at <= ?').bind(now - 86400_000),
+    );
+    return statements;
+  }
+
+  // Creates an account and its password credential. The session starts in the same batch.
+  // The caller passes the hash. A used email stops at the unique index on email_normalized.
+  async createPasswordAccount(
+    email: { email: string; normalized: string },
+    passwordHash: string,
+    previousToken: string | null,
+  ): Promise<{ token: string; expiresAt: number }> {
+    const now = this.now();
+    const accountId = crypto.randomUUID();
+    const token = randomToken();
+    const expiresAt = now + 7 * 86400_000;
+    const statements = [
+      this.db
+        .prepare(
+          `INSERT INTO accounts(id, google_subject, email, email_normalized, created_at, last_signed_in_at)
+        VALUES (?, NULL, ?, ?, ?, ?)`,
+        )
+        .bind(accountId, email.email, email.normalized, now, now),
+      this.db
+        .prepare(
+          'INSERT INTO password_credentials(account_id, password_hash, updated_at) VALUES (?, ?, ?)',
+        )
+        .bind(accountId, passwordHash, now),
+      this.db
+        .prepare(
+          'INSERT INTO auth_sessions(token_hash, account_id, created_at, expires_at) SELECT ?, id, ?, ? FROM accounts WHERE id = ? AND active = 1',
+        )
+        .bind(await tokenHash(token), now, expiresAt, accountId),
+      ...(await this.replacedSession(previousToken, now)),
+    ];
+    try {
+      await this.db.batch(statements);
+    } catch (error) {
+      if (String(error).includes('accounts.email_normalized')) throw new AuthError('email_in_use');
+      throw error;
+    }
+    return { token, expiresAt };
+  }
+
+  // The stored hash is null when the email is unknown or the account has no password (Google only).
+  async passwordCredential(
+    normalizedEmail: string,
+  ): Promise<{ accountId: string; active: boolean; hash: string | null } | null> {
+    const value = await this.db
+      .prepare(
+        `SELECT a.id, a.active, c.password_hash FROM accounts a
+      LEFT JOIN password_credentials c ON c.account_id = a.id WHERE a.email_normalized = ?`,
+      )
+      .bind(normalizedEmail)
+      .first<unknown>();
+    if (value === null) return null;
+    const row = storedRecord(value);
+    return {
+      accountId: storedText(row.id),
+      active: row.active === 1,
+      hash: row.password_hash === null ? null : storedText(row.password_hash),
+    };
+  }
+
+  // Starts a session for a password account that the caller has already verified.
+  async startPasswordSession(
+    accountId: string,
+    previousToken: string | null,
+  ): Promise<{ token: string; expiresAt: number }> {
+    const now = this.now();
+    const token = randomToken();
+    const expiresAt = now + 7 * 86400_000;
+    const results = await this.db.batch([
+      this.db
+        .prepare(
+          'INSERT INTO auth_sessions(token_hash, account_id, created_at, expires_at) SELECT ?, id, ?, ? FROM accounts WHERE id = ? AND active = 1',
+        )
+        .bind(await tokenHash(token), now, expiresAt, accountId),
+      this.db
+        .prepare('UPDATE accounts SET last_signed_in_at = ? WHERE id = ? AND active = 1')
+        .bind(now, accountId),
+      ...(await this.replacedSession(previousToken, now)),
+    ]);
+    if (results[0].meta.changes !== 1) throw new AuthError('forbidden');
+    return { token, expiresAt };
+  }
+
+  async passwordHashOf(accountId: string): Promise<string | null> {
+    const value = await this.db
+      .prepare('SELECT password_hash FROM password_credentials WHERE account_id = ?')
+      .bind(accountId)
+      .first<unknown>();
+    return value === null ? null : storedText(storedRecord(value).password_hash);
+  }
+
+  async hasPassword(accountId: string): Promise<boolean> {
+    return (
+      (await this.db
+        .prepare('SELECT 1 AS present FROM password_credentials WHERE account_id = ?')
+        .bind(accountId)
+        .first<unknown>()) !== null
+    );
+  }
+
+  // Replaces the hash and deletes every other session of the account. The current session stays.
+  // The update runs only if the hash is still the one the caller verified. Returns false if it changed.
+  async changePassword(
+    accountId: string,
+    verifiedHash: string,
+    newHash: string,
+    currentToken: string,
+  ): Promise<boolean> {
+    const now = this.now();
+    const results = await this.db.batch([
+      this.db
+        .prepare(
+          'UPDATE password_credentials SET password_hash = ?, updated_at = ? WHERE account_id = ? AND password_hash = ?',
+        )
+        .bind(newHash, now, accountId, verifiedHash),
+      this.db
+        .prepare(
+          `DELETE FROM auth_sessions WHERE account_id = ? AND token_hash != ?
+        AND EXISTS (SELECT 1 FROM password_credentials WHERE account_id = ? AND password_hash = ?)`,
+        )
+        .bind(accountId, await tokenHash(currentToken), accountId, newHash),
+    ]);
+    return results[0].meta.changes === 1;
   }
 
   async session(token: string | null): Promise<SessionState> {

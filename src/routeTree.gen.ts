@@ -17,6 +17,7 @@ import { Route as FindRouteImport } from './routes/find'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as AdminCatalogRouteImport } from './routes/admin.catalog'
 import { Route as AdminPricesRouteImport } from './routes/admin.prices'
 import { Route as AdminProvidersRouteImport } from './routes/admin.providers'
@@ -36,6 +37,9 @@ import { Route as AdminProvidersWriteRouteImport } from './routes/admin.provider
 import { Route as AdminReportsResolveRouteImport } from './routes/admin.reports_.resolve'
 import { Route as AuthGoogleCallbackRouteImport } from './routes/auth.google.callback'
 import { Route as AuthGoogleStartRouteImport } from './routes/auth.google.start'
+import { Route as AuthPasswordChangeRouteImport } from './routes/auth.password.change'
+import { Route as AuthPasswordSignInRouteImport } from './routes/auth.password.sign-in'
+import { Route as AuthPasswordSignUpRouteImport } from './routes/auth.password.sign-up'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -75,6 +79,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignUpRoute = SignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCatalogRoute = AdminCatalogRouteImport.update({
@@ -172,6 +181,21 @@ const AuthGoogleStartRoute = AuthGoogleStartRouteImport.update({
   path: '/auth/google/start',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthPasswordChangeRoute = AuthPasswordChangeRouteImport.update({
+  id: '/auth/password/change',
+  path: '/auth/password/change',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthPasswordSignInRoute = AuthPasswordSignInRouteImport.update({
+  id: '/auth/password/sign-in',
+  path: '/auth/password/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthPasswordSignUpRoute = AuthPasswordSignUpRouteImport.update({
+  id: '/auth/password/sign-up',
+  path: '/auth/password/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -182,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/report': typeof ReportRoute
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -201,6 +226,9 @@ export interface FileRoutesByFullPath {
   '/admin/reports/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
+  '/auth/password/change': typeof AuthPasswordChangeRoute
+  '/auth/password/sign-in': typeof AuthPasswordSignInRoute
+  '/auth/password/sign-up': typeof AuthPasswordSignUpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -211,6 +239,7 @@ export interface FileRoutesByTo {
   '/report': typeof ReportRoute
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -230,6 +259,9 @@ export interface FileRoutesByTo {
   '/admin/reports/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
+  '/auth/password/change': typeof AuthPasswordChangeRoute
+  '/auth/password/sign-in': typeof AuthPasswordSignInRoute
+  '/auth/password/sign-up': typeof AuthPasswordSignUpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -241,6 +273,7 @@ export interface FileRoutesById {
   '/report': typeof ReportRoute
   '/reviews': typeof ReviewsRoute
   '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/admin/catalog': typeof AdminCatalogRoute
   '/admin/prices': typeof AdminPricesRoute
   '/admin/providers': typeof AdminProvidersRoute
@@ -260,6 +293,9 @@ export interface FileRoutesById {
   '/admin/reports_/resolve': typeof AdminReportsResolveRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/auth/google/start': typeof AuthGoogleStartRoute
+  '/auth/password/change': typeof AuthPasswordChangeRoute
+  '/auth/password/sign-in': typeof AuthPasswordSignInRoute
+  '/auth/password/sign-up': typeof AuthPasswordSignUpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -272,6 +308,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reviews'
     | '/sign-in'
+    | '/sign-up'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -291,6 +328,9 @@ export interface FileRouteTypes {
     | '/admin/reports/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
+    | '/auth/password/change'
+    | '/auth/password/sign-in'
+    | '/auth/password/sign-up'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -301,6 +341,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reviews'
     | '/sign-in'
+    | '/sign-up'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -320,6 +361,9 @@ export interface FileRouteTypes {
     | '/admin/reports/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
+    | '/auth/password/change'
+    | '/auth/password/sign-in'
+    | '/auth/password/sign-up'
   id:
     | '__root__'
     | '/'
@@ -330,6 +374,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reviews'
     | '/sign-in'
+    | '/sign-up'
     | '/admin/catalog'
     | '/admin/prices'
     | '/admin/providers'
@@ -349,6 +394,9 @@ export interface FileRouteTypes {
     | '/admin/reports_/resolve'
     | '/auth/google/callback'
     | '/auth/google/start'
+    | '/auth/password/change'
+    | '/auth/password/sign-in'
+    | '/auth/password/sign-up'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -360,6 +408,7 @@ export interface RootRouteChildren {
   ReportRoute: typeof ReportRoute
   ReviewsRoute: typeof ReviewsRoute
   SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
   AdminCatalogRoute: typeof AdminCatalogRoute
   AdminPricesRoute: typeof AdminPricesRoute
   AdminProvidersRoute: typeof AdminProvidersRoute
@@ -379,6 +428,9 @@ export interface RootRouteChildren {
   AdminReportsResolveRoute: typeof AdminReportsResolveRoute
   AuthGoogleCallbackRoute: typeof AuthGoogleCallbackRoute
   AuthGoogleStartRoute: typeof AuthGoogleStartRoute
+  AuthPasswordChangeRoute: typeof AuthPasswordChangeRoute
+  AuthPasswordSignInRoute: typeof AuthPasswordSignInRoute
+  AuthPasswordSignUpRoute: typeof AuthPasswordSignUpRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -437,6 +489,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/catalog': {
@@ -572,6 +631,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGoogleStartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/password/change': {
+      id: '/auth/password/change'
+      path: '/auth/password/change'
+      fullPath: '/auth/password/change'
+      preLoaderRoute: typeof AuthPasswordChangeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/password/sign-in': {
+      id: '/auth/password/sign-in'
+      path: '/auth/password/sign-in'
+      fullPath: '/auth/password/sign-in'
+      preLoaderRoute: typeof AuthPasswordSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/password/sign-up': {
+      id: '/auth/password/sign-up'
+      path: '/auth/password/sign-up'
+      fullPath: '/auth/password/sign-up'
+      preLoaderRoute: typeof AuthPasswordSignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -584,6 +664,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportRoute: ReportRoute,
   ReviewsRoute: ReviewsRoute,
   SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
   AdminCatalogRoute: AdminCatalogRoute,
   AdminPricesRoute: AdminPricesRoute,
   AdminProvidersRoute: AdminProvidersRoute,
@@ -603,6 +684,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminReportsResolveRoute: AdminReportsResolveRoute,
   AuthGoogleCallbackRoute: AuthGoogleCallbackRoute,
   AuthGoogleStartRoute: AuthGoogleStartRoute,
+  AuthPasswordChangeRoute: AuthPasswordChangeRoute,
+  AuthPasswordSignInRoute: AuthPasswordSignInRoute,
+  AuthPasswordSignUpRoute: AuthPasswordSignUpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

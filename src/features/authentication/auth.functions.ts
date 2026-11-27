@@ -10,14 +10,19 @@ export const readAccount = createServerFn({ method: 'GET' }).handler(async () =>
   setResponseHeader('Cache-Control', 'private, no-store');
   const request = getRequest();
   try {
-    const session = await new AuthStore(env.DB).session(readAuthCookie(request, 'session'));
+    const store = new AuthStore(env.DB);
+    const session = await store.session(readAuthCookie(request, 'session'));
+    const method =
+      session.status === 'authenticated' && (await store.hasPassword(session.user.id))
+        ? ('password' as const)
+        : ('google' as const);
     let signInAvailable = true;
     try {
       authSettings(env, request);
     } catch {
       signInAvailable = false;
     }
-    return { ok: true, session, signInAvailable } as const;
+    return { ok: true, session, signInAvailable, method } as const;
   } catch (error) {
     return authFailure(error);
   }

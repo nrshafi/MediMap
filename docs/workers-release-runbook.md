@@ -62,6 +62,7 @@ Those local secret files are not deployed as Worker secrets automatically.
 | `0009_service_reviews.sql` | Service-specific reviews, versioned owner edits, and retained history |
 | `0010_review_moderation.sql` | Review-abuse reports and immutable administrator decisions |
 | `0011_mapping_budget.sql` | Shared provider-request reservations |
+| `0012_password_accounts.sql` | Nullable Google subject, unique normalized email, password credentials |
 
 `release-migrations.json` records SHA-256 hashes of the reviewed migration text, normalized to LF.
 Both release commands reject a changed migration or an unexplained migration-file set.

@@ -20,6 +20,10 @@ function storedTime(value: unknown): number {
   return value;
 }
 
+export function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
+}
+
 export class AuthStore {
   constructor(
     private readonly db: D1Database,
@@ -82,15 +86,18 @@ export class AuthStore {
     const accountId = crypto.randomUUID();
     const token = randomToken();
     const expiresAt = now + 7 * 86400_000;
+    const emailNormalized = normalizeEmail(identity.email);
     // Resolve the account by subject inside the batch. Concurrent first sign-ins cannot create duplicate accounts.
+    // A new subject with the email of another account stops at the unique index. Accounts are never linked.
     const statements = [
       this.db
         .prepare(
-          `INSERT INTO accounts(id, google_subject, email, created_at, last_signed_in_at)
-        VALUES (?, ?, ?, ?, ?) ON CONFLICT(google_subject) DO UPDATE SET
-        email = excluded.email, last_signed_in_at = excluded.last_signed_in_at`,
+          `INSERT INTO accounts(id, google_subject, email, email_normalized, created_at, last_signed_in_at)
+        VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(google_subject) DO UPDATE SET
+        email = excluded.email, email_normalized = excluded.email_normalized,
+        last_signed_in_at = excluded.last_signed_in_at`,
         )
-        .bind(accountId, identity.subject, identity.email, now, now),
+        .bind(accountId, identity.subject, identity.email, emailNormalized, now, now),
       this.db
         .prepare(
           `INSERT INTO auth_sessions(token_hash, account_id, created_at, expires_at)
@@ -105,7 +112,13 @@ export class AuthStore {
           .bind(await tokenHash(previousToken)),
       );
     statements.push(this.db.prepare('DELETE FROM auth_sessions WHERE expires_at <= ?').bind(now));
-    const results = await this.db.batch(statements);
+    let results: Awaited<ReturnType<D1Database['batch']>>;
+    try {
+      results = await this.db.batch(statements);
+    } catch (error) {
+      if (String(error).includes('accounts.email_normalized')) throw new AuthError('email_in_use');
+      throw error;
+    }
     if (results[1].meta.changes !== 1) throw new AuthError('forbidden');
     return { token, expiresAt };
   }

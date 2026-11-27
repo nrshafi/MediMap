@@ -45,6 +45,8 @@ test('correction submission against actual local D1', async (t) => {
     };
     const names = (await readdir('migrations')).filter((name) => name.endsWith('.sql')).sort();
     for (const name of names.filter((name) => name < '0007')) await apply(name);
+    // AuthStore writes email_normalized, so the account rebuild applies before the first sign-in.
+    await apply('0012_password_accounts.sql');
     const seed = (await readFile('seeds/catalog.sql', 'utf8'))
       .replace(/^--.*$/gm, '')
       .split(';')

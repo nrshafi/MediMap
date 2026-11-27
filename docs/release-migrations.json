@@ -45,6 +45,10 @@
     {
       "name": "0011_mapping_budget.sql",
       "sha256": "ee380ddf16fae827c27462ebfd42341bdd360dd837f9a13ef060416ec3723d5e"
+    },
+    {
+      "name": "0012_password_accounts.sql",
+      "sha256": "ec2c43c7178834af1be731487e0603a8d108be292d33c2d963cba26a3d73a203"
     }
   ]
 }

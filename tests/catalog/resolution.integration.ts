@@ -50,6 +50,8 @@ test('administrator resolution against actual local D1', async (t) => {
       .filter((name) => name.endsWith('.sql') && name < '0008')
       .sort())
       await apply(name);
+    // AuthStore writes email_normalized, so the account rebuild applies before the first sign-in.
+    await apply('0012_password_accounts.sql');
     const seed = (await readFile('seeds/catalog.sql', 'utf8'))
       .replace(/^--.*$/gm, '')
       .split(';')

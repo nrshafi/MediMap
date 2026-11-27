@@ -29,9 +29,9 @@ test('service reviews retain ownership, history and public visibility in D1', as
     for (const id of ['reviewer-a', 'reviewer-b'])
       await db
         .prepare(
-          'INSERT INTO accounts(id,google_subject,email,created_at,last_signed_in_at) VALUES(?,?,?,?,?)',
+          'INSERT INTO accounts(id,google_subject,email,email_normalized,created_at,last_signed_in_at) VALUES(?,?,?,lower(?),?,?)',
         )
-        .bind(id, id, `${id}@example.test`, Date.now(), Date.now())
+        .bind(id, id, `${id}@example.test`, `${id}@example.test`, Date.now(), Date.now())
         .run();
     const repository = new ReviewRepository(db);
     const input = {
@@ -145,9 +145,9 @@ test('service reviews retain ownership, history and public visibility in D1', as
     assert.equal(await reserveMappingRequest(db, nextSecond), true);
     await db
       .prepare(
-        'INSERT INTO accounts(id,google_subject,email,created_at,last_signed_in_at) VALUES(?,?,?,?,?)',
+        'INSERT INTO accounts(id,google_subject,email,email_normalized,created_at,last_signed_in_at) VALUES(?,?,?,lower(?),?,?)',
       )
-      .bind('reviewer-c', 'reviewer-c', 'c@example.test', now, now)
+      .bind('reviewer-c', 'reviewer-c', 'c@example.test', 'c@example.test', now, now)
       .run();
     for (let revision = 0; revision < 5; revision++)
       await repository.save('reviewer-c', { ...input, revision });
@@ -171,9 +171,9 @@ test('service reviews retain ownership, history and public visibility in D1', as
       .run();
     await db
       .prepare(
-        'INSERT INTO accounts(id,google_subject,email,created_at,last_signed_in_at) VALUES(?,?,?,?,?)',
+        'INSERT INTO accounts(id,google_subject,email,email_normalized,created_at,last_signed_in_at) VALUES(?,?,?,lower(?),?,?)',
       )
-      .bind('reviewer-d', 'reviewer-d', 'd@example.test', now, now)
+      .bind('reviewer-d', 'reviewer-d', 'd@example.test', 'd@example.test', now, now)
       .run();
 
     // Zero reviews returns no entry (no NaN)

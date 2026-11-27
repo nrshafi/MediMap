@@ -53,7 +53,7 @@ test('authentication against actual local D1 and signed OpenID tokens', async (t
     await db.batch(statements.map((sql) => db.prepare(sql)));
     let now = Date.now();
     const store = new AuthStore(db, () => now);
-    const identity = { subject: 'test-member-subject', email: 'member@example.test' };
+    const identity = { subject: 'test-member-subject', email: 'test-member@example.test' };
     const first = await store.signIn(identity, null);
 
     await t.test(
@@ -132,7 +132,11 @@ test('authentication against actual local D1 and signed OpenID tokens', async (t
         if (signedIn.status !== 'authenticated') throw new Error('Missing session');
         assert.equal(signedIn.user.email, 'changed@example.test');
         assert.equal(signedIn.user.isAdministrator, false);
-        await store.signIn({ subject: 'other-subject', email: 'changed@example.test' }, null);
+        // Email is unique. A second subject with the same email is refused and never merged.
+        await assert.rejects(
+          store.signIn({ subject: 'other-subject', email: 'Changed@Example.test ' }, null),
+          { code: 'email_in_use' },
+        );
         assert.equal(
           (
             await db
@@ -140,7 +144,7 @@ test('authentication against actual local D1 and signed OpenID tokens', async (t
               .bind('changed@example.test')
               .first<{ count: number }>()
           )?.count,
-          2,
+          1,
         );
         await db
           .prepare('UPDATE accounts SET active = 0 WHERE id = ?')

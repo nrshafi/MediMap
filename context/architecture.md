@@ -276,9 +276,19 @@ Apply resolution history, report status, listing audit, and selected price atomi
 - Users can edit their own reviews.
 - Administrators maintain core published data and moderate reviews and reports.
 - Users submit data corrections as reports. Users cannot directly overwrite published core data.
-- Google sign-in is the only account method for the first version. Assign administrator access separately from ordinary sign-in.
+- Accounts use Google sign-in or an email and password. Assign administrator access separately from ordinary sign-in.
+- Password accounts have no email verification and no password reset by email. No email is sent. An administrator can disable an account (`accounts.active`).
+- A sign-up with an email that already belongs to any account is refused. The message tells the user to sign in with the existing method. This message shows others that the email has an account. The owner accepted this on 27 November 2026.
+- A Google sign-in for a new Google subject whose email belongs to another account is refused with the same message. Do not link accounts.
+- This release has no sign-in rate limit. This is an open security risk (see the progress tracker).
 - Use `oauth4webapi` for Google's authorization-code OpenID Connect flow, with PKCE, state, nonce, and signature validation.
-- Store accounts by Google's stable subject identifier. Do not merge accounts or assign privileges by email address.
+- Store Google accounts by Google's stable subject identifier. `accounts.google_subject` is null for password accounts. Do not merge accounts or assign privileges by email address.
+- `accounts.email_normalized` holds the email trimmed and lower-cased. A unique index on it makes the email unique across both methods. Migration `0012_password_accounts.sql` adds it, rebuilds `accounts`, and adds `password_credentials`. The migration stops with a clear message if two existing accounts share a normalized email.
+- Rebuild of `accounts`: D1 enforces foreign keys. The migration sets `PRAGMA defer_foreign_keys = on`, copies the rows to a backup table, drops and recreates `accounts`, then copies the rows back. Child rows keep their ids, so the checks at commit pass. Source: https://developers.cloudflare.com/d1/sql-api/foreign-keys/
+- Password hashing (`src/features/authentication/server/password.server.ts`): PBKDF2 with HMAC-SHA-256 from Web Crypto. A random 16-byte salt for each password. A 32-byte derived key. The stored string is `pbkdf2-sha256$<iterations>$<salt base64url>$<hash base64url>`. The comparison is constant-time. `verifyPassword` returns false for a malformed string and never throws.
+- Iteration count: 100,000. OWASP recommends 600,000 for PBKDF2-HMAC-SHA256 (https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html). The Cloudflare Web Crypto page (https://developers.cloudflare.com/workers/runtime-apis/web-crypto/) gives no iteration limit. The workerd issue https://github.com/cloudflare/workerd/issues/1346 reports a production maximum of 100,000, with no change announced (last comment checked: 20 September 2026). The Workers limit is lower than the OWASP value, so 100,000 applies. Local workerd accepts 600,000, so a local test cannot confirm the production limit. Verify it on the first deployment. Raise the count in a new hash version when Cloudflare raises the limit.
+- Hash time: about 60 ms for 100,000 iterations in local workerd (Miniflare, 27 November 2026). The Workers Free plan allows 10 ms of CPU time per request (https://developers.cloudflare.com/workers/platform/limits/). The hash does not fit the Free plan limit. Verify the CPU time on the target plan before release.
+- Password rules (`src/features/authentication/passwordRules.ts`) run on the server and in the browser. The common-password list is `src/features/authentication/commonPasswords.ts` (SecLists, MIT).
 - Keep opaque application-session tokens in HttpOnly cookies and store only their SHA-256 hashes in D1.
 - Store short-lived, single-use OAuth attempts in D1. Bind each attempt to a separate browser cookie.
 - Keep Google access, refresh, and ID tokens out of persistent storage and browser responses.

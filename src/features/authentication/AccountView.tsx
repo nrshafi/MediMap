@@ -11,6 +11,7 @@ const reasons: Record<string, string> = {
   required: 'Sign in to continue.',
   expired: 'Your session has expired. Sign in again.',
   failed: 'Google sign-in did not complete. Try again.',
+  email_in_use: 'This email already has an account. Sign in with the existing method.',
   'signed-out': 'You are signed out.',
   unavailable: 'Google sign-in is unavailable. Try again later.',
 };

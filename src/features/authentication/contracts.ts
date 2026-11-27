@@ -5,7 +5,13 @@ export type SessionState =
 
 export class AuthError extends Error {
   constructor(
-    readonly code: 'unauthenticated' | 'expired' | 'forbidden' | 'unavailable' | 'invalid_request',
+    readonly code:
+      | 'unauthenticated'
+      | 'expired'
+      | 'forbidden'
+      | 'unavailable'
+      | 'invalid_request'
+      | 'email_in_use',
   ) {
     const messages = {
       unauthenticated: 'Sign in to continue.',
@@ -13,6 +19,7 @@ export class AuthError extends Error {
       forbidden: 'Administrator access is required.',
       unavailable: 'Sign-in is unavailable. Try again later.',
       invalid_request: 'This account request could not be accepted.',
+      email_in_use: 'This email already has an account. Sign in with the existing method.',
     };
     super(messages[code]);
   }

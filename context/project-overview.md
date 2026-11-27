@@ -115,7 +115,11 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Use free tiers first. Obtain explicit approval before enabling paid services.
 - Cloudflare free tiers are the intended hosting budget. The local pilot model is in `docs/workers-release-runbook.md`; production CPU and actual workload remain unverified.
 - Selected technologies: React with TanStack Start, one Cloudflare Workers application deployment, and Cloudflare D1 with direct SQL.
-- Google sign-in is the only account method for the first version. Assign administrator access separately.
+- Accounts use Google sign-in or an email and password. Assign administrator access separately.
+- Email and password accounts need no email verification and have no password reset by email. MediMap sends no email. An administrator can disable an account.
+- A sign-up with an email that already belongs to any account (Google or password) is refused. The message tells the user to sign in with the existing method. This message shows others that the email has an account. The owner accepted this on 27 November 2026.
+- Password rules: 10 to 128 characters after Unicode NFC normalization, not on a common-password list, and not equal to the email or the part before the @ sign.
+- This release has no sign-in rate limit. This is an open security risk.
 - Add Hono only if required. Google Maps Platform is the mapping provider, selected on 11 November 2026. See the mapping decisions below.
 
 

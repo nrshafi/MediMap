@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-20 23:45:00 +06:00`.
+Last updated: `2026-11-27 12:30:00 +06:00`.
 
 ## Current phase
 
@@ -59,6 +59,19 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Password account schema, hashing and rules (2026-11-27 12:30:00 +06:00)
+
+- Recorded the owner decisions in `context/project-overview.md` and `context/architecture.md`. Accounts use Google sign-in or an email and password. No email verification, no email reset, no email sent. A duplicate email is refused. The sign-in rate limit is absent and is listed under Open questions.
+- Added `migrations/0012_password_accounts.sql`. It makes `accounts.google_subject` nullable and unique, adds `email_normalized` with a unique index, and adds `password_credentials`. It stops with a clear message if two accounts share a normalized email. It uses `PRAGMA defer_foreign_keys` and copies the rows through a backup table, so existing rows, foreign keys and triggers stay valid.
+- Added the migration to `docs/release-migrations.json` (SHA-256 of the LF-normalized text) and to the table in `docs/workers-release-runbook.md`. Both release scripts read the manifest.
+- Google sign-in writes `email_normalized`. A new Google subject with the email of another account fails with a new `email_in_use` error. The sign-in page shows the message for `reason=email_in_use`.
+- Added `src/features/authentication/server/password.server.ts` (PBKDF2-HMAC-SHA-256, 100,000 iterations, 16-byte salt, 32-byte key, versioned string, constant-time compare). Sources and the chosen count are in `context/architecture.md`.
+- Added `src/features/authentication/passwordRules.ts` and `commonPasswords.ts` (992 entries from SecLists, MIT).
+- Hash time is about 60 ms in local workerd. The Workers Free plan allows 10 ms of CPU time, so the hash does not fit the Free plan.
+- Changed existing tests. The auth test now expects a refusal for a second Google subject with an existing email. The corrections and resolution tests apply `0012` before their first sign-in. The reviews test sets `email_normalized`.
+- Verification: `bun run typecheck`, `bun run lint` and `bun run format:check` pass. `bun test`: 385 pass, 0 fail. `bun run test:database`: 113 pass, 0 fail (3 new tests in `tests/auth/password-accounts.integration.ts`). `bun run test:browser`: 148 pass, 2 skipped. `bun run db:rehearse` passes with 12 migrations.
+- Open items: production PBKDF2 limit and CPU fit are unverified (see Open questions). The password endpoints and forms are not built (step 16).
 
 ### Visual QA checks, design system completion, and client routing (2026-11-20 23:45:00 +06:00)
 
@@ -913,6 +926,8 @@ These are confirmed constraints for later feature implementation. Full details a
 
 ## Open questions
 
+- Security risk: this release has no sign-in rate limit for password accounts. The owner accepted this on 27 November 2026. An attacker can guess passwords without a limit.
+- Production PBKDF2 iteration limit on Workers (reported as 100,000, not stated in the official docs) and CPU fit of the 100,000-iteration hash. The Workers Free plan allows 10 ms of CPU time per request. Local workerd measured about 60 ms.
 - Additional Dhaka hospitals and branches with verifiable service, standard-price, and location evidence. No fixed collection count applies.
 - Exact final delivery date in early December 2026.
 - Functional UI conventions and interaction states. The initial static page design is recorded.

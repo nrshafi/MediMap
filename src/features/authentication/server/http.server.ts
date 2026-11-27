@@ -59,7 +59,9 @@ export async function finishGoogle(
       clear,
       authCookie(request, 'session', session.token, settings.sessionSeconds),
     ]);
-  } catch {
+  } catch (error) {
+    if (error instanceof AuthError && error.code === 'email_in_use')
+      return redirect('/sign-in?reason=email_in_use', [clear]);
     // Provider responses can contain credentials and personal data. Return a fixed public failure.
     return redirect('/sign-in?reason=failed', [clear]);
   }

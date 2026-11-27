@@ -157,6 +157,76 @@ test('service reviews retain ownership, history and public visibility in D1', as
       (await repository.aggregate('provider', 'addin-medical-college-hospital'))?.count,
       1,
     );
+
+    // Dimension summaries: visible-only means, zero reviews, hidden exclusion, inactive branch, multi-listing batch
+    await db
+      .prepare(
+        "INSERT INTO services(id,category_id,name,search_key) VALUES('dim-service-2','hematology','Second Test','second test')",
+      )
+      .run();
+    await db
+      .prepare(
+        "INSERT INTO branch_services(id,branch_id,service_id,provider_service_name) VALUES('dim-listing-2','addin-moghbazar','dim-service-2','Second')",
+      )
+      .run();
+    await db
+      .prepare(
+        'INSERT INTO accounts(id,google_subject,email,created_at,last_signed_in_at) VALUES(?,?,?,?,?)',
+      )
+      .bind('reviewer-d', 'reviewer-d', 'd@example.test', now, now)
+      .run();
+
+    // Zero reviews returns no entry (no NaN)
+    assert.deepEqual(await repository.dimensionSummaries(['dim-listing-2']), {});
+    assert.deepEqual(await repository.dimensionSummaries([]), {});
+
+    // reviewer-c already has scores [4,4,4,4,4,4] on input.listing; add reviewer-d with [2,4,5,3,1,5]
+    await repository.save('reviewer-d', {
+      listing: input.listing,
+      body: 'Mixed experience',
+      revision: 0,
+      score0: 2,
+      score1: 4,
+      score2: 5,
+      score3: 3,
+      score4: 1,
+      score5: 5,
+    });
+    await repository.save('reviewer-d', {
+      listing: 'dim-listing-2',
+      body: 'Second listing review',
+      revision: 0,
+      score0: 5,
+      score1: 5,
+      score2: 4,
+      score3: 4,
+      score4: 3,
+      score5: 3,
+    });
+
+    const multi = await repository.dimensionSummaries([input.listing, 'dim-listing-2']);
+    assert.equal(multi[input.listing]?.count, 2);
+    assert.deepEqual(multi[input.listing]?.dimensions, [3, 4, 4.5, 3.5, 2.5, 4.5]);
+    assert.equal(multi['dim-listing-2']?.count, 1);
+    assert.deepEqual(multi['dim-listing-2']?.dimensions, [5, 5, 4, 4, 3, 3]);
+
+    // Hide reviewer-d's review via moderation and confirm it is excluded
+    const revD = await repository.own(input.listing, 'reviewer-d');
+    assert.ok(revD);
+    await moderateReview(db, 'reviewer-b', {
+      review: revD.id,
+      revision: revD.revision,
+      action: 'hide',
+      reason: 'Hidden for dimension average exclusion integration check.',
+    });
+    const afterHide = await repository.dimensionSummaries([input.listing]);
+    assert.equal(afterHide[input.listing]?.count, 1);
+    assert.deepEqual(afterHide[input.listing]?.dimensions, [4, 4, 4, 4, 4, 4]);
+
+    // Inactive branch excludes all its listings from dimensionSummaries
+    await db.prepare("UPDATE branches SET active=0 WHERE id='addin-moghbazar'").run();
+    assert.deepEqual(await repository.dimensionSummaries([input.listing, 'dim-listing-2']), {});
+    await db.prepare("UPDATE branches SET active=1 WHERE id='addin-moghbazar'").run();
   } finally {
     await mf.dispose();
   }

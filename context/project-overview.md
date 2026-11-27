@@ -137,7 +137,7 @@ Accessibility and performance targets remain open for the UI and implementation 
 - Require selection for ambiguous service matches and offer typo suggestions.
 - Prices do not become stale because of age. Reports trigger review.
 - Display verification dates even when prices are old.
-- Default statistics require at least three eligible branches and use verified current prices from active branch-service listings.
+- Default statistics require at least three eligible branches and use verified current prices from active branch-service listings. Price range and minimum rating filters hide unknown prices and unreviewed listings with explicit counts, and statistics ignore those display filters.
 - Price-report resolution requires fresh official-source review before restoring verified status, including rejection. Other pending price reports keep the price disputed.
 - Show eligible branch and distinct provider counts.
 - Present written comparison details in a table. Statistics apply to numerical values only.

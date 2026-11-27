@@ -565,3 +565,40 @@ test.describe('server-rendered review report form', () => {
     ).toContainText('hidden');
   });
 });
+
+test('price range and minimum rating filters update listings, URL, hidden counts, and clear cleanly', async ({
+  page,
+}) => {
+  await page.goto('/find?service=complete-blood-count');
+  if (test.info().project.name === 'mobile') {
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+  }
+  const listingsRegion = page.getByRole('region', { name: 'Published listings' });
+  await expect(listingsRegion).toContainText('BDT 400.00');
+
+  // Seeded Ad-din CBC price is BDT 400.00; maxPrice=300 hides it and shows EmptyState with Clear filters.
+  await page.getByLabel('Maximum price (BDT)').fill('300');
+  await expect(page).toHaveURL(/maxPrice=300/);
+  await expect(page.getByRole('heading', { name: 'No published listings' })).toBeVisible();
+  await expect(page.getByText('Statistics include all listings in the radius.')).toBeVisible();
+
+  // Raising maxPrice to 500 restores the BDT 400.00 listing.
+  await page.getByLabel('Maximum price (BDT)').fill('500');
+  await expect(page).toHaveURL(/maxPrice=500/);
+  await expect(listingsRegion).toContainText('BDT 400.00');
+
+  // Selecting 4+ rating hides listings without visible reviews and reports the hidden count.
+  await page
+    .getByRole('group', { name: 'Minimum rating' })
+    .getByRole('button', { name: '4+', exact: true })
+    .click();
+  await expect(page).toHaveURL(/minRating=4/);
+  await expect(page.getByText(/1 listing hidden because it has no reviews/)).toBeVisible();
+
+  // Clear filters resets price and rating controls and removes the query params from the URL.
+  await page.getByRole('button', { name: 'Clear filters' }).first().click();
+  await expect(page).not.toHaveURL(/maxPrice=/);
+  await expect(page).not.toHaveURL(/minRating=/);
+  await expect(listingsRegion).toContainText('BDT 400.00');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

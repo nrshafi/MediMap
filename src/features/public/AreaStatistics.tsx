@@ -11,10 +11,12 @@ export function AreaStatistics({
   listings,
   center,
   radius,
+  filtered = false,
 }: {
   listings: BranchService[];
   center: Coordinates;
   radius: number;
+  filtered?: boolean;
 }) {
   const value = areaStatistics(listings, center, radius);
   return (
@@ -24,6 +26,9 @@ export function AreaStatistics({
         {value.count} eligible branches · {value.providers} providers · {radius} km straight-line
         radius
       </p>
+      {filtered && (
+        <p className="text-small text-muted">Statistics include all listings in the radius.</p>
+      )}
       {value.enough ? (
         <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {(['lowest', 'highest', 'mean', 'median'] as const).map((key) => (

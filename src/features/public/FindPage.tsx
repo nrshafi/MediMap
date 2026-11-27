@@ -13,6 +13,12 @@ import { SiteFooter, SiteHeader } from '../../ui/SiteChrome';
 import { ui } from '../../ui/styles';
 import { AreaStatistics } from './AreaStatistics';
 import { DEFAULT_CENTER, DEFAULT_RADIUS_KM, RADIUS_PRESETS, parseBoundedNumber } from './defaults';
+import {
+  RATING_FILTER_OPTIONS,
+  applyListingFilters,
+  parsePriceFilter,
+  type MinRatingFilter,
+} from './filters';
 import { formatBdt, type RouteResult } from './format';
 import { GoogleMapView, MapPlaceholder, MapUnavailable, type MapPinData } from './GoogleMapView';
 import { ListingCard } from './ListingCard';
@@ -31,7 +37,16 @@ const sortLabels: Record<PublicSort, string> = {
 };
 const isPreset = (value: number) => RADIUS_PRESETS.some((preset) => preset === value);
 
-type Context = { lat: number; lng: number; radius: number; sort: PublicSort; verified: string };
+type Context = {
+  lat: number;
+  lng: number;
+  radius: number;
+  sort: PublicSort;
+  verified: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minRating?: MinRatingFilter;
+};
 
 export function FindPage({
   services,
@@ -65,6 +80,15 @@ export function FindPage({
   const [customRadius, setCustomRadius] = useState(!isPreset(initial?.radius ?? DEFAULT_RADIUS_KM));
   const [sort, setSort] = useState<PublicSort>(initial?.sort ?? 'price-asc');
   const [verified, setVerified] = useState(initial?.verified ?? 'all');
+  const [minPrice, setMinPrice] = useState<number | undefined>(initial?.minPrice);
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(initial?.maxPrice);
+  const [minPriceDraft, setMinPriceDraft] = useState(
+    initial?.minPrice !== undefined ? String(initial.minPrice) : '',
+  );
+  const [maxPriceDraft, setMaxPriceDraft] = useState(
+    initial?.maxPrice !== undefined ? String(initial.maxPrice) : '',
+  );
+  const [minRating, setMinRating] = useState<MinRatingFilter | undefined>(initial?.minRating);
   const [routes, setRoutes] = useState<Record<string, RouteResult>>({});
   const [view, setView] = useState<'list' | 'map'>('list');
   const [desktop, setDesktop] = useState<boolean | null>(null);
@@ -94,20 +118,40 @@ export function FindPage({
       setCustomRadius(!isPreset(initial.radius));
       setSort(initial.sort);
       setVerified(initial.verified);
+      setMinPrice(initial.minPrice);
+      setMaxPrice(initial.maxPrice);
+      setMinPriceDraft(initial.minPrice !== undefined ? String(initial.minPrice) : '');
+      setMaxPriceDraft(initial.maxPrice !== undefined ? String(initial.maxPrice) : '');
+      setMinRating(initial.minRating);
       return;
     }
-    onContextChange?.({ lat: center.latitude, lng: center.longitude, radius, sort, verified });
+    onContextChange?.({
+      lat: center.latitude,
+      lng: center.longitude,
+      radius,
+      sort,
+      verified,
+      minPrice,
+      maxPrice,
+      minRating,
+    });
   }, [
     initial?.lat,
     initial?.lng,
     initial?.radius,
     initial?.sort,
     initial?.verified,
+    initial?.minPrice,
+    initial?.maxPrice,
+    initial?.minRating,
     center.latitude,
     center.longitude,
     radius,
     sort,
     verified,
+    minPrice,
+    maxPrice,
+    minRating,
     onContextChange,
   ]);
   useEffect(() => {
@@ -117,7 +161,18 @@ export function FindPage({
   }, [service, query, center.latitude, center.longitude, radius]);
 
   function serviceHref(id: string) {
-    return `/find?${new URLSearchParams({ service: id, lat: String(center.latitude), lng: String(center.longitude), radius: String(radius), sort, verified })}`;
+    const params = new URLSearchParams({
+      service: id,
+      lat: String(center.latitude),
+      lng: String(center.longitude),
+      radius: String(radius),
+      sort,
+      verified,
+    });
+    if (minPrice !== undefined) params.set('minPrice', String(minPrice));
+    if (maxPrice !== undefined) params.set('maxPrice', String(maxPrice));
+    if (minRating !== undefined) params.set('minRating', String(minRating));
+    return `/find?${params}`;
   }
   function chooseLocation(coordinates: { latitude: number; longitude: number }, label?: string) {
     setCenter(coordinates);
@@ -143,21 +198,55 @@ export function FindPage({
       ),
     [routes],
   );
-  const visible = query.trim()
+  const radiusAndVerified = query.trim()
     ? []
-    : sortListings(
-        listings
-          .filter(
-            (l) =>
-              !l.branch.coordinates ||
-              calculateHaversineDistanceKm(center, l.branch.coordinates) <= radius,
-          )
-          .filter((l) => verified !== 'yes' || l.price?.status === 'verified'),
-        sort,
-        center,
-        ratings,
-        travel,
-      );
+    : listings
+        .filter(
+          (l) =>
+            !l.branch.coordinates ||
+            calculateHaversineDistanceKm(center, l.branch.coordinates) <= radius,
+        )
+        .filter((l) => verified !== 'yes' || l.price?.status === 'verified');
+  const filteredResult = applyListingFilters(radiusAndVerified, ratings, {
+    minPrice,
+    maxPrice,
+    minRating,
+  });
+  const visible = sortListings(filteredResult.visible, sort, center, ratings, travel);
+  const hasExtraFilters =
+    minPrice !== undefined || maxPrice !== undefined || minRating !== undefined;
+  const visibleIdsKey = visible.map((l) => l.id).join(',');
+
+  useEffect(() => {
+    const allowed = new Set(visible.map((l) => l.id));
+    setComparison((previous) => {
+      const next = previous.filter((id) => allowed.has(id));
+      return next.length === previous.length ? previous : next;
+    });
+  }, [visibleIdsKey]);
+
+  function clearExtraFilters() {
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
+    setMinPriceDraft('');
+    setMaxPriceDraft('');
+    setMinRating(undefined);
+  }
+
+  const parsedMinDraft = minPriceDraft.trim() === '' ? undefined : parsePriceFilter(minPriceDraft);
+  const parsedMaxDraft = maxPriceDraft.trim() === '' ? undefined : parsePriceFilter(maxPriceDraft);
+  const minPriceError =
+    minPriceDraft.trim() !== '' && parsedMinDraft === undefined
+      ? 'Enter a whole BDT amount from 0 to 1,000,000.'
+      : parsedMinDraft !== undefined &&
+          parsedMaxDraft !== undefined &&
+          parsedMinDraft > parsedMaxDraft
+        ? 'Minimum price cannot exceed maximum price.'
+        : undefined;
+  const maxPriceError =
+    maxPriceDraft.trim() !== '' && parsedMaxDraft === undefined
+      ? 'Enter a whole BDT amount from 0 to 1,000,000.'
+      : undefined;
   const distanceOf = (l: BranchService) =>
     l.branch.coordinates ? calculateHaversineDistanceKm(center, l.branch.coordinates) : null;
   const pins: MapPinData[] = visible.flatMap((l) =>
@@ -373,7 +462,70 @@ export function FindPage({
               </Field>
             )}
 
-            <div className="flex items-center justify-between gap-2 border-t border-border pt-2">
+            <div className="grid grid-cols-1 gap-2 border-t border-border pt-2 sm:grid-cols-2">
+              <Field label="Minimum price (BDT)" error={minPriceError}>
+                <input
+                  className={fieldControlStyles}
+                  type="text"
+                  inputMode="numeric"
+                  value={minPriceDraft}
+                  onChange={(e) => {
+                    const next = e.target.value;
+                    setMinPriceDraft(next);
+                    if (next.trim() === '') {
+                      setMinPrice(undefined);
+                      return;
+                    }
+                    const parsed = parsePriceFilter(next);
+                    if (parsed !== undefined && (maxPrice === undefined || parsed <= maxPrice)) {
+                      setMinPrice(parsed);
+                    }
+                  }}
+                />
+              </Field>
+              <Field label="Maximum price (BDT)" error={maxPriceError}>
+                <input
+                  className={fieldControlStyles}
+                  type="text"
+                  inputMode="numeric"
+                  value={maxPriceDraft}
+                  onChange={(e) => {
+                    const next = e.target.value;
+                    setMaxPriceDraft(next);
+                    if (next.trim() === '') {
+                      setMaxPrice(undefined);
+                      return;
+                    }
+                    const parsed = parsePriceFilter(next);
+                    if (parsed !== undefined && (minPrice === undefined || parsed >= minPrice)) {
+                      setMaxPrice(parsed);
+                    }
+                  }}
+                />
+              </Field>
+            </div>
+
+            <div
+              role="group"
+              aria-label="Minimum rating"
+              className="flex flex-wrap items-center gap-1.5 border-t border-border pt-2"
+            >
+              <span className="mr-1 text-label font-semibold text-muted">Rating:</span>
+              <Chip pressed={minRating === undefined} onClick={() => setMinRating(undefined)}>
+                Any
+              </Chip>
+              {RATING_FILTER_OPTIONS.map((option) => (
+                <Chip
+                  key={option}
+                  pressed={minRating === option}
+                  onClick={() => setMinRating(option)}
+                >
+                  {option}+
+                </Chip>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2">
               <label htmlFor="sort-listings" className="text-small font-semibold text-ink">
                 Sort listings
               </label>
@@ -390,9 +542,44 @@ export function FindPage({
                 ))}
               </select>
             </div>
+
+            {hasExtraFilters && (
+              <div className="flex justify-end border-t border-border pt-2">
+                <Button variant="ghost" size="small" onClick={clearExtraFilters}>
+                  Clear filters
+                </Button>
+              </div>
+            )}
           </section>
 
-          {selected && <AreaStatistics listings={listings} center={center} radius={radius} />}
+          {selected &&
+            (filteredResult.hiddenUnknownPrice > 0 || filteredResult.hiddenNoRating > 0) && (
+              <div className="flex flex-col gap-1 text-small text-muted">
+                {filteredResult.hiddenUnknownPrice > 0 && (
+                  <p>
+                    {filteredResult.hiddenUnknownPrice}{' '}
+                    {filteredResult.hiddenUnknownPrice === 1 ? 'listing' : 'listings'} hidden
+                    because the price is unknown.
+                  </p>
+                )}
+                {filteredResult.hiddenNoRating > 0 && (
+                  <p>
+                    {filteredResult.hiddenNoRating}{' '}
+                    {filteredResult.hiddenNoRating === 1 ? 'listing' : 'listings'} hidden because it
+                    has no reviews.
+                  </p>
+                )}
+              </div>
+            )}
+
+          {selected && (
+            <AreaStatistics
+              listings={listings}
+              center={center}
+              radius={radius}
+              filtered={hasExtraFilters}
+            />
+          )}
 
           <div role="group" aria-label="Results view" className="grid grid-cols-2 gap-2 lg:hidden">
             <Chip
@@ -425,6 +612,13 @@ export function FindPage({
               <EmptyState
                 title="No published listings"
                 description="No published listings match this service and area."
+                action={
+                  hasExtraFilters ? (
+                    <Button variant="secondary" onClick={clearExtraFilters}>
+                      Clear filters
+                    </Button>
+                  ) : undefined
+                }
               />
             )}
             <section aria-label="Published listings" className="flex flex-col gap-3">

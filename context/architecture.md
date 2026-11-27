@@ -354,7 +354,7 @@ Checked on 8 October 2026. These sources establish available integration options
 - A price does not become stale because of elapsed time.
 - Pending price reports immediately mark the current price disputed, as confirmed on 28 October 2026.
 - Continue to display the actual last verification date. Do not describe an old verification date as recent.
-- Default statistics use one current, verified, non-stale price per active branch-service listing within the selected area.
+- Default statistics use one current, verified, non-stale price per active branch-service listing within the selected area. Price range (`minPrice`, `maxPrice`) and minimum rating (`minRating`) filters run in the browser, hide unknown prices and unreviewed listings with explicit hidden counts, and do not alter area statistics.
 - Show the number of eligible branches and distinct providers.
 - Require at least three eligible branches for aggregate statistics.
 - Do not apply an age cutoff to statistics under the selected report-based freshness policy.

@@ -3,17 +3,25 @@ import { sortChoices } from '../features/public/sorting';
 import { publicCatalog } from '../features/public/catalog.functions';
 import { publicMapsConfig } from '../features/public/maps.functions';
 import { DEFAULT_CENTER, parseCoordinate, parseRadius } from '../features/public/defaults';
+import { parsePriceRange, parseRatingFilter } from '../features/public/filters';
 import { FindPage } from '../features/public/FindPage';
 export const Route = createFileRoute('/find')({
-  validateSearch: (s: Record<string, unknown>) => ({
-    service: typeof s.service === 'string' ? s.service : undefined,
-    q: typeof s.q === 'string' ? s.q.slice(0, 256) : undefined,
-    lat: parseCoordinate(s.lat, 90, DEFAULT_CENTER.latitude),
-    lng: parseCoordinate(s.lng, 180, DEFAULT_CENTER.longitude),
-    radius: parseRadius(s.radius),
-    sort: sortChoices.find((value) => value === s.sort) ?? 'price-asc',
-    verified: s.verified === 'yes' ? 'yes' : 'all',
-  }),
+  validateSearch: (s: Record<string, unknown>) => {
+    const priceRange = parsePriceRange(s.minPrice, s.maxPrice);
+    const minRating = parseRatingFilter(s.minRating);
+    return {
+      service: typeof s.service === 'string' ? s.service : undefined,
+      q: typeof s.q === 'string' ? s.q.slice(0, 256) : undefined,
+      lat: parseCoordinate(s.lat, 90, DEFAULT_CENTER.latitude),
+      lng: parseCoordinate(s.lng, 180, DEFAULT_CENTER.longitude),
+      radius: parseRadius(s.radius),
+      sort: sortChoices.find((value) => value === s.sort) ?? 'price-asc',
+      verified: s.verified === 'yes' ? 'yes' : 'all',
+      ...(priceRange.minPrice !== undefined ? { minPrice: priceRange.minPrice } : {}),
+      ...(priceRange.maxPrice !== undefined ? { maxPrice: priceRange.maxPrice } : {}),
+      ...(minRating !== undefined ? { minRating } : {}),
+    };
+  },
   loaderDeps: ({ search }) => ({ service: search.service }),
   loader: async ({ deps }) => {
     const [catalog, maps] = await Promise.all([

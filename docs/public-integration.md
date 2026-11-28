@@ -34,9 +34,9 @@ They do not trust account IDs or role fields supplied by clients.
 - Keep comparison to one service and at most four listings. Clear selection on service, query, location, radius, or page changes.
 - Preserve unknown prices, ratings, coordinates, hours, and travel estimates. Do not count location-unknown branches inside a radius.
 
-The reviewed import still has 196 listings and three branches.
+The reviewed import has 217 listings and five branches.
 On 18 November 2026, each branch received a coordinate pair from one Places lookup of its published official address. The branch row stores latitude and longitude only.
-No canonical service is published at all three branches, so the three-branch area statistic still has no eligible set.
+Eleven canonical services are published at three or more branches. These services can supply the three-branch area statistic.
 Administrators can replace a coordinate through the existing branch editor. A later lookup does not replace a saved coordinate.
 No review data was invented for the release dataset.
 

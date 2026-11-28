@@ -27,7 +27,7 @@ They do not use the development database or real Google credentials.
 
 | Name | Local source | Release requirement |
 | --- | --- | --- |
-| `DB` | D1 binding in `wrangler.jsonc` | An owner-approved real D1 database and account. The current UUID is a local placeholder. |
+| `DB` | D1 binding in `wrangler.jsonc` | The top-level UUID is a local placeholder. `env.production` binds the demo database `medimap-catalog`. |
 | `AUTH_ORIGIN` | Ignored `.dev.vars` | Exact HTTPS browser origin, without a path or trailing slash. Configure it as a non-secret Worker variable. |
 | `GOOGLE_CLIENT_ID` | Ignored `.dev.vars` | Google OAuth web-client identifier for that origin. Keep runtime configuration outside browser modules. |
 | `GOOGLE_CLIENT_SECRET` | Ignored `.dev.vars` | Worker secret. Never put the value in source, command arguments, logs, or this runbook. |
@@ -87,7 +87,7 @@ The rehearsal performs these checks:
 2. Apply migrations `0001` through `0005` to an empty local database.
 3. Apply the current foundation seed, which requires the normalized keys added by `0004` and `0005`.
 4. Apply all remaining reviewed migrations, then repeat migration application to check the ledger.
-5. Enter the reviewed subset and reconcile all 196 listings.
+5. Enter the reviewed subset and reconcile all 217 listings.
 6. Reject an intentionally invalid temporary migration and confirm its table and ledger entry were rolled back.
 7. Export the complete database and a separate data-only SQL backup.
 8. Restore schema, data, and triggers into another empty local database, in that order.
@@ -116,7 +116,7 @@ This marker check supplements code boundaries; it cannot prove that every possib
 
 Successful packaging checks the build and upload package only.
 It does not verify remote D1 identity, Google credentials, production CPU time, or request routing.
-The configured placeholder remains intentional until the owner selects an authorized remote target.
+The top-level placeholder stays for local work. The `production` environment holds the demo target.
 
 ## Workload and free-tier assessment
 
@@ -127,7 +127,7 @@ Budget 500 catalog-page reads, 100 unfiltered listing-page reads, and 1,000 CBC-
 Reserve another 500,000 D1 rows read and 20,000 rows written daily for authentication, reports, and administration.
 The write allowance must include indexes and trigger effects.
 
-The rehearsal records actual D1 row metadata from the application's catalog repository on the 196-listing subset.
+The rehearsal records actual D1 row metadata from the application's catalog repository on the 217-listing subset.
 Local measurements do not measure production CPU time or future public query implementations.
 Use the rehearsal's `measurements.json` and the calculation recorded below when changing these assumptions.
 
@@ -162,6 +162,25 @@ Google Maps requests use the Demo Key. They share a request budget that the appl
 See [public integration](public-integration.md) for provider contracts and attribution.
 No paid service is enabled by these checks.
 
+## Demo deployment record
+
+On 29 November 2026, the owner authorized a demo deployment to Cloudflare account `004edbba5c2bcea9f103ae2111889af7`.
+
+- Worker: `medimap` at <https://medimap.nrshafi.workers.dev>.
+- D1 database: `medimap-catalog`, ID `ffa4f88a-399c-4ef3-9716-3eae38c819f0`, region APAC. The database started empty.
+- Migrations `0001` to `0013` were applied. `seeds/catalog.sql` and `seeds/reviewed-catalog.sql` were executed. The database holds 217 listings with verified current prices at five branches.
+- `AUTH_ORIGIN` is a Worker variable in `env.production`. `GOOGLE_MAPS_BROWSER_KEY` and `GOOGLE_MAPS_SERVER_KEY` are Worker secrets with the Maps Demo Key.
+- Google OAuth is not configured. Password sign-in works. Google sign-in reports that it is unavailable.
+- One password account has an owner-manual administrator grant.
+
+To deploy a new version, do these steps:
+
+1. Run `CLOUDFLARE_ENV=production bun run build`.
+2. Run `bunx wrangler deploy`.
+
+To apply a new migration, run `bunx wrangler d1 migrations apply DB --remote --env production`.
+Do not execute the seed files again over administrator changes without a separate data review.
+
 ## Production migration and recovery procedure
 
 Production operations require separate owner authorization for the exact account, database, Worker, and origin.
@@ -187,8 +206,8 @@ An SQL export is a separate recovery artifact; do not assume that a Worker versi
 
 Use [catalog reads](catalog-read-contracts.md), [authentication](authentication.md), [provider administration](provider-administration.md), and [pricing administration](pricing-administration.md).
 Use the [report route](correction-report-submission.md) and [administrator resolution transitions](correction-report-resolution.md) when adding public links and trust indicators.
-The [reviewed dataset](reviewed-hospital-dataset.md) has 196 listings, three branches, and 136 canonical services. Another 1,894 research listings remain held.
-Hours, contacts, and effective dates remain null. The three branch coordinate pairs entered on 18 November 2026 are stored. This subset does not establish three eligible branches for every service.
+The [reviewed dataset](reviewed-hospital-dataset.md) has 217 listings, five branches, and 136 canonical services. Another 1,971 research listings remain held.
+Hours and effective dates remain null. The coordinate pairs for the first three branches were entered on 18 November 2026. The pairs for icddr,b Mohakhali and Dhaka Central Shyamoli were entered on 22 November 2026. This subset does not establish three eligible branches for every service.
 Inject `env.DB` into server repositories per request. Keep `.server.ts` modules and account records out of browser imports.
 Extend `AdminLayout.navigation` for later moderation pages. Keep the current core navigation and server authorization checks.
 The public integration and its current acceptance evidence are documented in [public application integration](public-integration.md).
@@ -215,6 +234,7 @@ The foundation D1 regression run passed 107 tests before public integration. Lat
 The additional local migration-failure and SQL-restore rehearsal passed, including the final source/restored audit comparison.
 Types, lint, formatting, deterministic catalog artifacts, local catalog reconciliation, production builds, and the fixed packaging check passed.
 The development audit still reports 196 verified current listings with no issues or administrator overrides.
+On 29 November 2026, the rehearsal passed with 217 listings and 13 migrations. Start the production database empty: a database loaded with the 28 October 2026 seed rejects the current seed. The development audit reports 217 verified current listings with no issues.
 Remote-argument rejection checks passed. No remote resource, production migration, real administrator grant, push, or deployment occurred.
 Production and live-provider requirements listed above remain open.
 The [public release checklist](public-release-checklist.md) records current integrated verification, including all eleven migrations.

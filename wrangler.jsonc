@@ -20,4 +20,21 @@
       "migrations_dir": "migrations",
     },
   ],
+  // Demo deployment. Build with CLOUDFLARE_ENV=production.
+  // GOOGLE_MAPS_BROWSER_KEY and GOOGLE_MAPS_SERVER_KEY are Worker secrets.
+  "env": {
+    "production": {
+      "name": "medimap",
+      "account_id": "004edbba5c2bcea9f103ae2111889af7",
+      "vars": { "AUTH_ORIGIN": "https://medimap.nrshafi.workers.dev" },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "medimap-catalog",
+          "database_id": "ffa4f88a-399c-4ef3-9716-3eae38c819f0",
+          "migrations_dir": "migrations",
+        },
+      ],
+    },
+  },
 }

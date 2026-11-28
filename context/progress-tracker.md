@@ -4,7 +4,7 @@ Update after each meaningful implementation change. Include the exact date and t
 Add new completed milestones first. Record changes, verification results, and unresolved checks.
 Older milestones retain the date and time precision available in the original record.
 
-Last updated: `2026-11-27 20:40:00 +06:00`.
+Last updated: `2026-11-29 01:46:07 +06:00`.
 
 ## Current phase
 
@@ -61,6 +61,21 @@ These are confirmed constraints for later feature implementation. Full details a
 - Use free tiers first. Verify workload fit and obtain approval before enabling paid services.
 
 ## Completed milestones
+
+### Demo deployment to Cloudflare (2026-11-29 01:46:07 +06:00)
+
+- Deployed Worker `medimap` to <https://medimap.nrshafi.workers.dev> on account `004edbba5c2bcea9f103ae2111889af7`. Details are in `docs/workers-release-runbook.md`.
+- Created D1 database `medimap-catalog`, applied 13 migrations and both seed files. The remote database has 217 verified current listings at five branches.
+- Added `env.production` to `wrangler.jsonc`. The Maps keys are Worker secrets. Google OAuth is not configured.
+- Live checks passed: all main routes respond, unknown URLs return 404, the Google map renders, address lookup returns Dhaka places, and a CBC search lists the new hospitals.
+- Password sign-up and sign-in work. `nrshafi1@gmail.com` has an owner-manual administrator grant. The account, catalog, accounts, prices and reports pages open for that account.
+
+### Reviewed catalog counts and local database rebuild (2026-11-29 01:22:00 +06:00)
+
+- The 22 November 2026 review changed the reviewer to `Codra21 official-website review` and the review time to `2026-11-22T10:28:59Z` on all reviewed records, including the first three branches. The owner kept these values on 29 November 2026.
+- Databases loaded with the 28 October 2026 seed cannot take this seed. `bun run db:catalog:check` reports 266 immutable-evidence conflicts. The production database must start from an empty database.
+- The development database was rebuilt. The previous state is in `.bun-tmp/d1-backup-20261129-012140`. The audit reports 217 public and 217 verified current listings with no issues.
+- `bun run db:rehearse` passed with 217 listings and 13 migrations. Updated the dataset counts in `README.md`, `docs/public-integration.md` and `docs/workers-release-runbook.md`.
 
 ### Account administration, security review and release check (2026-11-27 20:40:00 +06:00)
 
